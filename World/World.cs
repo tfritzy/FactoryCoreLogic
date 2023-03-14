@@ -64,7 +64,6 @@ namespace FactoryCore
                         this.UncoveredHexes[current.x, current.y] = new HashSet<int>();
                     }
 
-                    Console.WriteLine($"{current} is uncovered");
                     this.UncoveredHexes[current.x, current.y].Add(current.z);
                 }
                 else
