@@ -16,7 +16,7 @@ public abstract class Character
         InitCells();
     }
 
-    public T GetCell<T>(CellType type) where T : Cell
+    public T? GetCell<T>(CellType type) where T : Cell
     {
         if (!Cells.ContainsKey(type))
         {
@@ -37,6 +37,14 @@ public abstract class Character
         foreach (var cell in Cells.Values)
         {
             cell.OnAddToGrid();
+        }
+    }
+
+    public virtual void OnRemoveFromGrid()
+    {
+        foreach (var cell in Cells.Values)
+        {
+            cell.OnRemoveFromGrid();
         }
     }
 }

@@ -90,8 +90,20 @@ namespace FactoryCore
 
         public void AddBuilding(Building building, Point2Int location)
         {
+            if (Buildings.ContainsKey(location))
+            {
+                throw new InvalidOperationException("Tried to place building on occupied location");
+            }
+
             this.Buildings.Add(location, building);
             building.OnAddToGrid(location);
+        }
+
+        public void RemoveBuilding(Point2Int location)
+        {
+            Building building = this.Buildings[location];
+            this.Buildings.Remove(location);
+            building.OnRemoveFromGrid();
         }
 
         public Building? GetBuildingAt(Point2Int location)

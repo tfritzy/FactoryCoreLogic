@@ -6,14 +6,20 @@ namespace FactoryCore
     public class ConveyorCell : Cell
     {
         public List<ItemOnBelt> Items { get; private set; }
-        public ConveyorCell Next { get; private set; }
-        public ConveyorCell Prev { get; private set; }
+        public ConveyorCell? Next { get; private set; }
+        public ConveyorCell? Prev { get; private set; }
         public override CellType Type => CellType.Conveyor;
 
         public class ItemOnBelt
         {
             public Item Item;
             public int ProgressInTicks;
+
+            public ItemOnBelt(Item item)
+            {
+                this.Item = item;
+                this.ProgressInTicks = 0;
+            }
         }
 
         public ConveyorCell(Character owner) : base(owner)
@@ -33,11 +39,7 @@ namespace FactoryCore
         public void AddItem(Item item)
         {
             Items.Add(
-                new ItemOnBelt
-                {
-                    Item = item,
-                    ProgressInTicks = 0
-                }
+                new ItemOnBelt(item)
             );
         }
 
@@ -53,29 +55,32 @@ namespace FactoryCore
             FindNeighborConveyors();
         }
 
-        public bool CanBeNext(Building building)
+        public override void OnRemoveFromGrid()
         {
-            if (building == null)
-            {
-                return false;
-            }
+            base.OnRemoveFromGrid();
 
+            DisconnectNext();
+            DisconnectPrev();
+        }
+
+        public bool CanBeNext(ConveyorCell conveyor)
+        {
             // if (this.Next != null)
             // {
             //     return false;
             // }
 
-            if (building.GetCell<ConveyorCell>(CellType.Conveyor) == null)
+            if (conveyor == null)
             {
                 return false;
             }
 
-            if (building.GetCell<ConveyorCell>(CellType.Conveyor).Prev != null)
+            if (conveyor.Prev != null)
             {
                 return false;
             }
 
-            if (building.GetCell<ConveyorCell>(CellType.Conveyor).Next == this)
+            if (conveyor.Next == this)
             {
                 return false;
             }
@@ -83,24 +88,19 @@ namespace FactoryCore
             return true;
         }
 
-        public bool CanBePrev(Building building)
+        public bool CanBePrev(ConveyorCell conveyor)
         {
-            if (building == null)
-            {
-                return false;
-            }
-
             // if (this.Prev != null)
             // {
             //     return false;
             // }
 
-            if (building.GetCell<ConveyorCell>(CellType.Conveyor) == null)
+            if (conveyor == null)
             {
                 return false;
             }
 
-            if (building.GetCell<ConveyorCell>(CellType.Conveyor).Next != null)
+            if (conveyor.Next != null)
             {
                 return false;
             }
@@ -114,6 +114,26 @@ namespace FactoryCore
             conveyorCell.Prev = this;
         }
 
+        private void DisconnectNext()
+        {
+            if (this.Next != null)
+            {
+                this.Next.Prev = null;
+            }
+
+            this.Next = null;
+        }
+
+        private void DisconnectPrev()
+        {
+            if (this.Prev != null)
+            {
+                this.Prev.Next = null;
+            }
+
+            this.Prev = null;
+        }
+
         public void FindNeighborConveyors()
         {
             for (int i = 0; i < 6; i++)
@@ -121,14 +141,16 @@ namespace FactoryCore
                 var neighborPos = HexGridHelpers.GetNeighbor(this.Owner.GridPosition, (HexSide)i);
                 var neighbor = this.World.GetBuildingAt(neighborPos);
 
-                if (CanBePrev(neighbor))
+                ConveyorCell? neighborCell = neighbor?.GetCell<ConveyorCell>(CellType.Conveyor);
+
+                if (neighborCell != null && CanBePrev(neighborCell))
                 {
-                    neighbor.GetCell<ConveyorCell>(CellType.Conveyor).LinkTo(this);
+                    neighborCell.LinkTo(this);
                 }
 
-                if (CanBeNext(neighbor))
+                if (neighborCell != null && CanBeNext(neighborCell))
                 {
-                    this.LinkTo(neighbor.GetCell<ConveyorCell>(CellType.Conveyor));
+                    this.LinkTo(neighborCell);
                 }
             }
         }

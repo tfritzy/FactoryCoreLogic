@@ -6,6 +6,7 @@ namespace FactoryCore
     public class Conveyor : Building
     {
         public Conveyor(World world) : base(world) { }
+        public ConveyorCell? Cell => this.GetCell<ConveyorCell>(CellType.Conveyor);
 
         protected override void InitCells()
         {
