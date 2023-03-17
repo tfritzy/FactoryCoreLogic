@@ -5,7 +5,6 @@ public abstract class Character
 {
     public World World { get; private set; }
     public Point2Int GridPosition { get; protected set; }
-    public virtual void Tick() { }
 
     protected abstract void InitCells();
     protected Dictionary<CellType, Cell> Cells;
@@ -14,6 +13,14 @@ public abstract class Character
     {
         this.World = world;
         InitCells();
+    }
+
+    public virtual void Tick(float deltaTime)
+    {
+        foreach (var cell in Cells.Values)
+        {
+            cell.Tick(deltaTime);
+        }
     }
 
     public T? GetCell<T>(CellType type) where T : Cell

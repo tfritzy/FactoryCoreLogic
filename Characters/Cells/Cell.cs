@@ -3,7 +3,7 @@ using FactoryCore;
 public abstract class Cell
 {
     public Character Owner { get; private set; }
-    public abstract void Tick();
+    public abstract void Tick(float deltaTime);
     public abstract CellType Type { get; }
     public virtual void OnAddToGrid() { }
     public virtual void OnRemoveFromGrid() { }

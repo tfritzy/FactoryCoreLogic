@@ -22,6 +22,14 @@ namespace FactoryCore
             CalculateInitialUncovered();
         }
 
+        public void Tick(float deltaTime)
+        {
+            foreach (Building building in this.Buildings.Values)
+            {
+                building.Tick(deltaTime);
+            }
+        }
+
         public int GetTopHexHeight(int x, int y)
         {
             if (this.UncoveredHexes[x, y] == null)

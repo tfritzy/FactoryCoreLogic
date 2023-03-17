@@ -5,45 +5,132 @@ namespace FactoryCore
 {
     public class ConveyorCell : Cell
     {
-        public List<ItemOnBelt> Items { get; private set; }
+        public LinkedList<ItemOnBelt> Items { get; private set; }
         public ConveyorCell? Next { get; private set; }
         public ConveyorCell? Prev { get; private set; }
         public override CellType Type => CellType.Conveyor;
+        public const float STRAIGHT_ACCROSS_DIST_M = 1f;
+        public const float STRAIGHT_HALF_DIST_M = .5f;
+        public const float CURVE_DIST_M = .75f;
+        public const float MOVEMENT_SPEED_M_S = .5f;
 
         public class ItemOnBelt
         {
             public Item Item;
-            public int ProgressInTicks;
+            public float ProgressMeters;
 
-            public ItemOnBelt(Item item)
+            public ItemOnBelt(Item item, float progressMeters)
             {
                 this.Item = item;
-                this.ProgressInTicks = 0;
+                this.ProgressMeters = progressMeters;
             }
         }
 
         public ConveyorCell(Character owner) : base(owner)
         {
-            Items = new List<ItemOnBelt>();
+            Items = new LinkedList<ItemOnBelt>();
         }
 
-        public override void Tick()
+        public float GetTotalDistance()
         {
-            for (int i = 0; i < Items.Count; i++)
+            return STRAIGHT_ACCROSS_DIST_M;
+        }
+
+        public override void Tick(float deltaTime)
+        {
+            float movementAmount = MOVEMENT_SPEED_M_S * deltaTime;
+
+            var current = Items.Last;
+            while (current != null)
             {
-                var item = Items[i];
-                item.ProgressInTicks += 1;
+                ItemOnBelt item = current.Value;
+
+                item.ProgressMeters += movementAmount;
+
+                if (item.ProgressMeters >= GetTotalDistance())
+                {
+                    if (Next != null && Next.CanAcceptItem(item.Item))
+                    {
+                        // TODO insert at point.
+                        Next.AddItem(item.Item);
+                        Items.Remove(current);
+                        current = current.Previous;
+                        continue;
+                    }
+                }
+
+                float maxPosition = GetMaxPositionOfItem(current);
+                if (item.ProgressMeters > maxPosition)
+                {
+                    item.ProgressMeters = maxPosition;
+                }
+
+                current = current.Previous;
             }
         }
 
-        public void AddItem(Item item)
+        public float? MinBoundsOfFirstItem()
         {
-            Items.Add(
-                new ItemOnBelt(item)
-            );
+            var firstItem = Items.First?.Value;
+            if (firstItem == null)
+            {
+                return null;
+            }
+
+            return firstItem.ProgressMeters - firstItem.Item.Width / 2;
         }
 
-        public List<ItemOnBelt> GetItems()
+        public float GetMaxPositionOfItem(LinkedListNode<ItemOnBelt> item)
+        {
+            if (item.Next == null)
+            {
+                float? minBoundsOfNextItem = this.Next?.MinBoundsOfFirstItem();
+
+                // If the next conveyor's first item overlaps the end of this conveyor, it is the limiter.
+                if (minBoundsOfNextItem != null && minBoundsOfNextItem.Value < 0)
+                {
+                    return minBoundsOfNextItem.Value + GetTotalDistance();
+                }
+
+                return GetTotalDistance();
+            }
+            else
+            {
+                var nextItem = item.Next.Value;
+                float nextItemProgress = item.Next.Value.ProgressMeters;
+                return nextItemProgress - nextItem.Item.Width / 2 - item.Value.Item.Width / 2;
+            }
+        }
+
+        public bool CanAcceptItem(Item item)
+        {
+            var firstItem = Items.First?.Value;
+            if (firstItem == null)
+            {
+                return true;
+            }
+
+            float minBoundsOfFirstItem = firstItem.ProgressMeters - firstItem.Item.Width / 2;
+            return minBoundsOfFirstItem > item.Width / 2;
+        }
+
+        public void AddItem(Item item, float atPoint = 0f)
+        {
+            if (!CanAcceptItem(item))
+            {
+                throw new Exception("Cannot accept item.");
+            }
+
+            float? minBoundsOfFirstItem = this.MinBoundsOfFirstItem();
+            if (minBoundsOfFirstItem != null)
+            {
+                atPoint = Math.Max(atPoint, minBoundsOfFirstItem.Value - item.Width / 2);
+            }
+
+            Items.AddFirst(new ItemOnBelt(item, atPoint));
+        }
+
+        public LinkedList<ItemOnBelt> GetItems()
         {
             return Items;
         }
