@@ -10,6 +10,7 @@ namespace FactoryCore
         public ConveyorCell? Prev { get; private set; }
         public override CellType Type => CellType.Conveyor;
         public const float MOVEMENT_SPEED_M_S = .5f;
+        public const float STRAIGHT_DISTANCE = Constants.HEX_APOTHEM * 2;
         public const float CURVE_DISTANCE = Constants.HEX_APOTHEM * 2 * .85f;
 
         public class ItemOnBelt
@@ -42,15 +43,9 @@ namespace FactoryCore
                 {
                     return CURVE_DISTANCE;
                 }
-                else
-                {
-                    return Constants.HEX_APOTHEM * 2;
-                }
             }
-            else
-            {
-                return Constants.HEX_APOTHEM * 2;
-            }
+
+            return STRAIGHT_DISTANCE;
         }
 
         public override void Tick(float deltaTime)
@@ -68,8 +63,7 @@ namespace FactoryCore
                 {
                     if (Next != null && Next.CanAcceptItem(item.Item))
                     {
-                        // TODO insert at point.
-                        Next.AddItem(item.Item);
+                        Next.AddItem(item.Item, item.ProgressMeters - GetTotalDistance());
                         Items.Remove(current);
                         current = current.Previous;
                         continue;
@@ -141,7 +135,7 @@ namespace FactoryCore
             float? minBoundsOfFirstItem = this.MinBoundsOfFirstItem();
             if (minBoundsOfFirstItem != null)
             {
-                atPoint = Math.Max(atPoint, minBoundsOfFirstItem.Value - item.Width / 2);
+                atPoint = Math.Min(atPoint, minBoundsOfFirstItem.Value - item.Width / 2);
             }
 
             Items.AddFirst(new ItemOnBelt(item, atPoint));
