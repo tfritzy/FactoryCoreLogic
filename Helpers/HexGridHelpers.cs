@@ -20,6 +20,26 @@ public static class HexGridHelpers
         new Point2Int(-1, 0) // northwest
     };
 
+    private static readonly Dictionary<Point2Int, HexSide> oddNeighborPatternMap = new Dictionary<Point2Int, HexSide>()
+    {
+        { new Point2Int(0, 1), HexSide.North },
+        { new Point2Int(1, 1), HexSide.NorthEast },
+        { new Point2Int(1, 0), HexSide.SouthEast },
+        { new Point2Int(0, -1), HexSide.South },
+        { new Point2Int(-1, 0), HexSide.SouthWest },
+        { new Point2Int(-1, 1), HexSide.NorthWest }
+    };
+
+    private static readonly Dictionary<Point2Int, HexSide> evenNeighborPatternMap = new Dictionary<Point2Int, HexSide>()
+    {
+        { new Point2Int(0, 1), HexSide.North },
+        { new Point2Int(1, 0), HexSide.NorthEast },
+        { new Point2Int(1, -1), HexSide.SouthEast },
+        { new Point2Int(0, -1), HexSide.South },
+        { new Point2Int(-1,-1), HexSide.SouthWest },
+        { new Point2Int(-1, 0), HexSide.NorthWest }
+    };
+
     public static Point2Int GetNeighbor(Point2Int pos, HexSide direction)
     {
         Point2Int position;
@@ -82,5 +102,33 @@ public static class HexGridHelpers
         }
 
         return true;
+    }
+
+    public static HexSide? GetNeighborSide(Point2Int pos, Point2Int neighborPos)
+    {
+        Point2Int direction = neighborPos - pos;
+
+        if (pos.x % 2 == 0)
+        {
+            if (evenNeighborPatternMap.ContainsKey(direction))
+            {
+                return evenNeighborPatternMap[direction];
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else
+        {
+            if (oddNeighborPatternMap.ContainsKey(direction))
+            {
+                return oddNeighborPatternMap[direction];
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

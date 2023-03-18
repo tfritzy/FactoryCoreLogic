@@ -172,6 +172,28 @@ namespace FactoryCore
                 return false;
             }
 
+            if (conveyor.Next != null)
+            {
+                HexSide? nextOutputSide =
+                    HexGridHelpers.GetNeighborSide(
+                        conveyor.Owner.GridPosition,
+                        conveyor.Next.Owner.GridPosition);
+                HexSide? checkInputSide =
+                    HexGridHelpers.GetNeighborSide(
+                        conveyor.Owner.GridPosition,
+                        this.Owner.GridPosition);
+
+                if (nextOutputSide != null && checkInputSide != null)
+                {
+                    int delta = (int)nextOutputSide.Value - (int)checkInputSide.Value;
+
+                    if (Math.Abs(delta) == 1)
+                    {
+                        return false;
+                    }
+                }
+            }
+
             return true;
         }
 
@@ -190,6 +212,28 @@ namespace FactoryCore
             if (conveyor.Next != null)
             {
                 return false;
+            }
+
+            if (conveyor.Prev != null)
+            {
+                HexSide? prevInputSide =
+                    HexGridHelpers.GetNeighborSide(
+                        conveyor.Owner.GridPosition,
+                        conveyor.Prev.Owner.GridPosition);
+                HexSide? checkOutputSide =
+                    HexGridHelpers.GetNeighborSide(
+                        conveyor.Owner.GridPosition,
+                        this.Owner.GridPosition);
+
+                if (prevInputSide != null && checkOutputSide != null)
+                {
+                    int delta = (int)prevInputSide.Value - (int)checkOutputSide.Value;
+
+                    if (Math.Abs(delta) == 1)
+                    {
+                        return false;
+                    }
+                }
             }
 
             return true;
