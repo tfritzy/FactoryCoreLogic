@@ -9,10 +9,8 @@ namespace FactoryCore
         public ConveyorCell? Next { get; private set; }
         public ConveyorCell? Prev { get; private set; }
         public override CellType Type => CellType.Conveyor;
-        public const float STRAIGHT_ACCROSS_DIST_M = 1f;
-        public const float STRAIGHT_HALF_DIST_M = .5f;
-        public const float CURVE_DIST_M = .75f;
         public const float MOVEMENT_SPEED_M_S = .5f;
+        public const float CURVE_DISTANCE = Constants.HEX_APOTHEM * 2 * .85f;
 
         public class ItemOnBelt
         {
@@ -33,7 +31,26 @@ namespace FactoryCore
 
         public float GetTotalDistance()
         {
-            return STRAIGHT_ACCROSS_DIST_M;
+            if (Prev != null && Next != null)
+            {
+                int? angle = AngleBetweenThreePoints(
+                    Prev.Owner.GridPosition,
+                    Owner.GridPosition,
+                    Next.Owner.GridPosition);
+
+                if (angle == 2 || angle == 4)
+                {
+                    return CURVE_DISTANCE;
+                }
+                else
+                {
+                    return Constants.HEX_APOTHEM * 2;
+                }
+            }
+            else
+            {
+                return Constants.HEX_APOTHEM * 2;
+            }
         }
 
         public override void Tick(float deltaTime)
@@ -174,23 +191,12 @@ namespace FactoryCore
 
             if (conveyor.Next != null)
             {
-                HexSide? nextOutputSide =
-                    HexGridHelpers.GetNeighborSide(
-                        conveyor.Owner.GridPosition,
-                        conveyor.Next.Owner.GridPosition);
-                HexSide? checkInputSide =
-                    HexGridHelpers.GetNeighborSide(
-                        conveyor.Owner.GridPosition,
-                        this.Owner.GridPosition);
-
-                if (nextOutputSide != null && checkInputSide != null)
+                if (AngleBetweenThreePoints(
+                    this.Owner.GridPosition,
+                    conveyor.Owner.GridPosition,
+                    conveyor.Next.Owner.GridPosition) < 2)
                 {
-                    int delta = (int)nextOutputSide.Value - (int)checkInputSide.Value;
-
-                    if (Math.Abs(delta) == 1)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
 
@@ -216,27 +222,29 @@ namespace FactoryCore
 
             if (conveyor.Prev != null)
             {
-                HexSide? prevInputSide =
-                    HexGridHelpers.GetNeighborSide(
-                        conveyor.Owner.GridPosition,
-                        conveyor.Prev.Owner.GridPosition);
-                HexSide? checkOutputSide =
-                    HexGridHelpers.GetNeighborSide(
-                        conveyor.Owner.GridPosition,
-                        this.Owner.GridPosition);
-
-                if (prevInputSide != null && checkOutputSide != null)
+                if (AngleBetweenThreePoints(
+                    this.Owner.GridPosition,
+                    conveyor.Owner.GridPosition,
+                    conveyor.Prev.Owner.GridPosition) < 2)
                 {
-                    int delta = (int)prevInputSide.Value - (int)checkOutputSide.Value;
-
-                    if (Math.Abs(delta) == 1)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
 
             return true;
+        }
+
+        private int? AngleBetweenThreePoints(Point2Int a, Point2Int b, Point2Int c)
+        {
+            HexSide? ba = HexGridHelpers.GetNeighborSide(b, a);
+            HexSide? bc = HexGridHelpers.GetNeighborSide(b, c);
+
+            if (ba == null || bc == null)
+            {
+                return null;
+            }
+
+            return Math.Abs((int)bc.Value - (int)ba.Value);
         }
 
         private void LinkTo(ConveyorCell conveyorCell)
