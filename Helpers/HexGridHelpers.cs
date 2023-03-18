@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public static class HexGridHelpers
 {
     private static readonly Point2Int[] oddNeighborPattern = new Point2Int[]

@@ -23,7 +23,7 @@ public abstract class Character
         }
     }
 
-    public T? GetCell<T>(CellType type) where T : Cell
+    public T GetCell<T>(CellType type) where T : Cell
     {
         if (!Cells.ContainsKey(type))
         {
