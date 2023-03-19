@@ -1,6 +1,9 @@
-public static class Constants
+namespace FactoryCore
 {
-    public const float HEX_APOTHEM = 0.86602540378f;
-    public const float HEX_RADIUS = 1f;
-    public const float HEX_HEIGHT = 1f;
+    public static class Constants
+    {
+        public const float HEX_APOTHEM = 0.86602540378f;
+        public const float HEX_RADIUS = 1f;
+        public const float HEX_HEIGHT = 1f;
+    }
 }

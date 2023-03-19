@@ -1,10 +1,8 @@
 namespace FactoryCore
 {
-    public enum ItemType
+    public enum HexType
     {
-        Invalid,
         Stone,
         Dirt,
-        Wood,
     }
 }

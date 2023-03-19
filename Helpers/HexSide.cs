@@ -1,11 +1,14 @@
-public enum HexSide
+namespace FactoryCore
 {
-    North,
-    NorthEast,
-    SouthEast,
-    South,
-    SouthWest,
-    NorthWest,
-    Up,
-    Down
+    public enum HexSide
+    {
+        North,
+        NorthEast,
+        SouthEast,
+        South,
+        SouthWest,
+        NorthWest,
+        Up,
+        Down
+    }
 }

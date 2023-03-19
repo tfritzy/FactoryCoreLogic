@@ -18,7 +18,7 @@ namespace FactoryCore
                 {
                     for (int y = 0; y < Hexes.GetLength(1); y++)
                     {
-                        Hexes[x, y, z] = new Stone();
+                        Hexes[x, y, z] = new StoneHex();
                     }
                 }
             }
@@ -27,7 +27,7 @@ namespace FactoryCore
             {
                 for (int y = 0; y < Hexes.GetLength(1); y++)
                 {
-                    Hexes[x, y, z] = new Stone();
+                    Hexes[x, y, z] = new StoneHex();
                 }
             }
 

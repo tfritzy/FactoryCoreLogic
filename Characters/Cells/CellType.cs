@@ -1,6 +1,10 @@
-public enum CellType
+namespace FactoryCore
 {
-    Invalid,
-    Conveyor,
-    Inventory,
+    public enum CellType
+    {
+        Invalid,
+        Conveyor,
+        Inventory,
+        Harvest,
+    }
 }

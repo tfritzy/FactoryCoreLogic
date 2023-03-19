@@ -1,8 +1,11 @@
 using FactoryCore;
 
-public abstract class Building : Character
+namespace FactoryCore
 {
-    protected Building(World world) : base(world)
+    public abstract class Building : Character
     {
+        protected Building(World world) : base(world)
+        {
+        }
     }
 }
