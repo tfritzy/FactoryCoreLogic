@@ -88,7 +88,7 @@ namespace FactoryCore
             return position;
         }
 
-        public static bool IsInBounds(Point3Int point, Hex[,,] grid)
+        public static bool IsInBounds(Point3Int point, Hex?[,,] grid)
         {
             if (point.x < 0 || point.x >= grid.GetLength(0))
             {

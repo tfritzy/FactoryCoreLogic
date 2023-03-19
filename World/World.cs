@@ -11,10 +11,10 @@ namespace FactoryCore
         public int MaxHeight => Hexes.GetLength(2);
 
         private HashSet<int>[,] UncoveredHexes;
-        private Hex[,,] Hexes;
+        private Hex?[,,] Hexes;
         private Dictionary<Point2Int, Building> Buildings;
 
-        public World(Hex[,,] hexes)
+        public World(Hex?[,,] hexes)
         {
             this.Hexes = hexes;
             this.UncoveredHexes = new HashSet<int>[hexes.GetLength(0), hexes.GetLength(1)];

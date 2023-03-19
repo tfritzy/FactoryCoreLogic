@@ -12,6 +12,7 @@ public abstract class Character
     public Character(World world)
     {
         this.World = world;
+        this.Cells = new Dictionary<CellType, Cell>();
         InitCells();
     }
 

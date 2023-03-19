@@ -33,9 +33,9 @@ namespace FactoryCore
 
         public static bool operator ==(Point2Int p1, Point2Int p2)
         {
-            if (ReferenceEquals(p1, p2))
+            if (object.Equals(p1, p2))
                 return true;
-            if (ReferenceEquals(p1, null) || ReferenceEquals(p2, null))
+            if (object.Equals(p1, null) || object.Equals(p2, null))
                 return false;
             return p1.x == p2.x && p1.y == p2.y;
         }
@@ -47,7 +47,7 @@ namespace FactoryCore
 
         public override bool Equals(object? obj)
         {
-            if (ReferenceEquals(obj, null) || !(obj is Point2Int))
+            if (object.Equals(obj, null) || !(obj is Point2Int))
                 return false;
 
             Point2Int other = (Point2Int)obj;
