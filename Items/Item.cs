@@ -1,3 +1,5 @@
+using System; // Needed in 4.7.1
+
 namespace FactoryCore
 {
     public abstract class Item

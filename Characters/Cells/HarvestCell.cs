@@ -1,3 +1,5 @@
+using System.Collections.Generic; // Needed in 4.7.1
+
 namespace FactoryCore
 {
     public class HarvestCell : Cell
