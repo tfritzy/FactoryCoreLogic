@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System; // Needed in 4.7.1
 
 namespace FactoryCore
 {
