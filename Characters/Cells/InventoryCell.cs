@@ -12,6 +12,31 @@ namespace FactoryCore
 
         public int Size => items.Length;
 
+        public bool CanAddItem(ItemType itemType, int quantity)
+        {
+            int remainingUnplaced = quantity;
+            for (int i = 0; i < items.Length; i++)
+            {
+                Item? currentSlot = items[i];
+
+                if (currentSlot == null)
+                    return true;
+
+                if (currentSlot.Type == itemType && currentSlot.Quantity < currentSlot.MaxStack)
+                {
+                    int maxAddable = currentSlot.MaxStack - currentSlot.Quantity;
+                    int numToAdd = Math.Min(maxAddable, remainingUnplaced);
+
+                    remainingUnplaced -= numToAdd;
+
+                    if (remainingUnplaced <= 0)
+                        return true;
+                }
+            }
+
+            return remainingUnplaced <= 0;
+        }
+
         public void AddItem(Item item, int index)
         {
             if (index < 0 || index >= items.Length)

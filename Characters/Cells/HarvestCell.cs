@@ -20,11 +20,25 @@ namespace FactoryCore
                 return;
             }
 
-            timeUntilHarvest -= deltaTime;
-            if (timeUntilHarvest <= 0)
+            if (Owner.Inventory == null)
             {
-                timeUntilHarvest = HarvestRateSeconds[this.target.HarvestableType];
-                target.Harvest();
+                return;
+            }
+
+            timeUntilHarvest -= deltaTime;
+            while (timeUntilHarvest <= 0)
+            {
+                timeUntilHarvest += HarvestRateSeconds[this.target.HarvestableType];
+
+                if (Owner.Inventory.CanAddItem(target.ProducedItemType, 1))
+                {
+                    var item = target.Harvest();
+
+                    if (item != null)
+                    {
+                        Owner.Inventory.AddItem(item);
+                    }
+                }
             }
         }
 

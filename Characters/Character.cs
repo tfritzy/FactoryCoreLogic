@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using FactoryCore;
 
-public abstract class Character
+public class Character
 {
     public World World { get; private set; }
     public Point2Int GridPosition { get; protected set; }
+    public InventoryCell? Inventory => GetCell<InventoryCell>(CellType.Inventory);
 
-    protected abstract void InitCells();
+    protected virtual void InitCells() { }
     protected Dictionary<CellType, Cell> Cells;
 
     public Character(World world)
@@ -32,6 +33,11 @@ public abstract class Character
         }
 
         return (T)Cells[type];
+    }
+
+    public void SetCell(Cell cell)
+    {
+        Cells[cell.Type] = cell;
     }
 
     public bool HasCell(CellType type)

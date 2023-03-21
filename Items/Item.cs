@@ -7,9 +7,11 @@ namespace FactoryCore
         public virtual int MaxStack => 1;
         public int Quantity { get; private set; }
 
-        public Item()
+        public Item() : this(1) { }
+
+        public Item(int quantity)
         {
-            this.Quantity = 1;
+            this.Quantity = quantity;
         }
 
         public void AddToStack(int amount)

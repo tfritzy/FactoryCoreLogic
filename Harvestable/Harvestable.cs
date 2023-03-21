@@ -2,6 +2,7 @@ namespace FactoryCore
 {
     public abstract class Harvestable
     {
+        public abstract ItemType ProducedItemType { get; }
         public abstract HarvestableType HarvestableType { get; }
         public abstract Item BuildHarvestedItem();
         public abstract int MaxHarvestItems { get; }
