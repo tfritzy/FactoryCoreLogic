@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace FactoryCore
 {
-    public class World
+    public class World : ISerializable<World>
     {
         public int MaxX => Hexes.GetLength(0);
         public int MaxY => Hexes.GetLength(1);
@@ -124,6 +126,27 @@ namespace FactoryCore
             {
                 return null;
             }
+        }
+
+        public string ToSchema()
+        {
+            return JsonSerializer.Serialize(this);
+        }
+
+        public World FromSchema(string text)
+        {
+            var options = new JsonSerializerOptions
+            {
+                IgnoreReadOnlyProperties = true
+            };
+            World? world = JsonSerializer.Deserialize<World>(text, options);
+
+            if (world == null)
+            {
+                throw new InvalidOperationException("Failed to deserialize world");
+            }
+
+            return world;
         }
     }
 }
