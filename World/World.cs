@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace FactoryCore
 {
@@ -130,16 +129,12 @@ namespace FactoryCore
 
         public string ToSchema()
         {
-            return JsonSerializer.Serialize(this);
+            return JsonConvert.SerializeObject(this);
         }
 
         public World FromSchema(string text)
         {
-            var options = new JsonSerializerOptions
-            {
-                IgnoreReadOnlyProperties = true
-            };
-            World? world = JsonSerializer.Deserialize<World>(text, options);
+            World? world = JsonConvert.DeserializeObject<World>(text);
 
             if (world == null)
             {
