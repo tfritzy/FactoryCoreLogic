@@ -88,19 +88,24 @@ namespace FactoryCore
             return position;
         }
 
-        public static bool IsInBounds(Point3Int point, Hex?[,,] grid)
+        public static bool IsInBounds(Point3Int pos, Hex?[,,] grid)
         {
-            if (point.x < 0 || point.x >= grid.GetLength(0))
+            return IsInBounds(pos.x, pos.y, pos.z, grid);
+        }
+
+        public static bool IsInBounds(int x, int y, int z, Hex?[,,] grid)
+        {
+            if (x < 0 || x >= grid.GetLength(0))
             {
                 return false;
             }
 
-            if (point.y < 0 || point.y >= grid.GetLength(1))
+            if (y < 0 || y >= grid.GetLength(1))
             {
                 return false;
             }
 
-            if (point.z < 0 || point.z >= grid.GetLength(2))
+            if (z < 0 || z >= grid.GetLength(2))
             {
                 return false;
             }

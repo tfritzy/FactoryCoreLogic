@@ -5,14 +5,17 @@ using Newtonsoft.Json;
 
 namespace FactoryCore
 {
-    public class World : ISerializable<World>
+    [JsonObject(MemberSerialization.OptIn)]
+    public class World
     {
         public int MaxX => Hexes.GetLength(0);
         public int MaxY => Hexes.GetLength(1);
         public int MaxHeight => Hexes.GetLength(2);
 
-        private HashSet<int>[,] UncoveredHexes;
+        [JsonProperty("hexes")]
         private Hex?[,,] Hexes;
+
+        private HashSet<int>[,] UncoveredHexes;
         private Dictionary<Point2Int, Building> Buildings;
 
         public World(Hex?[,,] hexes)
@@ -31,6 +34,21 @@ namespace FactoryCore
             }
         }
 
+        public Hex? GetHex(Point3Int point)
+        {
+            return GetHex(point.x, point.y, point.z);
+        }
+
+        public Hex? GetHex(int x, int y, int z)
+        {
+            if (!HexGridHelpers.IsInBounds(x, y, z, this.Hexes))
+            {
+                return null;
+            }
+
+            return this.Hexes[x, y, z];
+        }
+
         public int GetTopHexHeight(int x, int y)
         {
             if (this.UncoveredHexes[x, y] == null)
@@ -43,17 +61,22 @@ namespace FactoryCore
 
         public bool IsUncovered(Point3Int point)
         {
-            if (Hexes[point.x, point.y, point.z] == null)
+            return IsUncovered(point.x, point.y, point.z);
+        }
+
+        public bool IsUncovered(int x, int y, int z)
+        {
+            if (Hexes[x, y, z] == null)
             {
                 return true;
             }
 
-            if (this.UncoveredHexes[point.x, point.y] == null)
+            if (this.UncoveredHexes[x, y] == null)
             {
                 return false;
             }
 
-            return this.UncoveredHexes[point.x, point.y].Contains(point.z);
+            return this.UncoveredHexes[x, y].Contains(z);
         }
 
         private void CalculateInitialUncovered()
