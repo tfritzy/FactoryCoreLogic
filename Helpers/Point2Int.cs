@@ -1,5 +1,9 @@
+using System.ComponentModel;
+using System.Globalization;
+
 namespace FactoryCore
 {
+    [TypeConverter(typeof(Point2IntConverter))]
     public struct Point2Int
     {
         public int x;
@@ -68,7 +72,29 @@ namespace FactoryCore
 
         public override string ToString()
         {
-            return $"({x}, {y})";
+            return $"{x}|{y}";
+        }
+    }
+
+    public class Point2IntConverter : TypeConverter
+    {
+        public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
+        {
+            return sourceType == typeof(string);
+        }
+
+        public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
+        {
+            if (value is string stringValue)
+            {
+                var parts = stringValue.Split('|');
+                if (parts.Length == 2 && int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
+                {
+                    return new Point2Int(x, y);
+                }
+            }
+
+            throw new NotSupportedException($"Cannot convert \"{value}\" to {typeof(Point2Int)}.");
         }
     }
 }

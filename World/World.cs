@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace FactoryCore
@@ -8,15 +9,17 @@ namespace FactoryCore
     [JsonObject(MemberSerialization.OptIn)]
     public class World
     {
+        [JsonProperty("hexes")]
+        private Hex?[,,] Hexes;
+
+        [JsonProperty("buildings")]
+        private Dictionary<Point2Int, Building> Buildings;
+
         public int MaxX => Hexes.GetLength(0);
         public int MaxY => Hexes.GetLength(1);
         public int MaxHeight => Hexes.GetLength(2);
 
-        [JsonProperty("hexes")]
-        private Hex?[,,] Hexes;
-
         private HashSet<int>[,] UncoveredHexes;
-        private Dictionary<Point2Int, Building> Buildings;
 
         public World(Hex?[,,] hexes)
         {
@@ -157,7 +160,10 @@ namespace FactoryCore
 
         public World FromSchema(string text)
         {
-            World? world = JsonConvert.DeserializeObject<World>(text);
+            World? world = JsonConvert.DeserializeObject<World>(text, new JsonSerializerSettings
+            {
+                Context = new StreamingContext(StreamingContextStates.All, this),
+            });
 
             if (world == null)
             {
