@@ -1,21 +1,31 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace FactoryCore
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class ConveyorCell : Cell
     {
+        [JsonProperty("items")]
         public LinkedList<ItemOnBelt> Items { get; private set; }
+
+        [JsonProperty("type")]
+        public override CellType Type => CellType.Conveyor;
+
         public ConveyorCell? Next { get; private set; }
         public ConveyorCell? Prev { get; private set; }
-        public override CellType Type => CellType.Conveyor;
         public const float MOVEMENT_SPEED_M_S = .5f;
         public const float STRAIGHT_DISTANCE = Constants.HEX_APOTHEM * 2;
         public const float CURVE_DISTANCE = Constants.HEX_APOTHEM * 2 * .85f;
 
+        [JsonObject(MemberSerialization.OptIn)]
         public class ItemOnBelt
         {
+            [JsonProperty("item")]
             public Item Item;
+
+            [JsonProperty("progressMeters")]
             public float ProgressMeters;
 
             public ItemOnBelt(Item item, float progressMeters)
@@ -25,6 +35,7 @@ namespace FactoryCore
             }
         }
 
+        [JsonConstructor]
         public ConveyorCell(Character owner) : base(owner)
         {
             Items = new LinkedList<ItemOnBelt>();

@@ -1,11 +1,17 @@
 using System; // Needed in 4.7.1
+using Newtonsoft.Json;
 
 namespace FactoryCore
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class InventoryCell : Cell
     {
-        public override CellType Type => CellType.Inventory;
+        [JsonProperty("items")]
         private Item?[] items;
+
+        [JsonProperty("type")]
+        public override CellType Type => CellType.Inventory;
+
 
         public InventoryCell(Character owner, int size) : base(owner)
         {
