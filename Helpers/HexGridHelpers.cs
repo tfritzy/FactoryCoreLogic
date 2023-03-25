@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace FactoryCore
 {
-    public static class HexGridHelpers
+    public static class GridHelpers
     {
         private static readonly Point2Int[] oddNeighborPattern = new Point2Int[]
         {
@@ -139,6 +139,11 @@ namespace FactoryCore
                     return null;
                 }
             }
+        }
+
+        public static HexSide OppositeSide(HexSide side)
+        {
+            return (HexSide)(((int)side + 3) % 6);
         }
     }
 }

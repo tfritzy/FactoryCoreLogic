@@ -44,7 +44,7 @@ namespace FactoryCore
 
         public Hex? GetHex(int x, int y, int z)
         {
-            if (!HexGridHelpers.IsInBounds(x, y, z, this.Hexes))
+            if (!GridHelpers.IsInBounds(x, y, z, this.Hexes))
             {
                 return null;
             }
@@ -105,8 +105,8 @@ namespace FactoryCore
                 {
                     for (int i = 0; i < 8; i++)
                     {
-                        Point3Int neighbor = HexGridHelpers.GetNeighbor(current, (HexSide)i);
-                        if (!HexGridHelpers.IsInBounds(neighbor, this.Hexes))
+                        Point3Int neighbor = GridHelpers.GetNeighbor(current, (HexSide)i);
+                        if (!GridHelpers.IsInBounds(neighbor, this.Hexes))
                         {
                             continue;
                         }
@@ -158,16 +158,21 @@ namespace FactoryCore
             return JsonConvert.SerializeObject(this);
         }
 
-        public World FromSchema(string text)
+        public static World FromSchema(string text)
         {
             World? world = JsonConvert.DeserializeObject<World>(text, new JsonSerializerSettings
             {
-                Context = new StreamingContext(StreamingContextStates.All, this),
+                Context = new StreamingContext(StreamingContextStates.All, null),
             });
 
             if (world == null)
             {
                 throw new InvalidOperationException("Failed to deserialize world");
+            }
+
+            foreach (Building building in world.Buildings.Values)
+            {
+                building.World = world;
             }
 
             return world;

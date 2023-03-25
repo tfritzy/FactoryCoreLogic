@@ -19,7 +19,7 @@ namespace FactoryCore
         public virtual void Tick(float deltaTime) { }
         public virtual void OnAddToGrid() { }
         public virtual void OnRemoveFromGrid() { }
-        protected World World => Owner.World;
+        protected World? World => Owner.World;
 
         public Cell(Character owner)
         {
@@ -30,11 +30,11 @@ namespace FactoryCore
     public class CellConverter : JsonConverter
     {
         private static readonly Dictionary<CellType, Type> TypeMap = new Dictionary<CellType, Type>
-    {
-        { CellType.Conveyor, typeof(ConveyorCell) },
-        { CellType.Harvest, typeof(HarvestCell) },
-        { CellType.Inventory, typeof(InventoryCell) },
-    };
+        {
+            { CellType.Conveyor, typeof(ConveyorCell) },
+            { CellType.Harvest, typeof(HarvestCell) },
+            { CellType.Inventory, typeof(InventoryCell) },
+        };
 
         public override bool CanConvert(Type objectType)
         {
@@ -56,7 +56,7 @@ namespace FactoryCore
                 throw new InvalidOperationException($"Invalid type value '{cellType}'");
             }
 
-            Character owner = (Character)serializer.Context.Context;
+            Character? owner = (Character)serializer.Context.Context!;
 
             if (owner == null)
             {

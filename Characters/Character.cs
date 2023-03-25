@@ -16,17 +16,19 @@ namespace FactoryCore
         [JsonProperty("gridPosition")]
         public Point2Int GridPosition { get; protected set; }
 
-        protected Dictionary<CellType, Cell> Cells;
+        [JsonProperty("cells")]
+        protected Dictionary<Type, Cell> Cells;
 
-        public World World { get; private set; }
-        public InventoryCell? Inventory => GetCell<InventoryCell>(CellType.Inventory);
+        public World? World { get; set; }
+        public InventoryCell? Inventory => GetCell<InventoryCell>();
+        public ConveyorCell? Conveyor => GetCell<ConveyorCell>();
 
         protected virtual void InitCells() { }
 
-        public Character(World world)
+        public Character(World? world)
         {
             this.World = world;
-            this.Cells = new Dictionary<CellType, Cell>();
+            this.Cells = new Dictionary<Type, Cell>();
             InitCells();
         }
 
@@ -38,24 +40,19 @@ namespace FactoryCore
             }
         }
 
-        public T GetCell<T>(CellType type) where T : Cell
+        public T GetCell<T>() where T : Cell
         {
-            if (!Cells.ContainsKey(type))
+            if (!Cells.ContainsKey(typeof(T)))
             {
-                return default(T);
+                return default(T)!;
             }
 
-            return (T)Cells[type];
+            return (T)Cells[typeof(T)];
         }
 
         public void SetCell(Cell cell)
         {
-            Cells[cell.Type] = cell;
-        }
-
-        public bool HasCell(CellType type)
-        {
-            return Cells.ContainsKey(type);
+            Cells[cell.GetType()] = cell;
         }
 
         public void SetGridPosition(Point2Int gridPosition)
@@ -79,52 +76,51 @@ namespace FactoryCore
                 cell.OnRemoveFromGrid();
             }
         }
-
-        public static Character Create(CharacterType? type, World world)
-        {
-            if (type == null)
-                throw new ArgumentException("Invalid character type " + type);
-
-            switch (type)
-            {
-                case CharacterType.Dummy:
-                    return new DummyCharacter(world);
-                case CharacterType.Conveyor:
-                    return new Conveyor(world);
-                default:
-                    throw new ArgumentException("Invalid character type " + type);
-            }
-        }
     }
 
     public class CharacterConverter : JsonConverter
     {
+        private static readonly Dictionary<CharacterType, Type> TypeMap = new Dictionary<CharacterType, Type>
+        {
+            { CharacterType.Conveyor, typeof(Conveyor) },
+            { CharacterType.Dummy, typeof(DummyCharacter) },
+        };
+
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Character);
+            return typeof(Character).IsAssignableFrom(objectType);
         }
 
         public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
-            if (reader.TokenType == JsonToken.Null)
-                return null;
+            var jsonObject = JObject.Load(reader);
 
-            JObject obj = JObject.Load(reader);
-            CharacterType? type = obj["type"]?.ToObject<CharacterType>();
+            var typeString = jsonObject.GetValue("type", StringComparison.OrdinalIgnoreCase)?.Value<string>();
+            if (!Enum.TryParse<CharacterType>(typeString, true, out CharacterType cellType))
+            {
+                throw new JsonSerializationException($"Invalid cell type: {typeString}");
+            }
 
-            if (serializer.Context.Context == null || !(serializer.Context.Context is World))
-                throw new JsonSerializationException("No world context provided to character converter.");
+            if (!TypeMap.TryGetValue(cellType, out var targetType))
+            {
+                throw new InvalidOperationException($"Invalid type value '{cellType}'");
+            }
 
-            Character character = Character.Create(type, (World)serializer.Context.Context);
+            object? target = Activator.CreateInstance(targetType);
 
-            Point2Int? gridPosition = obj["gridPosition"]?.ToObject<Point2Int>();
+            if (target == null)
+            {
+                throw new InvalidOperationException($"Failed to create instance of type '{targetType}'");
+            }
 
-            if (gridPosition == null)
-                throw new JsonSerializationException("No grid position provided to character converter.");
+            serializer.Populate(jsonObject.CreateReader(), target);
 
-            character.SetGridPosition(gridPosition ?? new Point2Int(0, 0));
+            if (!(target is Character))
+            {
+                throw new InvalidOperationException($"Created instance of type '{targetType}' is not a character");
+            }
 
-            return character;
+            return (Character)target;
         }
 
         public override bool CanWrite => false;

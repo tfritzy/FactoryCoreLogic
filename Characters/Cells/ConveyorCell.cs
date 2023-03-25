@@ -13,8 +13,24 @@ namespace FactoryCore
         [JsonProperty("type")]
         public override CellType Type => CellType.Conveyor;
 
-        public ConveyorCell? Next { get; private set; }
-        public ConveyorCell? Prev { get; private set; }
+        [JsonProperty("nextSide")]
+        private HexSide? NextSide;
+
+        [JsonProperty("prevSide")]
+        private HexSide? PrevSide;
+
+        public ConveyorCell? Next => NextSide.HasValue ?
+            World.GetBuildingAt(
+                GridHelpers.GetNeighbor(
+                    Owner.GridPosition,
+                    NextSide.Value)
+                )?.GetCell<ConveyorCell>() : null;
+        public ConveyorCell? Prev => PrevSide.HasValue ?
+            World.GetBuildingAt(
+                GridHelpers.GetNeighbor(
+                    Owner.GridPosition,
+                    PrevSide.Value)
+                )?.GetCell<ConveyorCell>() : null;
         public const float MOVEMENT_SPEED_M_S = .5f;
         public const float STRAIGHT_DISTANCE = Constants.HEX_APOTHEM * 2;
         public const float CURVE_DISTANCE = Constants.HEX_APOTHEM * 2 * .85f;
@@ -174,11 +190,6 @@ namespace FactoryCore
 
         public bool CanBeNext(ConveyorCell conveyor)
         {
-            // if (this.Next != null)
-            // {
-            //     return false;
-            // }
-
             if (conveyor == null)
             {
                 return false;
@@ -210,11 +221,6 @@ namespace FactoryCore
 
         public bool CanBePrev(ConveyorCell conveyor)
         {
-            // if (this.Prev != null)
-            // {
-            //     return false;
-            // }
-
             if (conveyor == null)
             {
                 return false;
@@ -241,8 +247,8 @@ namespace FactoryCore
 
         private int? AngleBetweenThreePoints(Point2Int a, Point2Int b, Point2Int c)
         {
-            HexSide? ba = HexGridHelpers.GetNeighborSide(b, a);
-            HexSide? bc = HexGridHelpers.GetNeighborSide(b, c);
+            HexSide? ba = GridHelpers.GetNeighborSide(b, a);
+            HexSide? bc = GridHelpers.GetNeighborSide(b, c);
 
             if (ba == null || bc == null)
             {
@@ -252,49 +258,49 @@ namespace FactoryCore
             return Math.Abs((int)bc.Value - (int)ba.Value);
         }
 
-        private void LinkTo(ConveyorCell conveyorCell)
+        private void LinkTo(ConveyorCell conveyorCell, HexSide outputDirection)
         {
-            this.Next = conveyorCell;
-            conveyorCell.Prev = this;
+            this.NextSide = outputDirection;
+            conveyorCell.PrevSide = GridHelpers.OppositeSide(outputDirection);
         }
 
         private void DisconnectNext()
         {
             if (this.Next != null)
             {
-                this.Next.Prev = null;
+                this.Next.PrevSide = null;
             }
 
-            this.Next = null;
+            this.NextSide = null;
         }
 
         private void DisconnectPrev()
         {
             if (this.Prev != null)
             {
-                this.Prev.Next = null;
+                this.Prev.NextSide = null;
             }
 
-            this.Prev = null;
+            this.PrevSide = null;
         }
 
         public void FindNeighborConveyors()
         {
             for (int i = 0; i < 6; i++)
             {
-                var neighborPos = HexGridHelpers.GetNeighbor(this.Owner.GridPosition, (HexSide)i);
+                var neighborPos = GridHelpers.GetNeighbor(this.Owner.GridPosition, (HexSide)i);
                 var neighbor = this.World.GetBuildingAt(neighborPos);
 
-                ConveyorCell? neighborCell = neighbor?.GetCell<ConveyorCell>(CellType.Conveyor);
+                ConveyorCell? neighborCell = neighbor?.GetCell<ConveyorCell>();
 
                 if (neighborCell != null && CanBePrev(neighborCell))
                 {
-                    neighborCell.LinkTo(this);
+                    neighborCell.LinkTo(this, GridHelpers.OppositeSide((HexSide)i));
                 }
 
                 if (neighborCell != null && CanBeNext(neighborCell))
                 {
-                    this.LinkTo(neighborCell);
+                    this.LinkTo(neighborCell, (HexSide)i);
                 }
             }
         }

@@ -1,6 +1,7 @@
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace FactoryCore
 {
@@ -39,19 +40,16 @@ namespace FactoryCore
             Quantity -= amount;
         }
 
-        public static Item? Create(ItemType? type, int quantity)
+        public static Item Create(ItemType type)
         {
-            if (type == null)
-                throw new ArgumentNullException(nameof(type));
-
             switch (type)
             {
                 case ItemType.Dirt:
-                    return new Dirt(quantity);
+                    return new Dirt();
                 case ItemType.Stone:
-                    return new Stone(quantity);
+                    return new Stone();
                 case ItemType.Wood:
-                    return new Wood(quantity);
+                    return new Wood();
                 default:
                     throw new ArgumentException("Invalid item type " + type);
             }
@@ -73,8 +71,15 @@ namespace FactoryCore
 
             JObject obj = JObject.Load(reader);
             ItemType? type = obj["type"]?.ToObject<ItemType>();
-            int quantity = obj["quantity"]?.ToObject<int>() ?? 1;
-            return Item.Create(type, quantity);
+
+            if (type == null)
+                throw new InvalidOperationException("Cannot read item without type.");
+
+            Item target = Item.Create(type.Value);
+
+            serializer.Populate(obj.CreateReader(), target);
+
+            return target;
         }
 
         public override bool CanWrite => false;
