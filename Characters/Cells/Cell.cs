@@ -15,11 +15,11 @@ namespace FactoryCore
         [JsonConverter(typeof(StringEnumConverter))]
         public abstract CellType Type { get; }
 
-        public Character Owner { get; private set; }
+        public Character Owner { get; set; }
         public virtual void Tick(float deltaTime) { }
         public virtual void OnAddToGrid() { }
         public virtual void OnRemoveFromGrid() { }
-        protected World? World => Owner.World;
+        protected World World => Owner.World;
 
         public Cell(Character owner)
         {
@@ -56,14 +56,7 @@ namespace FactoryCore
                 throw new InvalidOperationException($"Invalid type value '{cellType}'");
             }
 
-            Character? owner = (Character)serializer.Context.Context!;
-
-            if (owner == null)
-            {
-                throw new InvalidOperationException($"Owner was not passed through the context");
-            }
-
-            object? target = Activator.CreateInstance(targetType, owner);
+            object? target = Activator.CreateInstance(targetType, true);
 
             if (target == null)
             {

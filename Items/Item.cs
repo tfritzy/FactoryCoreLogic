@@ -67,7 +67,7 @@ namespace FactoryCore
         public override Item? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
-                throw new InvalidOperationException("Cannot read null item.");
+                return null;
 
             JObject obj = JObject.Load(reader);
             ItemType? type = obj["type"]?.ToObject<ItemType>();

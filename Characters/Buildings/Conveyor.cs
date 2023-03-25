@@ -11,7 +11,7 @@ namespace FactoryCore
         public override CharacterType Type => CharacterType.Conveyor;
 
         [JsonConstructor]
-        public Conveyor() : base(null) { }
+        protected Conveyor() : base(null!) { }
 
         public Conveyor(World world) : base(world) { }
 

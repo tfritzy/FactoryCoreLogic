@@ -1,13 +1,21 @@
 using System.Collections.Generic; // Needed in 4.7.1
+using Newtonsoft.Json;
 
 namespace FactoryCore
 {
     public class HarvestCell : Cell
     {
-        public override CellType Type => CellType.Harvest;
+        [JsonProperty("harvestRateSeconds")]
         public Dictionary<HarvestableType, float> HarvestRateSeconds { get; private set; }
+
+        [JsonProperty("type")]
+        public override CellType Type => CellType.Harvest;
+
         private float timeUntilHarvest;
         private Harvestable? target;
+
+        [JsonConstructor]
+        protected HarvestCell() : base(null!) { }
 
         public HarvestCell(Character owner, Dictionary<HarvestableType, float> harvestRateSeconds) : base(owner)
         {

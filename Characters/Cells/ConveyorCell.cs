@@ -52,6 +52,8 @@ namespace FactoryCore
         }
 
         [JsonConstructor]
+        protected ConveyorCell() : base(null!) { }
+
         public ConveyorCell(Character owner) : base(owner)
         {
             Items = new LinkedList<ItemOnBelt>();

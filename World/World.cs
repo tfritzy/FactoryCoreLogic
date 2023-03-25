@@ -141,6 +141,7 @@ namespace FactoryCore
             building.OnRemoveFromGrid();
         }
 
+        public Building? GetBuildingAt(int x, int y) => GetBuildingAt(new Point2Int(x, y));
         public Building? GetBuildingAt(Point2Int location)
         {
             if (this.Buildings.ContainsKey(location))

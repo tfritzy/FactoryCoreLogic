@@ -5,7 +5,7 @@ namespace FactoryCore
 {
     public abstract class Building : Character
     {
-        protected Building(World? world) : base(world)
+        protected Building(World world) : base(world)
         {
         }
     }

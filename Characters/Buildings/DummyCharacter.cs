@@ -2,15 +2,15 @@ using Newtonsoft.Json;
 
 namespace FactoryCore
 {
-    public class DummyCharacter : Character
+    public class DummyBuilding : Building
     {
         // A character with no preset cells.
         public override CharacterType Type => CharacterType.Dummy;
         protected override void InitCells() { }
 
         [JsonConstructor]
-        public DummyCharacter() : base(null) { }
+        protected DummyBuilding() : base(null!) { }
 
-        public DummyCharacter(World world) : base(world) { }
+        public DummyBuilding(World world) : base(world) { }
     }
 }

@@ -25,7 +25,7 @@ namespace FactoryCore
 
         protected virtual void InitCells() { }
 
-        public Character(World? world)
+        public Character(World world)
         {
             this.World = world;
             this.Cells = new Dictionary<Type, Cell>();
@@ -76,6 +76,14 @@ namespace FactoryCore
                 cell.OnRemoveFromGrid();
             }
         }
+
+        public void UpdateOwnerOfCells()
+        {
+            foreach (var cell in Cells.Values)
+            {
+                cell.Owner = this;
+            }
+        }
     }
 
     public class CharacterConverter : JsonConverter
@@ -83,7 +91,7 @@ namespace FactoryCore
         private static readonly Dictionary<CharacterType, Type> TypeMap = new Dictionary<CharacterType, Type>
         {
             { CharacterType.Conveyor, typeof(Conveyor) },
-            { CharacterType.Dummy, typeof(DummyCharacter) },
+            { CharacterType.Dummy, typeof(DummyBuilding) },
         };
 
         public override bool CanConvert(Type objectType)
@@ -106,7 +114,7 @@ namespace FactoryCore
                 throw new InvalidOperationException($"Invalid type value '{cellType}'");
             }
 
-            object? target = Activator.CreateInstance(targetType);
+            object? target = Activator.CreateInstance(targetType, true);
 
             if (target == null)
             {
@@ -120,7 +128,10 @@ namespace FactoryCore
                 throw new InvalidOperationException($"Created instance of type '{targetType}' is not a character");
             }
 
-            return (Character)target;
+            Character character = (Character)target;
+            character.UpdateOwnerOfCells();
+
+            return character;
         }
 
         public override bool CanWrite => false;
