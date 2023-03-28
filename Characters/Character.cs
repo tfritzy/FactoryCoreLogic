@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -100,7 +101,10 @@ namespace FactoryCore
                 throw new InvalidOperationException($"Failed to create instance of type '{targetType}'");
             }
 
-            serializer.Populate(jsonObject.CreateReader(), target);
+            StreamingContext streamingContext = new StreamingContext(StreamingContextStates.All, target);
+            JsonSerializer characterSerializer = new JsonSerializer();
+            characterSerializer.Context = streamingContext;
+            characterSerializer.Populate(jsonObject.CreateReader(), target);
 
             if (!(target is Character))
             {

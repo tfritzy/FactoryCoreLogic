@@ -19,7 +19,7 @@ namespace FactoryCore
         [JsonProperty("prevSide")]
         private HexSide? PrevSide;
 
-        protected new Character Owner =>
+        protected Character OwnerCharacter =>
             this.Owner is Character ?
                 (Character)this.Owner :
                 throw new Exception("The owner of a conveyorcell must be a character");
@@ -27,13 +27,13 @@ namespace FactoryCore
         public ConveyorCell? Next => NextSide.HasValue ?
             World.GetBuildingAt(
                 GridHelpers.GetNeighbor(
-                    Owner.GridPosition,
+                    OwnerCharacter.GridPosition,
                     NextSide.Value)
                 )?.GetCell<ConveyorCell>() : null;
         public ConveyorCell? Prev => PrevSide.HasValue ?
             World.GetBuildingAt(
                 GridHelpers.GetNeighbor(
-                    Owner.GridPosition,
+                    OwnerCharacter.GridPosition,
                     PrevSide.Value)
                 )?.GetCell<ConveyorCell>() : null;
         public const float MOVEMENT_SPEED_M_S = .5f;
@@ -66,9 +66,9 @@ namespace FactoryCore
             if (Prev != null && Next != null)
             {
                 int? angle = AngleBetweenThreePoints(
-                    Prev.Owner.GridPosition,
-                    Owner.GridPosition,
-                    Next.Owner.GridPosition);
+                    Prev.OwnerCharacter.GridPosition,
+                    OwnerCharacter.GridPosition,
+                    Next.OwnerCharacter.GridPosition);
 
                 if (angle == 2 || angle == 4)
                 {
@@ -212,9 +212,9 @@ namespace FactoryCore
             if (conveyor.Next != null)
             {
                 if (AngleBetweenThreePoints(
-                    this.Owner.GridPosition,
-                    conveyor.Owner.GridPosition,
-                    conveyor.Next.Owner.GridPosition) < 2)
+                    this.OwnerCharacter.GridPosition,
+                    conveyor.OwnerCharacter.GridPosition,
+                    conveyor.Next.OwnerCharacter.GridPosition) < 2)
                 {
                     return false;
                 }
@@ -238,9 +238,9 @@ namespace FactoryCore
             if (conveyor.Prev != null)
             {
                 if (AngleBetweenThreePoints(
-                    this.Owner.GridPosition,
-                    conveyor.Owner.GridPosition,
-                    conveyor.Prev.Owner.GridPosition) < 2)
+                    this.OwnerCharacter.GridPosition,
+                    conveyor.OwnerCharacter.GridPosition,
+                    conveyor.Prev.OwnerCharacter.GridPosition) < 2)
                 {
                     return false;
                 }
@@ -292,7 +292,7 @@ namespace FactoryCore
         {
             for (int i = 0; i < 6; i++)
             {
-                var neighborPos = GridHelpers.GetNeighbor(this.Owner.GridPosition, (HexSide)i);
+                var neighborPos = GridHelpers.GetNeighbor(this.OwnerCharacter.GridPosition, (HexSide)i);
                 var neighbor = this.World.GetBuildingAt(neighborPos);
 
                 ConveyorCell? neighborCell = neighbor?.GetCell<ConveyorCell>();

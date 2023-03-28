@@ -19,7 +19,7 @@ namespace FactoryCore
         public virtual void Tick(float deltaTime) { }
         public virtual void OnAddToGrid() { }
         public virtual void OnRemoveFromGrid() { }
-        protected World? World => Owner.Context.World;
+        protected World World => Owner.Context.World;
 
         public Cell(EntityComponent owner)
         {
@@ -34,6 +34,7 @@ namespace FactoryCore
             { CellType.Conveyor, typeof(ConveyorCell) },
             { CellType.Harvest, typeof(HarvestCell) },
             { CellType.Inventory, typeof(InventoryCell) },
+            { CellType.Harvestable, typeof(Harvestable) },
         };
 
         public override bool CanConvert(Type objectType)
@@ -56,7 +57,14 @@ namespace FactoryCore
                 throw new InvalidOperationException($"Invalid type value '{cellType}'");
             }
 
-            object? target = Activator.CreateInstance(targetType, true);
+            Character? owner = serializer.Context.Context as Character;
+
+            if (owner == null)
+            {
+                throw new InvalidOperationException("Cell owner was not passed through serializer");
+            }
+
+            object? target = Activator.CreateInstance(targetType, owner);
 
             if (target == null)
             {

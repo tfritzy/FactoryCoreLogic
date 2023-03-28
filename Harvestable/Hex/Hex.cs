@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System; // Needed in 4.7.1
+using System.Runtime.Serialization;
 
 namespace FactoryCore
 {
@@ -55,13 +56,22 @@ namespace FactoryCore
 
             JObject obj = JObject.Load(reader);
             HexType? type = obj["type"]?.ToObject<HexType>();
-
             Point3Int? gridPosition = obj["gridPosition"]?.ToObject<Point3Int>();
 
             if (gridPosition == null)
                 throw new InvalidOperationException("Grid position was not available on a hex.");
 
-            return Hex.Create(type, gridPosition.Value, context);
+            Hex? hex = Hex.Create(type, gridPosition.Value, context);
+
+            if (hex == null)
+                throw new InvalidOperationException("Hex was not available.");
+
+            StreamingContext streamingContext = new StreamingContext(StreamingContextStates.All, hex);
+            JsonSerializer characterSerializer = new JsonSerializer();
+            characterSerializer.Context = streamingContext;
+            characterSerializer.Populate(obj.CreateReader(), hex);
+
+            return hex;
         }
 
         public override bool CanWrite => false;
