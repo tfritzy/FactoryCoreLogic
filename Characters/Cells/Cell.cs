@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using FactoryCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -34,7 +35,7 @@ namespace FactoryCore
             { CellType.Conveyor, typeof(ConveyorCell) },
             { CellType.Harvest, typeof(HarvestCell) },
             { CellType.Inventory, typeof(InventoryCell) },
-            { CellType.Harvestable, typeof(Harvestable) },
+            { CellType.Harvestable, typeof(HarvestableCell) },
         };
 
         public override bool CanConvert(Type objectType)
@@ -57,7 +58,7 @@ namespace FactoryCore
                 throw new InvalidOperationException($"Invalid type value '{cellType}'");
             }
 
-            Character? owner = serializer.Context.Context as Character;
+            EntityComponent? owner = serializer.Context.Context as EntityComponent;
 
             if (owner == null)
             {

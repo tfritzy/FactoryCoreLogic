@@ -1,14 +1,31 @@
+using Newtonsoft.Json;
+
 namespace FactoryCore
 {
-    public class Harvestable : Cell
+    [JsonObject(MemberSerialization.OptIn)]
+    public class HarvestableCell : Cell
     {
-        public override CellType Type => CellType.Harvestable;
+        [JsonProperty("producedItemType")]
         public ItemType ProducedItemType { get; }
+
+        [JsonProperty("maxHarvestItems")]
         public int MaxHarvestItems { get; }
+
+        [JsonProperty("remainingItems")]
         public int RemainingItems { get; private set; }
+
+        [JsonProperty("harvestableType")]
         public HarvestableType HarvestableType { get; private set; }
 
-        public Harvestable(EntityComponent owner, ItemType produces, int maxItems, HarvestableType harvestableType) : base(owner)
+        [JsonConstructor]
+        public HarvestableCell(EntityComponent owner) : base(owner)
+        {
+        }
+
+        public override CellType Type => CellType.Harvestable;
+
+
+        public HarvestableCell(EntityComponent owner, ItemType produces, int maxItems, HarvestableType harvestableType) : base(owner)
         {
             this.ProducedItemType = produces;
             this.MaxHarvestItems = maxItems;

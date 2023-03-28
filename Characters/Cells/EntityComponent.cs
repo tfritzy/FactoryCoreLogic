@@ -25,7 +25,7 @@ namespace FactoryCore
         public Context Context { get; set; }
 
         public InventoryCell? Inventory => GetCell<InventoryCell>();
-        public Harvestable? Harvestable => GetCell<Harvestable>();
+        public HarvestableCell? Harvestable => GetCell<HarvestableCell>();
         public ConveyorCell? Conveyor => GetCell<ConveyorCell>();
 
         public bool HasCell<T>() where T : Cell

@@ -13,9 +13,9 @@ namespace FactoryCore
         public override CellType Type => CellType.Inventory;
 
         [JsonConstructor]
-        protected InventoryCell() : base(null!) { }
+        public InventoryCell(EntityComponent owner) : base(owner) { }
 
-        public InventoryCell(Character owner, int size) : base(owner)
+        public InventoryCell(EntityComponent owner, int size) : base(owner)
         {
             this.items = new Item?[size];
         }

@@ -11,7 +11,7 @@ namespace FactoryCore
         {
             this.Cells = new Dictionary<Type, Cell>
             {
-                { typeof(Harvestable), new Harvestable(this, ItemType.Wood, 16, HarvestableType.Tree) }
+                { typeof(HarvestableCell), new HarvestableCell(this, ItemType.Wood, 16, HarvestableType.Tree) }
             };
         }
 

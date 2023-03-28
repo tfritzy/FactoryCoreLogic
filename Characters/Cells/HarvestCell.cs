@@ -19,8 +19,8 @@ namespace FactoryCore
 
         private float timeUntilHarvest;
 
-        private Harvestable? target;
-        private Harvestable? GetTarget()
+        private HarvestableCell? target;
+        private HarvestableCell? GetTarget()
         {
             if (target != null)
             {
@@ -44,7 +44,7 @@ namespace FactoryCore
             {
                 if (this.World.TryGetCharacter(HarvestTargetId.Value, out var targetChar))
                 {
-                    return targetChar?.GetCell<Harvestable>();
+                    return targetChar?.GetCell<HarvestableCell>();
                 }
                 else
                 {
@@ -53,13 +53,16 @@ namespace FactoryCore
             }
             else if (TargetHarvestPoint != null)
             {
-                return this.World.GetHex(TargetHarvestPoint.Value)?.GetCell<Harvestable>();
+                return this.World.GetHex(TargetHarvestPoint.Value)?.GetCell<HarvestableCell>();
             }
             else
             {
                 return null;
             }
         }
+
+        [JsonConstructor]
+        public HarvestCell(EntityComponent owner) : base(owner) { }
 
         public HarvestCell(Character owner, Dictionary<HarvestableType, float> harvestRateSeconds) : base(owner)
         {
@@ -102,7 +105,7 @@ namespace FactoryCore
             this.TargetHarvestPoint = targetHex;
             this.HarvestTargetId = null;
 
-            Harvestable? target = GetTarget();
+            HarvestableCell? target = GetTarget();
             if (target == null || !HarvestRateSeconds.ContainsKey(target.HarvestableType))
             {
                 return;
@@ -116,7 +119,7 @@ namespace FactoryCore
             this.HarvestTargetId = targetCharacterId;
             this.TargetHarvestPoint = null;
 
-            Harvestable? target = GetTarget();
+            HarvestableCell? target = GetTarget();
             if (target == null || !HarvestRateSeconds.ContainsKey(target.HarvestableType))
             {
                 return;

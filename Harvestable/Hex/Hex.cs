@@ -67,9 +67,9 @@ namespace FactoryCore
                 throw new InvalidOperationException("Hex was not available.");
 
             StreamingContext streamingContext = new StreamingContext(StreamingContextStates.All, hex);
-            JsonSerializer characterSerializer = new JsonSerializer();
-            characterSerializer.Context = streamingContext;
-            characterSerializer.Populate(obj.CreateReader(), hex);
+            JsonSerializer hexSerializer = new JsonSerializer();
+            hexSerializer.Context = streamingContext;
+            hexSerializer.Populate(obj.CreateReader(), hex);
 
             return hex;
         }

@@ -16,7 +16,7 @@ namespace FactoryCore
             base.InitCells();
             this.Cells = new Dictionary<Type, Cell>
             {
-                { typeof(Harvestable), new Harvestable(this, ItemType.Stone, 8, HarvestableType.StoneHex) }
+                { typeof(HarvestableCell), new HarvestableCell(this, ItemType.Stone, 8, HarvestableType.StoneHex) }
             };
         }
     }

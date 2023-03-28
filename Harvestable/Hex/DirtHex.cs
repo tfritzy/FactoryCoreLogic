@@ -12,7 +12,7 @@ namespace FactoryCore
         {
             base.InitCells();
             this.Cells = new Dictionary<Type, Cell>() {
-                {typeof(Harvestable), new Harvestable(this, ItemType.Dirt, 8, HarvestableType.DirtHex)}
+                {typeof(HarvestableCell), new HarvestableCell(this, ItemType.Dirt, 8, HarvestableType.DirtHex)}
             };
         }
 
