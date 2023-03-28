@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using FactoryCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -8,7 +7,7 @@ namespace FactoryCore
 {
     [JsonConverter(typeof(CharacterConverter))]
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class Character
+    public abstract class Character : EntityComponent
     {
         [JsonProperty("type")]
         public abstract CharacterType Type { get; }
@@ -16,20 +15,8 @@ namespace FactoryCore
         [JsonProperty("gridPosition")]
         public Point2Int GridPosition { get; protected set; }
 
-        [JsonProperty("cells")]
-        protected Dictionary<Type, Cell> Cells;
-
-        public World? World { get; set; }
-        public InventoryCell? Inventory => GetCell<InventoryCell>();
-        public ConveyorCell? Conveyor => GetCell<ConveyorCell>();
-
-        protected virtual void InitCells() { }
-
-        public Character(World world)
+        public Character(Context context) : base(context)
         {
-            this.World = world;
-            this.Cells = new Dictionary<Type, Cell>();
-            InitCells();
         }
 
         public virtual void Tick(float deltaTime)
@@ -38,21 +25,6 @@ namespace FactoryCore
             {
                 cell.Tick(deltaTime);
             }
-        }
-
-        public T GetCell<T>() where T : Cell
-        {
-            if (!Cells.ContainsKey(typeof(T)))
-            {
-                return default(T)!;
-            }
-
-            return (T)Cells[typeof(T)];
-        }
-
-        public void SetCell(Cell cell)
-        {
-            Cells[cell.GetType()] = cell;
         }
 
         public void SetGridPosition(Point2Int gridPosition)
@@ -114,7 +86,14 @@ namespace FactoryCore
                 throw new InvalidOperationException($"Invalid type value '{cellType}'");
             }
 
-            object? target = Activator.CreateInstance(targetType, true);
+            Context? context = serializer.Context.Context as Context;
+
+            if (context == null)
+            {
+                throw new InvalidOperationException("Context was not passed through serializer");
+            }
+
+            object? target = Activator.CreateInstance(targetType, context);
 
             if (target == null)
             {

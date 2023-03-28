@@ -10,10 +10,7 @@ namespace FactoryCore
         public ConveyorCell? Cell => this.GetCell<ConveyorCell>();
         public override CharacterType Type => CharacterType.Conveyor;
 
-        [JsonConstructor]
-        protected Conveyor() : base(null!) { }
-
-        public Conveyor(World world) : base(world) { }
+        public Conveyor(Context context) : base(context) { }
 
         protected override void InitCells()
         {

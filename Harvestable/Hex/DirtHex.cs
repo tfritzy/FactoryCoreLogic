@@ -1,15 +1,23 @@
 
+using System;
+using System.Collections.Generic;
+
 namespace FactoryCore
 {
     public class DirtHex : Hex
     {
-        public override ItemType ProducedItemType => ItemType.Dirt;
-        public override HarvestableType HarvestableType => HarvestableType.DirtHex;
         public override HexType Type => HexType.Dirt;
-        public override int MaxHarvestItems => 8;
-        public override Item BuildHarvestedItem()
+
+        protected override void InitCells()
         {
-            return new Dirt();
+            base.InitCells();
+            this.Cells = new Dictionary<Type, Cell>() {
+                {typeof(Harvestable), new Harvestable(this, ItemType.Dirt, 8, HarvestableType.DirtHex)}
+            };
+        }
+
+        public DirtHex(Point3Int gridPosition, Context context) : base(gridPosition, context)
+        {
         }
     }
 }

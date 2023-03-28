@@ -1,13 +1,22 @@
+using System;
+using System.Collections.Generic;
+
 namespace FactoryCore
 {
-    public class Tree : Harvestable
+    public class Tree : Character
     {
-        public override ItemType ProducedItemType => ItemType.Wood;
-        public override HarvestableType HarvestableType => HarvestableType.Tree;
-        public override int MaxHarvestItems => 16;
-        public override Item BuildHarvestedItem()
+        public override CharacterType Type => CharacterType.Tree;
+
+        protected override void InitCells()
         {
-            return new Wood();
+            this.Cells = new Dictionary<Type, Cell>
+            {
+                { typeof(Harvestable), new Harvestable(this, ItemType.Wood, 16, HarvestableType.Tree) }
+            };
+        }
+
+        public Tree(Context context) : base(context)
+        {
         }
     }
 }

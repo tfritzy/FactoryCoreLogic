@@ -1,14 +1,23 @@
+using System;
+using System.Collections.Generic;
+
 namespace FactoryCore
 {
     public class StoneHex : Hex
     {
-        public override ItemType ProducedItemType => ItemType.Stone;
-        public override HarvestableType HarvestableType => HarvestableType.StoneHex;
         public override HexType Type => HexType.Stone;
-        public override int MaxHarvestItems => 8;
-        public override Item BuildHarvestedItem()
+
+        public StoneHex(Point3Int gridPosition, Context context) : base(gridPosition, context)
         {
-            return new Stone();
+        }
+
+        protected override void InitCells()
+        {
+            base.InitCells();
+            this.Cells = new Dictionary<Type, Cell>
+            {
+                { typeof(Harvestable), new Harvestable(this, ItemType.Stone, 8, HarvestableType.StoneHex) }
+            };
         }
     }
 }

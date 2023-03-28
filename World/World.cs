@@ -13,7 +13,10 @@ namespace FactoryCore
         private Hex?[,,] Hexes;
 
         [JsonProperty("buildings")]
-        private Dictionary<Point2Int, Building> Buildings;
+        private Dictionary<Point2Int, ulong> Buildings;
+
+        [JsonProperty("characters")]
+        private Dictionary<ulong, Character> Characters;
 
         public int MaxX => Hexes.GetLength(0);
         public int MaxY => Hexes.GetLength(1);
@@ -23,17 +26,18 @@ namespace FactoryCore
 
         public World(Hex?[,,] hexes)
         {
+            this.Characters = new Dictionary<ulong, Character>();
             this.Hexes = hexes;
             this.UncoveredHexes = new HashSet<int>[hexes.GetLength(0), hexes.GetLength(1)];
-            this.Buildings = new Dictionary<Point2Int, Building>();
+            this.Buildings = new Dictionary<Point2Int, ulong>();
             CalculateInitialUncovered();
         }
 
         public void Tick(float deltaTime)
         {
-            foreach (Building building in this.Buildings.Values)
+            foreach (ulong buildingId in this.Buildings.Values)
             {
-                building.Tick(deltaTime);
+                Characters[buildingId].Tick(deltaTime);
             }
         }
 
@@ -130,13 +134,15 @@ namespace FactoryCore
                 throw new InvalidOperationException("Tried to place building on occupied location");
             }
 
-            this.Buildings.Add(location, building);
+            this.Characters[building.Id] = building;
+            this.Buildings.Add(location, building.Id);
             building.OnAddToGrid(location);
         }
 
         public void RemoveBuilding(Point2Int location)
         {
-            Building building = this.Buildings[location];
+            ulong buildingId = this.Buildings[location];
+            Building building = (Building)this.Characters[buildingId];
             this.Buildings.Remove(location);
             building.OnRemoveFromGrid();
         }
@@ -146,7 +152,7 @@ namespace FactoryCore
         {
             if (this.Buildings.ContainsKey(location))
             {
-                return this.Buildings[location];
+                return (Building)this.Characters[this.Buildings[location]];
             }
             else
             {
@@ -161,9 +167,10 @@ namespace FactoryCore
 
         public static World FromSchema(string text)
         {
+            Context context = new Context();
             World? world = JsonConvert.DeserializeObject<World>(text, new JsonSerializerSettings
             {
-                Context = new StreamingContext(StreamingContextStates.All, null),
+                Context = new StreamingContext(StreamingContextStates.All, context),
             });
 
             if (world == null)
@@ -171,12 +178,14 @@ namespace FactoryCore
                 throw new InvalidOperationException("Failed to deserialize world");
             }
 
-            foreach (Building building in world.Buildings.Values)
-            {
-                building.World = world;
-            }
+            context.World = world;
 
             return world;
+        }
+
+        public bool TryGetCharacter(ulong id, out Character? character)
+        {
+            return this.Characters.TryGetValue(id, out character);
         }
     }
 }

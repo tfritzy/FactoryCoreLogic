@@ -19,6 +19,11 @@ namespace FactoryCore
         [JsonProperty("prevSide")]
         private HexSide? PrevSide;
 
+        protected new Character Owner =>
+            this.Owner is Character ?
+                (Character)this.Owner :
+                throw new Exception("The owner of a conveyorcell must be a character");
+
         public ConveyorCell? Next => NextSide.HasValue ?
             World.GetBuildingAt(
                 GridHelpers.GetNeighbor(
@@ -50,9 +55,6 @@ namespace FactoryCore
                 this.ProgressMeters = progressMeters;
             }
         }
-
-        [JsonConstructor]
-        protected ConveyorCell() : base(null!) { }
 
         public ConveyorCell(Character owner) : base(owner)
         {

@@ -15,13 +15,13 @@ namespace FactoryCore
         [JsonConverter(typeof(StringEnumConverter))]
         public abstract CellType Type { get; }
 
-        public Character Owner { get; set; }
+        public EntityComponent Owner { get; set; }
         public virtual void Tick(float deltaTime) { }
         public virtual void OnAddToGrid() { }
         public virtual void OnRemoveFromGrid() { }
-        protected World World => Owner.World;
+        protected World? World => Owner.Context.World;
 
-        public Cell(Character owner)
+        public Cell(EntityComponent owner)
         {
             this.Owner = owner;
         }

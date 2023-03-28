@@ -1,17 +1,22 @@
 namespace FactoryCore
 {
-    public abstract class Harvestable
+    public class Harvestable : Cell
     {
-        public abstract ItemType ProducedItemType { get; }
-        public abstract HarvestableType HarvestableType { get; }
-        public abstract Item BuildHarvestedItem();
-        public abstract int MaxHarvestItems { get; }
+        public override CellType Type => CellType.Harvestable;
+        public ItemType ProducedItemType { get; }
+        public int MaxHarvestItems { get; }
         public int RemainingItems { get; private set; }
+        public HarvestableType HarvestableType { get; private set; }
 
-        public Harvestable()
+        public Harvestable(EntityComponent owner, ItemType produces, int maxItems, HarvestableType harvestableType) : base(owner)
         {
-            RemainingItems = MaxHarvestItems;
+            this.ProducedItemType = produces;
+            this.MaxHarvestItems = maxItems;
+            this.RemainingItems = maxItems;
+            this.HarvestableType = harvestableType;
         }
+
+        public Item BuildHarvestedItem() => Item.Create(ProducedItemType);
 
         public Item? Harvest()
         {

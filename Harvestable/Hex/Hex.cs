@@ -6,12 +6,20 @@ namespace FactoryCore
 {
     [JsonConverter(typeof(HexConverter))]
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class Hex : Harvestable
+    public abstract class Hex : EntityComponent
     {
         [JsonProperty("type")]
         public abstract HexType Type { get; }
 
-        public static Hex? Create(HexType? type)
+        [JsonProperty("gridPosition")]
+        public Point3Int GridPosition { get; protected set; }
+
+        protected Hex(Point3Int gridPosition, Context context) : base(context)
+        {
+            this.GridPosition = gridPosition;
+        }
+
+        public static Hex? Create(HexType? type, Point3Int gridPosition, Context context)
         {
             if (type == null)
                 return null;
@@ -19,9 +27,9 @@ namespace FactoryCore
             switch (type)
             {
                 case HexType.Dirt:
-                    return new DirtHex();
+                    return new DirtHex(gridPosition, context);
                 case HexType.Stone:
-                    return new StoneHex();
+                    return new StoneHex(gridPosition, context);
                 default:
                     throw new ArgumentException("Invalid hex type " + type);
             }
@@ -40,9 +48,20 @@ namespace FactoryCore
             if (reader.TokenType == JsonToken.Null)
                 return null;
 
+            Context? context = serializer.Context.Context as Context;
+
+            if (context == null)
+                throw new InvalidOperationException("Context was not availble in the deserializer.");
+
             JObject obj = JObject.Load(reader);
             HexType? type = obj["type"]?.ToObject<HexType>();
-            return Hex.Create(type);
+
+            Point3Int? gridPosition = obj["gridPosition"]?.ToObject<Point3Int>();
+
+            if (gridPosition == null)
+                throw new InvalidOperationException("Grid position was not available on a hex.");
+
+            return Hex.Create(type, gridPosition.Value, context);
         }
 
         public override bool CanWrite => false;
