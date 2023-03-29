@@ -9,7 +9,7 @@ namespace FactoryCore
 
         protected override void InitComponents()
         {
-            this.Cells = new Dictionary<Type, Component>
+            this.Components = new Dictionary<Type, Component>
             {
                 { typeof(HarvestableComponent), new HarvestableComponent(this, ItemType.Wood, 16, HarvestableType.Tree) }
             };

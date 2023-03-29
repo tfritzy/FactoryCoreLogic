@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System; // Needed in 4.7.1
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace FactoryCore
@@ -15,9 +16,13 @@ namespace FactoryCore
         [JsonProperty("gridPosition")]
         public Point3Int GridPosition { get; protected set; }
 
-        protected Hex(Point3Int gridPosition, Context context) : base(context)
+        [JsonProperty("containedEntities")]
+        public List<ulong> ContainedEntities { get; protected set; }
+
+        public Hex(Point3Int gridPosition, Context context) : base(context)
         {
             this.GridPosition = gridPosition;
+            this.ContainedEntities = new List<ulong>();
         }
 
         public static Hex? Create(HexType? type, Point3Int gridPosition, Context context)
@@ -34,6 +39,12 @@ namespace FactoryCore
                 default:
                     throw new ArgumentException("Invalid hex type " + type);
             }
+        }
+
+        public void AddContainedEntity(Character entity)
+        {
+            this.ContainedEntities.Add(entity.Id);
+            this.Context.World.AddCharacter(entity);
         }
     }
 

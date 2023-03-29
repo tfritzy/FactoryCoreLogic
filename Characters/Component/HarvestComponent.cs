@@ -44,7 +44,7 @@ namespace FactoryCore
             {
                 if (this.World.TryGetCharacter(HarvestTargetId.Value, out var targetChar))
                 {
-                    return targetChar?.GetCell<HarvestableComponent>();
+                    return targetChar?.GetComponent<HarvestableComponent>();
                 }
                 else
                 {
@@ -53,7 +53,7 @@ namespace FactoryCore
             }
             else if (TargetHarvestPoint != null)
             {
-                return this.World.GetHex(TargetHarvestPoint.Value)?.GetCell<HarvestableComponent>();
+                return this.World.GetHex(TargetHarvestPoint.Value)?.GetComponent<HarvestableComponent>();
             }
             else
             {

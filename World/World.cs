@@ -127,6 +127,11 @@ namespace FactoryCore
             }
         }
 
+        public void AddCharacter(Character character)
+        {
+            this.Characters[character.Id] = character;
+        }
+
         public void AddBuilding(Building building, Point2Int location)
         {
             if (Buildings.ContainsKey(location))
@@ -162,7 +167,12 @@ namespace FactoryCore
 
         public string ToSchema()
         {
-            return JsonConvert.SerializeObject(this);
+            var settings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.None
+            };
+
+            return JsonConvert.SerializeObject(this, settings);
         }
 
         public static World FromSchema(string text)

@@ -22,7 +22,7 @@ namespace FactoryCore
 
         public virtual void Tick(float deltaTime)
         {
-            foreach (var cell in Cells.Values)
+            foreach (var cell in Components.Values)
             {
                 cell.Tick(deltaTime);
             }
@@ -36,7 +36,7 @@ namespace FactoryCore
         public virtual void OnAddToGrid(Point2Int gridPosition)
         {
             this.GridPosition = gridPosition;
-            foreach (var cell in Cells.Values)
+            foreach (var cell in Components.Values)
             {
                 cell.OnAddToGrid();
             }
@@ -44,7 +44,7 @@ namespace FactoryCore
 
         public virtual void OnRemoveFromGrid()
         {
-            foreach (var cell in Cells.Values)
+            foreach (var cell in Components.Values)
             {
                 cell.OnRemoveFromGrid();
             }
@@ -52,7 +52,7 @@ namespace FactoryCore
 
         public void UpdateOwnerOfCells()
         {
-            foreach (var cell in Cells.Values)
+            foreach (var cell in Components.Values)
             {
                 cell.Owner = this;
             }
@@ -65,6 +65,7 @@ namespace FactoryCore
         {
             { CharacterType.Conveyor, typeof(Conveyor) },
             { CharacterType.Dummy, typeof(DummyBuilding) },
+            { CharacterType.Tree, typeof(Tree) },
         };
 
         public override bool CanConvert(Type objectType)
@@ -77,14 +78,14 @@ namespace FactoryCore
             var jsonObject = JObject.Load(reader);
 
             var typeString = jsonObject.GetValue("type", StringComparison.OrdinalIgnoreCase)?.Value<string>();
-            if (!Enum.TryParse<CharacterType>(typeString, true, out CharacterType cellType))
+            if (!Enum.TryParse<CharacterType>(typeString, true, out CharacterType characterType))
             {
                 throw new JsonSerializationException($"Invalid cell type: {typeString}");
             }
 
-            if (!TypeMap.TryGetValue(cellType, out var targetType))
+            if (!TypeMap.TryGetValue(characterType, out var targetType))
             {
-                throw new InvalidOperationException($"Invalid type value '{cellType}'");
+                throw new InvalidOperationException($"Invalid character type '{characterType}'");
             }
 
             Context? context = serializer.Context.Context as Context;

@@ -29,13 +29,13 @@ namespace FactoryCore
                 GridHelpers.GetNeighbor(
                     OwnerCharacter.GridPosition,
                     NextSide.Value)
-                )?.GetCell<ConveyorComponent>() : null;
+                )?.GetComponent<ConveyorComponent>() : null;
         public ConveyorComponent? Prev => PrevSide.HasValue ?
             World.GetBuildingAt(
                 GridHelpers.GetNeighbor(
                     OwnerCharacter.GridPosition,
                     PrevSide.Value)
-                )?.GetCell<ConveyorComponent>() : null;
+                )?.GetComponent<ConveyorComponent>() : null;
         public const float MOVEMENT_SPEED_M_S = .5f;
         public const float STRAIGHT_DISTANCE = Constants.HEX_APOTHEM * 2;
         public const float CURVE_DISTANCE = Constants.HEX_APOTHEM * 2 * .85f;
@@ -295,7 +295,7 @@ namespace FactoryCore
                 var neighborPos = GridHelpers.GetNeighbor(this.OwnerCharacter.GridPosition, (HexSide)i);
                 var neighbor = this.World.GetBuildingAt(neighborPos);
 
-                ConveyorComponent? neighborCell = neighbor?.GetCell<ConveyorComponent>();
+                ConveyorComponent? neighborCell = neighbor?.GetComponent<ConveyorComponent>();
 
                 if (neighborCell != null && CanBePrev(neighborCell))
                 {

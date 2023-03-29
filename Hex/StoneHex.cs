@@ -14,7 +14,7 @@ namespace FactoryCore
         protected override void InitComponents()
         {
             base.InitComponents();
-            this.Cells = new Dictionary<Type, Component>
+            this.Components = new Dictionary<Type, Component>
             {
                 { typeof(HarvestableComponent), new HarvestableComponent(this, ItemType.Stone, 8, HarvestableType.StoneHex) }
             };
