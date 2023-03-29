@@ -6,10 +6,10 @@ namespace FactoryCore
     public class HarvestableComponent : Component
     {
         [JsonProperty("producedItemType")]
-        public ItemType ProducedItemType { get; }
+        public ItemType ProducedItemType { get; private set; }
 
         [JsonProperty("maxHarvestItems")]
-        public int MaxHarvestItems { get; }
+        public int MaxHarvestItems { get; private set; }
 
         [JsonProperty("remainingItems")]
         public int RemainingItems { get; private set; }

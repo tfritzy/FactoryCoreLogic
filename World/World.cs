@@ -169,7 +169,7 @@ namespace FactoryCore
         {
             var settings = new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.None
+                TypeNameHandling = TypeNameHandling.None,
             };
 
             return JsonConvert.SerializeObject(this, settings);
