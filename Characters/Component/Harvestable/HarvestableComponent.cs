@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 namespace FactoryCore
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class HarvestableCell : Cell
+    public class HarvestableComponent : Component
     {
         [JsonProperty("producedItemType")]
         public ItemType ProducedItemType { get; }
@@ -18,14 +18,14 @@ namespace FactoryCore
         public HarvestableType HarvestableType { get; private set; }
 
         [JsonConstructor]
-        public HarvestableCell(EntityComponent owner) : base(owner)
+        public HarvestableComponent(Entity owner) : base(owner)
         {
         }
 
-        public override CellType Type => CellType.Harvestable;
+        public override ComponentType Type => ComponentType.Harvestable;
 
 
-        public HarvestableCell(EntityComponent owner, ItemType produces, int maxItems, HarvestableType harvestableType) : base(owner)
+        public HarvestableComponent(Entity owner, ItemType produces, int maxItems, HarvestableType harvestableType) : base(owner)
         {
             this.ProducedItemType = produces;
             this.MaxHarvestItems = maxItems;

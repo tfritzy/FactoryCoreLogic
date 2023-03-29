@@ -8,7 +8,7 @@ namespace FactoryCore
 {
     [JsonConverter(typeof(CharacterConverter))]
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class Character : EntityComponent
+    public abstract class Character : Entity
     {
         [JsonProperty("type")]
         public abstract CharacterType Type { get; }

@@ -7,11 +7,11 @@ namespace FactoryCore
     {
         public override CharacterType Type => CharacterType.Tree;
 
-        protected override void InitCells()
+        protected override void InitComponents()
         {
-            this.Cells = new Dictionary<Type, Cell>
+            this.Cells = new Dictionary<Type, Component>
             {
-                { typeof(HarvestableCell), new HarvestableCell(this, ItemType.Wood, 16, HarvestableType.Tree) }
+                { typeof(HarvestableComponent), new HarvestableComponent(this, ItemType.Wood, 16, HarvestableType.Tree) }
             };
         }
 

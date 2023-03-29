@@ -3,13 +3,13 @@ using Newtonsoft.Json;
 
 namespace FactoryCore
 {
-    public class HarvestCell : Cell
+    public class HarvestComponent : Component
     {
         [JsonProperty("harvestRateSeconds")]
         public Dictionary<HarvestableType, float> HarvestRateSeconds { get; private set; }
 
         [JsonProperty("type")]
-        public override CellType Type => CellType.Harvest;
+        public override ComponentType Type => ComponentType.Harvest;
 
         [JsonProperty("harvestTargetId")]
         public ulong? HarvestTargetId { get; private set; }
@@ -19,8 +19,8 @@ namespace FactoryCore
 
         private float timeUntilHarvest;
 
-        private HarvestableCell? target;
-        private HarvestableCell? GetTarget()
+        private HarvestableComponent? target;
+        private HarvestableComponent? GetTarget()
         {
             if (target != null)
             {
@@ -44,7 +44,7 @@ namespace FactoryCore
             {
                 if (this.World.TryGetCharacter(HarvestTargetId.Value, out var targetChar))
                 {
-                    return targetChar?.GetCell<HarvestableCell>();
+                    return targetChar?.GetCell<HarvestableComponent>();
                 }
                 else
                 {
@@ -53,7 +53,7 @@ namespace FactoryCore
             }
             else if (TargetHarvestPoint != null)
             {
-                return this.World.GetHex(TargetHarvestPoint.Value)?.GetCell<HarvestableCell>();
+                return this.World.GetHex(TargetHarvestPoint.Value)?.GetCell<HarvestableComponent>();
             }
             else
             {
@@ -62,9 +62,9 @@ namespace FactoryCore
         }
 
         [JsonConstructor]
-        public HarvestCell(EntityComponent owner) : base(owner) { }
+        public HarvestComponent(Entity owner) : base(owner) { }
 
-        public HarvestCell(Character owner, Dictionary<HarvestableType, float> harvestRateSeconds) : base(owner)
+        public HarvestComponent(Character owner, Dictionary<HarvestableType, float> harvestRateSeconds) : base(owner)
         {
             this.HarvestRateSeconds = harvestRateSeconds;
             this.timeUntilHarvest = float.MaxValue;
@@ -105,7 +105,7 @@ namespace FactoryCore
             this.TargetHarvestPoint = targetHex;
             this.HarvestTargetId = null;
 
-            HarvestableCell? target = GetTarget();
+            HarvestableComponent? target = GetTarget();
             if (target == null || !HarvestRateSeconds.ContainsKey(target.HarvestableType))
             {
                 return;
@@ -119,7 +119,7 @@ namespace FactoryCore
             this.HarvestTargetId = targetCharacterId;
             this.TargetHarvestPoint = null;
 
-            HarvestableCell? target = GetTarget();
+            HarvestableComponent? target = GetTarget();
             if (target == null || !HarvestRateSeconds.ContainsKey(target.HarvestableType))
             {
                 return;

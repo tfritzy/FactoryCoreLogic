@@ -7,16 +7,16 @@ namespace FactoryCore
 {
     public class Conveyor : Building
     {
-        public ConveyorCell? Cell => this.GetCell<ConveyorCell>();
+        public ConveyorComponent? Cell => this.GetCell<ConveyorComponent>();
         public override CharacterType Type => CharacterType.Conveyor;
 
         public Conveyor(Context context) : base(context) { }
 
-        protected override void InitCells()
+        protected override void InitComponents()
         {
-            this.Cells = new Dictionary<Type, Cell>
+            this.Cells = new Dictionary<Type, Component>
             {
-                { typeof(ConveyorCell), new ConveyorCell(this) }
+                { typeof(ConveyorComponent), new ConveyorComponent(this) }
             };
         }
     }

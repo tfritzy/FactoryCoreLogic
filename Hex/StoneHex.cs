@@ -11,12 +11,12 @@ namespace FactoryCore
         {
         }
 
-        protected override void InitCells()
+        protected override void InitComponents()
         {
-            base.InitCells();
-            this.Cells = new Dictionary<Type, Cell>
+            base.InitComponents();
+            this.Cells = new Dictionary<Type, Component>
             {
-                { typeof(HarvestableCell), new HarvestableCell(this, ItemType.Stone, 8, HarvestableType.StoneHex) }
+                { typeof(HarvestableComponent), new HarvestableComponent(this, ItemType.Stone, 8, HarvestableType.StoneHex) }
             };
         }
     }

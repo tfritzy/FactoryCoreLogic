@@ -6,34 +6,34 @@ using Newtonsoft.Json;
 namespace FactoryCore
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class EntityComponent
+    public abstract class Entity
     {
-        public EntityComponent(Context context)
+        public Entity(Context context)
         {
             this.Context = context;
-            this.Cells = new Dictionary<Type, Cell>();
+            this.Cells = new Dictionary<Type, Component>();
             this.Id = GenerateId();
-            InitCells();
+            InitComponents();
         }
 
         [JsonProperty("cells")]
-        protected Dictionary<Type, Cell> Cells;
+        protected Dictionary<Type, Component> Cells;
 
         [JsonProperty("id")]
         public ulong Id;
 
         public Context Context { get; set; }
 
-        public InventoryCell? Inventory => GetCell<InventoryCell>();
-        public HarvestableCell? Harvestable => GetCell<HarvestableCell>();
-        public ConveyorCell? Conveyor => GetCell<ConveyorCell>();
+        public InventoryComponent? Inventory => GetCell<InventoryComponent>();
+        public HarvestableComponent? Harvestable => GetCell<HarvestableComponent>();
+        public ConveyorComponent? Conveyor => GetCell<ConveyorComponent>();
 
-        public bool HasCell<T>() where T : Cell
+        public bool HasCell<T>() where T : Component
         {
             return Cells.ContainsKey(typeof(T));
         }
 
-        public T GetCell<T>() where T : Cell
+        public T GetCell<T>() where T : Component
         {
             if (!Cells.ContainsKey(typeof(T)))
             {
@@ -43,12 +43,12 @@ namespace FactoryCore
             return (T)Cells[typeof(T)];
         }
 
-        public void SetCell(Cell cell)
+        public void SetCell(Component cell)
         {
             Cells[cell.GetType()] = cell;
         }
 
-        protected virtual void InitCells() { }
+        protected virtual void InitComponents() { }
 
         public static ulong GenerateId()
         {

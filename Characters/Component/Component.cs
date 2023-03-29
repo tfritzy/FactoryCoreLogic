@@ -10,19 +10,19 @@ namespace FactoryCore
 {
     [JsonConverter(typeof(CellConverter))]
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class Cell
+    public abstract class Component
     {
         [JsonProperty("type")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public abstract CellType Type { get; }
+        public abstract ComponentType Type { get; }
 
-        public EntityComponent Owner { get; set; }
+        public Entity Owner { get; set; }
         public virtual void Tick(float deltaTime) { }
         public virtual void OnAddToGrid() { }
         public virtual void OnRemoveFromGrid() { }
         protected World World => Owner.Context.World;
 
-        public Cell(EntityComponent owner)
+        public Component(Entity owner)
         {
             this.Owner = owner;
         }
@@ -30,25 +30,25 @@ namespace FactoryCore
 
     public class CellConverter : JsonConverter
     {
-        private static readonly Dictionary<CellType, Type> TypeMap = new Dictionary<CellType, Type>
+        private static readonly Dictionary<ComponentType, Type> TypeMap = new Dictionary<ComponentType, Type>
         {
-            { CellType.Conveyor, typeof(ConveyorCell) },
-            { CellType.Harvest, typeof(HarvestCell) },
-            { CellType.Inventory, typeof(InventoryCell) },
-            { CellType.Harvestable, typeof(HarvestableCell) },
+            { ComponentType.Conveyor, typeof(ConveyorComponent) },
+            { ComponentType.Harvest, typeof(HarvestComponent) },
+            { ComponentType.Inventory, typeof(InventoryComponent) },
+            { ComponentType.Harvestable, typeof(HarvestableComponent) },
         };
 
         public override bool CanConvert(Type objectType)
         {
-            return typeof(Cell).IsAssignableFrom(objectType);
+            return typeof(Component).IsAssignableFrom(objectType);
         }
 
-        public override Cell? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+        public override Component? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             var jsonObject = JObject.Load(reader);
 
             var typeString = jsonObject.GetValue("type", StringComparison.OrdinalIgnoreCase)?.Value<string>();
-            if (!Enum.TryParse<CellType>(typeString, true, out CellType cellType))
+            if (!Enum.TryParse<ComponentType>(typeString, true, out ComponentType cellType))
             {
                 throw new JsonSerializationException($"Invalid cell type: {typeString}");
             }
@@ -58,7 +58,7 @@ namespace FactoryCore
                 throw new InvalidOperationException($"Invalid type value '{cellType}'");
             }
 
-            EntityComponent? owner = serializer.Context.Context as EntityComponent;
+            Entity? owner = serializer.Context.Context as Entity;
 
             if (owner == null)
             {
@@ -74,12 +74,12 @@ namespace FactoryCore
 
             serializer.Populate(jsonObject.CreateReader(), target);
 
-            if (!(target is Cell))
+            if (!(target is Component))
             {
                 throw new InvalidOperationException($"Created instance of type '{targetType}' is not a cell");
             }
 
-            return (Cell)target;
+            return (Component)target;
         }
 
         public override bool CanWrite => false;

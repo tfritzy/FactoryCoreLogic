@@ -8,11 +8,11 @@ namespace FactoryCore
     {
         public override HexType Type => HexType.Dirt;
 
-        protected override void InitCells()
+        protected override void InitComponents()
         {
-            base.InitCells();
-            this.Cells = new Dictionary<Type, Cell>() {
-                {typeof(HarvestableCell), new HarvestableCell(this, ItemType.Dirt, 8, HarvestableType.DirtHex)}
+            base.InitComponents();
+            this.Cells = new Dictionary<Type, Component>() {
+                {typeof(HarvestableComponent), new HarvestableComponent(this, ItemType.Dirt, 8, HarvestableType.DirtHex)}
             };
         }
 

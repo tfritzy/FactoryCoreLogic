@@ -7,7 +7,7 @@ namespace FactoryCore
 {
     [JsonConverter(typeof(HexConverter))]
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class Hex : EntityComponent
+    public abstract class Hex : Entity
     {
         [JsonProperty("type")]
         public abstract HexType Type { get; }

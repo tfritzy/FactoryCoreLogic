@@ -4,18 +4,18 @@ using Newtonsoft.Json;
 namespace FactoryCore
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class InventoryCell : Cell
+    public class InventoryComponent : Component
     {
         [JsonProperty("items")]
         private Item?[] items;
 
         [JsonProperty("type")]
-        public override CellType Type => CellType.Inventory;
+        public override ComponentType Type => ComponentType.Inventory;
 
         [JsonConstructor]
-        public InventoryCell(EntityComponent owner) : base(owner) { }
+        public InventoryComponent(Entity owner) : base(owner) { }
 
-        public InventoryCell(EntityComponent owner, int size) : base(owner)
+        public InventoryComponent(Entity owner, int size) : base(owner)
         {
             this.items = new Item?[size];
         }

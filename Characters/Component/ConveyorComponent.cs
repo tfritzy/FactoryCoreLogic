@@ -5,13 +5,13 @@ using Newtonsoft.Json;
 namespace FactoryCore
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class ConveyorCell : Cell
+    public class ConveyorComponent : Component
     {
         [JsonProperty("items")]
         public LinkedList<ItemOnBelt> Items { get; private set; }
 
         [JsonProperty("type")]
-        public override CellType Type => CellType.Conveyor;
+        public override ComponentType Type => ComponentType.Conveyor;
 
         [JsonProperty("nextSide")]
         private HexSide? NextSide;
@@ -24,18 +24,18 @@ namespace FactoryCore
                 (Character)this.Owner :
                 throw new Exception("The owner of a conveyorcell must be a character");
 
-        public ConveyorCell? Next => NextSide.HasValue ?
+        public ConveyorComponent? Next => NextSide.HasValue ?
             World.GetBuildingAt(
                 GridHelpers.GetNeighbor(
                     OwnerCharacter.GridPosition,
                     NextSide.Value)
-                )?.GetCell<ConveyorCell>() : null;
-        public ConveyorCell? Prev => PrevSide.HasValue ?
+                )?.GetCell<ConveyorComponent>() : null;
+        public ConveyorComponent? Prev => PrevSide.HasValue ?
             World.GetBuildingAt(
                 GridHelpers.GetNeighbor(
                     OwnerCharacter.GridPosition,
                     PrevSide.Value)
-                )?.GetCell<ConveyorCell>() : null;
+                )?.GetCell<ConveyorComponent>() : null;
         public const float MOVEMENT_SPEED_M_S = .5f;
         public const float STRAIGHT_DISTANCE = Constants.HEX_APOTHEM * 2;
         public const float CURVE_DISTANCE = Constants.HEX_APOTHEM * 2 * .85f;
@@ -56,7 +56,7 @@ namespace FactoryCore
             }
         }
 
-        public ConveyorCell(Character owner) : base(owner)
+        public ConveyorComponent(Character owner) : base(owner)
         {
             Items = new LinkedList<ItemOnBelt>();
         }
@@ -192,7 +192,7 @@ namespace FactoryCore
             DisconnectPrev();
         }
 
-        public bool CanBeNext(ConveyorCell conveyor)
+        public bool CanBeNext(ConveyorComponent conveyor)
         {
             if (conveyor == null)
             {
@@ -223,7 +223,7 @@ namespace FactoryCore
             return true;
         }
 
-        public bool CanBePrev(ConveyorCell conveyor)
+        public bool CanBePrev(ConveyorComponent conveyor)
         {
             if (conveyor == null)
             {
@@ -262,7 +262,7 @@ namespace FactoryCore
             return Math.Abs((int)bc.Value - (int)ba.Value);
         }
 
-        private void LinkTo(ConveyorCell conveyorCell, HexSide outputDirection)
+        private void LinkTo(ConveyorComponent conveyorCell, HexSide outputDirection)
         {
             this.NextSide = outputDirection;
             conveyorCell.PrevSide = GridHelpers.OppositeSide(outputDirection);
@@ -295,7 +295,7 @@ namespace FactoryCore
                 var neighborPos = GridHelpers.GetNeighbor(this.OwnerCharacter.GridPosition, (HexSide)i);
                 var neighbor = this.World.GetBuildingAt(neighborPos);
 
-                ConveyorCell? neighborCell = neighbor?.GetCell<ConveyorCell>();
+                ConveyorComponent? neighborCell = neighbor?.GetCell<ConveyorComponent>();
 
                 if (neighborCell != null && CanBePrev(neighborCell))
                 {

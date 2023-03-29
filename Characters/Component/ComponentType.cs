@@ -1,6 +1,6 @@
 namespace FactoryCore
 {
-    public enum CellType
+    public enum ComponentType
     {
         Invalid,
         Conveyor,
