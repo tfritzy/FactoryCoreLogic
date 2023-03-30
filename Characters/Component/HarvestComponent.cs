@@ -61,12 +61,9 @@ namespace FactoryCore
             }
         }
 
-        [JsonConstructor]
-        public HarvestComponent(Entity owner) : base(owner) { }
-
-        public HarvestComponent(Character owner, Dictionary<HarvestableType, float> harvestRateSeconds) : base(owner)
+        public HarvestComponent(Entity owner) : base(owner)
         {
-            this.HarvestRateSeconds = harvestRateSeconds;
+            this.HarvestRateSeconds = new Dictionary<HarvestableType, float>(); // TODO: Lookup
             this.timeUntilHarvest = float.MaxValue;
         }
 

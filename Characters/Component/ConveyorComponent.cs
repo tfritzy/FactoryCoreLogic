@@ -1,23 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
 namespace FactoryCore
 {
-    [JsonObject(MemberSerialization.OptIn)]
     public class ConveyorComponent : Component
     {
-        [JsonProperty("items")]
-        public LinkedList<ItemOnBelt> Items { get; private set; }
-
-        [JsonProperty("type")]
+        public LinkedList<ItemOnBelt> Items;
         public override ComponentType Type => ComponentType.Conveyor;
-
-        [JsonProperty("nextSide")]
-        private HexSide? NextSide;
-
-        [JsonProperty("prevSide")]
-        private HexSide? PrevSide;
+        public HexSide? NextSide;
+        public HexSide? PrevSide;
 
         protected Character OwnerCharacter =>
             this.Owner is Character ?
