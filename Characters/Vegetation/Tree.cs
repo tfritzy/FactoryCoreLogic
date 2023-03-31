@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FactoryCore
+namespace Core
 {
     public class Tree : Character
     {

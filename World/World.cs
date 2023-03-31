@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
-namespace FactoryCore
+namespace Core
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class World

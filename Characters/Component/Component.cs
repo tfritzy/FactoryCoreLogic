@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using FactoryCore;
+using Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
-namespace FactoryCore
+namespace Core
 {
     [JsonConverter(typeof(CellConverter))]
     [JsonObject(MemberSerialization.OptIn)]

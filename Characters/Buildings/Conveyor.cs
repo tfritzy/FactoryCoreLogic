@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using FactoryCore;
+using Core;
 using Newtonsoft.Json;
 using System;
 
-namespace FactoryCore
+namespace Core
 {
     public class Conveyor : Building
     {

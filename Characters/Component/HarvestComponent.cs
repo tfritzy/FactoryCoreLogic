@@ -1,7 +1,7 @@
 using System.Collections.Generic; // Needed in 4.7.1
 using Newtonsoft.Json;
 
-namespace FactoryCore
+namespace Core
 {
     public class HarvestComponent : Component
     {

@@ -4,19 +4,14 @@ using System; // Needed in 4.7.1
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace FactoryCore
+namespace Core
 {
     [JsonConverter(typeof(HexConverter))]
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class Hex : Entity
     {
-        [JsonProperty("type")]
         public abstract HexType Type { get; }
-
-        [JsonProperty("gridPosition")]
         public Point3Int GridPosition { get; protected set; }
-
-        [JsonProperty("containedEntities")]
         public List<ulong> ContainedEntities { get; protected set; }
 
         public Hex(Point3Int gridPosition, Context context) : base(context)

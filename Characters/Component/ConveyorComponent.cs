@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
-namespace FactoryCore
+namespace Core
 {
     public class ConveyorComponent : Component
     {

@@ -1,7 +1,7 @@
-using FactoryCore;
+using Core;
 using Newtonsoft.Json;
 
-namespace FactoryCore
+namespace Core
 {
     public abstract class Building : Character
     {

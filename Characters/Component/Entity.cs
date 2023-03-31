@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 
-namespace FactoryCore
+namespace Core
 {
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class Entity

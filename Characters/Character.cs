@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace FactoryCore
+namespace Core
 {
     [JsonConverter(typeof(CharacterConverter))]
     [JsonObject(MemberSerialization.OptIn)]
@@ -64,7 +64,7 @@ namespace FactoryCore
         private static readonly Dictionary<CharacterType, Type> TypeMap = new Dictionary<CharacterType, Type>
         {
             { CharacterType.Conveyor, typeof(Conveyor) },
-            { CharacterType.Dummy, typeof(DummyBuilding) },
+            { CharacterType.Dummy, typeof(Dummy) },
             { CharacterType.Tree, typeof(Tree) },
         };
 

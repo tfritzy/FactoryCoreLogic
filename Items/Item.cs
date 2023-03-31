@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
-namespace FactoryCore
+namespace Core
 {
     [JsonConverter(typeof(ItemConverter))]
     public abstract class Item

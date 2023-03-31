@@ -6,21 +6,23 @@ using Newtonsoft.Json.Linq;
 
 namespace Schema
 {
-    [JsonConverter(typeof(ComponentConverter))]
-    public class Component
+    [JsonConverter(typeof(CharacterConverter))]
+    public abstract class Character : Entity
     {
         [JsonProperty("type")]
-        ComponentType Type { get; set; }
+        public CharacterType Type { get; set; }
+
+        [JsonProperty("gridPosition")]
+        public Point2Int GridPosition { get; set; }
     }
 
-    public class ComponentConverter : JsonConverter
+    public class CharacterConverter : JsonConverter
     {
-        private static readonly Dictionary<ComponentType, Type> TypeMap = new Dictionary<ComponentType, Type>
+        private static readonly Dictionary<CharacterType, Type> TypeMap = new Dictionary<CharacterType, Type>
         {
-            { ComponentType.Conveyor, typeof(ConveyorComponent) },
-            { ComponentType.Harvest, typeof(HarvestComponent) },
-            { ComponentType.Inventory, typeof(InventoryComponent) },
-            { ComponentType.Harvestable, typeof(HarvestableComponent) },
+            { CharacterType.Conveyor, typeof(Conveyor) },
+            { CharacterType.Tree, typeof(Tree) },
+            { CharacterType.Dummy, typeof(Dummy) },
         };
 
         public override bool CanConvert(Type objectType)
@@ -33,14 +35,14 @@ namespace Schema
             var jsonObject = JObject.Load(reader);
 
             var typeString = jsonObject.GetValue("type", StringComparison.OrdinalIgnoreCase)?.Value<string>();
-            if (!Enum.TryParse<ComponentType>(typeString, true, out ComponentType componentType))
+            if (!Enum.TryParse<CharacterType>(typeString, true, out CharacterType CharacterType))
             {
                 throw new JsonSerializationException($"Invalid component type: {typeString}");
             }
 
-            if (!TypeMap.TryGetValue(componentType, out var targetType))
+            if (!TypeMap.TryGetValue(CharacterType, out var targetType))
             {
-                throw new InvalidOperationException($"Invalid type value '{componentType}'");
+                throw new InvalidOperationException($"Didn't add '{CharacterType}' type to dictionary");
             }
 
             object? target = Activator.CreateInstance(targetType);
@@ -52,12 +54,12 @@ namespace Schema
 
             serializer.Populate(jsonObject.CreateReader(), target);
 
-            if (!(target is Component))
+            if (!(target is Character))
             {
-                throw new InvalidOperationException($"Created instance of type '{targetType}' is not a schema.component");
+                throw new InvalidOperationException($"Created instance of type '{targetType}' is not a schema.Character");
             }
 
-            return (Component)target;
+            return (Character)target;
         }
 
         public override bool CanWrite => false;

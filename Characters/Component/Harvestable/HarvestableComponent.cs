@@ -1,8 +1,7 @@
 using Newtonsoft.Json;
 
-namespace FactoryCore
+namespace Core
 {
-    [JsonObject(MemberSerialization.OptIn)]
     public class HarvestableComponent : Component
     {
         public ItemType ProducedItemType { get; private set; }
@@ -10,7 +9,6 @@ namespace FactoryCore
         public int RemainingItems { get; private set; }
         public HarvestableType HarvestableType { get; private set; }
 
-        [JsonConstructor]
         public HarvestableComponent(Entity owner, HarvestableType type, int remainingItems) : base(owner)
         {
             this.HarvestableType = type;

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace FactoryCore
+namespace Core
 {
     public static class GridHelpers
     {

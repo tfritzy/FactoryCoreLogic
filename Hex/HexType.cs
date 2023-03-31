@@ -1,4 +1,4 @@
-namespace FactoryCore
+namespace Core
 {
     public enum HexType
     {

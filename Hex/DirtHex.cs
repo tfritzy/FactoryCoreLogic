@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FactoryCore
+namespace Core
 {
     public class DirtHex : Hex
     {

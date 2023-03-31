@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace FactoryCore
+namespace Core
 {
     [TypeConverter(typeof(Point2IntConverter))]
     public struct Point2Int
