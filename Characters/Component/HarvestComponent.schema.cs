@@ -6,6 +6,8 @@ namespace Schema
 {
     public class HarvestComponent : Component, ISchema<Core.HarvestComponent>
     {
+        public override ComponentType Type => ComponentType.Harvest;
+
         [JsonProperty("harvestTargetId")]
         public ulong? HarvestTargetId { get; private set; }
 

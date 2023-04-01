@@ -8,6 +8,8 @@ namespace Schema
 {
     public class ConveyorComponent : Component, ISchema<Core.ConveyorComponent>
     {
+        public override ComponentType Type => ComponentType.Conveyor;
+
         [JsonProperty("items")]
         public LinkedList<ItemOnBelt>? Items { get; private set; }
 

@@ -7,11 +7,7 @@ namespace Schema
 {
     public class Dummy : Character, ISchema<Core.Dummy>
     {
-        [JsonProperty("remainingItems")]
-        public int RemainingItems { get; private set; }
-
-        [JsonProperty("harvestableType")]
-        public HarvestableType HarvestableType { get; private set; }
+        public override CharacterType Type => CharacterType.Dummy;
 
         public Core.Dummy FromSchema(object[] context)
         {

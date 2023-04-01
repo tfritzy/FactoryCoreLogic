@@ -6,6 +6,8 @@ namespace Schema
 {
     public class InventoryComponent : Component, ISchema<Core.InventoryComponent>
     {
+        public override ComponentType Type => ComponentType.Inventory;
+
         [JsonProperty("items")]
         public Item?[]? Items { get; set; }
 

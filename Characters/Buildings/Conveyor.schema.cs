@@ -6,13 +6,9 @@ using static Core.Conveyor;
 
 namespace Schema
 {
-    public class Conveyor : Component, ISchema<Core.Conveyor>
+    public class Conveyor : Character, ISchema<Core.Conveyor>
     {
-        [JsonProperty("remainingItems")]
-        public int RemainingItems { get; private set; }
-
-        [JsonProperty("harvestableType")]
-        public HarvestableType HarvestableType { get; private set; }
+        public override CharacterType Type => CharacterType.Conveyor;
 
         public Core.Conveyor FromSchema(object[] context)
         {

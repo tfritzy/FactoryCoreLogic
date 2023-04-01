@@ -8,6 +8,8 @@ namespace Schema
 {
     public class HarvestableComponent : Component, ISchema<Core.HarvestableComponent>
     {
+        public override ComponentType Type => ComponentType.Harvestable;
+
         [JsonProperty("remainingItems")]
         public int RemainingItems { get; private set; }
 

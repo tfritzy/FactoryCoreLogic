@@ -7,10 +7,10 @@ using Newtonsoft.Json.Linq;
 namespace Schema
 {
     [JsonConverter(typeof(ComponentConverter))]
-    public class Component
+    public abstract class Component
     {
         [JsonProperty("type")]
-        ComponentType Type { get; set; }
+        public abstract ComponentType Type { get; }
     }
 
     public class ComponentConverter : JsonConverter

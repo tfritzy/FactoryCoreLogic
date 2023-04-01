@@ -24,12 +24,21 @@ namespace Core
 
         private HashSet<int>[,] UncoveredHexes;
 
+        public World() : this(new Hex?[0, 0, 0]) { }
+
         public World(Hex?[,,] hexes)
         {
             this.Characters = new Dictionary<ulong, Character>();
             this.Hexes = hexes;
             this.UncoveredHexes = new HashSet<int>[hexes.GetLength(0), hexes.GetLength(1)];
             this.Buildings = new Dictionary<Point2Int, ulong>();
+            CalculateInitialUncovered();
+        }
+
+        public void SetHexes(Hex?[,,] hexes)
+        {
+            this.Hexes = hexes;
+            this.UncoveredHexes = new HashSet<int>[hexes.GetLength(0), hexes.GetLength(1)];
             CalculateInitialUncovered();
         }
 
@@ -167,30 +176,19 @@ namespace Core
 
         public string ToSchema()
         {
-            var settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.None,
-            };
-
-            return JsonConvert.SerializeObject(this, settings);
+            throw new System.NotImplementedException("workin on it...");
         }
 
         public static World FromSchema(string text)
         {
-            Context context = new Context();
-            World? world = JsonConvert.DeserializeObject<World>(text, new JsonSerializerSettings
-            {
-                Context = new StreamingContext(StreamingContextStates.All, context),
-            });
+            Schema.World? schemaWorld = JsonConvert.DeserializeObject<Schema.World>(text);
 
-            if (world == null)
+            if (schemaWorld == null)
             {
                 throw new InvalidOperationException("Failed to deserialize world");
             }
 
-            context.World = world;
-
-            return world;
+            return schemaWorld.FromSchema();
         }
 
         public bool TryGetCharacter(ulong id, out Character? character)

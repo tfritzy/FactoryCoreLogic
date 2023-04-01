@@ -5,9 +5,16 @@ using Newtonsoft.Json;
 
 namespace Core
 {
-    [JsonObject(MemberSerialization.OptIn)]
     public abstract class Entity
     {
+        protected Dictionary<Type, Component> Components;
+        public ulong Id;
+        public Context Context { get; set; }
+
+        public InventoryComponent? Inventory => GetComponent<InventoryComponent>();
+        public HarvestableComponent? Harvestable => GetComponent<HarvestableComponent>();
+        public ConveyorComponent? Conveyor => GetComponent<ConveyorComponent>();
+
         public Entity(Context context)
         {
             this.Context = context;
@@ -15,18 +22,6 @@ namespace Core
             this.Id = GenerateId();
             InitComponents();
         }
-
-        [JsonProperty("components")]
-        protected Dictionary<Type, Component> Components;
-
-        [JsonProperty("id")]
-        public ulong Id;
-
-        public Context Context { get; set; }
-
-        public InventoryComponent? Inventory => GetComponent<InventoryComponent>();
-        public HarvestableComponent? Harvestable => GetComponent<HarvestableComponent>();
-        public ConveyorComponent? Conveyor => GetComponent<ConveyorComponent>();
 
         public bool HasComponent<T>() where T : Component
         {

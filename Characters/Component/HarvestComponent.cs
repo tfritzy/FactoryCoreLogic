@@ -6,7 +6,7 @@ namespace Core
     public class HarvestComponent : Component
     {
         [JsonProperty("harvestRateSeconds")]
-        public Dictionary<HarvestableType, float> HarvestRateSeconds { get; private set; }
+        public Dictionary<HarvestableType, float> HarvestRateSeconds { get; set; }
 
         [JsonProperty("type")]
         public override ComponentType Type => ComponentType.Harvest;
@@ -63,7 +63,7 @@ namespace Core
 
         public HarvestComponent(Entity owner) : base(owner)
         {
-            this.HarvestRateSeconds = new Dictionary<HarvestableType, float>(); // TODO: Lookup
+            this.HarvestRateSeconds = new Dictionary<HarvestableType, float>();
             this.timeUntilHarvest = float.MaxValue;
         }
 

@@ -7,9 +7,7 @@ namespace Core
     {
         public override HexType Type => HexType.Stone;
 
-        public StoneHex(Point3Int gridPosition, Context context) : base(gridPosition, context)
-        {
-        }
+        public StoneHex(Point3Int gridPosition, Context context) : base(gridPosition, context) { }
 
         protected override void InitComponents()
         {

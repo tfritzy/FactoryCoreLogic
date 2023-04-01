@@ -7,10 +7,10 @@ using Newtonsoft.Json.Linq;
 namespace Schema
 {
     [JsonConverter(typeof(HexConverter))]
-    public abstract class Hex : Entity
+    public abstract class Hex : Entity, ISchema<Core.Hex>
     {
         [JsonProperty("type")]
-        public HexType Type { get; set; }
+        public abstract HexType Type { get; }
 
         [JsonProperty("pos")]
         public Point3Int? GridPosition { get; set; }
@@ -18,6 +18,7 @@ namespace Schema
         [JsonProperty("entities")]
         public List<ulong>? ContainedEntities { get; set; }
 
+        public abstract Core.Hex FromSchema(params object[] context);
     }
 
     public class HexConverter : JsonConverter
