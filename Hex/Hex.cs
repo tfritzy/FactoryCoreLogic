@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 namespace Core
 {
-    public abstract class Hex : Entity
+    public abstract class Hex : Entity, Schema.ISerializable<Schema.Hex>
     {
         public abstract HexType Type { get; }
         public Point3Int GridPosition { get; protected set; }
@@ -39,5 +39,7 @@ namespace Core
             this.ContainedEntities.Add(entity.Id);
             this.Context.World.AddCharacter(entity);
         }
+
+        public abstract Schema.Hex ToSchema();
     }
 }

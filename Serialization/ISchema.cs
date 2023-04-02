@@ -1,5 +1,4 @@
-public interface ISchema<T>
+public abstract class Schema<T>
 {
-    T FromSchema(params object[] context);
-    string ToSchema(T toSerialize);
+    public static T FromSchema(params object[] context);
 }

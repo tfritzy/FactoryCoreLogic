@@ -4,16 +4,16 @@ using Newtonsoft.Json;
 
 namespace Schema
 {
-    public class World : Entity, ISchema<Core.World>
+    public class World : Schema<Core.World>
     {
         [JsonProperty("hexes")]
-        private Hex?[,,]? Hexes;
+        public Hex?[,,]? Hexes;
 
         [JsonProperty("buildings")]
-        private Dictionary<Point2Int, ulong>? Buildings;
+        public Dictionary<Point2Int, ulong>? Buildings;
 
         [JsonProperty("characters")]
-        private Dictionary<ulong, Character>? Characters;
+        public Dictionary<ulong, Character>? Characters;
 
         private Core.Hex?[,,] HexesFromSchema(Context context)
         {

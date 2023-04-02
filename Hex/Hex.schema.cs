@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 namespace Schema
 {
     [JsonConverter(typeof(HexConverter))]
-    public abstract class Hex : Entity, ISchema<Core.Hex>
+    public abstract class Hex : Entity, Schema<Core.Hex>
     {
         [JsonProperty("type")]
         public abstract HexType Type { get; }

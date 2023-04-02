@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Schema
 {
-    public class HarvestComponent : Component, ISchema<Core.HarvestComponent>
+    public class HarvestComponent : Component, Schema<Core.HarvestComponent>
     {
         public override ComponentType Type => ComponentType.Harvest;
 

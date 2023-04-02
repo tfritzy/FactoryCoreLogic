@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace Core
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class World
+    public class World : Schema.ISerializable<Schema.World>
     {
         [JsonProperty("hexes")]
         private Hex?[,,] Hexes;
@@ -174,9 +174,27 @@ namespace Core
             }
         }
 
-        public string ToSchema()
+        public Schema.World ToSchema()
         {
-            throw new System.NotImplementedException("workin on it...");
+            Schema.Hex?[,,] hexes = new Schema.Hex?[
+                Hexes.GetLength(0),
+                Hexes.GetLength(1),
+                Hexes.GetLength(2)];
+            for (int x = 0; x < Hexes.GetLength(0); x++)
+            {
+                for (int y = 0; y < Hexes.GetLength(1); y++)
+                {
+                    for (int z = 0; z < Hexes.GetLength(2); z++)
+                    {
+                        hexes[x, y, z] = Hexes[x, y, z]?.ToSchema();
+                    }
+                }
+            }
+
+            return new Schema.World
+            {
+                Hexes = hexes,
+            };
         }
 
         public static World FromSchema(string text)

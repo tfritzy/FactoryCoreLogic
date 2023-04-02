@@ -6,7 +6,7 @@ using static Core.Conveyor;
 
 namespace Schema
 {
-    public class Conveyor : Character, ISchema<Core.Conveyor>
+    public class Conveyor : Character, Schema<Core.Conveyor>
     {
         public override CharacterType Type => CharacterType.Conveyor;
 

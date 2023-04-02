@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Schema
 {
-    public class InventoryComponent : Component, ISchema<Core.InventoryComponent>
+    public class InventoryComponent : Component, Schema<Core.InventoryComponent>
     {
         public override ComponentType Type => ComponentType.Inventory;
 

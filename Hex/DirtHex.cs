@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Core
 {
@@ -18,6 +19,17 @@ namespace Core
 
         public DirtHex(Point3Int gridPosition, Context context) : base(gridPosition, context)
         {
+        }
+
+
+        public override Schema.Hex ToSchema()
+        {
+            return new Schema.DirtHex
+            {
+                ContainedEntities = this.ContainedEntities,
+                GridPosition = this.GridPosition,
+                Id = this.Id,
+            };
         }
     }
 }

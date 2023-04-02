@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Schema
 {
-    public class Dummy : Character, ISchema<Core.Dummy>
+    public class Dummy : Character, Schema<Core.Dummy>
     {
         public override CharacterType Type => CharacterType.Dummy;
 

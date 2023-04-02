@@ -6,7 +6,7 @@ using static Core.HarvestableComponent;
 
 namespace Schema
 {
-    public class HarvestableComponent : Component, ISchema<Core.HarvestableComponent>
+    public class HarvestableComponent : Component, Schema<Core.HarvestableComponent>
     {
         public override ComponentType Type => ComponentType.Harvestable;
 

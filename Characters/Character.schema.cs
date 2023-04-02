@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 namespace Schema
 {
     [JsonConverter(typeof(CharacterConverter))]
-    public abstract class Character : Entity, ISchema<Core.Character>
+    public abstract class Character : Entity, Schema<Core.Character>
     {
         [JsonProperty("type")]
         public abstract CharacterType Type { get; }

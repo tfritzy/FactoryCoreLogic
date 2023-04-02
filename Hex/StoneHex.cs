@@ -17,5 +17,15 @@ namespace Core
                 { typeof(HarvestableComponent), new HarvestableComponent(this, ItemType.Stone, 8, HarvestableType.StoneHex) }
             };
         }
+
+        public override Schema.Hex ToSchema()
+        {
+            return new Schema.StoneHex
+            {
+                ContainedEntities = this.ContainedEntities,
+                GridPosition = this.GridPosition,
+                Id = this.Id,
+            };
+        }
     }
 }
