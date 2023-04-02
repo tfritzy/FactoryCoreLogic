@@ -14,7 +14,7 @@ namespace Core
             base.InitComponents();
             this.Components = new Dictionary<Type, Component>
             {
-                { typeof(HarvestableComponent), new HarvestableComponent(this, ItemType.Stone, 8, HarvestableType.StoneHex) }
+                { typeof(HarvestableComponent), new HarvestableComponent(this, HarvestableType.StoneHex) }
             };
         }
 

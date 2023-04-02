@@ -1,4 +1,5 @@
 using System; // Needed in 4.7.1
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Core
@@ -107,6 +108,23 @@ namespace Core
                 return null;
 
             return items[index];
+        }
+
+        public override Schema.Component ToSchema()
+        {
+            Schema.InventoryComponent schema = new Schema.InventoryComponent
+            {
+                Items = this.items.Select(item => item?.ToSchema()).ToArray(),
+            };
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                Item? item = items[i];
+                if (item != null)
+                    schema.Items[i] = item.ToSchema();
+            }
+
+            return schema;
         }
     }
 }

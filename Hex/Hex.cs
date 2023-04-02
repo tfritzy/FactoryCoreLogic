@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 namespace Core
 {
-    public abstract class Hex : Entity, Schema.ISerializable<Schema.Hex>
+    public abstract class Hex : Entity
     {
         public abstract HexType Type { get; }
         public Point3Int GridPosition { get; protected set; }

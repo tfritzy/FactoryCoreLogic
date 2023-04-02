@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Core
 {
@@ -11,12 +12,23 @@ namespace Core
         {
             this.Components = new Dictionary<Type, Component>
             {
-                { typeof(HarvestableComponent), new HarvestableComponent(this, ItemType.Wood, 16, HarvestableType.Tree) }
+                { typeof(HarvestableComponent), new HarvestableComponent(this, HarvestableType.Tree) }
             };
         }
 
         public Tree(Context context) : base(context)
         {
+        }
+
+        public override Schema.Tree ToSchema()
+        {
+            return new Schema.Tree()
+            {
+                Id = this.Id,
+                GridPosition = this.GridPosition,
+                Components = this.Components.ToDictionary(
+                    x => Component.ComponentTypeMap[x.Key], x => x.Value.ToSchema())
+            };
         }
     }
 }

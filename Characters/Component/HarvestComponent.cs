@@ -124,5 +124,14 @@ namespace Core
 
             this.timeUntilHarvest = HarvestRateSeconds[target.HarvestableType];
         }
+
+        public override Schema.Component ToSchema()
+        {
+            return new Schema.HarvestComponent()
+            {
+                HarvestTargetId = this.HarvestTargetId,
+                TargetHarvestPoint = this.TargetHarvestPoint,
+            };
+        }
     }
 }

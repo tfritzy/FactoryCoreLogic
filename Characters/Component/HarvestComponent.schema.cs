@@ -4,17 +4,17 @@ using Newtonsoft.Json;
 
 namespace Schema
 {
-    public class HarvestComponent : Component, Schema<Core.HarvestComponent>
+    public class HarvestComponent : Component
     {
         public override ComponentType Type => ComponentType.Harvest;
 
         [JsonProperty("harvestTargetId")]
-        public ulong? HarvestTargetId { get; private set; }
+        public ulong? HarvestTargetId { get; set; }
 
         [JsonProperty("targetHarvestPoint")]
-        public Point3Int? TargetHarvestPoint { get; private set; }
+        public Point3Int? TargetHarvestPoint { get; set; }
 
-        public Core.HarvestComponent FromSchema(object[] context)
+        public override Core.HarvestComponent FromSchema(object[] context)
         {
             if (context.Length == 0 || context[0] == null || !(context[0] is Core.Entity))
                 throw new ArgumentException("HarvestComponent requires an Entity as context[0]");

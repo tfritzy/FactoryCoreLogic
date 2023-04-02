@@ -1,6 +1,9 @@
+using System;
+using System.Collections.Generic;
+
 namespace Core
 {
-    public abstract class Component
+    public abstract class Component : Schema.SerializesTo<Schema.Component>
     {
         public abstract ComponentType Type { get; }
 
@@ -8,11 +11,22 @@ namespace Core
         public virtual void Tick(float deltaTime) { }
         public virtual void OnAddToGrid() { }
         public virtual void OnRemoveFromGrid() { }
+
         protected World World => Owner.Context.World;
 
         public Component(Entity owner)
         {
             this.Owner = owner;
         }
+
+        public static readonly Dictionary<Type, ComponentType> ComponentTypeMap = new Dictionary<Type, ComponentType>()
+        {
+            { typeof(HarvestableComponent), ComponentType.Harvestable },
+            { typeof(InventoryComponent), ComponentType.Inventory },
+            { typeof(HarvestComponent), ComponentType.Harvest },
+            { typeof(Conveyor), ComponentType.Conveyor },
+        };
+
+        public abstract Schema.Component ToSchema();
     }
 }

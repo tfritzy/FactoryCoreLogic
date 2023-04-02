@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Core
 {
-    public abstract class Character : Entity
+    public abstract class Character : Entity, Schema.SerializesTo<Schema.Character>
     {
         public abstract CharacterType Type { get; }
         public Point2Int GridPosition { get; protected set; }
@@ -52,5 +52,7 @@ namespace Core
                 cell.Owner = this;
             }
         }
+
+        public abstract Schema.Character ToSchema();
     }
 }

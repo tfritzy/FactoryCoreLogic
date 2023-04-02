@@ -18,10 +18,5 @@ namespace Schema
 
             return new Core.Tree((Context)context[0]);
         }
-
-        public override string ToSchema(Core.Character toSerialize)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

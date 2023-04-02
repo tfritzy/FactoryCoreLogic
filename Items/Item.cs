@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Core
 {
     [JsonConverter(typeof(ItemConverter))]
-    public abstract class Item
+    public abstract class Item : Schema.SerializesTo<Schema.Item>
     {
         [JsonProperty("type")]
         public abstract ItemType Type { get; }
@@ -40,6 +40,14 @@ namespace Core
             Quantity -= amount;
         }
 
+        public void SetQuantity(int quantity)
+        {
+            if (quantity > MaxStack)
+                throw new InvalidOperationException("Cannot set quantity, would exceed max stack size.");
+
+            Quantity = quantity;
+        }
+
         public static Item Create(ItemType type)
         {
             switch (type)
@@ -53,6 +61,15 @@ namespace Core
                 default:
                     throw new ArgumentException("Invalid item type " + type);
             }
+        }
+
+        public Schema.Item ToSchema()
+        {
+            return new Schema.Item()
+            {
+                Type = Type,
+                Quantity = Quantity,
+            };
         }
     }
 

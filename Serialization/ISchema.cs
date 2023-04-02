@@ -1,4 +1,4 @@
-public abstract class Schema<T>
+public interface SchemaOf<T>
 {
-    public static T FromSchema(params object[] context);
+    T FromSchema(params object[] context);
 }

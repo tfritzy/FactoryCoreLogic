@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace Core
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class World : Schema.ISerializable<Schema.World>
+    public class World : Schema.SerializesTo<Schema.World>
     {
         [JsonProperty("hexes")]
         private Hex?[,,] Hexes;
@@ -29,9 +29,9 @@ namespace Core
         public World(Hex?[,,] hexes)
         {
             this.Characters = new Dictionary<ulong, Character>();
+            this.Buildings = new Dictionary<Point2Int, ulong>();
             this.Hexes = hexes;
             this.UncoveredHexes = new HashSet<int>[hexes.GetLength(0), hexes.GetLength(1)];
-            this.Buildings = new Dictionary<Point2Int, ulong>();
             CalculateInitialUncovered();
         }
 
@@ -97,6 +97,11 @@ namespace Core
 
         private void CalculateInitialUncovered()
         {
+            if (!GridHelpers.IsInBounds(0, 0, this.MaxHeight - 1, this.Hexes))
+            {
+                return;
+            }
+
             HashSet<Point3Int> visited = new HashSet<Point3Int>();
             Queue<Point3Int> queue = new Queue<Point3Int>();
 

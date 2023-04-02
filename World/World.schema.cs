@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Schema
 {
-    public class World : Schema<Core.World>
+    public class World : SchemaOf<Core.World>
     {
         [JsonProperty("hexes")]
         public Hex?[,,]? Hexes;

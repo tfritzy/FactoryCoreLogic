@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 namespace Schema
 {
     [JsonConverter(typeof(HexConverter))]
-    public abstract class Hex : Entity, Schema<Core.Hex>
+    public abstract class Hex : Entity, SchemaOf<Core.Hex>
     {
         [JsonProperty("type")]
         public abstract HexType Type { get; }
@@ -34,8 +34,13 @@ namespace Schema
             return typeof(Component).IsAssignableFrom(objectType);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
+            if (reader.TokenType == JsonToken.Null)
+            {
+                return null;
+            }
+
             var jsonObject = JObject.Load(reader);
 
             var typeString = jsonObject.GetValue("type", StringComparison.OrdinalIgnoreCase)?.Value<string>();

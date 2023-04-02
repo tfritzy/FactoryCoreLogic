@@ -6,26 +6,27 @@ using static Core.HarvestableComponent;
 
 namespace Schema
 {
-    public class HarvestableComponent : Component, Schema<Core.HarvestableComponent>
+    public class HarvestableComponent : Component
     {
         public override ComponentType Type => ComponentType.Harvestable;
 
-        [JsonProperty("remainingItems")]
-        public int RemainingItems { get; private set; }
+        [JsonProperty("remItms")]
+        public int RemainingItems { get; set; }
 
-        [JsonProperty("harvestableType")]
-        public HarvestableType HarvestableType { get; private set; }
+        [JsonProperty("hType")]
+        public HarvestableType HarvestableType { get; set; }
 
-        public Core.HarvestableComponent FromSchema(object[] context)
+        public override Core.HarvestableComponent FromSchema(object[] context)
         {
             if (context.Length == 0 || context[0] == null || !(context[0] is Core.Entity))
                 throw new ArgumentException("HarvestableComponent requires an Core.Entity as context[0]");
 
             Core.Entity owner = (Core.Entity)context[0];
 
-            var component = new Core.HarvestableComponent(owner, HarvestableType, RemainingItems);
-
-            return component;
+            return new Core.HarvestableComponent(owner, HarvestableType)
+            {
+                RemainingItems = RemainingItems
+            };
         }
     }
 }

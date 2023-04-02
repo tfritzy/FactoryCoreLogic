@@ -1,6 +1,6 @@
 namespace Schema
 {
-    public interface ISerializable<T>
+    public interface SerializesTo<T>
     {
         T ToSchema();
     }

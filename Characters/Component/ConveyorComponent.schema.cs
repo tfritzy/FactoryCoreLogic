@@ -1,25 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Core;
 using Newtonsoft.Json;
 using static Core.ConveyorComponent;
 
 namespace Schema
 {
-    public class ConveyorComponent : Component, Schema<Core.ConveyorComponent>
+    public class ConveyorComponent : Component
     {
         public override ComponentType Type => ComponentType.Conveyor;
 
         [JsonProperty("items")]
-        public LinkedList<ItemOnBelt>? Items { get; private set; }
+        public LinkedList<ItemOnBelt>? Items { get; set; }
 
         [JsonProperty("nextSide")]
-        private HexSide? NextSide;
+        public HexSide? NextSide;
 
         [JsonProperty("prevSide")]
-        private HexSide? PrevSide;
+        public HexSide? PrevSide;
 
-        public Core.ConveyorComponent FromSchema(object[] context)
+        public override Core.ConveyorComponent FromSchema(object[] context)
         {
             if (context.Length == 0 || context[0] == null || !(context[0] is Core.Character))
                 throw new ArgumentException("ConveyorComponent requires an FactoryCore.Character as context[0]");
@@ -33,7 +34,7 @@ namespace Schema
             if (Items == null)
                 throw new ArgumentException("To build a ConveyorComponent, Items must not be null.");
 
-            component.Items = Items;
+            component.Items = new LinkedList<Core.ItemOnBelt>(Items.Select(item => item.FromSchema()));
 
             return component;
         }

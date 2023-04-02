@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
@@ -32,22 +33,6 @@ namespace Core
         public const float MOVEMENT_SPEED_M_S = .5f;
         public const float STRAIGHT_DISTANCE = Constants.HEX_APOTHEM * 2;
         public const float CURVE_DISTANCE = Constants.HEX_APOTHEM * 2 * .85f;
-
-        [JsonObject(MemberSerialization.OptIn)]
-        public class ItemOnBelt
-        {
-            [JsonProperty("item")]
-            public Item Item;
-
-            [JsonProperty("progressMeters")]
-            public float ProgressMeters;
-
-            public ItemOnBelt(Item item, float progressMeters)
-            {
-                this.Item = item;
-                this.ProgressMeters = progressMeters;
-            }
-        }
 
         public ConveyorComponent(Character owner) : base(owner)
         {
@@ -300,6 +285,16 @@ namespace Core
                     this.LinkTo(neighborCell, (HexSide)i);
                 }
             }
+        }
+
+        public override Schema.Component ToSchema()
+        {
+            return new Schema.ConveyorComponent()
+            {
+                Items = new LinkedList<Schema.ItemOnBelt>(this.Items.Select(x => x.ToSchema())),
+                NextSide = this.NextSide,
+                PrevSide = this.PrevSide,
+            };
         }
     }
 }

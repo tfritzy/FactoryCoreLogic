@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 namespace Schema
 {
     [JsonConverter(typeof(CharacterConverter))]
-    public abstract class Character : Entity, Schema<Core.Character>
+    public abstract class Character : Entity, SchemaOf<Core.Character>
     {
         [JsonProperty("type")]
         public abstract CharacterType Type { get; }
@@ -15,8 +15,7 @@ namespace Schema
         [JsonProperty("gridPosition")]
         public Point2Int GridPosition { get; set; }
 
-        public abstract string ToSchema(Core.Character toSerialize);
-        public abstract Core.Character FromSchema(object[] context);
+        public abstract Core.Character FromSchema(params object[] context);
     }
 
     public class CharacterConverter : JsonConverter

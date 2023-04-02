@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Core
@@ -6,26 +7,37 @@ namespace Core
     {
         public ItemType ProducedItemType { get; private set; }
         public int MaxHarvestItems { get; private set; }
-        public int RemainingItems { get; private set; }
+        public int RemainingItems { get; set; }
         public HarvestableType HarvestableType { get; private set; }
+        public override ComponentType Type => ComponentType.Harvestable;
+        public Item BuildHarvestedItem() => Item.Create(ProducedItemType);
 
-        public HarvestableComponent(Entity owner, HarvestableType type, int remainingItems) : base(owner)
+        public HarvestableComponent(Entity owner, HarvestableType type) : base(owner)
         {
             this.HarvestableType = type;
-            this.RemainingItems = remainingItems;
+            this.ProducedItemType = HarvestableTypeToItem[type].ProducedItemType;
+            this.MaxHarvestItems = HarvestableTypeToItem[type].MaxHarvestItems;
+            this.RemainingItems = this.MaxHarvestItems;
         }
 
-        public override ComponentType Type => ComponentType.Harvestable;
-
-        public HarvestableComponent(Entity owner, ItemType produces, int maxItems, HarvestableType harvestableType) : base(owner)
+        private struct HarvestableStats
         {
-            this.ProducedItemType = produces;
-            this.MaxHarvestItems = maxItems;
-            this.RemainingItems = maxItems;
-            this.HarvestableType = harvestableType;
+            public ItemType ProducedItemType;
+            public int MaxHarvestItems;
+
+            public HarvestableStats(ItemType itemType, int maxHarvestItems)
+            {
+                ProducedItemType = itemType;
+                MaxHarvestItems = maxHarvestItems;
+            }
         }
 
-        public Item BuildHarvestedItem() => Item.Create(ProducedItemType);
+        private Dictionary<HarvestableType, HarvestableStats> HarvestableTypeToItem = new Dictionary<HarvestableType, HarvestableStats>()
+        {
+            { HarvestableType.Tree, new HarvestableStats(ItemType.Wood, 8) },
+            { HarvestableType.StoneHex, new HarvestableStats(ItemType.Stone, 16) },
+            { HarvestableType.DirtHex, new HarvestableStats(ItemType.Dirt, 8) },
+        };
 
         public Item? Harvest()
         {
@@ -38,6 +50,15 @@ namespace Core
             {
                 return null;
             }
+        }
+
+        public override Schema.Component ToSchema()
+        {
+            return new Schema.HarvestableComponent()
+            {
+                RemainingItems = RemainingItems,
+                HarvestableType = HarvestableType
+            };
         }
     }
 }
