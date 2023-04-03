@@ -15,6 +15,29 @@ namespace Schema
         [JsonProperty("gridPosition")]
         public Point2Int GridPosition { get; set; }
 
+        protected Core.Character ToCore(params object[] context)
+        {
+            if (context.Length == 0 || context[0] == null || !(context[0] is Context))
+                throw new ArgumentException("Conveyor requires a Context as context[0]");
+
+            Context worldContext = (Context)context[0];
+
+            var character = Core.Character.Create(this.Type, worldContext);
+            character.Id = this.Id;
+            character.SetGridPosition(this.GridPosition);
+
+            if (this.Components == null)
+                this.Components = new Dictionary<Core.ComponentType, Component>();
+
+            foreach (var componentType in this.Components.Keys)
+            {
+                Core.Component component = this.Components[componentType].FromSchema(character);
+                character.SetComponent(component);
+            }
+
+            return character;
+        }
+
         public abstract Core.Character FromSchema(params object[] context);
     }
 

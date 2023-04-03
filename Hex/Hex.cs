@@ -10,7 +10,7 @@ namespace Core
     {
         public abstract HexType Type { get; }
         public Point3Int GridPosition { get; protected set; }
-        public List<ulong> ContainedEntities { get; protected set; }
+        public List<ulong> ContainedEntities { get; set; }
 
         public Hex(Point3Int gridPosition, Context context) : base(context)
         {

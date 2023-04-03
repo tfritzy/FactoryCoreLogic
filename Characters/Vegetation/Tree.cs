@@ -20,15 +20,10 @@ namespace Core
         {
         }
 
-        public override Schema.Tree ToSchema()
+        public override Schema.Character ToSchema()
         {
-            return new Schema.Tree()
-            {
-                Id = this.Id,
-                GridPosition = this.GridPosition,
-                Components = this.Components.ToDictionary(
-                    x => Component.ComponentTypeMap[x.Key], x => x.Value.ToSchema())
-            };
+            var tree = new Schema.Tree();
+            return this.PopulateSchema(tree);
         }
     }
 }

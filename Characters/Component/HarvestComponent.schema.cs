@@ -14,6 +14,9 @@ namespace Schema
         [JsonProperty("targetHarvestPoint")]
         public Point3Int? TargetHarvestPoint { get; set; }
 
+        [JsonProperty("tillH")]
+        public float? TimeUntilHarvest { get; set; }
+
         public override Core.HarvestComponent FromSchema(object[] context)
         {
             if (context.Length == 0 || context[0] == null || !(context[0] is Core.Entity))
@@ -27,6 +30,11 @@ namespace Schema
                 component.SetTarget(HarvestTargetId.Value);
             else if (TargetHarvestPoint != null)
                 component.SetTarget(TargetHarvestPoint.Value);
+
+            if (TimeUntilHarvest != null)
+            {
+                component.SetTimeUntilHarvest(this.TimeUntilHarvest.Value);
+            }
 
             return component;
         }

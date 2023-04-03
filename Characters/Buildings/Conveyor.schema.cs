@@ -10,16 +10,9 @@ namespace Schema
     {
         public override CharacterType Type => CharacterType.Conveyor;
 
-        public override Core.Conveyor FromSchema(params object[] context)
+        public override Core.Character FromSchema(params object[] context)
         {
-            if (context.Length == 0 || context[0] == null || !(context[0] is Entity))
-                throw new ArgumentException("Conveyor requires a Context as context[0]");
-
-            Context worldContext = (Context)context[0];
-
-            var component = new Core.Conveyor(worldContext);
-
-            return component;
+            return this.ToCore(context);
         }
     }
 }

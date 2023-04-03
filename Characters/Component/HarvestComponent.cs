@@ -5,19 +5,12 @@ namespace Core
 {
     public class HarvestComponent : Component
     {
-        [JsonProperty("harvestRateSeconds")]
         public Dictionary<HarvestableType, float> HarvestRateSeconds { get; set; }
-
-        [JsonProperty("type")]
         public override ComponentType Type => ComponentType.Harvest;
-
-        [JsonProperty("harvestTargetId")]
         public ulong? HarvestTargetId { get; private set; }
-
-        [JsonProperty("targetHarvestPoint")]
         public Point3Int? TargetHarvestPoint { get; private set; }
 
-        private float timeUntilHarvest;
+        private float? timeUntilHarvest;
 
         private HarvestableComponent? target;
         private HarvestableComponent? GetTarget()
@@ -64,7 +57,7 @@ namespace Core
         public HarvestComponent(Entity owner) : base(owner)
         {
             this.HarvestRateSeconds = new Dictionary<HarvestableType, float>();
-            this.timeUntilHarvest = float.MaxValue;
+            this.timeUntilHarvest = null;
         }
 
         public override void Tick(float deltaTime)
@@ -78,6 +71,11 @@ namespace Core
             if (Owner.Inventory == null)
             {
                 return;
+            }
+
+            if (timeUntilHarvest == null)
+            {
+                timeUntilHarvest = HarvestRateSeconds[target.HarvestableType];
             }
 
             timeUntilHarvest -= deltaTime;
@@ -131,7 +129,13 @@ namespace Core
             {
                 HarvestTargetId = this.HarvestTargetId,
                 TargetHarvestPoint = this.TargetHarvestPoint,
+                TimeUntilHarvest = this.timeUntilHarvest,
             };
+        }
+
+        public void SetTimeUntilHarvest(float timeUntilHarvest)
+        {
+            this.timeUntilHarvest = timeUntilHarvest;
         }
     }
 }

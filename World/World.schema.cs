@@ -44,6 +44,23 @@ namespace Schema
             Context worldContext = new Context(world);
             world.SetHexes(HexesFromSchema(worldContext));
 
+            if (Characters != null)
+            {
+                foreach (ulong characterId in Characters.Keys)
+                {
+                    Core.Character character = Characters[characterId].FromSchema(worldContext);
+                    world.AddCharacter(character);
+                }
+            }
+
+            if (Buildings != null)
+            {
+                foreach (var building in Buildings)
+                {
+                    world.AddBuilding((Building)world.GetCharacter(building.Value), building.Key);
+                }
+            }
+
             return world;
         }
     }

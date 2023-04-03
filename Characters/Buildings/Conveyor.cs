@@ -23,13 +23,8 @@ namespace Core
 
         public override Schema.Character ToSchema()
         {
-            return new Schema.Conveyor()
-            {
-                Id = this.Id,
-                GridPosition = this.GridPosition,
-                Components = this.Components.ToDictionary(
-                    x => Component.ComponentTypeMap[x.Key], x => x.Value.ToSchema())
-            };
+            var conveyor = new Schema.Conveyor();
+            return this.PopulateSchema(conveyor);
         }
     }
 }

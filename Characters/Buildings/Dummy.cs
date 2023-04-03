@@ -11,7 +11,8 @@ namespace Core
 
         public override Schema.Character ToSchema()
         {
-            throw new System.NotImplementedException();
+            var dummy = new Schema.Dummy();
+            return this.PopulateSchema(dummy);
         }
 
         public Dummy(Context context) : base(context) { }

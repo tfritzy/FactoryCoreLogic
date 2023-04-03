@@ -34,7 +34,7 @@ namespace Core
 
         private Dictionary<HarvestableType, HarvestableStats> HarvestableTypeToItem = new Dictionary<HarvestableType, HarvestableStats>()
         {
-            { HarvestableType.Tree, new HarvestableStats(ItemType.Wood, 8) },
+            { HarvestableType.Tree, new HarvestableStats(ItemType.Wood, 16) },
             { HarvestableType.StoneHex, new HarvestableStats(ItemType.Stone, 16) },
             { HarvestableType.DirtHex, new HarvestableStats(ItemType.Dirt, 8) },
         };

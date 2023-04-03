@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -51,6 +52,30 @@ namespace Core
             {
                 cell.Owner = this;
             }
+        }
+
+        public static Character Create(CharacterType character, Context context)
+        {
+            switch (character)
+            {
+                case CharacterType.Dummy:
+                    return new Dummy(context);
+                case CharacterType.Conveyor:
+                    return new Conveyor(context);
+                case CharacterType.Tree:
+                    return new Tree(context);
+                default:
+                    throw new ArgumentException("Invalid character type " + character);
+            }
+        }
+
+        protected Schema.Character PopulateSchema(Schema.Character character)
+        {
+            character.Id = this.Id;
+            character.GridPosition = this.GridPosition;
+            character.Components = this.Components.ToDictionary(
+                x => Component.ComponentTypeMap[x.Key], x => x.Value.ToSchema());
+            return character;
         }
 
         public abstract Schema.Character ToSchema();

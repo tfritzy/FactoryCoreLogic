@@ -18,6 +18,24 @@ namespace Schema
         [JsonProperty("entities")]
         public List<ulong>? ContainedEntities { get; set; }
 
+        protected Core.Hex CreateCore(params object[] context)
+        {
+            if (this.GridPosition == null)
+                throw new InvalidOperationException("GridPosition is null.");
+
+            if (context.Length == 0 || !(context[0] is Core.Context))
+                throw new InvalidOperationException("Context is missing.");
+
+            var hex = Core.Hex.Create(this.Type, this.GridPosition.Value, (Core.Context)context[0]);
+
+            if (hex == null)
+                throw new InvalidOperationException("Invalid hex type " + this.Type);
+
+            hex.ContainedEntities = this.ContainedEntities ?? new List<ulong>();
+
+            return hex;
+        }
+
         public abstract Core.Hex FromSchema(params object[] context);
     }
 

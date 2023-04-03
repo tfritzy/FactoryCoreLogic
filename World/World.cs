@@ -199,6 +199,12 @@ namespace Core
             return new Schema.World
             {
                 Hexes = hexes,
+                Buildings = this.Buildings.ToDictionary(
+                    kvp => new Point2Int(kvp.Key.x, kvp.Key.y),
+                    kvp => kvp.Value),
+                Characters = this.Characters.ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value.ToSchema()),
             };
         }
 
@@ -212,6 +218,11 @@ namespace Core
             }
 
             return schemaWorld.FromSchema();
+        }
+
+        public Character GetCharacter(ulong id)
+        {
+            return this.Characters[id];
         }
 
         public bool TryGetCharacter(ulong id, out Character? character)
