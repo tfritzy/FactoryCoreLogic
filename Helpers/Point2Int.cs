@@ -73,7 +73,7 @@ namespace Core
 
         public override string ToString()
         {
-            return $"{x}|{y}";
+            return $"{x},{y}";
         }
     }
 
@@ -88,7 +88,7 @@ namespace Core
         {
             if (value is string stringValue)
             {
-                var parts = stringValue.Split('|');
+                var parts = stringValue.Split(',');
                 if (parts.Length == 2 && int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
                 {
                     return new Point2Int(x, y);

@@ -179,6 +179,16 @@ namespace Core
             }
         }
 
+        public string Serialize()
+        {
+            return JsonConvert.SerializeObject(this.ToSchema(), new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                TypeNameHandling = TypeNameHandling.None,
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+            });
+        }
+
         public Schema.World ToSchema()
         {
             Schema.Hex?[,,] hexes = new Schema.Hex?[
