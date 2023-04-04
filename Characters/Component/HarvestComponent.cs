@@ -130,6 +130,7 @@ namespace Core
                 HarvestTargetId = this.HarvestTargetId,
                 TargetHarvestPoint = this.TargetHarvestPoint,
                 TimeUntilHarvest = this.timeUntilHarvest,
+                HarvestRateSeconds = this.HarvestRateSeconds,
             };
         }
 
