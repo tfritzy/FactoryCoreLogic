@@ -12,7 +12,7 @@ namespace Schema
         [JsonProperty("items")]
         public Item?[]? Items { get; set; }
 
-        public override Core.InventoryComponent FromSchema(object[] context)
+        public override Core.Component FromSchema(object[] context)
         {
             if (context.Length == 0 || context[0] == null || !(context[0] is Core.Entity))
                 throw new ArgumentException("InventoryComponent requires an Entity as context[0]");

@@ -16,7 +16,7 @@ namespace Schema
         [JsonProperty("hType")]
         public HarvestableType HarvestableType { get; set; }
 
-        public override Core.HarvestableComponent FromSchema(object[] context)
+        public override Core.Component FromSchema(object[] context)
         {
             if (context.Length == 0 || context[0] == null || !(context[0] is Core.Entity))
                 throw new ArgumentException("HarvestableComponent requires an Core.Entity as context[0]");

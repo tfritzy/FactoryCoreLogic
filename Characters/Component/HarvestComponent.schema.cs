@@ -21,7 +21,7 @@ namespace Schema
         [JsonProperty("hRates")]
         public Dictionary<HarvestableType, float>? HarvestRateSeconds { get; set; }
 
-        public override Core.HarvestComponent FromSchema(object[] context)
+        public override Core.Component FromSchema(object[] context)
         {
             if (context.Length == 0 || context[0] == null || !(context[0] is Core.Entity))
                 throw new ArgumentException("HarvestComponent requires an Entity as context[0]");
