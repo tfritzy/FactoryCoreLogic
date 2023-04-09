@@ -37,4 +37,4 @@ msbuild.wrn
 .vs/
 
 # unity
-.meta
+.cs.meta

@@ -8,6 +8,7 @@ namespace Core
 {
     public class ConveyorComponent : Component
     {
+        public new Building Owner => (Building)base.Owner;
         public LinkedList<ItemOnBelt> Items;
         public override ComponentType Type => ComponentType.Conveyor;
         public HexSide? NextSide;
@@ -39,7 +40,7 @@ namespace Core
             Items = new LinkedList<ItemOnBelt>();
         }
 
-        public float GetTotalDistance()
+        public bool IsCurved()
         {
             if (Prev != null && Next != null)
             {
@@ -50,11 +51,23 @@ namespace Core
 
                 if (angle == 2 || angle == 4)
                 {
-                    return CURVE_DISTANCE;
+                    return true;
                 }
             }
 
-            return STRAIGHT_DISTANCE;
+            return false;
+        }
+
+        public float GetTotalDistance()
+        {
+            if (IsCurved())
+            {
+                return CURVE_DISTANCE;
+            }
+            else
+            {
+                return STRAIGHT_DISTANCE;
+            }
         }
 
         public override void Tick(float deltaTime)

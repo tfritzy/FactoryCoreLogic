@@ -8,7 +8,7 @@ namespace Core
 {
     public class Conveyor : Building
     {
-        public ConveyorComponent? ConveyorComponent => this.GetComponent<ConveyorComponent>();
+        public ConveyorComponent? Component => this.GetComponent<ConveyorComponent>();
         public override CharacterType Type => CharacterType.Conveyor;
 
         public Conveyor(Context context) : base(context) { }
