@@ -33,7 +33,7 @@ namespace Core
                 )?.GetComponent<ConveyorComponent>() : null;
         public const float MOVEMENT_SPEED_M_S = .5f;
         public const float STRAIGHT_DISTANCE = Constants.HEX_APOTHEM * 2;
-        public const float CURVE_DISTANCE = Constants.HEX_APOTHEM * 2 * .85f;
+        public const float CURVE_DISTANCE = STRAIGHT_DISTANCE; //Constants.HEX_APOTHEM * 2 * .85f;
 
         public ConveyorComponent(Character owner) : base(owner)
         {
