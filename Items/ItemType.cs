@@ -6,5 +6,10 @@ namespace Core
         Stone,
         Dirt,
         Wood,
+        Arrowhead,
+        ToolShaft,
+        Log,
+        IronBar,
+        IronPickaxe,
     }
 }

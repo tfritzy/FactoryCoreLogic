@@ -1,21 +1,16 @@
 using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 namespace Core
 {
-    [JsonConverter(typeof(ItemConverter))]
     public abstract class Item : Schema.SerializesTo<Schema.Item>
     {
-        [JsonProperty("type")]
         public abstract ItemType Type { get; }
-
-        [JsonProperty("quantity")]
         public int Quantity { get; private set; }
 
         public virtual float Width => 0.1f;
         public virtual int MaxStack => 1;
+        public virtual Dictionary<ItemType, int>? Recipe => null;
 
         public Item() : this(1) { }
 
@@ -36,6 +31,9 @@ namespace Core
         {
             if (Quantity - amount < 0)
                 throw new InvalidOperationException("Cannot remove from stack, would go below 0.");
+
+            if (amount < 0)
+                throw new InvalidOperationException("Cannot remove negative amount from stack.");
 
             Quantity -= amount;
         }
@@ -58,6 +56,16 @@ namespace Core
                     return new Stone();
                 case ItemType.Wood:
                     return new Wood();
+                case ItemType.Arrowhead:
+                    return new Arrowhead();
+                case ItemType.ToolShaft:
+                    return new ToolShaft();
+                case ItemType.Log:
+                    return new Log();
+                case ItemType.IronBar:
+                    return new IronBar();
+                case ItemType.IronPickaxe:
+                    return new IronPickaxe();
                 default:
                     throw new ArgumentException("Invalid item type " + type);
             }
@@ -70,40 +78,6 @@ namespace Core
                 Type = Type,
                 Quantity = Quantity,
             };
-        }
-    }
-
-
-    public class ItemConverter : JsonConverter
-    {
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(Item);
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null)
-                return null;
-
-            JObject obj = JObject.Load(reader);
-            ItemType? type = obj["type"]?.ToObject<ItemType>();
-
-            if (type == null)
-                throw new InvalidOperationException("Cannot read item without type.");
-
-            Item target = Item.Create(type.Value);
-
-            serializer.Populate(obj.CreateReader(), target);
-
-            return target;
-        }
-
-        public override bool CanWrite => false;
-
-        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException(); // We never need to write.
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Core;
 using Newtonsoft.Json;
-using static Core.ConveyorComponent;
+using static Core.Component;
 
 namespace Schema
 {

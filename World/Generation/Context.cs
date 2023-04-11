@@ -2,15 +2,22 @@ namespace Core
 {
     public class Context
     {
-        public World World { get; set; }
+        private World? world;
+        public World World => world ?? throw new System.InvalidOperationException("World is not set");
 
         public Context()
         {
+            this.world = null;
         }
 
         public Context(World? world)
         {
-            this.World = world;
+            this.world = world;
+        }
+
+        public void SetWorld(World world)
+        {
+            this.world = world;
         }
     }
 }

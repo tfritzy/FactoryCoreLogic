@@ -22,6 +22,11 @@ namespace Core
 
         public int Size => items.Length;
 
+        public bool CanAddItem(Item item)
+        {
+            return CanAddItem(item.Type, item.Quantity);
+        }
+
         public bool CanAddItem(ItemType itemType, int quantity)
         {
             int remainingUnplaced = quantity;
@@ -108,6 +113,69 @@ namespace Core
                 return null;
 
             return items[index];
+        }
+
+        public Item? FindItem(ItemType itemType)
+        {
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i]?.Type == itemType)
+                    return items[i];
+            }
+
+            return null;
+        }
+
+        public int GetItemCount(ItemType itemType)
+        {
+            int count = 0;
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i]?.Type == itemType)
+                    count += items[i]?.Quantity ?? 0;
+            }
+
+            return count;
+        }
+
+        public void DecrementCountOf(int index, int quantity)
+        {
+            if (index < 0 || index >= items.Length)
+                return;
+
+            Item? item = items[index];
+            if (item == null)
+                return;
+
+            if (quantity < 0)
+                throw new InvalidOperationException("Cannot remove a negative quantity of items.");
+
+            if (quantity > item.Quantity)
+                throw new InvalidOperationException("Cannot remove more items than are in the stack.");
+
+            item.RemoveFromStack(quantity);
+            if (item.Quantity <= 0)
+                items[index] = null;
+        }
+
+        public void RemoveCount(ItemType itemType, int quantity)
+        {
+            if (GetItemCount(itemType) < quantity)
+                throw new InvalidOperationException("Cannot remove more items than are in the inventory.");
+
+            int remainingToRemove = quantity;
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i]?.Type == itemType)
+                {
+                    int numToRemove = Math.Min(items[i]?.Quantity ?? 0, remainingToRemove);
+                    DecrementCountOf(i, numToRemove);
+                    remainingToRemove -= numToRemove;
+
+                    if (remainingToRemove <= 0)
+                        return;
+                }
+            }
         }
 
         public override Schema.Component ToSchema()

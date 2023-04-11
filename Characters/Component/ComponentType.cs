@@ -7,5 +7,6 @@ namespace Core
         Inventory,
         Harvest,
         Harvestable,
+        Life,
     }
 }
