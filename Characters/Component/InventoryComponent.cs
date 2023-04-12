@@ -52,17 +52,26 @@ namespace Core
             return remainingUnplaced <= 0;
         }
 
-        public void AddItem(Item item, int index)
+        /// <summary>
+        /// Adds the given item to the inventory at the given index. If the slot is
+        /// already occupied and the item is the same type as the item in the slot
+        /// the item will be added to the stack. If the item cannot be fully added 
+        /// to the inventory, this method will return false.
+        /// </summary>
+        /// <param name="item">The item to add.</param>
+        /// <param name="index">THe index the item will occupy</param>
+        /// <returns>true if item was fully added, false otherwise</returns>
+        public bool AddItem(Item item, int index)
         {
             if (index < 0 || index >= items.Length)
-                return;
+                return false;
 
             Item? currentSlot = items[index];
 
             if (currentSlot == null)
             {
                 items[index] = item;
-                return;
+                return true;
             }
 
             if (currentSlot.Type == item.Type && currentSlot.Quantity < currentSlot.MaxStack)
@@ -72,7 +81,11 @@ namespace Core
 
                 currentSlot.AddToStack(numToAdd);
                 item.RemoveFromStack(numToAdd);
+
+                return item.Quantity == 0;
             }
+
+            return false;
         }
 
         /// <summary>
@@ -188,7 +201,7 @@ namespace Core
             }
         }
 
-        public void TransferIndexTo(InventoryComponent other, int sourceIndex)
+        public void TransferIndex(InventoryComponent other, int sourceIndex)
         {
             if (sourceIndex < 0 || sourceIndex >= items.Length)
                 return;
@@ -198,6 +211,21 @@ namespace Core
                 return;
 
             bool fullyAdded = other.AddItem(item);
+
+            if (fullyAdded)
+                items[sourceIndex] = null;
+        }
+
+        public void TransferIndex(InventoryComponent other, int sourceIndex, int destIndex)
+        {
+            if (sourceIndex < 0 || sourceIndex >= items.Length)
+                return;
+
+            Item? item = items[sourceIndex];
+            if (item == null)
+                return;
+
+            bool fullyAdded = other.AddItem(item, destIndex);
 
             if (fullyAdded)
                 items[sourceIndex] = null;
