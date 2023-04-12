@@ -55,12 +55,12 @@ namespace Core
             int remainingToRemove = quantity;
             for (int i = 0; i < inventory.Size; i++)
             {
-                if (inventory.GetItem(i)?.Type == itemType)
+                if (inventory.GetItemAt(i)?.Type == itemType)
                 {
-                    int numToRemove = System.Math.Min(remainingToRemove, inventory.GetItem(i)?.Quantity ?? 0);
+                    int numToRemove = System.Math.Min(remainingToRemove, inventory.GetItemAt(i)?.Quantity ?? 0);
                     remainingToRemove -= numToRemove;
 
-                    if (numToRemove == inventory.GetItem(i)?.Quantity)
+                    if (numToRemove == inventory.GetItemAt(i)?.Quantity)
                         return true;
                 }
             }

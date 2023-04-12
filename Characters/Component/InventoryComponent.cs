@@ -75,7 +75,15 @@ namespace Core
             }
         }
 
-        public void AddItem(Item item)
+        /// <summary>
+        /// Adds the given item to this inventory. If there are stacks of the item
+        /// already present filling them will be prioritized, and then empty slots.
+        /// 
+        /// If the item cannot be fully added the method will return false.
+        /// </summary>
+        /// <param name="item">The item to add to the inventory</param>
+        /// <returns>true if item was fully added, false otherwise</returns>
+        public bool AddItem(Item item)
         {
             for (int i = 0; i < items.Length; i++)
             {
@@ -95,19 +103,21 @@ namespace Core
             }
 
             if (item.Quantity == 0)
-                return;
+                return true;
 
             for (int i = 0; i < items.Length; i++)
             {
                 if (items[i] == null)
                 {
                     items[i] = item;
-                    return;
+                    return true;
                 }
             }
+
+            return false;
         }
 
-        public Item? GetItem(int index)
+        public Item? GetItemAt(int index)
         {
             if (index < 0 || index >= items.Length)
                 return null;
@@ -176,6 +186,21 @@ namespace Core
                         return;
                 }
             }
+        }
+
+        public void TransferIndexTo(InventoryComponent other, int sourceIndex)
+        {
+            if (sourceIndex < 0 || sourceIndex >= items.Length)
+                return;
+
+            Item? item = items[sourceIndex];
+            if (item == null)
+                return;
+
+            bool fullyAdded = other.AddItem(item);
+
+            if (fullyAdded)
+                items[sourceIndex] = null;
         }
 
         public override Schema.Component ToSchema()
