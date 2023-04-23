@@ -72,6 +72,11 @@ namespace Core
 
         public override void Tick(float deltaTime)
         {
+            if (Disabled)
+            {
+                return;
+            }
+
             float movementAmount = MOVEMENT_SPEED_M_S * deltaTime;
 
             var current = Items.Last;

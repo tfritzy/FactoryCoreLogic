@@ -38,7 +38,7 @@ namespace Core
             return (T)Components[typeof(T)];
         }
 
-        public void SetComponent(Component component)
+        public virtual void SetComponent(Component component)
         {
             Components[component.GetType()] = component;
         }

@@ -11,6 +11,7 @@ namespace Core
     {
         public abstract CharacterType Type { get; }
         public Point2Int GridPosition { get; protected set; }
+        public bool IsPreview { get; private set; }
 
         public Character(Context context) : base(context)
         {
@@ -79,5 +80,35 @@ namespace Core
         }
 
         public abstract Schema.Character ToSchema();
+
+        public override void SetComponent(Component component)
+        {
+            base.SetComponent(component);
+
+            if (IsPreview)
+            {
+                component.Disabled = true;
+            }
+        }
+
+        public void MarkPreview()
+        {
+            this.IsPreview = true;
+
+            foreach (Component component in this.Components.Values)
+            {
+                component.Disabled = true;
+            }
+        }
+
+        public void ClearPreview()
+        {
+            this.IsPreview = false;
+
+            foreach (Component component in this.Components.Values)
+            {
+                component.Disabled = false;
+            }
+        }
     }
 }

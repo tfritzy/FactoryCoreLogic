@@ -209,12 +209,16 @@ namespace Core
             return new Schema.World
             {
                 Hexes = hexes,
-                Buildings = this.Buildings.ToDictionary(
-                    kvp => new Point2Int(kvp.Key.x, kvp.Key.y),
-                    kvp => kvp.Value),
-                Characters = this.Characters.ToDictionary(
-                    kvp => kvp.Key,
-                    kvp => kvp.Value.ToSchema()),
+                Buildings = this.Buildings
+                    .Where(kvp => !this.Characters[kvp.Value].IsPreview)
+                    .ToDictionary(
+                        kvp => new Point2Int(kvp.Key.x, kvp.Key.y),
+                        kvp => kvp.Value),
+                Characters = this.Characters
+                    .Where(kvp => !kvp.Value.IsPreview)
+                    .ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value.ToSchema()),
             };
         }
 

@@ -29,6 +29,9 @@ namespace Core
 
         public bool CanAddItem(ItemType itemType, int quantity)
         {
+            if (Disabled)
+                return false;
+
             int remainingUnplaced = quantity;
             for (int i = 0; i < items.Length; i++)
             {
@@ -63,6 +66,9 @@ namespace Core
         /// <returns>true if item was fully added, false otherwise</returns>
         public bool AddItem(Item item, int index)
         {
+            if (Disabled)
+                return false;
+
             if (index < 0 || index >= items.Length)
                 return false;
 
@@ -98,6 +104,9 @@ namespace Core
         /// <returns>true if item was fully added, false otherwise</returns>
         public bool AddItem(Item item)
         {
+            if (Disabled)
+                return false;
+
             for (int i = 0; i < items.Length; i++)
             {
                 Item? currentSlot = items[i];
@@ -163,6 +172,9 @@ namespace Core
 
         public void DecrementCountOf(int index, int quantity)
         {
+            if (Disabled)
+                return;
+
             if (index < 0 || index >= items.Length)
                 return;
 
@@ -183,6 +195,9 @@ namespace Core
 
         public void RemoveCount(ItemType itemType, int quantity)
         {
+            if (Disabled)
+                return;
+
             if (GetItemCount(itemType) < quantity)
                 throw new InvalidOperationException("Cannot remove more items than are in the inventory.");
 
@@ -203,6 +218,9 @@ namespace Core
 
         public void TransferIndex(InventoryComponent other, int sourceIndex)
         {
+            if (Disabled)
+                return;
+
             if (sourceIndex < 0 || sourceIndex >= items.Length)
                 return;
 
@@ -218,6 +236,9 @@ namespace Core
 
         public void TransferIndex(InventoryComponent other, int fromIndex, int toIndex)
         {
+            if (Disabled)
+                return;
+
             if (fromIndex < 0 || fromIndex >= items.Length)
                 return;
 
@@ -233,6 +254,9 @@ namespace Core
 
         public void TransferSingle(InventoryComponent other, int fromIndex, int toIndex)
         {
+            if (Disabled)
+                return;
+
             if (fromIndex < 0 || fromIndex >= items.Length)
                 return;
 

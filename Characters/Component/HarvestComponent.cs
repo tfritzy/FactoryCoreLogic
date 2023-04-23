@@ -62,6 +62,11 @@ namespace Core
 
         public override void Tick(float deltaTime)
         {
+            if (Disabled)
+            {
+                return;
+            }
+
             var target = GetTarget();
             if (target == null || !HarvestRateSeconds.ContainsKey(target.HarvestableType))
             {
