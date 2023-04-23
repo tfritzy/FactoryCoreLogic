@@ -79,5 +79,15 @@ namespace Core
                 Quantity = Quantity,
             };
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is Item item)
+            {
+                return item.Type == Type && item.Quantity == Quantity;
+            }
+
+            return false;
+        }
     }
 }

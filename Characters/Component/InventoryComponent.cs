@@ -216,19 +216,36 @@ namespace Core
                 items[sourceIndex] = null;
         }
 
-        public void TransferIndex(InventoryComponent other, int sourceIndex, int destIndex)
+        public void TransferIndex(InventoryComponent other, int fromIndex, int toIndex)
         {
-            if (sourceIndex < 0 || sourceIndex >= items.Length)
+            if (fromIndex < 0 || fromIndex >= items.Length)
                 return;
 
-            Item? item = items[sourceIndex];
+            Item? item = items[fromIndex];
             if (item == null)
                 return;
 
-            bool fullyAdded = other.AddItem(item, destIndex);
+            bool fullyAdded = other.AddItem(item, toIndex);
 
             if (fullyAdded)
-                items[sourceIndex] = null;
+                items[fromIndex] = null;
+        }
+
+        public void TransferSingle(InventoryComponent other, int fromIndex, int toIndex)
+        {
+            if (fromIndex < 0 || fromIndex >= items.Length)
+                return;
+
+            Item? item = items[fromIndex];
+            if (item == null || item.Quantity < 1)
+                return;
+
+            Item toAdd = Item.Create(item.Type);
+
+            bool fullyAdded = other.AddItem(toAdd, toIndex);
+
+            if (fullyAdded)
+                DecrementCountOf(fromIndex, 1);
         }
 
         public override Schema.Component ToSchema()
