@@ -27,7 +27,7 @@ namespace Core
             {
                 for (int y = 0; y < Hexes.GetLength(1); y++)
                 {
-                    Hexes[x, y, z] = new StoneHex(new Point3Int(x, y, z), context);
+                    Hexes[x, y, z] = new DirtHex(new Point3Int(x, y, z), context);
                 }
             }
 
