@@ -12,6 +12,12 @@ namespace Schema
         [JsonProperty("items")]
         public Item?[]? Items { get; set; }
 
+        [JsonProperty("w")]
+        public int Width;
+
+        [JsonProperty("h")]
+        public int Height;
+
         public override Core.Component FromSchema(object[] context)
         {
             if (context.Length == 0 || context[0] == null || !(context[0] is Core.Entity))
@@ -24,7 +30,7 @@ namespace Schema
 
             Core.Item?[] items = this.Items.Select(item => item?.FromSchema()).ToArray();
 
-            return new Core.InventoryComponent(owner, items);
+            return new Core.InventoryComponent(owner, items, Width, Height);
         }
     }
 }

@@ -6,21 +6,27 @@ namespace Core
 {
     public class InventoryComponent : Component
     {
+        public int Width { get; private set; }
+        public int Height { get; private set; }
         private Item?[] items;
 
         public override ComponentType Type => ComponentType.Inventory;
 
-        public InventoryComponent(Entity owner, Item?[] items) : base(owner)
+        public InventoryComponent(Entity owner, Item?[] items, int width, int height) : base(owner)
         {
+            this.Width = width;
+            this.Height = height;
             this.items = items;
         }
 
-        public InventoryComponent(Entity owner, int size) : base(owner)
+        public InventoryComponent(Entity owner, int width, int height) : base(owner)
         {
-            this.items = new Item?[size];
+            this.Width = width;
+            this.Height = height;
+            this.items = new Item?[width * height];
         }
 
-        public int Size => items.Length;
+        public int Size => Width * Height;
 
         public bool CanAddItem(Item item)
         {
@@ -276,6 +282,8 @@ namespace Core
         {
             Schema.InventoryComponent schema = new Schema.InventoryComponent
             {
+                Height = this.Height,
+                Width = this.Width,
                 Items = this.items.Select(item => item?.ToSchema()).ToArray(),
             };
 
