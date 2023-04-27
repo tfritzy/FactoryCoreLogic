@@ -23,6 +23,8 @@ namespace Schema
             { ComponentType.Harvest, typeof(HarvestComponent) },
             { ComponentType.Inventory, typeof(InventoryComponent) },
             { ComponentType.Harvestable, typeof(HarvestableComponent) },
+            { ComponentType.WornItems, typeof(WornItemsComponent) },
+            { ComponentType.ActiveItems, typeof(ActiveItemsComponent) },
         };
 
         public override bool CanConvert(Type objectType)

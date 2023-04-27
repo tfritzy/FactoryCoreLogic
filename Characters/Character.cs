@@ -65,6 +65,8 @@ namespace Core
                     return new Conveyor(context);
                 case CharacterType.Tree:
                     return new Tree(context);
+                case CharacterType.Player:
+                    return new Player(context);
                 default:
                     throw new ArgumentException("Invalid character type " + character);
             }

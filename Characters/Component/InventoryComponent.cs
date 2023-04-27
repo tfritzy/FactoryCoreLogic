@@ -296,5 +296,10 @@ namespace Core
 
             return schema;
         }
+
+        public Item?[] GetCopyOfItems()
+        {
+            return items.Select(item => item).ToArray();
+        }
     }
 }

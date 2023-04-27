@@ -8,5 +8,7 @@ namespace Core
         Harvest,
         Harvestable,
         Life,
+        WornItems,
+        ActiveItems,
     }
 }

@@ -5,6 +5,7 @@ namespace Core
         Invalid,
         Conveyor,
         Dummy,
-        Tree
+        Tree,
+        Player,
     }
 }

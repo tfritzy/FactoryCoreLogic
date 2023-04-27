@@ -314,5 +314,10 @@ namespace Core
                 PrevSide = this.PrevSide,
             };
         }
+
+        public int GetRotation()
+        {
+            return 0;
+        }
     }
 }

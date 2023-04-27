@@ -25,6 +25,8 @@ namespace Core
             { typeof(InventoryComponent), ComponentType.Inventory },
             { typeof(HarvestComponent), ComponentType.Harvest },
             { typeof(ConveyorComponent), ComponentType.Conveyor },
+            { typeof(WornItemsComponent), ComponentType.WornItems },
+            { typeof(ActiveItemsComponent), ComponentType.ActiveItems },
         };
 
         public abstract Schema.Component ToSchema();

@@ -48,6 +48,7 @@ namespace Schema
             { CharacterType.Conveyor, typeof(Conveyor) },
             { CharacterType.Tree, typeof(Tree) },
             { CharacterType.Dummy, typeof(Dummy) },
+            { CharacterType.Player, typeof(Player) }
         };
 
         public override bool CanConvert(Type objectType)
