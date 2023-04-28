@@ -11,5 +11,6 @@ namespace Core
         Log,
         IronBar,
         IronPickaxe,
+        Conveyor,
     }
 }

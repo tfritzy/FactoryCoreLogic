@@ -11,6 +11,7 @@ namespace Core
         public virtual float Width => 0.1f;
         public virtual int MaxStack => 1;
         public virtual Dictionary<ItemType, int>? Recipe => null;
+        public virtual CharacterType? Builds => null;
 
         public Item() : this(1) { }
 
@@ -66,6 +67,8 @@ namespace Core
                     return new IronBar();
                 case ItemType.IronPickaxe:
                     return new IronPickaxe();
+                case ItemType.Conveyor:
+                    return new ConveyorItem();
                 default:
                     throw new ArgumentException("Invalid item type " + type);
             }
