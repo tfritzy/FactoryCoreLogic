@@ -30,7 +30,7 @@ namespace Core
             };
         }
 
-        public Building? BuidBuildingFromItem(int itemIndex, Point2Int location)
+        public Building? BuidPreviewBuildingFromItem(int itemIndex, Point2Int location)
         {
             Item? item = this.ActiveItems.GetItemAt(itemIndex);
             if (item == null)
@@ -49,10 +49,32 @@ namespace Core
                 return null;
             }
 
-            this.ActiveItems.DecrementCountOf(itemIndex, 1);
             Building newBuilding = (Building)Character.Create(building.Value, this.Context);
+            newBuilding.MarkPreview();
             this.Context.World.AddBuilding(newBuilding, location);
             return newBuilding;
+        }
+
+        public void MakePreviewBuildingRealFromItem(int itemIndex, Building building)
+        {
+            Item? item = this.ActiveItems.GetItemAt(itemIndex);
+            if (item == null)
+            {
+                return;
+            }
+
+            if (item.Builds != building.Type)
+            {
+                return;
+            }
+
+            if (building.IsPreview == false)
+            {
+                return;
+            }
+
+            this.ActiveItems.DecrementCountOf(itemIndex, 1);
+            building.ClearPreview();
         }
     }
 }
