@@ -6,17 +6,12 @@ using Newtonsoft.Json;
 
 namespace Core
 {
-    [JsonObject(MemberSerialization.OptIn)]
     public class World : Schema.SerializesTo<Schema.World>
     {
-        [JsonProperty("hexes")]
         private Hex?[,,] Hexes;
-
-        [JsonProperty("buildings")]
         private Dictionary<Point2Int, ulong> Buildings;
-
-        [JsonProperty("characters")]
         private Dictionary<ulong, Character> Characters;
+        public LinkedList<Point2Int> UnseenUpdates = new LinkedList<Point2Int>();
 
         public int MaxX => Hexes.GetLength(0);
         public int MaxY => Hexes.GetLength(1);
@@ -156,6 +151,8 @@ namespace Core
             this.Characters[building.Id] = building;
             this.Buildings.Add(location, building.Id);
             building.OnAddToGrid(location);
+
+            this.UnseenUpdates.AddLast(location);
         }
 
         public void RemoveBuilding(Point2Int location)
@@ -164,6 +161,8 @@ namespace Core
             Building building = (Building)this.Characters[buildingId];
             this.Buildings.Remove(location);
             building.OnRemoveFromGrid();
+
+            this.UnseenUpdates.AddLast(location);
         }
 
         public Building? GetBuildingAt(int x, int y) => GetBuildingAt(new Point2Int(x, y));
@@ -242,6 +241,11 @@ namespace Core
         public bool TryGetCharacter(ulong id, out Character? character)
         {
             return this.Characters.TryGetValue(id, out character);
+        }
+
+        public void AckUpdate()
+        {
+            this.UnseenUpdates.RemoveFirst();
         }
     }
 }
