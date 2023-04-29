@@ -6,6 +6,8 @@ namespace Core
     public class Player : Character
     {
         public override CharacterType Type => CharacterType.Player;
+        public WornItemsComponent WornItems => this.GetComponent<WornItemsComponent>();
+        public ActiveItemsComponent ActiveItems => this.GetComponent<ActiveItemsComponent>();
 
         public override Schema.Character ToSchema()
         {
