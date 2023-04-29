@@ -29,5 +29,28 @@ namespace Core
                 { typeof(WornItemsComponent), new WornItemsComponent(this, 1, 5) },
             };
         }
+
+        public void BuidBuildingFromItem(int itemIndex, Point2Int location)
+        {
+            Item? item = this.ActiveItems.GetItemAt(itemIndex);
+            if (item == null)
+            {
+                return;
+            }
+
+            CharacterType? building = item.Builds;
+            if (building == null)
+            {
+                return;
+            }
+
+            if (this.Context.World.GetBuildingAt(location) != null)
+            {
+                return;
+            }
+
+            this.ActiveItems.DecrementCountOf(itemIndex, 1);
+            this.Context.World.AddBuilding((Building)Character.Create(building.Value, this.Context), location);
+        }
     }
 }
