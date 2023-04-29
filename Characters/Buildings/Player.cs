@@ -30,27 +30,29 @@ namespace Core
             };
         }
 
-        public void BuidBuildingFromItem(int itemIndex, Point2Int location)
+        public Building? BuidBuildingFromItem(int itemIndex, Point2Int location)
         {
             Item? item = this.ActiveItems.GetItemAt(itemIndex);
             if (item == null)
             {
-                return;
+                return null;
             }
 
             CharacterType? building = item.Builds;
             if (building == null)
             {
-                return;
+                return null;
             }
 
             if (this.Context.World.GetBuildingAt(location) != null)
             {
-                return;
+                return null;
             }
 
             this.ActiveItems.DecrementCountOf(itemIndex, 1);
-            this.Context.World.AddBuilding((Building)Character.Create(building.Value, this.Context), location);
+            Building newBuilding = (Building)Character.Create(building.Value, this.Context);
+            this.Context.World.AddBuilding(newBuilding, location);
+            return newBuilding;
         }
     }
 }
