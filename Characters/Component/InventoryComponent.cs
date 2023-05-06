@@ -279,46 +279,64 @@ namespace Core
                 DecrementCountOf(fromIndex, 1);
         }
 
-        public void DistributeBetween(int source, List<int> targets)
+        public void BalanceBetween(List<int> indexes)
         {
             if (Disabled)
                 return;
 
-            if (source < 0 || source >= items.Length)
-                return;
-
-            Item? item = items[source];
+            Item? item = GetItemAt(indexes[0]);
             if (item == null)
                 return;
 
-            // Only target slots that are empty
-            targets = new List<int>(targets);
-            for (int i = 0; i < targets.Count; i++)
+            indexes = new List<int>(indexes);
+            for (int i = 0; i < indexes.Count; i++)
             {
-                Item? target = GetItemAt(targets[i]);
-                if (targets[i] < 0 || targets[i] >= items.Length || target != null)
+                Item? target = GetItemAt(indexes[i]);
+                if (indexes[i] < 0 || indexes[i] >= items.Length ||
+                    (target != null && target.Type != item.Type))
                 {
-                    targets.RemoveAt(i);
+                    indexes.RemoveAt(i);
                     i--;
                 }
             }
 
-            int totalQuantity = item.Quantity;
-            int numTargets = targets.Count;
+            int totalQuantity = 0;
+            for (int i = 0; i < indexes.Count; i++)
+            {
+                Item? currentItem = GetItemAt(indexes[i]);
+                if (currentItem != null)
+                    totalQuantity += currentItem.Quantity;
+            }
+
+            int numTargets = indexes.Count;
             int quantityPerTarget = totalQuantity / numTargets;
             int remainder = totalQuantity % numTargets;
 
             for (int i = 0; i < numTargets; i++)
             {
-                int target = targets[i];
+                Item? currentItem = GetItemAt(indexes[i]);
 
+                if (currentItem == null)
+                {
+                    Item toAdd = Item.Create(item.Type);
+                    toAdd.SetQuantity(0);
 
-                Item newItem = Item.Create(item.Type);
-                newItem.SetQuantity(quantityPerTarget + (i < remainder ? 1 : 0));
-                AddItem(newItem, target);
+                    int quantity = quantityPerTarget;
+                    if (i < remainder)
+                        quantity++;
+                    toAdd.SetQuantity(quantity);
+
+                    AddItem(toAdd, indexes[i]);
+                }
+                else
+                {
+                    int quantityToAdd = quantityPerTarget - currentItem.Quantity;
+                    if (i < remainder)
+                        quantityToAdd++;
+
+                    currentItem.AddToStack(quantityToAdd);
+                }
             }
-
-            items[source] = null;
         }
 
         public override Schema.Component ToSchema()
