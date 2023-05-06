@@ -1,4 +1,5 @@
 using System; // Needed in 4.7.1
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
@@ -276,6 +277,48 @@ namespace Core
 
             if (fullyAdded)
                 DecrementCountOf(fromIndex, 1);
+        }
+
+        public void DistributeBetween(int source, List<int> targets)
+        {
+            if (Disabled)
+                return;
+
+            if (source < 0 || source >= items.Length)
+                return;
+
+            Item? item = items[source];
+            if (item == null)
+                return;
+
+            // Only target slots that are empty
+            targets = new List<int>(targets);
+            for (int i = 0; i < targets.Count; i++)
+            {
+                Item? target = GetItemAt(targets[i]);
+                if (targets[i] < 0 || targets[i] >= items.Length || target != null)
+                {
+                    targets.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            int totalQuantity = item.Quantity;
+            int numTargets = targets.Count;
+            int quantityPerTarget = totalQuantity / numTargets;
+            int remainder = totalQuantity % numTargets;
+
+            for (int i = 0; i < numTargets; i++)
+            {
+                int target = targets[i];
+
+
+                Item newItem = Item.Create(item.Type);
+                newItem.SetQuantity(quantityPerTarget + (i < remainder ? 1 : 0));
+                AddItem(newItem, target);
+            }
+
+            items[source] = null;
         }
 
         public override Schema.Component ToSchema()
