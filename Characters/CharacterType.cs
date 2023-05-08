@@ -7,5 +7,7 @@ namespace Core
         Dummy,
         Tree,
         Player,
+        Villiger,
+        Quarry,
     }
 }

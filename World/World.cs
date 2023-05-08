@@ -10,6 +10,7 @@ namespace Core
     {
         private Hex?[,,] Hexes;
         private Dictionary<Point2Int, ulong> Buildings;
+        public List<ulong> Villigers { get; private set; }
         private Dictionary<ulong, Character> Characters;
         public LinkedList<Point2Int> UnseenUpdates = new LinkedList<Point2Int>();
 
@@ -25,6 +26,7 @@ namespace Core
         {
             this.Characters = new Dictionary<ulong, Character>();
             this.Buildings = new Dictionary<Point2Int, ulong>();
+            this.Villigers = new List<ulong>();
             this.Hexes = hexes;
             this.UncoveredHexes = new HashSet<int>[hexes.GetLength(0), hexes.GetLength(1)];
             CalculateInitialUncovered();
@@ -138,6 +140,11 @@ namespace Core
 
         public void AddCharacter(Character character)
         {
+            if (character is Villiger)
+            {
+                this.Villigers.Add(character.Id);
+            }
+
             this.Characters[character.Id] = character;
         }
 

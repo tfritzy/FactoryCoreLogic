@@ -10,6 +10,7 @@ namespace Core
         protected Dictionary<Type, Component> Components;
         public ulong Id;
         public Context Context { get; set; }
+        public World World => Context.World;
 
         public InventoryComponent? Inventory => GetComponent<InventoryComponent>();
         public HarvestableComponent? Harvestable => GetComponent<HarvestableComponent>();
