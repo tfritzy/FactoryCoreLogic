@@ -12,7 +12,7 @@ namespace Core
         {
             this.Components = new Dictionary<Type, Component>
             {
-                { typeof(HarvestableComponent), new HarvestableComponent(this, HarvestableType.Tree) }
+                { typeof(Harvestable), new Harvestable(this, HarvestableType.Tree) }
             };
         }
 

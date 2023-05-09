@@ -20,11 +20,11 @@ namespace Schema
         private static readonly Dictionary<ComponentType, Type> TypeMap = new Dictionary<ComponentType, Type>
         {
             { ComponentType.Conveyor, typeof(ConveyorComponent) },
-            { ComponentType.Harvest, typeof(HarvestComponent) },
-            { ComponentType.Inventory, typeof(InventoryComponent) },
-            { ComponentType.Harvestable, typeof(HarvestableComponent) },
+            { ComponentType.Harvest, typeof(Harvest) },
+            { ComponentType.Inventory, typeof(Inventory) },
+            { ComponentType.Harvestable, typeof(Harvestable) },
             { ComponentType.WornItems, typeof(WornItems) },
-            { ComponentType.ActiveItems, typeof(ActiveItemsComponent) },
+            { ComponentType.ActiveItems, typeof(ActiveItems) },
         };
 
         public override bool CanConvert(Type objectType)

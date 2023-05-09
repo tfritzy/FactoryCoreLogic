@@ -19,7 +19,7 @@ namespace Core
         {
             this.Components = new Dictionary<System.Type, Component>
             {
-                { typeof(InventoryComponent), new InventoryComponent(this, 3, 2) },
+                { typeof(Inventory), new Inventory(this, 3, 2) },
                 { typeof(Worksite), new Worksite(this, 4) },
             };
         }

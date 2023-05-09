@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Schema
 {
-    public class InventoryComponent : Component
+    public class Inventory : Component
     {
         public override ComponentType Type => ComponentType.Inventory;
 
@@ -30,7 +30,7 @@ namespace Schema
 
             Core.Item?[] items = this.Items.Select(item => item?.FromSchema()).ToArray();
 
-            return new Core.InventoryComponent(owner, items, Width, Height);
+            return new Core.Inventory(owner, items, Width, Height);
         }
     }
 }

@@ -12,8 +12,8 @@ namespace Core
         public Context Context { get; set; }
         public World World => Context.World;
 
-        public InventoryComponent? Inventory => GetComponent<InventoryComponent>();
-        public HarvestableComponent? Harvestable => GetComponent<HarvestableComponent>();
+        public Inventory? Inventory => GetComponent<Inventory>();
+        public Harvestable? Harvestable => GetComponent<Harvestable>();
         public ConveyorComponent? Conveyor => GetComponent<ConveyorComponent>();
 
         public Entity(Context context)

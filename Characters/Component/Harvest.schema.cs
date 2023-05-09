@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Schema
 {
-    public class HarvestComponent : Component
+    public class Harvest : Component
     {
         public override ComponentType Type => ComponentType.Harvest;
 
@@ -31,7 +31,7 @@ namespace Schema
 
             Core.Entity owner = (Core.Entity)context[0];
 
-            var component = new Core.HarvestComponent(owner);
+            var component = new Core.Harvest(owner);
 
             component.HarvestRateSeconds = HarvestRateSeconds;
 

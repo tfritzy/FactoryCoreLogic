@@ -21,7 +21,7 @@ namespace Core
         {
             this.Components = new Dictionary<Type, Component>
             {
-                { typeof(InventoryComponent), new InventoryComponent(this, 3, 2) },
+                { typeof(Inventory), new Inventory(this, 3, 2) },
                 { typeof(VilligerBehavior), new VilligerBehavior(this) },
             };
         }

@@ -15,7 +15,7 @@ namespace Core
         {
             base.InitComponents();
             this.Components = new Dictionary<Type, Component>() {
-                {typeof(HarvestableComponent), new HarvestableComponent(this, HarvestableType.DirtHex)}
+                {typeof(Harvestable), new Harvestable(this, HarvestableType.DirtHex)}
             };
         }
 

@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Core
 {
-    public class InventoryComponent : Component
+    public class Inventory : Component
     {
         public int Width { get; private set; }
         public int Height { get; private set; }
@@ -13,14 +13,14 @@ namespace Core
 
         public override ComponentType Type => ComponentType.Inventory;
 
-        public InventoryComponent(Entity owner, Item?[] items, int width, int height) : base(owner)
+        public Inventory(Entity owner, Item?[] items, int width, int height) : base(owner)
         {
             this.Width = width;
             this.Height = height;
             this.items = items;
         }
 
-        public InventoryComponent(Entity owner, int width, int height) : base(owner)
+        public Inventory(Entity owner, int width, int height) : base(owner)
         {
             this.Width = width;
             this.Height = height;
@@ -223,7 +223,7 @@ namespace Core
             }
         }
 
-        public void TransferIndex(InventoryComponent other, int sourceIndex)
+        public void TransferIndex(Inventory other, int sourceIndex)
         {
             if (Disabled)
                 return;
@@ -241,7 +241,7 @@ namespace Core
                 items[sourceIndex] = null;
         }
 
-        public void TransferIndex(InventoryComponent other, int fromIndex, int toIndex)
+        public void TransferIndex(Inventory other, int fromIndex, int toIndex)
         {
             if (Disabled)
                 return;
@@ -259,7 +259,7 @@ namespace Core
                 items[fromIndex] = null;
         }
 
-        public void TransferSingle(InventoryComponent other, int fromIndex, int toIndex)
+        public void TransferSingle(Inventory other, int fromIndex, int toIndex)
         {
             if (Disabled)
                 return;
@@ -341,7 +341,7 @@ namespace Core
 
         public override Schema.Component ToSchema()
         {
-            Schema.InventoryComponent schema = new Schema.InventoryComponent
+            Schema.Inventory schema = new Schema.Inventory
             {
                 Height = this.Height,
                 Width = this.Width,

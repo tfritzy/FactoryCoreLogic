@@ -7,7 +7,7 @@ namespace Core
     {
         public override CharacterType Type => CharacterType.Player;
         public WornItems WornItems => this.GetComponent<WornItems>();
-        public ActiveItemsComponent ActiveItems => this.GetComponent<ActiveItemsComponent>();
+        public ActiveItems ActiveItems => this.GetComponent<ActiveItems>();
 
         public override Schema.Character ToSchema()
         {
@@ -24,8 +24,8 @@ namespace Core
         {
             this.Components = new Dictionary<Type, Component>
             {
-                { typeof(InventoryComponent), new InventoryComponent(this, 10, 14) },
-                { typeof(ActiveItemsComponent), new ActiveItemsComponent(this, 10, 3) },
+                { typeof(Inventory), new Inventory(this, 10, 14) },
+                { typeof(ActiveItems), new ActiveItems(this, 10, 3) },
                 { typeof(WornItems), new WornItems(this, 1, 5) },
             };
         }

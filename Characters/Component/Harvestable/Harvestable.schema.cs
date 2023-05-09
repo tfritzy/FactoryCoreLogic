@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using Core;
 using Newtonsoft.Json;
-using static Core.HarvestableComponent;
 
 namespace Schema
 {
-    public class HarvestableComponent : Component
+    public class Harvestable : Component
     {
         public override ComponentType Type => ComponentType.Harvestable;
 
@@ -23,7 +21,7 @@ namespace Schema
 
             Core.Entity owner = (Core.Entity)context[0];
 
-            return new Core.HarvestableComponent(owner, HarvestableType)
+            return new Core.Harvestable(owner, HarvestableType)
             {
                 RemainingItems = RemainingItems
             };

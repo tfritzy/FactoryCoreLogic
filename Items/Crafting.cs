@@ -2,7 +2,7 @@ namespace Core
 {
     public static class Crafting
     {
-        public static void CraftItem(ItemType type, InventoryComponent inventory)
+        public static void CraftItem(ItemType type, Inventory inventory)
         {
             Item item = Item.Create(type);
             if (item.Recipe == null)
@@ -34,7 +34,7 @@ namespace Core
             inventory.AddItem(item);
         }
 
-        private static bool CraftingItemOpensSlot(Item item, InventoryComponent inventory)
+        private static bool CraftingItemOpensSlot(Item item, Inventory inventory)
         {
             if (item.Recipe == null)
                 return false;
@@ -50,7 +50,7 @@ namespace Core
             return false;
         }
 
-        private static bool RemovingItemOpensSlot(ItemType itemType, int quantity, InventoryComponent inventory)
+        private static bool RemovingItemOpensSlot(ItemType itemType, int quantity, Inventory inventory)
         {
             int remainingToRemove = quantity;
             for (int i = 0; i < inventory.Size; i++)

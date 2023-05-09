@@ -1,6 +1,6 @@
 namespace Core
 {
-    public class WornItems : InventoryComponent
+    public class WornItems : Inventory
     {
         public override ComponentType Type => ComponentType.WornItems;
 
@@ -14,7 +14,7 @@ namespace Core
 
         public override Schema.Component ToSchema()
         {
-            Schema.InventoryComponent? inventory = base.ToSchema() as Schema.InventoryComponent;
+            Schema.Inventory? inventory = base.ToSchema() as Schema.Inventory;
 
             if (inventory == null)
                 throw new System.Exception("Parent's toSchema was unexpectedly not an InventoryComponent");

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Core
 {
-    public class HarvestComponent : Component
+    public class Harvest : Component
     {
         public Dictionary<HarvestableType, float> HarvestRateSeconds { get; set; }
         public override ComponentType Type => ComponentType.Harvest;
@@ -12,8 +12,8 @@ namespace Core
 
         private float? timeUntilHarvest;
 
-        private HarvestableComponent? target;
-        private HarvestableComponent? GetTarget()
+        private Harvestable? target;
+        private Harvestable? GetTarget()
         {
             if (target != null)
             {
@@ -37,7 +37,7 @@ namespace Core
             {
                 if (this.World.TryGetCharacter(HarvestTargetId.Value, out var targetChar))
                 {
-                    return targetChar?.GetComponent<HarvestableComponent>();
+                    return targetChar?.GetComponent<Harvestable>();
                 }
                 else
                 {
@@ -46,7 +46,7 @@ namespace Core
             }
             else if (TargetHarvestPoint != null)
             {
-                return this.World.GetHex(TargetHarvestPoint.Value)?.GetComponent<HarvestableComponent>();
+                return this.World.GetHex(TargetHarvestPoint.Value)?.GetComponent<Harvestable>();
             }
             else
             {
@@ -54,7 +54,7 @@ namespace Core
             }
         }
 
-        public HarvestComponent(Entity owner) : base(owner)
+        public Harvest(Entity owner) : base(owner)
         {
             this.HarvestRateSeconds = new Dictionary<HarvestableType, float>();
             this.timeUntilHarvest = null;
@@ -105,7 +105,7 @@ namespace Core
             this.TargetHarvestPoint = targetHex;
             this.HarvestTargetId = null;
 
-            HarvestableComponent? target = GetTarget();
+            Harvestable? target = GetTarget();
             if (target == null || !HarvestRateSeconds.ContainsKey(target.HarvestableType))
             {
                 return;
@@ -119,7 +119,7 @@ namespace Core
             this.HarvestTargetId = targetCharacterId;
             this.TargetHarvestPoint = null;
 
-            HarvestableComponent? target = GetTarget();
+            Harvestable? target = GetTarget();
             if (target == null || !HarvestRateSeconds.ContainsKey(target.HarvestableType))
             {
                 return;
@@ -130,7 +130,7 @@ namespace Core
 
         public override Schema.Component ToSchema()
         {
-            return new Schema.HarvestComponent()
+            return new Schema.Harvest()
             {
                 HarvestTargetId = this.HarvestTargetId,
                 TargetHarvestPoint = this.TargetHarvestPoint,

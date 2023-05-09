@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Core
 {
-    public class HarvestableComponent : Component
+    public class Harvestable : Component
     {
         public ItemType ProducedItemType { get; private set; }
         public int MaxHarvestItems { get; private set; }
@@ -12,7 +12,7 @@ namespace Core
         public override ComponentType Type => ComponentType.Harvestable;
         public Item BuildHarvestedItem() => Item.Create(ProducedItemType);
 
-        public HarvestableComponent(Entity owner, HarvestableType type) : base(owner)
+        public Harvestable(Entity owner, HarvestableType type) : base(owner)
         {
             this.HarvestableType = type;
             this.ProducedItemType = HarvestableTypeToItem[type].ProducedItemType;
@@ -54,7 +54,7 @@ namespace Core
 
         public override Schema.Component ToSchema()
         {
-            return new Schema.HarvestableComponent()
+            return new Schema.Harvestable()
             {
                 RemainingItems = RemainingItems,
                 HarvestableType = HarvestableType
