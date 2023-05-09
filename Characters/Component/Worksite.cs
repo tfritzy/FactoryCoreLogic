@@ -1,6 +1,6 @@
 namespace Core
 {
-    public class Worksite : Component
+    public abstract class Worksite : Component
     {
         public override ComponentType Type => ComponentType.Worksite;
         public int MaxEmployable { get; set; }
@@ -17,7 +17,6 @@ namespace Core
         {
             throw new System.NotImplementedException();
         }
-
 
         public void IncrementEmployed()
         {

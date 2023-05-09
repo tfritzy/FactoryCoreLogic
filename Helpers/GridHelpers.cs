@@ -145,5 +145,33 @@ namespace Core
         {
             return (HexSide)(((int)side + 3) % 6);
         }
+
+
+        public static Point2Int CubeToOffset(int q, int r, int s)
+        {
+            var col = q;
+            var row = r + (q - (q & 1)) / 2;
+            return new Point2Int(col, row);
+        }
+
+        public static List<Point2Int> GetHexInRange(Point2Int origin, int radius)
+        {
+            List<Point2Int> results = new List<Point2Int>();
+            for (int q = -radius; q <= +radius; q++)
+            {
+                for (int r = -radius; r <= +radius; r++)
+                {
+                    for (int s = -radius; s <= +radius; s++)
+                    {
+                        if (q + r + s == 0)
+                        {
+                            results.Add(GridHelpers.CubeToOffset(q, r, s));
+                        }
+                    }
+                }
+            }
+
+            return results;
+        }
     }
 }
