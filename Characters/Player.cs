@@ -6,7 +6,7 @@ namespace Core
     public class Player : Character
     {
         public override CharacterType Type => CharacterType.Player;
-        public WornItemsComponent WornItems => this.GetComponent<WornItemsComponent>();
+        public WornItems WornItems => this.GetComponent<WornItems>();
         public ActiveItemsComponent ActiveItems => this.GetComponent<ActiveItemsComponent>();
 
         public override Schema.Character ToSchema()
@@ -26,7 +26,7 @@ namespace Core
             {
                 { typeof(InventoryComponent), new InventoryComponent(this, 10, 14) },
                 { typeof(ActiveItemsComponent), new ActiveItemsComponent(this, 10, 3) },
-                { typeof(WornItemsComponent), new WornItemsComponent(this, 1, 5) },
+                { typeof(WornItems), new WornItems(this, 1, 5) },
             };
         }
 

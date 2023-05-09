@@ -1,9 +1,10 @@
+using System.Collections.Generic;
+
 namespace Core
 {
     public class Quarry : Building
     {
         public override CharacterType Type => CharacterType.Quarry;
-        public override int MaxEmployable => 4;
 
         public Quarry(Context context) : base(context)
         {
@@ -12,6 +13,15 @@ namespace Core
         public override Schema.Character ToSchema()
         {
             throw new System.NotImplementedException();
+        }
+
+        protected override void InitComponents()
+        {
+            this.Components = new Dictionary<System.Type, Component>
+            {
+                { typeof(InventoryComponent), new InventoryComponent(this, 3, 2) },
+                { typeof(Worksite), new Worksite(this, 4) },
+            };
         }
     }
 }

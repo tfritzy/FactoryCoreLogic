@@ -11,5 +11,6 @@ namespace Core
         WornItems,
         ActiveItems,
         VilligerBehavior,
+        Worksite,
     }
 }
