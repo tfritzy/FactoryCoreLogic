@@ -1,21 +1,32 @@
+using System.Collections.Generic;
+
 namespace Core
 {
     public abstract class Worksite : Component
     {
         public override ComponentType Type => ComponentType.Worksite;
-        public int MaxEmployable { get; set; }
+        public abstract int MaxEmployable { get; }
+        public abstract List<Harvestable> RefreshEligible();
+        private List<Harvestable> eligibleHarvestables = new List<Harvestable>();
+
+        public Worksite(Entity owner) : base(owner) { }
 
         public int Employed => this.World.Villigers.FindAll(
             v => World.GetCharacter(v).GetComponent<VilligerBehavior>().PlaceOfEmployment == this).Count;
 
-        public Worksite(Entity owner, int maxEmployable) : base(owner)
-        {
-            MaxEmployable = maxEmployable;
-        }
-
         public override Schema.Component ToSchema()
         {
             throw new System.NotImplementedException();
+        }
+
+        public Harvestable GetNextHarvestable()
+        {
+            if (this.eligibleHarvestables.Count == 0)
+            {
+                this.eligibleHarvestables = this.RefreshEligible();
+            }
+
+            return this.eligibleHarvestables[0];
         }
 
         public void IncrementEmployed()
@@ -27,7 +38,7 @@ namespace Core
 
             var unemployedVilligers =
                 this.World.Villigers.FindAll(
-                    v => World.GetCharacter(v).GetComponent<VilligerBehavior>().PlaceOfEmployment == null);
+                    v => World.GetCharacter(v)?.GetComponent<VilligerBehavior>().PlaceOfEmployment == null);
 
             if (unemployedVilligers.Count == 0)
             {

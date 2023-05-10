@@ -5,7 +5,7 @@ namespace Core
         Invalid,
         Conveyor,
         Inventory,
-        Harvest,
+        Harvester,
         Harvestable,
         Life,
         WornItems,

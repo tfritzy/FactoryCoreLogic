@@ -44,6 +44,12 @@ namespace Core
             if (RemainingItems > 0)
             {
                 RemainingItems--;
+
+                if (RemainingItems == 0)
+                {
+                    DestroyOwner();
+                }
+
                 return BuildHarvestedItem();
             }
             else
@@ -59,6 +65,18 @@ namespace Core
                 RemainingItems = RemainingItems,
                 HarvestableType = HarvestableType
             };
+        }
+
+        private void DestroyOwner()
+        {
+            if (this.Owner is Character)
+            {
+                ((Character)this.Owner).Destroy();
+            }
+            else if (this.Owner is Hex)
+            {
+                ((Hex)this.Owner).Destroy();
+            }
         }
     }
 }

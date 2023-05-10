@@ -47,6 +47,18 @@ namespace Core
             }
         }
 
+        public Hex? GetTopHex(Point2Int point)
+        {
+            int topHeight = GetTopHexHeight(point.x, point.y);
+
+            if (topHeight == -1)
+            {
+                return null;
+            }
+
+            return GetHex(point.x, point.y, topHeight);
+        }
+
         public Hex? GetHex(Point3Int point)
         {
             return GetHex(point.x, point.y, point.z);
@@ -64,7 +76,7 @@ namespace Core
 
         public int GetTopHexHeight(int x, int y)
         {
-            if (this.UncoveredHexes[x, y] == null)
+            if (!GridHelpers.IsInBounds(x, y, 0, this.Hexes) || this.UncoveredHexes[x, y] == null)
             {
                 return -1;
             }
@@ -146,6 +158,11 @@ namespace Core
             }
 
             this.Characters[character.Id] = character;
+        }
+
+        public void RemoveCharacter(ulong id)
+        {
+
         }
 
         public void AddBuilding(Building building, Point2Int location)
@@ -240,8 +257,13 @@ namespace Core
             return schemaWorld.FromSchema();
         }
 
-        public Character GetCharacter(ulong id)
+        public Character? GetCharacter(ulong id)
         {
+            if (!this.Characters.ContainsKey(id))
+            {
+                return null;
+            }
+
             return this.Characters[id];
         }
 

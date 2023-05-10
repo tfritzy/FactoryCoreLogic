@@ -41,5 +41,10 @@ namespace Core
         }
 
         public abstract Schema.Hex ToSchema();
+
+        public void Destroy()
+        {
+
+        }
     }
 }

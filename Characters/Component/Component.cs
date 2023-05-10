@@ -23,7 +23,7 @@ namespace Core
         {
             { typeof(Harvestable), ComponentType.Harvestable },
             { typeof(Inventory), ComponentType.Inventory },
-            { typeof(Harvest), ComponentType.Harvest },
+            { typeof(Harvester), ComponentType.Harvester },
             { typeof(ConveyorComponent), ComponentType.Conveyor },
             { typeof(WornItems), ComponentType.WornItems },
             { typeof(ActiveItems), ComponentType.ActiveItems },

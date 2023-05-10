@@ -7,16 +7,7 @@ namespace Schema
 {
     public class Harvest : Component
     {
-        public override ComponentType Type => ComponentType.Harvest;
-
-        [JsonProperty("harvestTargetId")]
-        public ulong? HarvestTargetId { get; set; }
-
-        [JsonProperty("targetHarvestPoint")]
-        public Point3Int? TargetHarvestPoint { get; set; }
-
-        [JsonProperty("tillH")]
-        public float? TimeUntilHarvest { get; set; }
+        public override ComponentType Type => ComponentType.Harvester;
 
         [JsonProperty("hRates")]
         public Dictionary<HarvestableType, float>? HarvestRateSeconds { get; set; }
@@ -31,19 +22,9 @@ namespace Schema
 
             Core.Entity owner = (Core.Entity)context[0];
 
-            var component = new Core.Harvest(owner);
+            var component = new Core.Harvester(owner);
 
             component.HarvestRateSeconds = HarvestRateSeconds;
-
-            if (HarvestTargetId != null)
-                component.SetTarget(HarvestTargetId.Value);
-            else if (TargetHarvestPoint != null)
-                component.SetTarget(TargetHarvestPoint.Value);
-
-            if (TimeUntilHarvest != null)
-            {
-                component.SetTimeUntilHarvest(this.TimeUntilHarvest.Value);
-            }
 
             return component;
         }

@@ -20,7 +20,7 @@ namespace Schema
         private static readonly Dictionary<ComponentType, Type> TypeMap = new Dictionary<ComponentType, Type>
         {
             { ComponentType.Conveyor, typeof(ConveyorComponent) },
-            { ComponentType.Harvest, typeof(Harvest) },
+            { ComponentType.Harvester, typeof(Harvest) },
             { ComponentType.Inventory, typeof(Inventory) },
             { ComponentType.Harvestable, typeof(Harvestable) },
             { ComponentType.WornItems, typeof(WornItems) },

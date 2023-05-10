@@ -12,6 +12,7 @@ namespace Core
         public abstract CharacterType Type { get; }
         public Point2Int GridPosition { get; protected set; }
         public bool IsPreview { get; private set; }
+        public Hex? ContainedBy { get; set; }
 
         public Character(Context context) : base(context)
         {
@@ -111,6 +112,11 @@ namespace Core
             {
                 component.Disabled = false;
             }
+        }
+
+        public void Destroy()
+        {
+
         }
     }
 }
