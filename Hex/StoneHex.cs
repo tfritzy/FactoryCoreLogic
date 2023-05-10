@@ -18,14 +18,9 @@ namespace Core
             };
         }
 
-        public override Schema.Hex ToSchema()
+        public override Schema.Hex BuildSchemaObject()
         {
-            return new Schema.StoneHex
-            {
-                ContainedEntities = this.ContainedEntities,
-                GridPosition = this.GridPosition,
-                Id = this.Id,
-            };
+            return new Schema.StoneHex();
         }
     }
 }

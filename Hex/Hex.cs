@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System; // Needed in 4.7.1
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Core
@@ -40,11 +41,22 @@ namespace Core
             this.Context.World.AddCharacter(entity);
         }
 
-        public abstract Schema.Hex ToSchema();
+
+        public abstract Schema.Hex BuildSchemaObject();
+        public Schema.Hex ToSchema()
+        {
+            var schemaHex = BuildSchemaObject();
+            schemaHex.ContainedEntities = this.ContainedEntities.FindAll(
+                (e) => World.GetCharacter(e) != null)
+                .ToList();
+            schemaHex.GridPosition = this.GridPosition;
+            schemaHex.Id = this.Id;
+            return schemaHex;
+        }
 
         public void Destroy()
         {
-
+            this.World.RemoveHex(this.GridPosition);
         }
     }
 }

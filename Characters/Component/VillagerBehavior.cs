@@ -1,8 +1,8 @@
 namespace Core
 {
-    public class VilligerBehavior : Component
+    public class VillagerBehavior : Component
     {
-        public override ComponentType Type => ComponentType.VilligerBehavior;
+        public override ComponentType Type => ComponentType.VillagerBehavior;
         public Worksite? PlaceOfEmployment { get; private set; }
 
         public override Schema.Component ToSchema()
@@ -10,7 +10,7 @@ namespace Core
             throw new System.NotImplementedException();
         }
 
-        public VilligerBehavior(Entity owner) : base(owner)
+        public VillagerBehavior(Entity owner) : base(owner)
         {
         }
 

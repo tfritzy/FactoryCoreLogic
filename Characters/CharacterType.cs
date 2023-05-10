@@ -5,9 +5,10 @@ namespace Core
         Invalid,
         Conveyor,
         Dummy,
+        DummyBuilding,
         Tree,
         Player,
-        Villiger,
+        Villager,
         Quarry,
     }
 }

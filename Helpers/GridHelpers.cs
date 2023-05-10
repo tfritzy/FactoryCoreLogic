@@ -6,43 +6,48 @@ namespace Core
     {
         private static readonly Point2Int[] oddNeighborPattern = new Point2Int[]
         {
-        new Point2Int(0, 1), // north
-        new Point2Int(1, 1), // northeast
-        new Point2Int(1, 0), // southeast
-        new Point2Int(0, -1), // south
-        new Point2Int(-1, 0), // southwest
-        new Point2Int(-1, 1) // northwest
+            new Point2Int(0, 1), // north
+            new Point2Int(1, 1), // northeast
+            new Point2Int(1, 0), // southeast
+            new Point2Int(0, -1), // south
+            new Point2Int(-1, 0), // southwest
+            new Point2Int(-1, 1) // northwest
         };
 
         private static readonly Point2Int[] evenNeighborPattern = new Point2Int[]
         {
-        new Point2Int(0, 1), // north
-        new Point2Int(1, 0),  // northeast
-        new Point2Int(1, -1), // southeast
-        new Point2Int(0, -1), // south
-        new Point2Int(-1,-1), // southwest
-        new Point2Int(-1, 0) // northwest
+            new Point2Int(0, 1), // north
+            new Point2Int(1, 0),  // northeast
+            new Point2Int(1, -1), // southeast
+            new Point2Int(0, -1), // south
+            new Point2Int(-1,-1), // southwest
+            new Point2Int(-1, 0) // northwest
         };
 
         private static readonly Dictionary<Point2Int, HexSide> oddNeighborPatternMap = new Dictionary<Point2Int, HexSide>()
-    {
-        { new Point2Int(0, 1), HexSide.North },
-        { new Point2Int(1, 1), HexSide.NorthEast },
-        { new Point2Int(1, 0), HexSide.SouthEast },
-        { new Point2Int(0, -1), HexSide.South },
-        { new Point2Int(-1, 0), HexSide.SouthWest },
-        { new Point2Int(-1, 1), HexSide.NorthWest }
-    };
+        {
+            { new Point2Int(0, 1), HexSide.North },
+            { new Point2Int(1, 1), HexSide.NorthEast },
+            { new Point2Int(1, 0), HexSide.SouthEast },
+            { new Point2Int(0, -1), HexSide.South },
+            { new Point2Int(-1, 0), HexSide.SouthWest },
+            { new Point2Int(-1, 1), HexSide.NorthWest }
+        };
 
         private static readonly Dictionary<Point2Int, HexSide> evenNeighborPatternMap = new Dictionary<Point2Int, HexSide>()
-    {
-        { new Point2Int(0, 1), HexSide.North },
-        { new Point2Int(1, 0), HexSide.NorthEast },
-        { new Point2Int(1, -1), HexSide.SouthEast },
-        { new Point2Int(0, -1), HexSide.South },
-        { new Point2Int(-1,-1), HexSide.SouthWest },
-        { new Point2Int(-1, 0), HexSide.NorthWest }
-    };
+        {
+            { new Point2Int(0, 1), HexSide.North },
+            { new Point2Int(1, 0), HexSide.NorthEast },
+            { new Point2Int(1, -1), HexSide.SouthEast },
+            { new Point2Int(0, -1), HexSide.South },
+            { new Point2Int(-1,-1), HexSide.SouthWest },
+            { new Point2Int(-1, 0), HexSide.NorthWest }
+        };
+
+        public static Point2Int GetNeighbor(int x, int y, HexSide direction)
+        {
+            return GetNeighbor(new Point2Int(x, y), direction);
+        }
 
         public static Point2Int GetNeighbor(Point2Int pos, HexSide direction)
         {

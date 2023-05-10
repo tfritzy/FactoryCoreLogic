@@ -61,7 +61,7 @@ namespace Core
             switch (character)
             {
                 case CharacterType.Dummy:
-                    return new Dummy(context);
+                    return new DummyBuilding(context);
                 case CharacterType.Conveyor:
                     return new Conveyor(context);
                 case CharacterType.Tree:

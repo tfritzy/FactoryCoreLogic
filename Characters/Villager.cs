@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace Core
 {
-    public class Villiger : Character
+    public class Villager : Character
     {
-        public override CharacterType Type => CharacterType.Villiger;
-        public VilligerBehavior Behavior => this.GetComponent<VilligerBehavior>();
+        public override CharacterType Type => CharacterType.Villager;
+        public VillagerBehavior Behavior => this.GetComponent<VillagerBehavior>();
 
         public override Schema.Character ToSchema()
         {
             throw new System.NotImplementedException();
         }
 
-        public Villiger(Context context) : base(context)
+        public Villager(Context context) : base(context)
         {
         }
 
@@ -22,7 +22,7 @@ namespace Core
             this.Components = new Dictionary<Type, Component>
             {
                 { typeof(Inventory), new Inventory(this, 3, 2) },
-                { typeof(VilligerBehavior), new VilligerBehavior(this) },
+                { typeof(VillagerBehavior), new VillagerBehavior(this) },
             };
         }
     }

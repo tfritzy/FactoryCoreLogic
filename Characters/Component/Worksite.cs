@@ -11,8 +11,8 @@ namespace Core
 
         public Worksite(Entity owner) : base(owner) { }
 
-        public int Employed => this.World.Villigers.FindAll(
-            v => World.GetCharacter(v).GetComponent<VilligerBehavior>().PlaceOfEmployment == this).Count;
+        public int Employed => this.World.Villagers.FindAll(
+            v => World.GetCharacter(v).GetComponent<VillagerBehavior>().PlaceOfEmployment == this).Count;
 
         public override Schema.Component ToSchema()
         {
@@ -36,31 +36,31 @@ namespace Core
                 throw new System.InvalidOperationException("Max employed reached");
             }
 
-            var unemployedVilligers =
-                this.World.Villigers.FindAll(
-                    v => World.GetCharacter(v)?.GetComponent<VilligerBehavior>().PlaceOfEmployment == null);
+            var unemployedVillagers =
+                this.World.Villagers.FindAll(
+                    v => World.GetCharacter(v)?.GetComponent<VillagerBehavior>().PlaceOfEmployment == null);
 
-            if (unemployedVilligers.Count == 0)
+            if (unemployedVillagers.Count == 0)
             {
-                throw new System.InvalidOperationException("No unemployed villigers");
+                throw new System.InvalidOperationException("No unemployed villagers");
             }
 
-            Villiger villiger = (Villiger)this.World.GetCharacter(unemployedVilligers[0]);
-            villiger.Behavior.SetPlaceOfEmployment(this);
+            Villager villager = (Villager)this.World.GetCharacter(unemployedVillagers[0]);
+            villager.Behavior.SetPlaceOfEmployment(this);
         }
 
         public void DecrementEmployed()
         {
-            var employedVilligers =
-                this.World.Villigers.FindAll(
-                    v => World.GetCharacter(v).GetComponent<VilligerBehavior>().PlaceOfEmployment == this);
+            var employedVillagers =
+                this.World.Villagers.FindAll(
+                    v => World.GetCharacter(v).GetComponent<VillagerBehavior>().PlaceOfEmployment == this);
 
-            if (employedVilligers.Count <= 0)
+            if (employedVillagers.Count <= 0)
             {
-                throw new System.InvalidOperationException("No employed villigers");
+                throw new System.InvalidOperationException("No employed villagers");
             }
 
-            Villiger gettingTheCan = (Villiger)this.World.GetCharacter(employedVilligers[0]);
+            Villager gettingTheCan = (Villager)this.World.GetCharacter(employedVillagers[0]);
             gettingTheCan.Behavior.SetPlaceOfEmployment(null);
         }
     }

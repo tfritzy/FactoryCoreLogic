@@ -10,7 +10,7 @@ namespace Core
         Life,
         WornItems,
         ActiveItems,
-        VilligerBehavior,
+        VillagerBehavior,
         Worksite,
     }
 }

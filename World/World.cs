@@ -10,7 +10,7 @@ namespace Core
     {
         private Hex?[,,] Hexes;
         private Dictionary<Point2Int, ulong> Buildings;
-        public List<ulong> Villigers { get; private set; }
+        public List<ulong> Villagers { get; private set; }
         private Dictionary<ulong, Character> Characters;
         public LinkedList<Point2Int> UnseenUpdates = new LinkedList<Point2Int>();
 
@@ -26,7 +26,7 @@ namespace Core
         {
             this.Characters = new Dictionary<ulong, Character>();
             this.Buildings = new Dictionary<Point2Int, ulong>();
-            this.Villigers = new List<ulong>();
+            this.Villagers = new List<ulong>();
             this.Hexes = hexes;
             this.UncoveredHexes = new HashSet<int>[hexes.GetLength(0), hexes.GetLength(1)];
             CalculateInitialUncovered();
@@ -49,14 +49,19 @@ namespace Core
 
         public Hex? GetTopHex(Point2Int point)
         {
-            int topHeight = GetTopHexHeight(point.x, point.y);
+            return GetTopHex(point.x, point.y);
+        }
+
+        public Hex? GetTopHex(int x, int y)
+        {
+            int topHeight = GetTopHexHeight(x, y);
 
             if (topHeight == -1)
             {
                 return null;
             }
 
-            return GetHex(point.x, point.y, topHeight);
+            return GetHex(x, y, topHeight);
         }
 
         public Hex? GetHex(Point3Int point)
@@ -150,11 +155,42 @@ namespace Core
             }
         }
 
+        private void MarkNeighborsUncovered(Point3Int point)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                Point3Int neighborPos = GridHelpers.GetNeighbor(point, (HexSide)i);
+
+                Hex? neighbor = GetHex(neighborPos);
+                if (neighbor != null)
+                {
+                    if (this.UncoveredHexes[neighborPos.x, neighborPos.y] == null)
+                    {
+                        this.UncoveredHexes[neighborPos.x, neighborPos.y] = new HashSet<int>();
+                    }
+
+                    if (!this.UncoveredHexes[neighborPos.x, neighborPos.y].Contains(neighborPos.z))
+                    {
+                        this.UncoveredHexes[neighborPos.x, neighborPos.y].Add(neighborPos.z);
+                        this.UnseenUpdates.AddLast(new Point2Int(neighborPos.x, neighborPos.y));
+                    }
+                }
+            }
+        }
+
+        public void RemoveHex(Point3Int location)
+        {
+            this.Hexes[location.x, location.y, location.z] = null;
+            this.UncoveredHexes[location.x, location.y].Remove(location.z);
+            this.UnseenUpdates.AddLast(new Point2Int(location.x, location.y));
+            MarkNeighborsUncovered(location);
+        }
+
         public void AddCharacter(Character character)
         {
-            if (character is Villiger)
+            if (character is Villager)
             {
-                this.Villigers.Add(character.Id);
+                this.Villagers.Add(character.Id);
             }
 
             this.Characters[character.Id] = character;
@@ -162,7 +198,12 @@ namespace Core
 
         public void RemoveCharacter(ulong id)
         {
+            if (this.Characters[id] is Villager)
+            {
+                this.Villagers.Remove(id);
+            }
 
+            this.Characters.Remove(id);
         }
 
         public void AddBuilding(Building building, Point2Int location)
