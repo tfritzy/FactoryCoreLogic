@@ -12,7 +12,28 @@ namespace Core
         private Dictionary<Point2Int, ulong> Buildings;
         public List<ulong> Villagers { get; private set; }
         private Dictionary<ulong, Character> Characters;
-        public LinkedList<Point2Int> UnseenUpdates = new LinkedList<Point2Int>();
+        public LinkedList<Update> UnseenUpdates = new LinkedList<Update>();
+
+        public class Update
+        {
+            public Point2Int Location { get; private set; }
+            public ulong Character { get; private set; }
+
+            public Update(ulong character)
+            {
+                this.Character = character;
+            }
+
+            public Update(int x, int y)
+            {
+                this.Location = new Point2Int(x, y);
+            }
+
+            public Update(Point2Int location)
+            {
+                this.Location = location;
+            }
+        }
 
         public int MaxX => Hexes.GetLength(0);
         public int MaxY => Hexes.GetLength(1);
@@ -172,7 +193,7 @@ namespace Core
                     if (!this.UncoveredHexes[neighborPos.x, neighborPos.y].Contains(neighborPos.z))
                     {
                         this.UncoveredHexes[neighborPos.x, neighborPos.y].Add(neighborPos.z);
-                        this.UnseenUpdates.AddLast(new Point2Int(neighborPos.x, neighborPos.y));
+                        this.UnseenUpdates.AddLast(new Update(neighborPos.x, neighborPos.y));
                     }
                 }
             }
@@ -182,7 +203,7 @@ namespace Core
         {
             this.Hexes[location.x, location.y, location.z] = null;
             this.UncoveredHexes[location.x, location.y].Remove(location.z);
-            this.UnseenUpdates.AddLast(new Point2Int(location.x, location.y));
+            this.UnseenUpdates.AddLast(new Update(location.x, location.y));
             MarkNeighborsUncovered(location);
         }
 
@@ -194,16 +215,23 @@ namespace Core
             }
 
             this.Characters[character.Id] = character;
+            this.UnseenUpdates.AddLast(new Update(character.Id));
         }
 
         public void RemoveCharacter(ulong id)
         {
-            if (this.Characters[id] is Villager)
+            if (this.Characters.ContainsKey(id) && this.Characters[id] is Villager)
             {
                 this.Villagers.Remove(id);
             }
 
+            if (!this.Characters.ContainsKey(id))
+            {
+                return;
+            }
+
             this.Characters.Remove(id);
+            this.UnseenUpdates.AddLast(new Update(id));
         }
 
         public void AddBuilding(Building building, Point2Int location)
@@ -217,7 +245,7 @@ namespace Core
             this.Buildings.Add(location, building.Id);
             building.OnAddToGrid(location);
 
-            this.UnseenUpdates.AddLast(location);
+            this.UnseenUpdates.AddLast(new Update(location));
         }
 
         public void RemoveBuilding(Point2Int location)
@@ -227,7 +255,7 @@ namespace Core
             this.Buildings.Remove(location);
             building.OnRemoveFromGrid();
 
-            this.UnseenUpdates.AddLast(location);
+            this.UnseenUpdates.AddLast(new Update(location));
         }
 
         public Building? GetBuildingAt(int x, int y) => GetBuildingAt(new Point2Int(x, y));

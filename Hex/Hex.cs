@@ -39,8 +39,18 @@ namespace Core
         {
             this.ContainedEntities.Add(entity.Id);
             this.Context.World.AddCharacter(entity);
+            entity.ContainedBy = this;
         }
 
+        public void RemoveContainedEntity(ulong entity)
+        {
+            this.ContainedEntities.Remove(entity);
+
+            if (this.Context.World.TryGetCharacter(entity, out Character? character))
+            {
+                character!.ContainedBy = null;
+            }
+        }
 
         public abstract Schema.Hex BuildSchemaObject();
         public Schema.Hex ToSchema()
@@ -57,6 +67,13 @@ namespace Core
         public void Destroy()
         {
             this.World.RemoveHex(this.GridPosition);
+
+            for (int i = 0; i < this.ContainedEntities.Count; i++)
+            {
+                ulong id = this.ContainedEntities[i];
+                this.Context.World.GetCharacter(id)?.Destroy();
+                i--;
+            }
         }
     }
 }
