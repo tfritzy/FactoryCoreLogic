@@ -61,6 +61,8 @@ namespace Core
             switch (character)
             {
                 case CharacterType.Dummy:
+                    return new Dummy(context);
+                case CharacterType.DummyBuilding:
                     return new DummyBuilding(context);
                 case CharacterType.Conveyor:
                     return new Conveyor(context);
@@ -68,6 +70,10 @@ namespace Core
                     return new Tree(context);
                 case CharacterType.Player:
                     return new Player(context);
+                case CharacterType.Villager:
+                    return new Villager(context);
+                case CharacterType.Quarry:
+                    return new Quarry(context);
                 default:
                     throw new ArgumentException("Invalid character type " + character);
             }

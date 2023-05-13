@@ -52,6 +52,12 @@ namespace Core
                         Owner.Inventory.AddItem(item);
                     }
                 }
+
+                if (target.IsDepleted)
+                {
+                    timeUntilHarvest = null;
+                    return;
+                }
             }
         }
 

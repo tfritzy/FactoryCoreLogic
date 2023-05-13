@@ -11,6 +11,7 @@ namespace Core
         public HarvestableType HarvestableType { get; private set; }
         public override ComponentType Type => ComponentType.Harvestable;
         public Item BuildHarvestedItem() => Item.Create(ProducedItemType);
+        public bool IsDepleted => RemainingItems == 0;
 
         public Harvestable(Entity owner, HarvestableType type) : base(owner)
         {

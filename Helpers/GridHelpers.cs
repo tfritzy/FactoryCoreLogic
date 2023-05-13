@@ -159,14 +159,22 @@ namespace Core
             return new Point2Int(col, row);
         }
 
+        public static void OffsetToCube(Point2Int point, out int q, out int r, out int s)
+        {
+            q = point.x;
+            r = point.y - (point.x - (point.x & 1)) / 2;
+            s = -q - r;
+        }
+
         public static List<Point2Int> GetHexInRange(Point2Int origin, int radius)
         {
+            OffsetToCube(origin, out int qo, out int ro, out int so);
             List<Point2Int> results = new List<Point2Int>();
-            for (int q = -radius; q <= +radius; q++)
+            for (int q = -radius + qo; q <= +radius + qo; q++)
             {
-                for (int r = -radius; r <= +radius; r++)
+                for (int r = -radius + ro; r <= +radius + ro; r++)
                 {
-                    for (int s = -radius; s <= +radius; s++)
+                    for (int s = -radius + so; s <= +radius + so; s++)
                     {
                         if (q + r + s == 0)
                         {
