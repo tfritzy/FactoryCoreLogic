@@ -11,6 +11,6 @@ namespace Core
         WornItems,
         ActiveItems,
         VillagerBehavior,
-        Worksite,
+        QuarryWorksite,
     }
 }

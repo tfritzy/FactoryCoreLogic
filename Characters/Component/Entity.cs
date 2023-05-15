@@ -7,7 +7,8 @@ namespace Core
 {
     public abstract class Entity
     {
-        protected Dictionary<Type, Component> Components;
+        protected Dictionary<Type, Component> Components = new Dictionary<Type, Component>();
+        private Dictionary<Type, List<Component>> BaseClassMap = new Dictionary<Type, List<Component>>();
         public ulong Id;
         public Context Context { get; set; }
         public World World => Context.World;
@@ -31,8 +32,14 @@ namespace Core
 
         public T GetComponent<T>() where T : Component
         {
-            if (!Components.ContainsKey(typeof(T)))
+            var type = typeof(T);
+            if (!Components.ContainsKey(type))
             {
+                if (BaseClassMap.ContainsKey(type) && BaseClassMap[type].Count > 0)
+                {
+                    return (T)BaseClassMap[type][0];
+                }
+
                 return default(T)!;
             }
 
@@ -41,6 +48,17 @@ namespace Core
 
         public virtual void SetComponent(Component component)
         {
+            var baseType = component.GetType().BaseType;
+            if (baseType != null)
+            {
+                if (!BaseClassMap.ContainsKey(baseType))
+                {
+                    BaseClassMap[baseType] = new List<Component>();
+                }
+
+                BaseClassMap[baseType].Add(component);
+            }
+
             Components[component.GetType()] = component;
         }
 

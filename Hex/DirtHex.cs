@@ -14,9 +14,7 @@ namespace Core
         protected override void InitComponents()
         {
             base.InitComponents();
-            this.Components = new Dictionary<Type, Component>() {
-                {typeof(Harvestable), new Harvestable(this, HarvestableType.DirtHex)}
-            };
+            this.SetComponent(new Harvestable(this, HarvestableType.DirtHex));
         }
 
         public override Schema.Hex BuildSchemaObject()

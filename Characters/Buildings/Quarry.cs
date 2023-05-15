@@ -12,16 +12,14 @@ namespace Core
 
         public override Schema.Character ToSchema()
         {
-            throw new System.NotImplementedException();
+            var quarry = new Schema.Quarry();
+            return this.PopulateSchema(quarry);
         }
 
         protected override void InitComponents()
         {
-            this.Components = new Dictionary<System.Type, Component>
-            {
-                { typeof(Inventory), new Inventory(this, 3, 2) },
-                { typeof(Worksite), new QuarryWorksite(this) },
-            };
+            this.SetComponent(new Inventory(this, 3, 2));
+            this.SetComponent(new QuarryWorksite(this));
         }
     }
 }

@@ -22,12 +22,9 @@ namespace Core
 
         protected override void InitComponents()
         {
-            this.Components = new Dictionary<Type, Component>
-            {
-                { typeof(Inventory), new Inventory(this, 10, 14) },
-                { typeof(ActiveItems), new ActiveItems(this, 10, 3) },
-                { typeof(WornItems), new WornItems(this, 1, 5) },
-            };
+            this.SetComponent(new Inventory(this, 10, 14));
+            this.SetComponent(new ActiveItems(this, 10, 3));
+            this.SetComponent(new WornItems(this, 1, 5));
         }
 
         public Building? BuidPreviewBuildingFromItem(int itemIndex, Point2Int location)

@@ -49,15 +49,23 @@ namespace Schema
                 foreach (ulong characterId in Characters.Keys)
                 {
                     Core.Character character = Characters[characterId].FromSchema(worldContext);
+
                     world.AddCharacter(character);
                 }
             }
 
             if (Buildings != null)
             {
-                foreach (var building in Buildings)
+                foreach (var kvp in Buildings)
                 {
-                    world.AddBuilding((Building)world.GetCharacter(building.Value), building.Key);
+                    Building? building = (Building?)world.GetCharacter(kvp.Value);
+
+                    if (building == null)
+                    {
+                        continue;
+                    }
+
+                    world.AddBuilding(building, kvp.Key);
                 }
             }
 

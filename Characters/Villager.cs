@@ -10,7 +10,8 @@ namespace Core
 
         public override Schema.Character ToSchema()
         {
-            throw new System.NotImplementedException();
+            var villager = new Schema.Villager();
+            return this.PopulateSchema(villager);
         }
 
         public Villager(Context context) : base(context)
@@ -19,11 +20,8 @@ namespace Core
 
         protected override void InitComponents()
         {
-            this.Components = new Dictionary<Type, Component>
-            {
-                { typeof(Inventory), new Inventory(this, 3, 2) },
-                { typeof(VillagerBehavior), new VillagerBehavior(this) },
-            };
+            this.SetComponent(new Inventory(this, 3, 2));
+            this.SetComponent(new VillagerBehavior(this));
         }
     }
 }

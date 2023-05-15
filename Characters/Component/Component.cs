@@ -27,6 +27,8 @@ namespace Core
             { typeof(ConveyorComponent), ComponentType.Conveyor },
             { typeof(WornItems), ComponentType.WornItems },
             { typeof(ActiveItems), ComponentType.ActiveItems },
+            { typeof(QuarryWorksite), ComponentType.QuarryWorksite },
+            { typeof(VillagerBehavior), ComponentType.VillagerBehavior },
         };
 
         public abstract Schema.Component ToSchema();

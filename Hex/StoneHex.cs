@@ -12,10 +12,7 @@ namespace Core
         protected override void InitComponents()
         {
             base.InitComponents();
-            this.Components = new Dictionary<Type, Component>
-            {
-                { typeof(Harvestable), new Harvestable(this, HarvestableType.StoneHex) }
-            };
+            this.SetComponent(new Harvestable(this, HarvestableType.StoneHex));
         }
 
         public override Schema.Hex BuildSchemaObject()

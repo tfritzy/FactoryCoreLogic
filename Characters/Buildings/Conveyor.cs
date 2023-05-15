@@ -15,10 +15,7 @@ namespace Core
 
         protected override void InitComponents()
         {
-            this.Components = new Dictionary<Type, Component>
-            {
-                { typeof(ConveyorComponent), new ConveyorComponent(this) }
-            };
+            this.SetComponent(new ConveyorComponent(this));
         }
 
         public override Schema.Character ToSchema()

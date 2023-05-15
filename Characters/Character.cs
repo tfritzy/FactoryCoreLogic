@@ -120,7 +120,7 @@ namespace Core
             }
         }
 
-        public void Destroy()
+        public virtual void Destroy()
         {
             Context.World.RemoveCharacter(this.Id);
             this.ContainedBy?.RemoveContainedEntity(this.Id);

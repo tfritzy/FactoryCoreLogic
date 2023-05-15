@@ -25,6 +25,8 @@ namespace Schema
             { ComponentType.Harvestable, typeof(Harvestable) },
             { ComponentType.WornItems, typeof(WornItems) },
             { ComponentType.ActiveItems, typeof(ActiveItems) },
+            { ComponentType.QuarryWorksite, typeof(QuarryWorksite) },
+            { ComponentType.VillagerBehavior, typeof(VillagerBehavior) },
         };
 
         public override bool CanConvert(Type objectType)

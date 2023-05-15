@@ -53,7 +53,7 @@ namespace Core
                     }
                 }
 
-                if (target.IsDepleted)
+                if (target.IsDepleted) 
                 {
                     timeUntilHarvest = null;
                     return;

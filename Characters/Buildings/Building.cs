@@ -8,5 +8,11 @@ namespace Core
         protected Building(Context context) : base(context)
         {
         }
+
+        public override void Destroy()
+        {
+            this.World.RemoveBuilding(this.GridPosition);
+            base.Destroy();
+        }
     }
 }

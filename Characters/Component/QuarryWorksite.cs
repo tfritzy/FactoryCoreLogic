@@ -4,11 +4,14 @@ namespace Core
 {
     public class QuarryWorksite : Worksite
     {
+        public override ComponentType Type => ComponentType.QuarryWorksite;
         public override int MaxEmployable => 3;
         protected override List<Point2Int> GetEligibleHex() => inRangeHex;
         protected override Point2Int GetStartPoint() => ((Building)this.Owner).GridPosition + startMineOffset;
+        protected override bool OnlyIncludeTopLayer => true;
+        protected override Schema.Worksite BuildSchemaObject() => new Schema.QuarryWorksite();
 
-        private const int Radius = 4;
+        public const int Radius = 4;
         public static Point2Int startMineOffset { get; } = new Point2Int(2, 1);
         public static Point2Int centerOffset { get; } = new Point2Int(6, 3);
 
@@ -16,9 +19,9 @@ namespace Core
 
         public QuarryWorksite(Entity owner) : base(owner) { }
 
-        protected override Harvestable? GetHarvestable(World world, Point2Int point2Int)
+        protected override Harvestable? GetHarvestable(Hex hex)
         {
-            return world.GetTopHex(point2Int)?.Harvestable;
+            return hex?.Harvestable;
         }
 
         protected override void InitInRangeHex()

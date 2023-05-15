@@ -10,10 +10,7 @@ namespace Core
 
         protected override void InitComponents()
         {
-            this.Components = new Dictionary<Type, Component>
-            {
-                { typeof(Harvestable), new Harvestable(this, HarvestableType.Tree) }
-            };
+            this.SetComponent(new Harvestable(this, HarvestableType.Tree));
         }
 
         public Tree(Context context) : base(context)

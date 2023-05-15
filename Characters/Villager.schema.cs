@@ -2,9 +2,9 @@ using Core;
 
 namespace Schema
 {
-    public class Conveyor : Character
+    public class Villager : Character
     {
-        public override CharacterType Type => CharacterType.Conveyor;
+        public override CharacterType Type => CharacterType.Villager;
 
         public override Core.Character FromSchema(params object[] context)
         {

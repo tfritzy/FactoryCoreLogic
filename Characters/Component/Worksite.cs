@@ -5,12 +5,13 @@ namespace Core
 {
     public abstract class Worksite : Component
     {
-        public override ComponentType Type => ComponentType.Worksite;
         public abstract int MaxEmployable { get; }
         protected abstract List<Point2Int> GetEligibleHex();
         protected abstract Point2Int GetStartPoint();
-        protected abstract Harvestable? GetHarvestable(World world, Point2Int point2Int);
+        protected abstract Harvestable? GetHarvestable(Hex hex);
         protected abstract void InitInRangeHex();
+        protected abstract Schema.Worksite BuildSchemaObject();
+        protected virtual bool OnlyIncludeTopLayer => false;
         private List<List<Harvestable>> eligibleHarvestables = new List<List<Harvestable>>();
         private List<Point2Int> hexInRange = new List<Point2Int>();
         private bool initialized = false;
@@ -21,7 +22,7 @@ namespace Core
 
         public override Schema.Component ToSchema()
         {
-            throw new System.NotImplementedException();
+            return BuildSchemaObject();
         }
 
         public override void OnAddToGrid()
@@ -37,6 +38,7 @@ namespace Core
             HashSet<Point2Int> inRangeHex = new HashSet<Point2Int>(GetEligibleHex());
             Queue<Tuple<Point2Int, int>> queue = new Queue<Tuple<Point2Int, int>>();
             HashSet<Point2Int> v = new HashSet<Point2Int>();
+            int? topHeight = null;
 
             queue.Enqueue(Tuple.Create(GetStartPoint(), 0));
 
@@ -51,16 +53,42 @@ namespace Core
 
                 v.Add(current.Item1);
 
-                while (eligibleHarvestables.Count <= current.Item2)
+                Hex? topHex = this.World.GetTopHex(current.Item1);
+                if (topHex != null)
                 {
-                    eligibleHarvestables.Add(new List<Harvestable>());
+                    Harvestable? harvestable = GetHarvestable(topHex);
+                    if (harvestable != null)
+                    {
+                        if (OnlyIncludeTopLayer)
+                        {
+                            if (topHeight == null || topHex.GridPosition.z > topHeight)
+                            {
+                                topHeight = topHex.GridPosition.z;
+                                eligibleHarvestables = new List<List<Harvestable>>();
+                            }
+
+                            while (eligibleHarvestables.Count <= current.Item2)
+                            {
+                                eligibleHarvestables.Add(new List<Harvestable>());
+                            }
+
+                            if (topHex.GridPosition.z == topHeight)
+                            {
+                                eligibleHarvestables[current.Item2].Add(harvestable);
+                            }
+                        }
+                        else
+                        {
+                            while (eligibleHarvestables.Count <= current.Item2)
+                            {
+                                eligibleHarvestables.Add(new List<Harvestable>());
+                            }
+
+                            eligibleHarvestables[current.Item2].Add(harvestable);
+                        }
+                    }
                 }
 
-                Harvestable? harvestable = GetHarvestable(this.World, current.Item1);
-                if (harvestable != null)
-                {
-                    eligibleHarvestables[current.Item2].Add(harvestable);
-                }
 
                 for (int i = 0; i < 6; i++)
                 {
@@ -137,7 +165,7 @@ namespace Core
 
             var unemployedVillagers =
                 this.World.Villagers.FindAll(
-                    v => World.GetCharacter(v)?.GetComponent<VillagerBehavior>().PlaceOfEmployment == null);
+                    v => World.GetCharacter(v)?.GetComponent<VillagerBehavior>().BuildingOfEmployment == null);
 
             if (unemployedVillagers.Count == 0)
             {
@@ -151,7 +179,7 @@ namespace Core
                 throw new System.InvalidOperationException("villager should not be null here.");
             }
 
-            villager?.Behavior.SetPlaceOfEmployment(this);
+            villager?.Behavior.SetPlaceOfEmployment(this.Owner.Id);
         }
 
         public void DecrementEmployed()
