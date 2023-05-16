@@ -154,7 +154,9 @@ namespace Core
 
                     this.UncoveredHexes[current.x, current.y].Add(current.z);
                 }
-                else
+
+                Hex? hex = Hexes[current.x, current.y, current.z];
+                if (hex == null || hex.Transparent)
                 {
                     for (int i = 0; i < 8; i++)
                     {

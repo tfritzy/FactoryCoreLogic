@@ -10,8 +10,10 @@ namespace Core
     public abstract class Hex : Entity
     {
         public abstract HexType Type { get; }
+        public virtual bool Transparent => false;
         public Point3Int GridPosition { get; protected set; }
         public List<ulong> ContainedEntities { get; set; }
+
 
         public Hex(Point3Int gridPosition, Context context) : base(context)
         {
@@ -30,6 +32,8 @@ namespace Core
                     return new DirtHex(gridPosition, context);
                 case HexType.Stone:
                     return new StoneHex(gridPosition, context);
+                case HexType.Water:
+                    return new WaterHex(gridPosition, context);
                 default:
                     throw new ArgumentException("Invalid hex type " + type);
             }

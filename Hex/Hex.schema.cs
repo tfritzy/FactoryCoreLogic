@@ -45,6 +45,7 @@ namespace Schema
         {
             { HexType.Dirt, typeof(DirtHex) },
             { HexType.Stone, typeof(StoneHex) },
+            { HexType.Water, typeof(WaterHex) },
         };
 
         public override bool CanConvert(Type objectType)
