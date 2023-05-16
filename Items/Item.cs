@@ -92,5 +92,10 @@ namespace Core
 
             return false;
         }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Type, Quantity);
+        }
     }
 }

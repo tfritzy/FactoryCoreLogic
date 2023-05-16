@@ -39,7 +39,7 @@ namespace Core
         {
             this.ContainedEntities.Add(entity.Id);
             this.Context.World.AddCharacter(entity);
-            entity.ContainedBy = this;
+            entity.ContainedByGridPosition = this.GridPosition;
         }
 
         public void RemoveContainedEntity(ulong entity)
@@ -48,7 +48,7 @@ namespace Core
 
             if (this.Context.World.TryGetCharacter(entity, out Character? character))
             {
-                character!.ContainedBy = null;
+                character!.ContainedByGridPosition = null;
             }
         }
 
@@ -71,7 +71,16 @@ namespace Core
             for (int i = 0; i < this.ContainedEntities.Count; i++)
             {
                 ulong id = this.ContainedEntities[i];
-                this.Context.World.GetCharacter(id)?.Destroy();
+                Character? character = this.Context.World.GetCharacter(id);
+                if (character != null)
+                {
+                    character.Destroy();
+                }
+                else
+                {
+                    this.ContainedEntities.RemoveAt(i);
+                }
+
                 i--;
             }
         }

@@ -12,7 +12,11 @@ namespace Core
         public abstract CharacterType Type { get; }
         public Point2Int GridPosition { get; protected set; }
         public bool IsPreview { get; private set; }
-        public Hex? ContainedBy { get; set; }
+        public Point3Int? ContainedByGridPosition { get; set; }
+        public Hex? ContainedBy =>
+            this.ContainedByGridPosition != null
+                ? this.World.GetHex(this.ContainedByGridPosition.Value)
+                : null;
 
         public Character(Context context) : base(context)
         {
@@ -83,6 +87,7 @@ namespace Core
         {
             character.Id = this.Id;
             character.GridPosition = this.GridPosition;
+            character.ContainedByGridPosition = this.ContainedByGridPosition;
             character.Components = this.Components.ToDictionary(
                 x => Component.ComponentTypeMap[x.Key], x => x.Value.ToSchema());
             return character;

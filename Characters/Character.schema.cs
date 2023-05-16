@@ -15,6 +15,9 @@ namespace Schema
         [JsonProperty("gridPosition")]
         public Point2Int GridPosition { get; set; }
 
+        [JsonProperty("cntdBy")]
+        public Point3Int? ContainedByGridPosition { get; set; }
+
         protected Core.Character ToCore(params object[] context)
         {
             if (context.Length == 0 || context[0] == null || !(context[0] is Context))
@@ -25,6 +28,7 @@ namespace Schema
             var character = Core.Character.Create(this.Type, worldContext);
             character.Id = this.Id;
             character.SetGridPosition(this.GridPosition);
+            character.ContainedByGridPosition = this.ContainedByGridPosition;
 
             if (this.Components == null)
                 this.Components = new Dictionary<Core.ComponentType, Component>();
