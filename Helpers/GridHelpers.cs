@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Core
 {
@@ -151,6 +152,10 @@ namespace Core
             return (HexSide)(((int)side + 3) % 6);
         }
 
+        public static Point2Int CubeToOffset(CubeCoord cube)
+        {
+            return CubeToOffset(cube.q, cube.r, cube.s);
+        }
 
         public static Point2Int CubeToOffset(int q, int r, int s)
         {
@@ -159,22 +164,24 @@ namespace Core
             return new Point2Int(col, row);
         }
 
-        public static void OffsetToCube(Point2Int point, out int q, out int r, out int s)
+        public static CubeCoord OffsetToCube(Point2Int point)
         {
-            q = point.x;
-            r = point.y - (point.x - (point.x & 1)) / 2;
-            s = -q - r;
+            int q = point.x;
+            int r = point.y - (point.x - (point.x & 1)) / 2;
+            int s = -q - r;
+
+            return new CubeCoord(q, r, s);
         }
 
         public static List<Point2Int> GetHexInRange(Point2Int origin, int radius)
         {
-            OffsetToCube(origin, out int qo, out int ro, out int so);
+            var cube = OffsetToCube(origin);
             List<Point2Int> results = new List<Point2Int>();
-            for (int q = -radius + qo; q <= +radius + qo; q++)
+            for (int q = -radius + cube.q; q <= +radius + cube.q; q++)
             {
-                for (int r = -radius + ro; r <= +radius + ro; r++)
+                for (int r = -radius + cube.r; r <= +radius + cube.r; r++)
                 {
-                    for (int s = -radius + so; s <= +radius + so; s++)
+                    for (int s = -radius + cube.s; s <= +radius + cube.s; s++)
                     {
                         if (q + r + s == 0)
                         {
@@ -185,6 +192,46 @@ namespace Core
             }
 
             return results;
+        }
+
+        public static List<Point2Int> GetHexRing(Point2Int origin, int radius)
+        {
+            return GetHexInRange(origin, radius).Except(GetHexInRange(origin, radius - 1)).ToList();
+        }
+
+        public static void SortHexByAngle(List<Point2Int> values, Point2Int origin, bool clockwise)
+        {
+            values.Sort((Point2Int a, Point2Int b) =>
+            {
+                float angle = System.MathF.Atan2(a.y - origin.y, a.x - origin.x) - System.MathF.Atan2(b.y - origin.y, b.x - origin.x);
+                if (!clockwise)
+                {
+                    angle = -angle;
+                }
+                if (angle < 0)
+                {
+                    return -1;
+                }
+                else if (angle > 0)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            });
+        }
+
+        public static CubeCoord Rotate60(CubeCoord coord, int rotation, bool clockwise = true)
+        {
+            int invert = rotation % 2 == 1 ? -1 : 1;
+            rotation = rotation % 3;
+            var points = new int[] { invert * coord.q, invert * coord.r, invert * coord.s };
+            var rotated = clockwise
+                ? points.Skip(rotation).Concat(points.Take(rotation)).ToArray()
+                : points.Skip((points.Length - rotation) % points.Length).Concat(points.Take((points.Length - rotation) % points.Length)).ToArray();
+            return new CubeCoord(rotated[0], rotated[1], rotated[2]);
         }
     }
 }

@@ -5,5 +5,6 @@ namespace Core
         Stone,
         Dirt,
         Water,
+        StoneStairs,
     }
 }

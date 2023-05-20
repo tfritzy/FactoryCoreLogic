@@ -100,6 +100,26 @@ namespace Core
             return this.Hexes[x, y, z];
         }
 
+        public void SetHex(Point3Int point, Hex? hex)
+        {
+            SetHex(point.x, point.y, point.z, hex);
+        }
+
+        public void SetHex(int x, int y, int z, Hex? hex)
+        {
+            if (!GridHelpers.IsInBounds(x, y, z, this.Hexes))
+            {
+                return;
+            }
+
+            this.Hexes[x, y, z] = hex;
+        }
+
+        public int GetTopHexHeight(Point2Int point)
+        {
+            return GetTopHexHeight(point.x, point.y);
+        }
+
         public int GetTopHexHeight(int x, int y)
         {
             if (!GridHelpers.IsInBounds(x, y, 0, this.Hexes) || this.UncoveredHexes[x, y] == null)

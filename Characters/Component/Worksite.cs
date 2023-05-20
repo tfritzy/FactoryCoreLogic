@@ -12,6 +12,7 @@ namespace Core
         protected abstract void InitInRangeHex();
         protected abstract Schema.Worksite BuildSchemaObject();
         protected virtual bool OnlyIncludeTopLayer => false;
+        protected virtual void RefineFoundHarvestables(List<List<Harvestable>> eligibleHarvestables) { }
         private List<List<Harvestable>> eligibleHarvestables = new List<List<Harvestable>>();
         private List<Point2Int> hexInRange = new List<Point2Int>();
         private bool initialized = false;
@@ -99,6 +100,8 @@ namespace Core
                     }
                 }
             }
+
+            RefineFoundHarvestables(eligibleHarvestables);
         }
 
         private Harvestable? FindClosestHarvestable()
