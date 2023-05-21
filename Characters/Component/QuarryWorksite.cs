@@ -39,7 +39,7 @@ namespace Core
             stairPositions = new HashSet<Point3Int>();
             int buildingHeight = this.World.GetTopHexHeight(buildingPos);
             var ring = GridHelpers.GetHexRing(buildingPos + centerOffset, Radius);
-            GridHelpers.SortHexByAngle(ring, buildingPos + centerOffset, clockwise: false);
+            GridHelpers.SortHexByAngle(ring, buildingPos + centerOffset, clockwise: true);
             int startIndex = ring.IndexOf(buildingPos + startMineOffset);
             ring = ring.Skip(startIndex).Concat(ring.Take(startIndex)).ToList();
 

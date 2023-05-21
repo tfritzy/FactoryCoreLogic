@@ -204,7 +204,7 @@ namespace Core
             values.Sort((Point2Int a, Point2Int b) =>
             {
                 float angle = System.MathF.Atan2(a.y - origin.y, a.x - origin.x) - System.MathF.Atan2(b.y - origin.y, b.x - origin.x);
-                if (!clockwise)
+                if (clockwise)
                 {
                     angle = -angle;
                 }
