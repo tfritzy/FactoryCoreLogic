@@ -68,6 +68,11 @@ namespace Core
             return x == other.x && y == other.y && z == other.z;
         }
 
+        public static explicit operator Point2Int(Point3Int p)
+        {
+            return new Point2Int(p.x, p.y);
+        }
+
         public override int GetHashCode()
         {
             unchecked

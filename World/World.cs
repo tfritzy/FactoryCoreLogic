@@ -75,14 +75,14 @@ namespace Core
 
         public Hex? GetTopHex(int x, int y)
         {
-            int topHeight = GetTopHexHeight(x, y);
+            int? topHeight = GetTopHexHeight(x, y);
 
-            if (topHeight == -1)
+            if (topHeight == null)
             {
                 return null;
             }
 
-            return GetHex(x, y, topHeight);
+            return GetHex(x, y, topHeight.Value);
         }
 
         public Hex? GetHex(Point3Int point)
@@ -100,19 +100,15 @@ namespace Core
             return this.Hexes[x, y, z];
         }
 
-        public void SetHex(Point3Int point, Hex? hex)
+        public void SetHex(Hex hex)
         {
-            SetHex(point.x, point.y, point.z, hex);
-        }
-
-        public void SetHex(int x, int y, int z, Hex? hex)
-        {
-            if (!GridHelpers.IsInBounds(x, y, z, this.Hexes))
+            if (!GridHelpers.IsInBounds(hex.GridPosition, this.Hexes))
             {
                 return;
             }
 
-            this.Hexes[x, y, z] = hex;
+            this.UnseenUpdates.AddLast(new Update((Point2Int)hex.GridPosition));
+            this.Hexes[hex.GridPosition.x, hex.GridPosition.y, hex.GridPosition.z] = hex;
         }
 
         public int GetTopHexHeight(Point2Int point)
@@ -124,7 +120,7 @@ namespace Core
         {
             if (!GridHelpers.IsInBounds(x, y, 0, this.Hexes) || this.UncoveredHexes[x, y] == null)
             {
-                return -1;
+                throw new System.ArgumentException("Invalid hex column");
             }
 
             return this.UncoveredHexes[x, y].Max();

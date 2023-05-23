@@ -14,18 +14,14 @@ namespace Core
         public Point3Int GridPosition { get; protected set; }
         public List<ulong> ContainedEntities { get; set; }
 
-
         public Hex(Point3Int gridPosition, Context context) : base(context)
         {
             this.GridPosition = gridPosition;
             this.ContainedEntities = new List<ulong>();
         }
 
-        public static Hex? Create(HexType? type, Point3Int gridPosition, Context context)
+        public static Hex Create(HexType type, Point3Int gridPosition, Context context)
         {
-            if (type == null)
-                return null;
-
             switch (type)
             {
                 case HexType.Dirt:

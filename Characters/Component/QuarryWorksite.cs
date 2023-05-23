@@ -76,7 +76,7 @@ namespace Core
                     if (stairPositions.Contains(pos))
                     {
                         Hex? newHex = Hex.Create(HexType.StoneStairs, pos, this.Owner.Context);
-                        this.World.SetHex(pos, newHex);
+                        this.World.SetHex(newHex);
 
                         eligibleHarvestables[d].RemoveAt(i);
                         i--;
