@@ -37,15 +37,20 @@ namespace Core
         {
             Point2Int buildingPos = ((Building)this.Owner).GridPosition;
             stairPositions = new HashSet<Point3Int>();
-            int buildingHeight = this.World.GetTopHexHeight(buildingPos);
+            int? buildingHeight = this.World.GetTopHexHeight(buildingPos);
             var ring = GridHelpers.GetHexRing(buildingPos + centerOffset, Radius);
             GridHelpers.SortHexByAngle(ring, buildingPos + centerOffset, clockwise: true);
             int startIndex = ring.IndexOf(buildingPos + startMineOffset);
             ring = ring.Skip(startIndex).Concat(ring.Take(startIndex)).ToList();
 
+            if (buildingHeight == null)
+            {
+                throw new System.Exception("Building is in invalid place");
+            }
+
             for (int i = 0; i < MAX_DEPTH; i++)
             {
-                int heightOffset = buildingHeight - i;
+                int heightOffset = buildingHeight.Value - i;
                 while (heightOffset < 0)
                 {
                     heightOffset += ring.Count;

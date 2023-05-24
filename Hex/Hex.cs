@@ -32,6 +32,8 @@ namespace Core
                     return new WaterHex(gridPosition, context);
                 case HexType.StoneStairs:
                     return new StoneStairs(gridPosition, context);
+                case HexType.Bedrock:
+                    return new Bedrock(gridPosition, context);
                 default:
                     throw new ArgumentException("Invalid hex type " + type);
             }

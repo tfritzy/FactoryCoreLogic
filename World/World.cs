@@ -41,21 +41,55 @@ namespace Core
 
         private HashSet<int>[,] UncoveredHexes;
 
-        public World() : this(new Hex?[0, 0, 0]) { }
+        public World() : this(new HexType?[0, 0, 0]) { }
 
-        public World(Hex?[,,] hexes)
+        public World(HexType?[,,] hexes)
         {
             this.Characters = new Dictionary<ulong, Character>();
             this.Buildings = new Dictionary<Point2Int, ulong>();
             this.Villagers = new List<ulong>();
-            this.Hexes = hexes;
-            this.UncoveredHexes = new HashSet<int>[hexes.GetLength(0), hexes.GetLength(1)];
-            CalculateInitialUncovered();
+            this.Hexes = new Hex?[0, 0, 0];
+            this.UncoveredHexes = new HashSet<int>[0, 0];
+            InitHexes(hexes);
         }
 
         public void SetHexes(Hex?[,,] hexes)
         {
             this.Hexes = hexes;
+            this.UncoveredHexes = new HashSet<int>[hexes.GetLength(0), hexes.GetLength(1)];
+            CalculateInitialUncovered();
+        }
+
+        private void InitHexes(HexType?[,,] hexes)
+        {
+            Context contex = new Context(this);
+            this.Hexes = new Hex?[hexes.GetLength(0), hexes.GetLength(1), hexes.GetLength(2) + 1];
+            for (int x = 0; x < hexes.GetLength(0); x++)
+            {
+                for (int y = 0; y < hexes.GetLength(1); y++)
+                {
+                    for (int z = 0; z < hexes.GetLength(2); z++)
+                    {
+                        HexType? hexType = hexes[x, y, z];
+                        if (hexType == null)
+                        {
+                            continue;
+                        }
+
+                        Hex hex = Hex.Create(hexType.Value, new Point3Int(x, y, z + 1), contex);
+                        this.Hexes[x, y, z + 1] = hex;
+                    }
+                }
+            }
+
+            for (int x = 0; x < hexes.GetLength(0); x++)
+            {
+                for (int y = 0; y < hexes.GetLength(1); y++)
+                {
+                    this.Hexes[x, y, 0] = Hex.Create(HexType.Bedrock, new Point3Int(x, y, 0), new Context(this));
+                }
+            }
+
             this.UncoveredHexes = new HashSet<int>[hexes.GetLength(0), hexes.GetLength(1)];
             CalculateInitialUncovered();
         }
@@ -107,20 +141,25 @@ namespace Core
                 return;
             }
 
+            if (this.Hexes[hex.GridPosition.x, hex.GridPosition.y, hex.GridPosition.z]?.Type == HexType.Bedrock)
+            {
+                return;
+            }
+
             this.UnseenUpdates.AddLast(new Update((Point2Int)hex.GridPosition));
             this.Hexes[hex.GridPosition.x, hex.GridPosition.y, hex.GridPosition.z] = hex;
         }
 
-        public int GetTopHexHeight(Point2Int point)
+        public int? GetTopHexHeight(Point2Int point)
         {
             return GetTopHexHeight(point.x, point.y);
         }
 
-        public int GetTopHexHeight(int x, int y)
+        public int? GetTopHexHeight(int x, int y)
         {
             if (!GridHelpers.IsInBounds(x, y, 0, this.Hexes) || this.UncoveredHexes[x, y] == null)
             {
-                throw new System.ArgumentException("Invalid hex column");
+                return null;
             }
 
             return this.UncoveredHexes[x, y].Max();

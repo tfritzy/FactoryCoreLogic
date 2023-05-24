@@ -46,7 +46,8 @@ namespace Schema
             { HexType.Dirt, typeof(DirtHex) },
             { HexType.Stone, typeof(StoneHex) },
             { HexType.Water, typeof(WaterHex) },
-            { HexType.StoneStairs, typeof(StoneStairs) }
+            { HexType.StoneStairs, typeof(StoneStairs) },
+            { HexType.Bedrock, typeof(Bedrock) },
         };
 
         public override bool CanConvert(Type objectType)
