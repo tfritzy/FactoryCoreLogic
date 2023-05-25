@@ -11,6 +11,7 @@ namespace Core
     {
         public abstract HexType Type { get; }
         public virtual bool Transparent => false;
+        public virtual bool Indestructible => false;
         public Point3Int GridPosition { get; protected set; }
         public List<ulong> ContainedEntities { get; set; }
 
@@ -70,6 +71,11 @@ namespace Core
 
         public void Destroy()
         {
+            if (this.Indestructible)
+            {
+                return;
+            }
+
             this.World.RemoveHex(this.GridPosition);
 
             for (int i = 0; i < this.ContainedEntities.Count; i++)
