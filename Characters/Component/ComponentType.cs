@@ -12,5 +12,6 @@ namespace Core
         ActiveItems,
         VillagerBehavior,
         QuarryWorksite,
+        Attack,
     }
 }
