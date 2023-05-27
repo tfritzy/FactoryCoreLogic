@@ -9,13 +9,23 @@ namespace Core
 
         public override Schema.Component ToSchema()
         {
-            throw new System.NotImplementedException();
+            return new Schema.Life
+            {
+                BaseHealth = BaseHealth,
+                Health = Health,
+            };
         }
 
         public Life(Entity owner, int health) : base(owner)
         {
             BaseHealth = health;
             Health = health;
+        }
+
+        public Life(Entity owner, int baseHealth, int remainingHealth) : base(owner)
+        {
+            BaseHealth = baseHealth;
+            Health = remainingHealth;
         }
 
         public void Damage(int damage)

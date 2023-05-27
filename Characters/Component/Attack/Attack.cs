@@ -10,7 +10,11 @@ namespace Core
 
         public override Schema.Component ToSchema()
         {
-            throw new System.NotImplementedException();
+            return new Schema.Attack
+            {
+                BaseDamage = BaseDamage,
+                BaseCooldown = BaseCooldown,
+            };
         }
 
         public Attack(Entity owner, float baseCooldown, int baseDamage) : base(owner)

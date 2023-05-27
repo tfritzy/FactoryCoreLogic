@@ -27,6 +27,8 @@ namespace Schema
             { ComponentType.ActiveItems, typeof(ActiveItems) },
             { ComponentType.QuarryWorksite, typeof(QuarryWorksite) },
             { ComponentType.VillagerBehavior, typeof(VillagerBehavior) },
+            { ComponentType.Attack, typeof(Attack) },
+            { ComponentType.Life, typeof(Life) },
         };
 
         public override bool CanConvert(Type objectType)

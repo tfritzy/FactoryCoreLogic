@@ -29,6 +29,8 @@ namespace Core
             { typeof(ActiveItems), ComponentType.ActiveItems },
             { typeof(QuarryWorksite), ComponentType.QuarryWorksite },
             { typeof(VillagerBehavior), ComponentType.VillagerBehavior },
+            { typeof(Attack), ComponentType.Attack },
+            { typeof(Life), ComponentType.Life },
         };
 
         public abstract Schema.Component ToSchema();
