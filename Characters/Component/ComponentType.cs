@@ -13,5 +13,6 @@ namespace Core
         VillagerBehavior,
         QuarryWorksite,
         Attack,
+        Projectile
     }
 }

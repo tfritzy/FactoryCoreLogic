@@ -12,6 +12,7 @@ namespace Core
         private Dictionary<Point2Int, ulong> Buildings;
         public List<ulong> Villagers { get; private set; }
         private Dictionary<ulong, Character> Characters;
+        public Dictionary<ulong, Projectile> Projectiles { get; private set; }
         public LinkedList<Update> UnseenUpdates = new LinkedList<Update>();
 
         public class Update
@@ -48,6 +49,7 @@ namespace Core
             this.Characters = new Dictionary<ulong, Character>();
             this.Buildings = new Dictionary<Point2Int, ulong>();
             this.Villagers = new List<ulong>();
+            this.Projectiles = new Dictionary<ulong, Projectile>();
             this.Hexes = new Hex?[0, 0, 0];
             this.UncoveredHexes = new HashSet<int>[0, 0];
             InitHexes(hexes);
@@ -396,6 +398,11 @@ namespace Core
         public bool TryGetCharacter(ulong id, out Character? character)
         {
             return this.Characters.TryGetValue(id, out character);
+        }
+
+        public void AddProjectile(Projectile projectile)
+        {
+            this.Projectiles.Add(projectile.Id, projectile);
         }
 
         public void AckUpdate()
