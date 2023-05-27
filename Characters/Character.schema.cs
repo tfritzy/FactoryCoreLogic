@@ -18,6 +18,9 @@ namespace Schema
         [JsonProperty("cntdBy")]
         public Point3Int? ContainedByGridPosition { get; set; }
 
+        [JsonProperty("alliance")]
+        public int Alliance { get; set; }
+
         protected Core.Character ToCore(params object[] context)
         {
             if (context.Length == 0 || context[0] == null || !(context[0] is Context))
@@ -25,7 +28,7 @@ namespace Schema
 
             Context worldContext = (Context)context[0];
 
-            var character = Core.Character.Create(this.Type, worldContext);
+            var character = Core.Character.Create(this.Type, worldContext, Alliance);
             character.Id = this.Id;
             character.SetGridPosition(this.GridPosition);
             character.ContainedByGridPosition = this.ContainedByGridPosition;

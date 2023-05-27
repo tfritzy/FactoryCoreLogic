@@ -11,7 +11,7 @@ namespace Core
         public ConveyorComponent? Component => this.GetComponent<ConveyorComponent>();
         public override CharacterType Type => CharacterType.Conveyor;
 
-        public Conveyor(Context context) : base(context) { }
+        public Conveyor(Context context, int alliance) : base(context, alliance) { }
 
         protected override void InitComponents()
         {

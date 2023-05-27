@@ -23,7 +23,7 @@ namespace Schema
             if (context.Length == 0 || context[0] == null || !(context[0] is Core.Entity))
                 throw new ArgumentException("AttackComponent requires an Entity as context[0]");
 
-            Core.Entity owner = (Core.Entity)context[0];
+            Core.Character owner = (Core.Character)context[0];
 
             return new Core.Attack(owner, BaseCooldown, BaseDamage, Projectile);
         }

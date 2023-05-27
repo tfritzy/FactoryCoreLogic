@@ -15,6 +15,6 @@ namespace Core
             return this.PopulateSchema(dummy);
         }
 
-        public Dummy(Context context) : base(context) { }
+        public Dummy(Context context, int alliance) : base(context, alliance) { }
     }
 }

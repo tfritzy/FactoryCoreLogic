@@ -13,7 +13,7 @@ namespace Core
             this.SetComponent(new Harvestable(this, HarvestableType.Tree));
         }
 
-        public Tree(Context context) : base(context)
+        public Tree(Context context, int alliance) : base(context, alliance)
         {
         }
 

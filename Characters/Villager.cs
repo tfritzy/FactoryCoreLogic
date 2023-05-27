@@ -14,7 +14,7 @@ namespace Core
             return this.PopulateSchema(villager);
         }
 
-        public Villager(Context context) : base(context)
+        public Villager(Context context, int alliance) : base(context, alliance)
         {
         }
 

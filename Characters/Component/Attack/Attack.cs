@@ -8,6 +8,7 @@ namespace Core
         public float BaseCooldown { get; private set; }
         public float RemainingCooldown { get; private set; }
         public ProjectileType Projectile { get; private set; }
+        public new Character Owner => (Character)base.Owner;
 
         public override Schema.Component ToSchema()
         {
@@ -19,7 +20,7 @@ namespace Core
             };
         }
 
-        public Attack(Entity owner, float cooldown, int damage, ProjectileType projectile) : base(owner)
+        public Attack(Character owner, float cooldown, int damage, ProjectileType projectile) : base(owner)
         {
             BaseCooldown = cooldown;
             RemainingCooldown = cooldown;
@@ -35,27 +36,47 @@ namespace Core
                 return;
             }
 
+            if (!IsTarget(target))
+            {
+                return;
+            }
+
             if (Projectile != ProjectileType.Invalid)
             {
                 BuildProjectile();
             }
             else
             {
-                target.GetComponent<Life>().Damage(Damage);
+                DealDamage(target);
             }
 
             RemainingCooldown = BaseCooldown;
+        }
+
+        private void DealDamage(Character target)
+        {
+            target.GetComponent<Life>().Damage(Damage);
+        }
+
+        private bool IsTarget(Character target)
+        {
+            if (!target.HasComponent<Life>())
+            {
+                return false;
+            }
+
+            return target.Alliance != Owner.Alliance;
         }
 
         private void BuildProjectile()
         {
             this.World.AddProjectile(
                 new Projectile(
-                    this.Owner.Context,
-                    this.Projectile,
-                    (Character target) => { },
-                    (Character target) => false,
-                    -1
+                    context: this.Owner.Context,
+                    projectile: this.Projectile,
+                    dealDamage: DealDamage,
+                    isTarget: IsTarget,
+                    maxHits: 1
                 )
             );
         }

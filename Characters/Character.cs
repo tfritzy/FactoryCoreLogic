@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Core
 {
@@ -13,13 +9,15 @@ namespace Core
         public Point2Int GridPosition { get; protected set; }
         public bool IsPreview { get; private set; }
         public Point3Int? ContainedByGridPosition { get; set; }
+        public int Alliance { get; private set; }
         public Hex? ContainedBy =>
             this.ContainedByGridPosition != null
                 ? this.World.GetHex(this.ContainedByGridPosition.Value)
                 : null;
 
-        public Character(Context context) : base(context)
+        public Character(Context context, int alliance) : base(context)
         {
+            this.Alliance = alliance;
         }
 
         public virtual void Tick(float deltaTime)
@@ -60,24 +58,27 @@ namespace Core
             }
         }
 
-        public static Character Create(CharacterType character, Context context)
+        public static Character Create(
+            CharacterType character,
+            Context context,
+            int alliance = Constants.Alliance.NEUTRAL)
         {
             switch (character)
             {
                 case CharacterType.Dummy:
-                    return new Dummy(context);
+                    return new Dummy(context, alliance);
                 case CharacterType.DummyBuilding:
-                    return new DummyBuilding(context);
+                    return new DummyBuilding(context, alliance);
                 case CharacterType.Conveyor:
-                    return new Conveyor(context);
+                    return new Conveyor(context, alliance);
                 case CharacterType.Tree:
-                    return new Tree(context);
+                    return new Tree(context, alliance);
                 case CharacterType.Player:
-                    return new Player(context);
+                    return new Player(context, alliance);
                 case CharacterType.Villager:
-                    return new Villager(context);
+                    return new Villager(context, alliance);
                 case CharacterType.Quarry:
-                    return new Quarry(context);
+                    return new Quarry(context, alliance);
                 default:
                     throw new ArgumentException("Invalid character type " + character);
             }
@@ -88,6 +89,7 @@ namespace Core
             character.Id = this.Id;
             character.GridPosition = this.GridPosition;
             character.ContainedByGridPosition = this.ContainedByGridPosition;
+            character.Alliance = this.Alliance;
             character.Components = this.Components.ToDictionary(
                 x => Component.ComponentTypeMap[x.Key], x => x.Value.ToSchema());
             return character;

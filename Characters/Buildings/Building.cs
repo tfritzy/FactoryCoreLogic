@@ -5,7 +5,7 @@ namespace Core
 {
     public abstract class Building : Character
     {
-        protected Building(Context context) : base(context)
+        protected Building(Context context, int alliance) : base(context, alliance)
         {
         }
 

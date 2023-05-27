@@ -6,7 +6,7 @@ namespace Core
     {
         public override CharacterType Type => CharacterType.Quarry;
 
-        public Quarry(Context context) : base(context)
+        public Quarry(Context context, int alliance) : base(context, alliance)
         {
         }
 

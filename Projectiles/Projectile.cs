@@ -11,15 +11,15 @@ namespace Core
 
         public Projectile(
             Context context,
-            ProjectileType type,
+            ProjectileType projectile,
             Action<Character> dealDamage,
             Func<Character, bool> isTarget,
-            int hitsRemaining = 1) : base(context)
+            int maxHits = 1) : base(context)
         {
-            this.Type = type;
+            this.Type = projectile;
             this.DealDamage = dealDamage;
             this.IsTarget = isTarget;
-            this.HitsRemaining = hitsRemaining;
+            this.HitsRemaining = maxHits;
         }
 
         public void OnCollide(Character character)

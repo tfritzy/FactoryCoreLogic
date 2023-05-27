@@ -15,7 +15,7 @@ namespace Core
             return this.PopulateSchema(player);
         }
 
-        public Player(Context context) : base(context)
+        public Player(Context context, int alliance) : base(context, alliance)
         {
 
         }
