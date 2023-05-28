@@ -15,27 +15,6 @@ namespace Core
         public Dictionary<ulong, Projectile> Projectiles { get; private set; }
         public LinkedList<Update> UnseenUpdates = new LinkedList<Update>();
 
-        public class Update
-        {
-            public Point2Int Location { get; private set; }
-            public ulong Character { get; private set; }
-
-            public Update(ulong character)
-            {
-                this.Character = character;
-            }
-
-            public Update(int x, int y)
-            {
-                this.Location = new Point2Int(x, y);
-            }
-
-            public Update(Point2Int location)
-            {
-                this.Location = location;
-            }
-        }
-
         public int MaxX => Hexes.GetLength(0);
         public int MaxY => Hexes.GetLength(1);
         public int MaxHeight => Hexes.GetLength(2);
@@ -148,7 +127,7 @@ namespace Core
                 return;
             }
 
-            this.UnseenUpdates.AddLast(new Update((Point2Int)hex.GridPosition));
+            this.UnseenUpdates.AddLast(new LocationUpdate((Point2Int)hex.GridPosition));
             this.Hexes[hex.GridPosition.x, hex.GridPosition.y, hex.GridPosition.z] = hex;
         }
 
@@ -252,7 +231,7 @@ namespace Core
                     if (!this.UncoveredHexes[neighborPos.x, neighborPos.y].Contains(neighborPos.z))
                     {
                         this.UncoveredHexes[neighborPos.x, neighborPos.y].Add(neighborPos.z);
-                        this.UnseenUpdates.AddLast(new Update(neighborPos.x, neighborPos.y));
+                        this.UnseenUpdates.AddLast(new LocationUpdate(neighborPos.x, neighborPos.y));
                     }
                 }
             }
@@ -262,7 +241,7 @@ namespace Core
         {
             this.Hexes[location.x, location.y, location.z] = null;
             this.UncoveredHexes[location.x, location.y].Remove(location.z);
-            this.UnseenUpdates.AddLast(new Update(location.x, location.y));
+            this.UnseenUpdates.AddLast(new LocationUpdate(location.x, location.y));
             MarkNeighborsUncovered(location);
         }
 
@@ -274,7 +253,7 @@ namespace Core
             }
 
             this.Characters[character.Id] = character;
-            this.UnseenUpdates.AddLast(new Update(character.Id));
+            this.UnseenUpdates.AddLast(new CharacterUpdate(character.Id));
         }
 
         public void RemoveCharacter(ulong id)
@@ -290,7 +269,7 @@ namespace Core
             }
 
             this.Characters.Remove(id);
-            this.UnseenUpdates.AddLast(new Update(id));
+            this.UnseenUpdates.AddLast(new CharacterUpdate(id));
         }
 
         public void AddBuilding(Building building, Point2Int location)
@@ -304,7 +283,7 @@ namespace Core
             this.Buildings.Add(location, building.Id);
             building.OnAddToGrid(location);
 
-            this.UnseenUpdates.AddLast(new Update(location));
+            this.UnseenUpdates.AddLast(new LocationUpdate(location));
         }
 
         public void RemoveBuilding(Point2Int location)
@@ -314,7 +293,7 @@ namespace Core
             this.Buildings.Remove(location);
             building.OnRemoveFromGrid();
 
-            this.UnseenUpdates.AddLast(new Update(location));
+            this.UnseenUpdates.AddLast(new LocationUpdate(location));
         }
 
         public Building? GetBuildingAt(int x, int y) => GetBuildingAt(new Point2Int(x, y));
@@ -403,6 +382,7 @@ namespace Core
         public void AddProjectile(Projectile projectile)
         {
             this.Projectiles.Add(projectile.Id, projectile);
+            this.UnseenUpdates.AddLast(new ProjectileUpdate(projectile.Id));
         }
 
         public void AckUpdate()
