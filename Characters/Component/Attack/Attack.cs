@@ -74,6 +74,8 @@ namespace Core
                 new Projectile(
                     context: this.Owner.Context,
                     projectile: this.Projectile,
+                    location: new Point3Float(), // TODO: Make it owner's proj pos
+                    velocity: new Point3Float(), // TODO: Define some value somewhere.
                     dealDamage: DealDamage,
                     isTarget: IsTarget,
                     maxHits: 1
