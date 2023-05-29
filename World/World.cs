@@ -352,7 +352,7 @@ namespace Core
             };
         }
 
-        public static World FromSchema(string text)
+        public static World Deserialize(string text)
         {
             Schema.World? schemaWorld = JsonConvert.DeserializeObject<Schema.World>(text);
 

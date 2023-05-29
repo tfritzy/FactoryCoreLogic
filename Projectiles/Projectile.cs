@@ -52,6 +52,19 @@ namespace Core
             }
         }
 
+        public void OnCollide(Hex hex)
+        {
+            if (HitsRemaining <= 0)
+            {
+                return;
+            }
+
+            HitsRemaining = 0;
+
+            if (ExplosionRadius > 0f)
+                PhysicsRequest = new SpherePhysicsRequest(Location, ExplosionRadius);
+        }
+
         public void Tick(float deltaTime)
         {
             Location += Velocity * deltaTime;

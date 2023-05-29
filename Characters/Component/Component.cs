@@ -31,6 +31,7 @@ namespace Core
             { typeof(VillagerBehavior), ComponentType.VillagerBehavior },
             { typeof(Attack), ComponentType.Attack },
             { typeof(Life), ComponentType.Life },
+            { typeof(TowerTargeting), ComponentType.TowerTargeting },
         };
 
         public abstract Schema.Component ToSchema();

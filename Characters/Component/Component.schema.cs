@@ -29,6 +29,7 @@ namespace Schema
             { ComponentType.VillagerBehavior, typeof(VillagerBehavior) },
             { ComponentType.Attack, typeof(Attack) },
             { ComponentType.Life, typeof(Life) },
+            { ComponentType.TowerTargeting, typeof(TowerTargeting) },
         };
 
         public override bool CanConvert(Type objectType)
