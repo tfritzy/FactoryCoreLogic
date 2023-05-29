@@ -7,9 +7,12 @@ namespace Core
     {
         public abstract CharacterType Type { get; }
         public Point2Int GridPosition { get; protected set; }
+        public virtual Point3Float Location { get; }
         public bool IsPreview { get; private set; }
         public Point3Int? ContainedByGridPosition { get; set; }
         public int Alliance { get; private set; }
+        private static Point3Float defaultProjectileOffset = new Point3Float();
+        public virtual Point3Float ProjectileSpawnOffset => defaultProjectileOffset;
         public Hex? ContainedBy =>
             this.ContainedByGridPosition != null
                 ? this.World.GetHex(this.ContainedByGridPosition.Value)
@@ -79,6 +82,8 @@ namespace Core
                     return new Villager(context, alliance);
                 case CharacterType.Quarry:
                     return new Quarry(context, alliance);
+                case CharacterType.GuardTower:
+                    return new GuardTower(context, alliance);
                 default:
                     throw new ArgumentException("Invalid character type " + character);
             }

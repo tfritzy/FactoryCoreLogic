@@ -10,5 +10,6 @@ namespace Core
         Player,
         Villager,
         Quarry,
+        GuardTower
     }
 }
