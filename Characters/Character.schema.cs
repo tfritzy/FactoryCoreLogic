@@ -13,10 +13,7 @@ namespace Schema
         public abstract CharacterType Type { get; }
 
         [JsonProperty("gridPosition")]
-        public Point2Int GridPosition { get; set; }
-
-        [JsonProperty("cntdBy")]
-        public Point3Int? ContainedByGridPosition { get; set; }
+        public Point3Int GridPosition { get; set; }
 
         [JsonProperty("alliance")]
         public int Alliance { get; set; }
@@ -30,8 +27,6 @@ namespace Schema
 
             var character = Core.Character.Create(this.Type, worldContext, Alliance);
             character.Id = this.Id;
-            character.SetGridPosition(this.GridPosition);
-            character.ContainedByGridPosition = this.ContainedByGridPosition;
 
             if (this.Components == null)
                 this.Components = new Dictionary<Core.ComponentType, Component>();
@@ -53,7 +48,6 @@ namespace Schema
         private static readonly Dictionary<CharacterType, Type> TypeMap = new Dictionary<CharacterType, Type>
         {
             { CharacterType.Conveyor, typeof(Conveyor) },
-            { CharacterType.Tree, typeof(Tree) },
             { CharacterType.Dummy, typeof(Dummy) },
             { CharacterType.DummyBuilding, typeof(DummyBuilding) },
             { CharacterType.Player, typeof(Player) },

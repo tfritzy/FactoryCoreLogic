@@ -8,6 +8,8 @@ namespace Core
         public float BaseCooldown { get; private set; }
         public float RemainingCooldown { get; private set; }
         public ProjectileType Projectile { get; private set; }
+        public float BaseRange { get; private set; }
+        public float Range { get; private set; }
         public new Character Owner => (Character)base.Owner;
 
         public override Schema.Component ToSchema()
@@ -20,12 +22,20 @@ namespace Core
             };
         }
 
-        public Attack(Character owner, float cooldown, int damage, ProjectileType projectile) : base(owner)
+        public Attack(
+            Character owner,
+            float cooldown,
+            int damage,
+            float range,
+            ProjectileType projectile
+            ) : base(owner)
         {
             BaseCooldown = cooldown;
             RemainingCooldown = cooldown;
             BaseDamage = damage;
             Damage = damage;
+            BaseRange = range;
+            Range = range;
             Projectile = projectile;
         }
 

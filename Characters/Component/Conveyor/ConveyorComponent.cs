@@ -22,13 +22,13 @@ namespace Core
         public ConveyorComponent? Next => NextSide.HasValue ?
             World.GetBuildingAt(
                 GridHelpers.GetNeighbor(
-                    OwnerCharacter.GridPosition,
+                    (Point2Int)OwnerCharacter.GridPosition,
                     NextSide.Value)
                 )?.GetComponent<ConveyorComponent>() : null;
         public ConveyorComponent? Prev => PrevSide.HasValue ?
             World.GetBuildingAt(
                 GridHelpers.GetNeighbor(
-                    OwnerCharacter.GridPosition,
+                    (Point2Int)OwnerCharacter.GridPosition,
                     PrevSide.Value)
                 )?.GetComponent<ConveyorComponent>() : null;
         public const float MOVEMENT_SPEED_M_S = .5f;
@@ -45,9 +45,9 @@ namespace Core
             if (Prev != null && Next != null)
             {
                 int? angle = AngleBetweenThreePoints(
-                    Prev.OwnerCharacter.GridPosition,
-                    OwnerCharacter.GridPosition,
-                    Next.OwnerCharacter.GridPosition);
+                    (Point2Int)Prev.OwnerCharacter.GridPosition,
+                    (Point2Int)OwnerCharacter.GridPosition,
+                    (Point2Int)Next.OwnerCharacter.GridPosition);
 
                 if (angle == 2 || angle == 4)
                 {
@@ -208,9 +208,9 @@ namespace Core
             if (conveyor.Next != null)
             {
                 if (AngleBetweenThreePoints(
-                    this.OwnerCharacter.GridPosition,
-                    conveyor.OwnerCharacter.GridPosition,
-                    conveyor.Next.OwnerCharacter.GridPosition) < 2)
+                    (Point2Int)this.OwnerCharacter.GridPosition,
+                    (Point2Int)conveyor.OwnerCharacter.GridPosition,
+                    (Point2Int)conveyor.Next.OwnerCharacter.GridPosition) < 2)
                 {
                     return false;
                 }
@@ -234,9 +234,9 @@ namespace Core
             if (conveyor.Prev != null)
             {
                 if (AngleBetweenThreePoints(
-                    this.OwnerCharacter.GridPosition,
-                    conveyor.OwnerCharacter.GridPosition,
-                    conveyor.Prev.OwnerCharacter.GridPosition) < 2)
+                    (Point2Int)this.OwnerCharacter.GridPosition,
+                    (Point2Int)conveyor.OwnerCharacter.GridPosition,
+                    (Point2Int)conveyor.Prev.OwnerCharacter.GridPosition) < 2)
                 {
                     return false;
                 }
@@ -288,7 +288,7 @@ namespace Core
         {
             for (int i = 0; i < 6; i++)
             {
-                var neighborPos = GridHelpers.GetNeighbor(this.OwnerCharacter.GridPosition, (HexSide)i);
+                var neighborPos = GridHelpers.GetNeighbor((Point2Int)this.OwnerCharacter.GridPosition, (HexSide)i);
                 var neighbor = this.World.GetBuildingAt(neighborPos);
 
                 ConveyorComponent? neighborCell = neighbor?.GetComponent<ConveyorComponent>();

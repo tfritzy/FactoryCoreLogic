@@ -5,39 +5,47 @@ namespace Core
 {
     public abstract class Building : Character
     {
-        private Point3Float location;
-        public override Point3Float Location => location;
+        public override Point3Float Location => WorldConversions.HexToUnityPosition(GridPosition);
+        public override Point3Int GridPosition => gridPosition;
+
+        private Point3Int gridPosition;
 
         protected Building(Context context, int alliance) : base(context, alliance)
         {
         }
 
-        public Point3Float GetLocation()
+        public void SetGridPosition(Point3Int gridPosition)
         {
-            int? topHeight = this.World.GetTopHexHeight(this.GridPosition);
+            this.gridPosition = gridPosition;
+        }
 
-            if (topHeight == null)
+        public virtual void OnAddToGrid(Point2Int gridPosition)
+        {
+            int? height = World.GetTopHexHeight(gridPosition);
+
+            if (height == null)
             {
-                return new Point3Float();
+                throw new System.Exception("Cannot add building out of bounds grid position.");
             }
 
-            return WorldConversions.HexToUnityPosition(
-                this.GridPosition.x,
-                this.GridPosition.y,
-                topHeight.Value
-            );
+            this.gridPosition = new Point3Int(gridPosition.x, gridPosition.y, height ?? 0);
+            foreach (var cell in Components.Values)
+            {
+                cell.OnAddToGrid();
+            }
         }
 
-        public override void OnAddToGrid(Point2Int gridPosition)
+        public virtual void OnRemoveFromGrid()
         {
-            base.OnAddToGrid(gridPosition);
-            location = GetLocation();
+            foreach (var cell in Components.Values)
+            {
+                cell.OnRemoveFromGrid();
+            }
         }
-
 
         public override void Destroy()
         {
-            this.World.RemoveBuilding(this.GridPosition);
+            this.World.RemoveBuilding((Point2Int)this.GridPosition);
             base.Destroy();
         }
     }

@@ -5,10 +5,11 @@ namespace Core
 {
     public class QuarryWorksite : Worksite
     {
+        public new Character Owner => (Character)base.Owner;
         public override ComponentType Type => ComponentType.QuarryWorksite;
         public override int MaxEmployable => 3;
         protected override List<Point2Int> GetEligibleHex() => inRangeHex;
-        protected override Point2Int GetStartPoint() => ((Building)this.Owner).GridPosition + startMineOffset;
+        protected override Point2Int GetStartPoint() => (Point2Int)this.Owner.GridPosition + startMineOffset;
         protected override bool OnlyIncludeTopLayer => true;
         protected override Schema.Worksite BuildSchemaObject() => new Schema.QuarryWorksite();
 
@@ -29,13 +30,13 @@ namespace Core
 
         protected override void InitInRangeHex()
         {
-            Point2Int center = ((Building)this.Owner).GridPosition + centerOffset;
+            Point2Int center = (Point2Int)this.Owner.GridPosition + centerOffset;
             inRangeHex = GridHelpers.GetHexInRange(center, Radius);
         }
 
         private void InitStairPositions()
         {
-            Point2Int buildingPos = ((Building)this.Owner).GridPosition;
+            Point2Int buildingPos = (Point2Int)this.Owner.GridPosition;
             stairPositions = new HashSet<Point3Int>();
             int? buildingHeight = this.World.GetTopHexHeight(buildingPos);
             var ring = GridHelpers.GetHexRing(buildingPos + centerOffset, Radius);

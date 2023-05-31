@@ -15,8 +15,12 @@ namespace Schema
         [JsonProperty("bCool")]
         public float BaseCooldown { get; set; }
 
+        [JsonProperty("bRange")]
+        public float BaseRange { get; set; }
+
         [JsonProperty("proj")]
         public ProjectileType Projectile { get; set; }
+
 
         public override Core.Component FromSchema(object[] context)
         {
@@ -25,7 +29,7 @@ namespace Schema
 
             Core.Character owner = (Core.Character)context[0];
 
-            return new Core.Attack(owner, BaseCooldown, BaseDamage, Projectile);
+            return new Core.Attack(owner, BaseCooldown, BaseDamage, BaseRange, Projectile);
         }
     }
 }

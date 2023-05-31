@@ -40,21 +40,14 @@ namespace Core
             }
         }
 
-        public void AddContainedEntity(Character entity)
+        public void AddContainedEntity(Entity entity)
         {
             this.ContainedEntities.Add(entity.Id);
-            this.Context.World.AddCharacter(entity);
-            entity.ContainedByGridPosition = this.GridPosition;
         }
 
         public void RemoveContainedEntity(ulong entity)
         {
             this.ContainedEntities.Remove(entity);
-
-            if (this.Context.World.TryGetCharacter(entity, out Character? character))
-            {
-                character!.ContainedByGridPosition = null;
-            }
         }
 
         public abstract Schema.Hex BuildSchemaObject();

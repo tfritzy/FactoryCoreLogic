@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Core
 {
-    public class Player : Character
+    public class Player : Unit
     {
         public override CharacterType Type => CharacterType.Player;
         public WornItems WornItems => this.GetComponent<WornItems>();

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 
 namespace Core
 {
-    public class Villager : Character
+    public class Villager : Unit
     {
         public override CharacterType Type => CharacterType.Villager;
         public VillagerBehavior Behavior => this.GetComponent<VillagerBehavior>();
+
+        public override Point3Int GridPosition => throw new NotImplementedException();
 
         public override Schema.Character ToSchema()
         {

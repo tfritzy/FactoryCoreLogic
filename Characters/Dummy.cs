@@ -2,8 +2,7 @@ using Newtonsoft.Json;
 
 namespace Core
 {
-    // A character with no preset cells. Used for testing.
-    public class Dummy : Character
+    public class Dummy : Unit
     {
         public override CharacterType Type => CharacterType.Dummy;
 
