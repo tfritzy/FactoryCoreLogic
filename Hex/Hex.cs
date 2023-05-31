@@ -13,12 +13,10 @@ namespace Core
         public virtual bool Transparent => false;
         public virtual bool Indestructible => false;
         public Point3Int GridPosition { get; protected set; }
-        public List<ulong> ContainedEntities { get; set; }
 
         public Hex(Point3Int gridPosition, Context context) : base(context)
         {
             this.GridPosition = gridPosition;
-            this.ContainedEntities = new List<ulong>();
         }
 
         public static Hex Create(HexType type, Point3Int gridPosition, Context context)
@@ -40,52 +38,29 @@ namespace Core
             }
         }
 
-        public void AddContainedEntity(Entity entity)
+        public override Schema.Hex ToSchema()
         {
-            this.ContainedEntities.Add(entity.Id);
-        }
-
-        public void RemoveContainedEntity(ulong entity)
-        {
-            this.ContainedEntities.Remove(entity);
-        }
-
-        public abstract Schema.Hex BuildSchemaObject();
-        public Schema.Hex ToSchema()
-        {
-            var schemaHex = BuildSchemaObject();
-            schemaHex.ContainedEntities = this.ContainedEntities.FindAll(
-                (e) => World.GetCharacter(e) != null)
-                .ToList();
+            var schemaHex = (Schema.Hex)base.ToSchema();
             schemaHex.GridPosition = this.GridPosition;
             schemaHex.Id = this.Id;
             return schemaHex;
         }
 
-        public void Destroy()
+        public override void Destroy()
         {
             if (this.Indestructible)
             {
                 return;
             }
 
+            base.Destroy();
+
             this.World.RemoveHex(this.GridPosition);
+        }
 
-            for (int i = 0; i < this.ContainedEntities.Count; i++)
-            {
-                ulong id = this.ContainedEntities[i];
-                Character? character = this.Context.World.GetCharacter(id);
-                if (character != null)
-                {
-                    character.Destroy();
-                }
-                else
-                {
-                    this.ContainedEntities.RemoveAt(i);
-                }
-
-                i--;
-            }
+        public void SetGridPosition(Point3Int gridPosition)
+        {
+            this.GridPosition = gridPosition;
         }
     }
 }

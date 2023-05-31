@@ -84,5 +84,10 @@ namespace Core
                 }
             }
         }
+
+        public override Schema.Entity BuildSchemaObject()
+        {
+            throw new NotImplementedException("Projectiles shouldn't be serialized.");
+        }
     }
 }

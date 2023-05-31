@@ -16,5 +16,10 @@ namespace Core
         {
             this.SetComponent(new Harvestable(this, HarvestableType.Tree));
         }
+
+        public override Schema.Entity BuildSchemaObject()
+        {
+            return new Schema.Tree();
+        }
     }
 }

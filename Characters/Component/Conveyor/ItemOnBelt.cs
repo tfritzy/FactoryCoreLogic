@@ -1,6 +1,6 @@
 namespace Core
 {
-    public class ItemOnBelt : Schema.SerializesTo<Schema.ItemOnBelt>
+    public class ItemOnBelt
     {
         public Item Item;
         public float ProgressMeters;

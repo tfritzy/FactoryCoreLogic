@@ -10,14 +10,13 @@ namespace Core
 
         public override Point3Int GridPosition => throw new NotImplementedException();
 
-        public override Schema.Character ToSchema()
-        {
-            var villager = new Schema.Villager();
-            return this.PopulateSchema(villager);
-        }
-
         public Villager(Context context, int alliance) : base(context, alliance)
         {
+        }
+
+        public override Schema.Entity BuildSchemaObject()
+        {
+            return new Schema.Villager();
         }
 
         protected override void InitComponents()

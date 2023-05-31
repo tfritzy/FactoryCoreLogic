@@ -10,10 +10,9 @@ namespace Core
         {
         }
 
-        public override Schema.Character ToSchema()
+        public override Schema.Entity BuildSchemaObject()
         {
-            var quarry = new Schema.Quarry();
-            return this.PopulateSchema(quarry);
+            return new Schema.Quarry();
         }
 
         protected override void InitComponents()

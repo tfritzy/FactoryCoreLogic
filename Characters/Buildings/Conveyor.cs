@@ -18,10 +18,9 @@ namespace Core
             this.SetComponent(new ConveyorComponent(this));
         }
 
-        public override Schema.Character ToSchema()
+        public override Schema.Entity BuildSchemaObject()
         {
-            var conveyor = new Schema.Conveyor();
-            return this.PopulateSchema(conveyor);
+            return new Schema.Conveyor();
         }
     }
 }

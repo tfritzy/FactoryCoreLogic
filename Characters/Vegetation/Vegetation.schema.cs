@@ -1,6 +1,6 @@
 namespace Schema
 {
-    public class Vegetation : Entity, SchemaOf<Core.Vegetation>
+    public abstract class Vegetation : Entity, SchemaOf<Core.Vegetation>
     {
         public Core.Vegetation FromSchema(params object[] context)
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Core
 {
-    public abstract class Component : Schema.SerializesTo<Schema.Component>
+    public abstract class Component
     {
         public abstract ComponentType Type { get; }
         public Entity Owner { get; set; }

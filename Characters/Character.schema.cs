@@ -18,6 +18,11 @@ namespace Schema
         [JsonProperty("alliance")]
         public int Alliance { get; set; }
 
+        protected override Core.Entity BuildCoreObject(Context context)
+        {
+            return Core.Character.Create(this.Type, context, Alliance);
+        }
+
         protected Core.Character ToCore(params object[] context)
         {
             if (context.Length == 0 || context[0] == null || !(context[0] is Context))

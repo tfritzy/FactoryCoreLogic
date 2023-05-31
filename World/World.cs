@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Core
 {
-    public class World : Schema.SerializesTo<Schema.World>
+    public class World
     {
         private Hex?[,,] Hexes;
         private Dictionary<Point2Int, ulong> Buildings;
@@ -348,7 +348,7 @@ namespace Core
                     .Where(kvp => !kvp.Value.IsPreview)
                     .ToDictionary(
                         kvp => kvp.Key,
-                        kvp => kvp.Value.ToSchema()),
+                        kvp => (Schema.Character)kvp.Value.ToSchema()),
             };
         }
 

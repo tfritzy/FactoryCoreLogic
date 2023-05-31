@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Core
 {
-    public abstract class Item : Schema.SerializesTo<Schema.Item>
+    public abstract class Item
     {
         public abstract ItemType Type { get; }
         public int Quantity { get; private set; }

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Core
 {
-    public abstract class Character : Entity, Schema.SerializesTo<Schema.Character>
+    public abstract class Character : Entity
     {
         public abstract CharacterType Type { get; }
         public abstract Point3Int GridPosition { get; }
@@ -60,17 +60,12 @@ namespace Core
             }
         }
 
-        protected Schema.Character PopulateSchema(Schema.Character character)
+        public override Schema.Entity ToSchema()
         {
-            character.Id = this.Id;
-            character.GridPosition = this.GridPosition;
+            var character = (Schema.Character)base.ToSchema();
             character.Alliance = this.Alliance;
-            character.Components = this.Components.ToDictionary(
-                x => Component.ComponentTypeMap[x.Key], x => x.Value.ToSchema());
             return character;
         }
-
-        public abstract Schema.Character ToSchema();
 
         public override void SetComponent(Component component)
         {
@@ -102,8 +97,9 @@ namespace Core
             }
         }
 
-        public virtual void Destroy()
+        public override void Destroy()
         {
+            base.Destroy();
             Context.World.RemoveCharacter(this.Id);
         }
     }

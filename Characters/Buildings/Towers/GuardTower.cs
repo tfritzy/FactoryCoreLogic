@@ -6,10 +6,9 @@ namespace Core
         public static Point3Float ProjectileOffset = new Point3Float(0, 0, 3f);
         public override Point3Float ProjectileSpawnOffset => ProjectileOffset;
 
-        public override Schema.Character ToSchema()
+        public override Schema.Entity BuildSchemaObject()
         {
-            var guardTower = new Schema.GuardTower();
-            return this.PopulateSchema(guardTower);
+            return new Schema.GuardTower();
         }
 
         public GuardTower(Context context, int alliance) : base(context, alliance)

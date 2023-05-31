@@ -8,10 +8,9 @@ namespace Core
 
         protected override void InitComponents() { }
 
-        public override Schema.Character ToSchema()
+        public override Schema.Entity BuildSchemaObject()
         {
-            var dummy = new Schema.Dummy();
-            return this.PopulateSchema(dummy);
+            return new Schema.Dummy();
         }
 
         public Dummy(Context context, int alliance) : base(context, alliance) { }

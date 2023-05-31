@@ -9,15 +9,14 @@ namespace Core
         public WornItems WornItems => this.GetComponent<WornItems>();
         public ActiveItems ActiveItems => this.GetComponent<ActiveItems>();
 
-        public override Schema.Character ToSchema()
-        {
-            var player = new Schema.Player();
-            return this.PopulateSchema(player);
-        }
-
         public Player(Context context, int alliance) : base(context, alliance)
         {
 
+        }
+
+        public override Schema.Entity BuildSchemaObject()
+        {
+            return new Schema.Player();
         }
 
         protected override void InitComponents()
