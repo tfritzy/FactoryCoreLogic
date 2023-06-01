@@ -20,12 +20,12 @@ namespace Core
             return new Point3Float(xF, yF, zF);
         }
 
-        public static Point3Int UnityToHexPosition(Point3Float unityPosition)
+        public static Point3Int UnityToGrid(Point3Float unityPosition)
         {
-            return UnityToHexPosition(unityPosition.x, unityPosition.y, unityPosition.z);
+            return UnityToGrid(unityPosition.x, unityPosition.y, unityPosition.z);
         }
 
-        public static Point3Int UnityToHexPosition(float x, float y, float z)
+        public static Point3Int UnityToGrid(float x, float y, float z)
         {
             float xF = x / HORIZONTAL_DIST;
             float zF = (z - (xF % 2 == 1 ? Constants.HEX_APOTHEM : 0)) / VERTICAL_DIST;

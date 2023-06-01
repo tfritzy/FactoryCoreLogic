@@ -4,13 +4,13 @@ using Newtonsoft.Json;
 
 namespace Schema
 {
-    public class Tree : Character
+    public class Tree : Vegetation
     {
-        public override CharacterType Type => CharacterType.Tree;
+        public override VegetationType Type => VegetationType.Tree;
 
-        public override Core.Character FromSchema(object[] context)
+        protected override Core.Vegetation BuildCoreObject(Context context)
         {
-            return this.ToCore(context);
+            return new Core.Tree(context);
         }
     }
 }

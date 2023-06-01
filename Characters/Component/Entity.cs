@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Core
 {
@@ -13,8 +14,6 @@ namespace Core
         public ulong Id;
         public Context Context { get; set; }
         public World World => Context.World;
-        public List<Entity>? ContainedEntities { get; private set; }
-        public Entity? ContainedBy { get; private set; }
 
         public Inventory? Inventory => GetComponent<Inventory>();
         public Harvestable? Harvestable => GetComponent<Harvestable>();
@@ -24,7 +23,6 @@ namespace Core
         {
             this.Context = context;
             this.Components = new Dictionary<Type, Component>();
-            this.ContainedEntities = new List<Entity>();
             this.Id = GenerateId();
             InitComponents();
         }
@@ -78,58 +76,18 @@ namespace Core
             return BitConverter.ToUInt64(bytes, 0);
         }
 
-        public void AddContainedEntity(Entity entity)
-        {
-            if (this.ContainedEntities == null)
-            {
-                this.ContainedEntities = new List<Entity>();
-            }
-
-            this.ContainedEntities.Add(entity);
-            entity.ContainedBy = this;
-        }
-
-        public void RemoveContainedEntity(Entity entity)
-        {
-            if (this.ContainedEntities == null)
-            {
-                return;
-            }
-
-            this.ContainedEntities.Remove(entity);
-            entity.ContainedBy = null;
-        }
-
-        public virtual void Destroy()
-        {
-            if (this.ContainedEntities != null)
-            {
-                for (int i = 0; i < this.ContainedEntities.Count; i++)
-                {
-                    this.ContainedEntities[i].Destroy();
-                }
-                this.ContainedEntities = null;
-            }
-
-            ContainedBy?.RemoveContainedEntity(this);
-            ContainedBy = null;
-        }
-
-        public void SetContainedBy(Hex? hex)
-        {
-            ContainedBy = hex;
-        }
-
         public abstract Schema.Entity BuildSchemaObject();
         public virtual Schema.Entity ToSchema()
         {
             var schema = BuildSchemaObject();
             schema.Id = this.Id;
-            schema.ContainedEntities =
-                this.ContainedEntities?
-                .Select((Entity e) => e.ToSchema())
-                .ToList();
+            schema.Components =
+                Components.Count > 0
+                    ? Components.Values.Select(c => c.ToSchema()).ToList()
+                    : null;
             return schema;
         }
+
+        public abstract void Destroy();
     }
 }

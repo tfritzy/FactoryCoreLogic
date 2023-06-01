@@ -13,6 +13,7 @@ namespace Core
         public int HitsRemaining { get; private set; }
         public float ExplosionRadius { get; private set; }
         public PhysicsRequest? PhysicsRequest { get; private set; }
+
         private HashSet<ulong> hits = new HashSet<ulong>();
 
         public Projectile(
@@ -88,6 +89,11 @@ namespace Core
         public override Schema.Entity BuildSchemaObject()
         {
             throw new NotImplementedException("Projectiles shouldn't be serialized.");
+        }
+
+        public override void Destroy()
+        {
+            this.Context.World.RemoveProjectile(this.Id);
         }
     }
 }

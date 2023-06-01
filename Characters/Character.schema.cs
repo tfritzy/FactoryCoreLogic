@@ -33,15 +33,6 @@ namespace Schema
             var character = Core.Character.Create(this.Type, worldContext, Alliance);
             character.Id = this.Id;
 
-            if (this.Components == null)
-                this.Components = new Dictionary<Core.ComponentType, Component>();
-
-            foreach (var componentType in this.Components.Keys)
-            {
-                Core.Component component = this.Components[componentType].FromSchema(character);
-                character.SetComponent(component);
-            }
-
             return character;
         }
 

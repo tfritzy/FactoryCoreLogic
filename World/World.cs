@@ -385,6 +385,12 @@ namespace Core
             this.UnseenUpdates.AddLast(new ProjectileUpdate(projectile.Id));
         }
 
+        public void RemoveProjectile(ulong id)
+        {
+            this.Projectiles.Remove(id);
+            this.UnseenUpdates.AddLast(new ProjectileUpdate(id));
+        }
+
         public void AckUpdate()
         {
             this.UnseenUpdates.RemoveFirst();

@@ -15,6 +15,9 @@ namespace Schema
         [JsonProperty("pos")]
         public Point3Int GridPosition { get; set; }
 
+        [JsonProperty("vegetation")]
+        public List<Vegetation>? Vegetation { get; set; }
+
         protected override Core.Entity BuildCoreObject(Context context)
         {
             return Core.Hex.Create(this.Type, this.GridPosition, context);
@@ -22,13 +25,18 @@ namespace Schema
 
         protected override Core.Hex CreateCore(params object[] context)
         {
-            if (this.GridPosition == null)
-                throw new InvalidOperationException("GridPosition is null.");
-
             if (context.Length == 0 || !(context[0] is Core.Context))
                 throw new InvalidOperationException("Context is missing.");
 
             Core.Hex hex = (Core.Hex)base.CreateCore(context);
+            if (this.Vegetation != null)
+            {
+                foreach (var vegetation in this.Vegetation)
+                {
+                    Core.Vegetation coreVegetation = vegetation.FromSchema(context);
+                    hex.AddVegetation(coreVegetation);
+                }
+            }
 
             return hex;
         }

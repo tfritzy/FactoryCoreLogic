@@ -4,7 +4,7 @@ namespace Core
     {
         private Point3Float _location;
         public override Point3Float Location => _location;
-        public override Point3Int GridPosition => WorldConversions.UnityToHexPosition(Location);
+        public override Point3Int GridPosition => WorldConversions.UnityToGrid(Location);
 
         public Unit(Context context, int alliance) : base(context, alliance)
         {

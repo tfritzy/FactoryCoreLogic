@@ -7,8 +7,9 @@ namespace Core
     public class Tree : Vegetation
     {
         public override VegetationType Type => VegetationType.Tree;
+        private static Point2Float defaultOffset = new Point2Float(0, 0);
 
-        public Tree(Context context) : base(context)
+        public Tree(Context context, Point2Float? positionOffset = null) : base(context, positionOffset ?? defaultOffset)
         {
         }
 

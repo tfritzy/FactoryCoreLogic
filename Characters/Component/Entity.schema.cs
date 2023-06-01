@@ -5,16 +5,14 @@ using Newtonsoft.Json;
 
 namespace Schema
 {
+    [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public abstract class Entity
     {
         [JsonProperty("cmpts")]
-        public Dictionary<Core.ComponentType, Component>? Components;
+        public List<Component>? Components;
 
         [JsonProperty("id")]
         public ulong Id;
-
-        [JsonProperty("entities")]
-        public List<Entity>? ContainedEntities { get; set; }
 
         protected abstract Core.Entity BuildCoreObject(Context context);
 
@@ -24,13 +22,14 @@ namespace Schema
                 throw new InvalidOperationException("Context is missing.");
 
             Core.Entity entity = BuildCoreObject((Core.Context)context[0]);
-
             entity.Id = this.Id;
-            if (this.ContainedEntities != null)
+
+            if (Components != null)
             {
-                foreach (var contained in this.ContainedEntities)
+                foreach (var component in this.Components)
                 {
-                    entity.AddContainedEntity(contained.CreateCore(context));
+                    Core.Component deser = component.FromSchema(entity);
+                    entity.SetComponent(deser);
                 }
             }
 

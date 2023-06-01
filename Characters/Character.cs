@@ -99,7 +99,6 @@ namespace Core
 
         public override void Destroy()
         {
-            base.Destroy();
             Context.World.RemoveCharacter(this.Id);
         }
     }
