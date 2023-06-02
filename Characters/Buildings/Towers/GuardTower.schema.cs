@@ -6,9 +6,9 @@ namespace Schema
     {
         public override CharacterType Type => CharacterType.GuardTower;
 
-        public override Core.Character FromSchema(params object[] context)
+        protected override Core.Character BuildCoreObject(Context context)
         {
-            return this.ToCore(context);
+            return new Core.GuardTower(context, this.Alliance);
         }
     }
 }

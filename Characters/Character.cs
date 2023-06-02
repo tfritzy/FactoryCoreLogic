@@ -7,7 +7,7 @@ namespace Core
     {
         public abstract CharacterType Type { get; }
         public abstract Point3Int GridPosition { get; }
-        public virtual Point3Float Location { get; }
+        public abstract Point3Float Location { get; }
         public bool IsPreview { get; private set; }
         public int Alliance { get; private set; }
         private static Point3Float defaultProjectileOffset = new Point3Float();

@@ -8,7 +8,7 @@ namespace Core
         public override CharacterType Type => CharacterType.Villager;
         public VillagerBehavior Behavior => this.GetComponent<VillagerBehavior>();
 
-        public override Point3Int GridPosition => throw new NotImplementedException();
+        public override Point3Int GridPosition => WorldConversions.UnityToGrid(this.Location);
 
         public Villager(Context context, int alliance) : base(context, alliance)
         {

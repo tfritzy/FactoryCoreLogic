@@ -12,13 +12,10 @@ namespace Schema
         [JsonProperty("type")]
         public abstract CharacterType Type { get; }
 
-        [JsonProperty("gridPosition")]
-        public Point3Int GridPosition { get; set; }
-
         [JsonProperty("alliance")]
         public int Alliance { get; set; }
 
-        protected override Core.Entity BuildCoreObject(Context context)
+        protected override Core.Character BuildCoreObject(Context context)
         {
             return Core.Character.Create(this.Type, context, Alliance);
         }
@@ -30,13 +27,16 @@ namespace Schema
 
             Context worldContext = (Context)context[0];
 
-            var character = Core.Character.Create(this.Type, worldContext, Alliance);
+            Core.Character character = (Core.Character)base.CreateCore(context);
             character.Id = this.Id;
 
             return character;
         }
 
-        public abstract Core.Character FromSchema(params object[] context);
+        public Core.Character FromSchema(params object[] context)
+        {
+            return (Core.Character)this.CreateCore(context);
+        }
     }
 
     public class CharacterConverter : JsonConverter

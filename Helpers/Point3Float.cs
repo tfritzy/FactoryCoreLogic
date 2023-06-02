@@ -90,6 +90,11 @@ namespace Core
             }
         }
 
+        public float SquareMagnitude()
+        {
+            return x * x + y * y + z * z;
+        }
+
         public override string ToString()
         {
             return $"({x}, {y}, {z})";

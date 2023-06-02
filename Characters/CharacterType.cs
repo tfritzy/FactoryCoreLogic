@@ -6,7 +6,6 @@ namespace Core
         Conveyor,
         Dummy,
         DummyBuilding,
-        Tree,
         Player,
         Villager,
         Quarry,

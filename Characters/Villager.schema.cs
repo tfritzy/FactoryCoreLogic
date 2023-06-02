@@ -6,9 +6,9 @@ namespace Schema
     {
         public override CharacterType Type => CharacterType.Villager;
 
-        public override Core.Character FromSchema(params object[] context)
+        protected override Core.Character BuildCoreObject(Context context)
         {
-            return this.ToCore(context);
+            return new Core.Villager(context, this.Alliance);
         }
     }
 }

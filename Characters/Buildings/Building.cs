@@ -25,7 +25,7 @@ namespace Core
 
             if (height == null)
             {
-                throw new System.Exception("Cannot add building out of bounds grid position.");
+                throw new System.Exception("Cannot add building out of bounds.");
             }
 
             this.gridPosition = new Point3Int(gridPosition.x, gridPosition.y, height ?? 0);

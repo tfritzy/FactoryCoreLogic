@@ -279,6 +279,11 @@ namespace Core
                 throw new InvalidOperationException("Tried to place building on occupied location");
             }
 
+            if (!GridHelpers.IsInBounds(location.x, location.y, 0, this.Hexes))
+            {
+                throw new InvalidOperationException("Tried to place building out of bounds");
+            }
+
             this.Characters[building.Id] = building;
             this.Buildings.Add(location, building.Id);
             building.OnAddToGrid(location);

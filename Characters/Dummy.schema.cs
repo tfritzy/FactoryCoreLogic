@@ -9,9 +9,9 @@ namespace Schema
     {
         public override CharacterType Type => CharacterType.Dummy;
 
-        public override Core.Character FromSchema(object[] context)
+        protected override Core.Character BuildCoreObject(Context context)
         {
-            return this.ToCore(context);
+            return new Core.Dummy(context, this.Alliance);
         }
     }
 }

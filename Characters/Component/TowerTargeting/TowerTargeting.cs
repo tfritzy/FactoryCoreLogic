@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Core
 {
@@ -45,6 +46,20 @@ namespace Core
         public void FulfillPhysicsRequest(List<Character> inRange)
         {
             PhysicsRequest = null;
+
+            switch (Mode)
+            {
+                case TowerTargetingMode.Closest:
+                    Target = FindClosestTarget(inRange);
+                    break;
+                default:
+                    throw new System.NotImplementedException("TowerTargetingMode not implemented. " + Mode);
+            }
+        }
+
+        private Character? FindClosestTarget(List<Character> options)
+        {
+            return options.MinBy(o => (o.Location - Owner.Location).SquareMagnitude());
         }
     }
 }
