@@ -336,7 +336,7 @@ namespace Core
                 {
                     for (int z = 0; z < Hexes.GetLength(2); z++)
                     {
-                        hexes[x, y, z] = (Schema.Hex)Hexes[x, y, z]?.ToSchema();
+                        hexes[x, y, z] = (Schema.Hex?)Hexes[x, y, z]?.ToSchema();
                     }
                 }
             }
