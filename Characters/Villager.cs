@@ -8,7 +8,7 @@ namespace Core
         public override CharacterType Type => CharacterType.Villager;
         public VillagerBehavior Behavior => this.GetComponent<VillagerBehavior>();
 
-        public override Point3Int GridPosition => GridHelpers.CartesianToGrid(this.Location);
+        public override Point3Int GridPosition => GridHelpers.pixel_to_oddq_offset(this.Location);
 
         public Villager(Context context, int alliance) : base(context, alliance)
         {

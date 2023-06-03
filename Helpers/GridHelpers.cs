@@ -204,13 +204,20 @@ namespace Core
             );
         }
 
-        public static Point3Int CartesianToGrid(Point3Float point)
+        public static Point3Int pixel_to_oddq_offset(Point3Float point)
         {
             var abc = pick_tri(point.x, point.y); // swap for pointy/flat
             var cube = tri_to_hex(abc[0], abc[1], abc[2]);
             Point3Int result = (Point3Int)CubeToOffset(cube);
             result.z = (int)(point.z / Constants.HEX_HEIGHT);
             return result;
+        }
+
+        public static Point3Float oddq_offset_to_pixel(Point3Int hex)
+        {
+            float x = Constants.HEX_RADIUS * 3 / 2 * hex.x;
+            float y = Constants.HEX_RADIUS * MathF.Sqrt(3) * (hex.y + 0.5f * (hex.x & 1));
+            return new Point3Float(x, y, hex.z / Constants.HEX_HEIGHT);
         }
 
         public static List<Point2Int> GetHexInRange(Point2Int origin, int radius)

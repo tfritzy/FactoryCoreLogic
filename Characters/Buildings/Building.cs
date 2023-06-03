@@ -5,7 +5,7 @@ namespace Core
 {
     public abstract class Building : Character
     {
-        public override Point3Float Location => WorldConversions.HexToUnityPosition(GridPosition);
+        public override Point3Float Location => GridHelpers.oddq_offset_to_pixel(GridPosition);
         public override Point3Int GridPosition => gridPosition;
 
         private Point3Int gridPosition;

@@ -4,7 +4,7 @@ namespace Core
     {
         private Point3Float _location;
         public override Point3Float Location => _location;
-        public override Point3Int GridPosition => GridHelpers.CartesianToGrid(Location);
+        public override Point3Int GridPosition => GridHelpers.pixel_to_oddq_offset(Location);
 
         public Unit(Context context, int alliance) : base(context, alliance)
         {
