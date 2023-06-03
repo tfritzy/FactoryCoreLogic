@@ -6,7 +6,7 @@ namespace Schema
     {
         public override CharacterType Type => CharacterType.Quarry;
 
-        protected override Core.Character BuildCoreObject(Context context)
+        protected override Core.Entity BuildCoreObject(Context context)
         {
             return new Core.Quarry(context, this.Alliance);
         }

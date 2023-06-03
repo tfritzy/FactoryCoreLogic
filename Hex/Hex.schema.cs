@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 namespace Schema
 {
     [JsonConverter(typeof(HexConverter))]
-    public abstract class Hex : Entity, SchemaOf<Core.Hex>
+    public abstract class Hex : Entity
     {
         [JsonProperty("type")]
         public abstract HexType Type { get; }
@@ -23,7 +23,7 @@ namespace Schema
             return Core.Hex.Create(this.Type, this.GridPosition, context);
         }
 
-        protected override Core.Hex CreateCore(params object[] context)
+        protected override Core.Entity CreateCore(params object[] context)
         {
             if (context.Length == 0 || !(context[0] is Core.Context))
                 throw new InvalidOperationException("Context is missing.");
@@ -33,15 +33,15 @@ namespace Schema
             {
                 foreach (var vegetation in this.Vegetation)
                 {
-                    Core.Vegetation coreVegetation = vegetation.FromSchema(context);
-                    hex.AddVegetation(coreVegetation);
+                    Core.Entity coreVegetation = vegetation.FromSchema(context);
+                    hex.AddVegetation((Core.Vegetation)coreVegetation);
                 }
             }
 
             return hex;
         }
 
-        public Core.Hex FromSchema(params object[] context)
+        public Core.Entity FromSchema(params object[] context)
         {
             return this.CreateCore(context);
         }

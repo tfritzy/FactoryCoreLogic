@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 namespace Schema
 {
     [JsonConverter(typeof(VegetationConverter))]
-    public abstract class Vegetation : Entity, SchemaOf<Core.Vegetation>
+    public abstract class Vegetation : Entity
     {
         [JsonProperty("type")]
         public abstract VegetationType Type { get; }
@@ -15,12 +15,12 @@ namespace Schema
         [JsonProperty("offst")]
         public Point2Float PositionOffset { get; set; }
 
-        protected override Core.Vegetation BuildCoreObject(Context context)
+        protected override Core.Entity BuildCoreObject(Context context)
         {
             return Core.Vegetation.Create(this.Type, context);
         }
 
-        protected override Core.Vegetation CreateCore(params object[] context)
+        protected override Core.Entity CreateCore(params object[] context)
         {
             if (context.Length == 0 || !(context[0] is Core.Context))
                 throw new InvalidOperationException("Context is missing.");
@@ -31,7 +31,7 @@ namespace Schema
             return vegetation;
         }
 
-        public Core.Vegetation FromSchema(params object[] context)
+        public Core.Entity FromSchema(params object[] context)
         {
             return this.CreateCore(context);
         }

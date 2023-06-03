@@ -40,7 +40,7 @@ namespace Core
             }
         }
 
-        public override Schema.Hex ToSchema()
+        public override Schema.Entity ToSchema()
         {
             var schemaHex = (Schema.Hex)base.ToSchema();
             schemaHex.GridPosition = this.GridPosition;

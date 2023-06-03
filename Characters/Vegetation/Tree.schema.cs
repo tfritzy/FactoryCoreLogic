@@ -8,7 +8,7 @@ namespace Schema
     {
         public override VegetationType Type => VegetationType.Tree;
 
-        protected override Core.Vegetation BuildCoreObject(Context context)
+        protected override Core.Entity BuildCoreObject(Context context)
         {
             return new Core.Tree(context);
         }

@@ -6,7 +6,7 @@ namespace Schema
     {
         public override CharacterType Type => CharacterType.GuardTower;
 
-        protected override Core.Character BuildCoreObject(Context context)
+        protected override Core.Entity BuildCoreObject(Context context)
         {
             return new Core.GuardTower(context, this.Alliance);
         }

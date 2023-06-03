@@ -15,7 +15,7 @@ namespace Core
             this.SetComponent(new Harvestable(this, HarvestableType.StoneHex));
         }
 
-        public override Schema.Hex BuildSchemaObject()
+        public override Schema.Entity BuildSchemaObject()
         {
             return new Schema.StoneHex();
         }

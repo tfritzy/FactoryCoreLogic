@@ -7,7 +7,7 @@ namespace Core
 
         public Bedrock(Point3Int gridPosition, Context context) : base(gridPosition, context) { }
 
-        public override Schema.Hex BuildSchemaObject()
+        public override Schema.Entity BuildSchemaObject()
         {
             return new Schema.Bedrock();
         }

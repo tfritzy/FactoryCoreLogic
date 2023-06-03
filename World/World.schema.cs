@@ -27,7 +27,7 @@ namespace Schema
                 {
                     for (int z = 0; z < Hexes.GetLength(2); z++)
                     {
-                        hexes[x, y, z] = Hexes[x, y, z]?.FromSchema(context);
+                        hexes[x, y, z] = (Core.Hex)Hexes[x, y, z]?.FromSchema(context);
                     }
                 }
             }

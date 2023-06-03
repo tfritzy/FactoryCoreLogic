@@ -17,7 +17,7 @@ namespace Core
             this.SetComponent(new Harvestable(this, HarvestableType.DirtHex));
         }
 
-        public override Schema.Hex BuildSchemaObject()
+        public override Schema.Entity BuildSchemaObject()
         {
             return new Schema.DirtHex();
         }

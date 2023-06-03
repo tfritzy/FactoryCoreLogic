@@ -15,7 +15,7 @@ namespace Schema
         [JsonProperty("alliance")]
         public int Alliance { get; set; }
 
-        protected override Core.Character BuildCoreObject(Context context)
+        protected override Core.Entity BuildCoreObject(Context context)
         {
             return Core.Character.Create(this.Type, context, Alliance);
         }
