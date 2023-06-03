@@ -15,6 +15,13 @@ namespace Core
             this.s = s;
         }
 
+        public CubeCoord(int q, int r)
+        {
+            this.q = q;
+            this.r = r;
+            this.s = -q - r;
+        }
+
         public override bool Equals(object? obj)
         {
             if (obj is CubeCoord other)

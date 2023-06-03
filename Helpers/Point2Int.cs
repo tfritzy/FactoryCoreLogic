@@ -70,6 +70,10 @@ namespace Core
             }
         }
 
+        public static explicit operator Point3Int(Point2Int p)
+        {
+            return new Point3Int(p.x, p.y);
+        }
 
         public override string ToString()
         {

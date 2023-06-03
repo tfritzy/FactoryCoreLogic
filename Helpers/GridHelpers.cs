@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -171,6 +172,45 @@ namespace Core
             int s = -q - r;
 
             return new CubeCoord(q, r, s);
+        }
+
+        public static CubeCoord OffsetToCube(Point2Float point)
+        {
+            float q = point.x;
+            float r = point.y - (point.x - ((int)point.x & 1)) / 2f;
+            float s = -q - r;
+
+            return new CubeCoord((int)q, (int)r, (int)s);
+        }
+
+        /*
+            Stolen from: https://www.redblobgames.com/grids/hexagons/more-pixel-to-hex.html#boristhebrave
+        */
+        private static float[] pick_tri(float x, float y)
+        {
+            return new float[] {
+                MathF.Ceiling(( 1 * x - MathF.Sqrt(3) / 3 * y) / Constants.HEX_RADIUS),
+                MathF.Floor((    MathF.Sqrt(3) * 2 / 3 * y) / Constants.HEX_RADIUS) + 1,
+                MathF.Ceiling((-1 * x - MathF.Sqrt(3) / 3 * y) / Constants.HEX_RADIUS)
+            };
+        }
+
+        private static CubeCoord tri_to_hex(float x, float y, float z)
+        {
+            return new CubeCoord(
+                (int)MathF.Round((x - z) / 3),
+                (int)MathF.Round((y - x) / 3),
+                (int)MathF.Round((z - y) / 3) // not needed for axial
+            );
+        }
+
+        public static Point3Int CartesianToGrid(Point3Float point)
+        {
+            var abc = pick_tri(point.x, point.y); // swap for pointy/flat
+            var cube = tri_to_hex(abc[0], abc[1], abc[2]);
+            Point3Int result = (Point3Int)CubeToOffset(cube);
+            result.z = (int)(point.z / Constants.HEX_HEIGHT);
+            return result;
         }
 
         public static List<Point2Int> GetHexInRange(Point2Int origin, int radius)
