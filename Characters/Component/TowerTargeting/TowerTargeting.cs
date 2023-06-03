@@ -60,6 +60,9 @@ namespace Core
 
         private Character? FindClosestTarget(List<Character> options)
         {
+            if (options.Count == 0)
+                return null;
+
             Character minChar = options[0];
             float minDistance = (minChar.Location - Owner.Location).SquareMagnitude();
 
