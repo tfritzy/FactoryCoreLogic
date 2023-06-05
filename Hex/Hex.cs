@@ -13,6 +13,7 @@ namespace Core
         public virtual bool Transparent => false;
         public virtual bool Indestructible => false;
         public Point3Int GridPosition { get; protected set; }
+        public Point3Float Location => GridHelpers.oddq_offset_to_pixel(GridPosition);
         public List<Vegetation>? Vegetation { get; private set; }
 
         public Hex(Point3Int gridPosition, Context context) : base(context)

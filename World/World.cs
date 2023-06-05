@@ -146,6 +146,16 @@ namespace Core
             return this.UncoveredHexes[x, y].Max();
         }
 
+        public HashSet<int> GetUncoveredOfColumn(Point2Int point)
+        {
+            return GetUncoveredOfColumn(point.x, point.y);
+        }
+
+        public HashSet<int> GetUncoveredOfColumn(int x, int y)
+        {
+            return UncoveredHexes[x, y];
+        }
+
         public bool IsUncovered(Point3Int point)
         {
             return IsUncovered(point.x, point.y, point.z);
