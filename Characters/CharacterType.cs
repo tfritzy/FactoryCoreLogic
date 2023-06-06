@@ -9,6 +9,8 @@ namespace Core
         Player,
         Villager,
         Quarry,
-        GuardTower
+        GuardTower,
+        Pikeman,
+        DummyMob
     }
 }

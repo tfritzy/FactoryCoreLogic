@@ -12,6 +12,8 @@ namespace Core
         public float Range { get; private set; }
         public new Character Owner => (Character)base.Owner;
 
+        public const float MeleeRange = .5f;
+
         public override Schema.Component ToSchema()
         {
             return new Schema.Attack
@@ -27,7 +29,7 @@ namespace Core
             float cooldown,
             int damage,
             float range,
-            ProjectileType projectile
+            ProjectileType projectile = ProjectileType.Invalid
             ) : base(owner)
         {
             BaseCooldown = cooldown;

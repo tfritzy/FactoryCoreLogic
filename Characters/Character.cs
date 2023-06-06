@@ -55,6 +55,8 @@ namespace Core
                     return new Quarry(context, alliance);
                 case CharacterType.GuardTower:
                     return new GuardTower(context, alliance);
+                case CharacterType.DummyMob:
+                    return new DummyMob(context, alliance);
                 default:
                     throw new ArgumentException("Invalid character type " + character);
             }
