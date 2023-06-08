@@ -4,8 +4,11 @@ namespace Core
     {
         Invalid,
         Character,
-        Location,
         Projectile,
+        BuildingAdded,
+        BuildingRemoved,
+        HexUncoveredOrAdded,
+        HexHiddenOrDestroyed
     }
 
     public abstract class Update

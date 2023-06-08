@@ -127,7 +127,9 @@ namespace Core
                 return;
             }
 
-            this.UnseenUpdates.AddLast(new LocationUpdate((Point2Int)hex.GridPosition));
+            this.UnseenUpdates.AddLast(new HexHiddenOrDestroyed(hex.GridPosition));
+            this.UnseenUpdates.AddLast(new HexUncoveredOrAdded(hex.GridPosition));
+
             this.Hexes[hex.GridPosition.x, hex.GridPosition.y, hex.GridPosition.z] = hex;
         }
 
@@ -241,7 +243,7 @@ namespace Core
                     if (!this.UncoveredHexes[neighborPos.x, neighborPos.y].Contains(neighborPos.z))
                     {
                         this.UncoveredHexes[neighborPos.x, neighborPos.y].Add(neighborPos.z);
-                        this.UnseenUpdates.AddLast(new LocationUpdate(neighborPos.x, neighborPos.y));
+                        this.UnseenUpdates.AddLast(new HexUncoveredOrAdded(neighborPos.x, neighborPos.y, neighborPos.z));
                     }
                 }
             }
@@ -251,7 +253,7 @@ namespace Core
         {
             this.Hexes[location.x, location.y, location.z] = null;
             this.UncoveredHexes[location.x, location.y].Remove(location.z);
-            this.UnseenUpdates.AddLast(new LocationUpdate(location.x, location.y));
+            this.UnseenUpdates.AddLast(new HexHiddenOrDestroyed(location.x, location.y, location.z));
             MarkNeighborsUncovered(location);
         }
 
@@ -298,7 +300,7 @@ namespace Core
             this.Buildings.Add(location, building.Id);
             building.OnAddToGrid(location);
 
-            this.UnseenUpdates.AddLast(new LocationUpdate(location));
+            this.UnseenUpdates.AddLast(new BuildingAdded(location));
         }
 
         public void RemoveBuilding(Point2Int location)
@@ -308,7 +310,7 @@ namespace Core
             this.Buildings.Remove(location);
             building.OnRemoveFromGrid();
 
-            this.UnseenUpdates.AddLast(new LocationUpdate(location));
+            this.UnseenUpdates.AddLast(new BuildingRemoved(location));
         }
 
         public Building? GetBuildingAt(int x, int y) => GetBuildingAt(new Point2Int(x, y));
