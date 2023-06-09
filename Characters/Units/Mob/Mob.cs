@@ -1,3 +1,5 @@
+using System;
+
 namespace Core
 {
     public abstract class Mob : Unit
@@ -6,9 +8,9 @@ namespace Core
         {
         }
 
-        public int GetPower()
+        public float GetPower()
         {
-            int power = 0;
+            float power = 0;
 
             Life life = GetComponent<Life>();
             if (life != null)
@@ -20,7 +22,7 @@ namespace Core
             if (attack != null)
             {
                 float dpsPower = (int)(attack.Damage / attack.BaseCooldown);
-                dpsPower *= attack.Range / 5f;
+                dpsPower *= 1f + (attack.Range - Attack.MeleeRange) * .2f;
                 power += (int)dpsPower;
             }
 

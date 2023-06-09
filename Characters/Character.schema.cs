@@ -50,6 +50,8 @@ namespace Schema
             { CharacterType.Quarry, typeof(Quarry) },
             { CharacterType.Villager, typeof(Villager) },
             { CharacterType.GuardTower, typeof(GuardTower) },
+            { CharacterType.Pikeman, typeof (Pikeman) },
+            { CharacterType.DummyMob, typeof(DummyMob) }
         };
 
         public override bool CanConvert(Type objectType)

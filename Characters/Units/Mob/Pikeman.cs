@@ -6,7 +6,7 @@ namespace Core
 
         public override Schema.Entity BuildSchemaObject()
         {
-            return new Schema.PikeMan();
+            return new Schema.Pikeman();
         }
 
         public Pikeman(Context context, int alliance) : base(context, alliance)

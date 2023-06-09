@@ -57,6 +57,8 @@ namespace Core
                     return new GuardTower(context, alliance);
                 case CharacterType.DummyMob:
                     return new DummyMob(context, alliance);
+                case CharacterType.Pikeman:
+                    return new Pikeman(context, alliance);
                 default:
                     throw new ArgumentException("Invalid character type " + character);
             }

@@ -2,7 +2,7 @@ using Core;
 
 namespace Schema
 {
-    public class PikeMan : Character
+    public class Pikeman : Character
     {
         public override Core.CharacterType Type => CharacterType.Pikeman;
     }
