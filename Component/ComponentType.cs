@@ -13,6 +13,7 @@ namespace Core
         VillagerBehavior,
         QuarryWorksite,
         Attack,
-        TowerTargeting
+        TowerTargeting,
+        Spawner
     }
 }

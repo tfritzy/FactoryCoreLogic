@@ -30,6 +30,7 @@ namespace Schema
             { ComponentType.Attack, typeof(Attack) },
             { ComponentType.Life, typeof(Life) },
             { ComponentType.TowerTargeting, typeof(TowerTargeting) },
+            { ComponentType.Spawner, typeof(Spawner) }
         };
 
         public override bool CanConvert(Type objectType)
