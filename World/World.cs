@@ -77,9 +77,9 @@ namespace Core
 
         public void Tick(float deltaTime)
         {
-            foreach (ulong buildingId in this.Buildings.Values)
+            foreach (ulong characterId in this.Characters.Keys)
             {
-                Characters[buildingId].Tick(deltaTime);
+                Characters[characterId].Tick(deltaTime);
             }
         }
 
@@ -379,6 +379,11 @@ namespace Core
             }
 
             return schemaWorld.FromSchema();
+        }
+
+        public Character? FindCharacter(Func<Character, bool> predicate)
+        {
+            return this.Characters.Values.FirstOrDefault(predicate);
         }
 
         public Character? GetCharacter(ulong id)

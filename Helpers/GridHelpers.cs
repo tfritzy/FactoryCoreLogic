@@ -280,5 +280,50 @@ namespace Core
                 : points.Skip((points.Length - rotation) % points.Length).Concat(points.Take((points.Length - rotation) % points.Length)).ToArray();
             return new CubeCoord(rotated[0], rotated[1], rotated[2]);
         }
+
+        public static List<Point3Int> BFS(World world, Point3Int origin, Func<Point3Int, int, bool> isEligible, int maxDistance)
+        {
+            var visited = new HashSet<Point3Int>();
+            var queue = new Queue<Tuple<Point3Int, int>>();
+            var results = new List<Point3Int>();
+
+            queue.Enqueue(new Tuple<Point3Int, int>(origin, 0));
+
+            while (queue.Count > 0)
+            {
+                var tuple = queue.Dequeue();
+                Point3Int current = tuple.Item1;
+
+                if (visited.Contains(current))
+                    continue;
+
+                int distance = tuple.Item2;
+                if (distance > maxDistance)
+                    continue;
+
+                visited.Add(current);
+
+                if (isEligible(current, distance))
+                {
+                    results.Add(current);
+                }
+
+                for (int i = 0; i < 6; i++)
+                {
+                    Point2Int neighborCol = GetNeighbor((Point2Int)current, (HexSide)i);
+                    Hex? topHex = world.GetTopHex(neighborCol);
+
+                    // TODO: Ramps
+                    if (topHex == null || topHex?.GridPosition.z != current.z)
+                    {
+                        continue;
+                    }
+
+                    queue.Enqueue(new Tuple<Point3Int, int>(topHex.GridPosition, distance + 1));
+                }
+            }
+
+            return results;
+        }
     }
 }

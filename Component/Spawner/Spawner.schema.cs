@@ -9,9 +9,15 @@ namespace Schema
         [JsonProperty("range")]
         public int Range { get; set; }
 
+        [JsonProperty("accrlRate")]
+        public float PowerAccrualRate { get; set; }
+
+        [JsonProperty("power")]
+        public float Power { get; set; }
+
         public override Core.Component FromSchema(params object[] context)
         {
-            return new Core.Spawner((Core.Entity)context[0], Range);
+            return new Core.Spawner((Core.Entity)context[0], Range, PowerAccrualRate, Power);
         }
     }
 }
