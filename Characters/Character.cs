@@ -59,6 +59,8 @@ namespace Core
                     return new DummyMob(context, alliance);
                 case CharacterType.Pikeman:
                     return new Pikeman(context, alliance);
+                case CharacterType.Keep:
+                    return new Keep(context, alliance);
                 default:
                     throw new ArgumentException("Invalid character type " + character);
             }

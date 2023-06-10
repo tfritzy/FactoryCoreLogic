@@ -51,7 +51,8 @@ namespace Schema
             { CharacterType.Villager, typeof(Villager) },
             { CharacterType.GuardTower, typeof(GuardTower) },
             { CharacterType.Pikeman, typeof (Pikeman) },
-            { CharacterType.DummyMob, typeof(DummyMob) }
+            { CharacterType.DummyMob, typeof(DummyMob) },
+            { CharacterType.Keep, typeof (Keep) },
         };
 
         public override bool CanConvert(Type objectType)

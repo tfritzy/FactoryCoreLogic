@@ -11,6 +11,7 @@ namespace Core
         Quarry,
         GuardTower,
         Pikeman,
-        DummyMob
+        DummyMob,
+        Keep
     }
 }
