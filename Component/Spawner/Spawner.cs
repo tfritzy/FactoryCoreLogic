@@ -20,8 +20,8 @@ namespace Core
         public Spawner(
             Entity owner,
             int range,
-            float powerAccrualRate,
             float power,
+            float powerAccrualRate,
             List<CharacterType> spawnableTypes) : base(owner)
         {
             Range = range;
@@ -96,7 +96,6 @@ namespace Core
                 Mob mob = (Mob)c;
 
                 float secondsToAfford = mob.GetPower() / PowerAccrualRate;
-
                 if (secondsToAfford > .5f && secondsToAfford < 10f)
                 {
                     reasonableToSpawn.Add(SpawnableTypes[i]);

@@ -22,7 +22,12 @@ namespace Schema
 
         public override Core.Component FromSchema(params object[] context)
         {
-            return new Core.Spawner((Core.Entity)context[0], Range, PowerAccrualRate, Power, SpawnableTypes);
+            return new Core.Spawner(
+                owner: (Core.Entity)context[0],
+                range: Range,
+                power: Power,
+                powerAccrualRate: PowerAccrualRate,
+                spawnableTypes: SpawnableTypes);
         }
     }
 }
