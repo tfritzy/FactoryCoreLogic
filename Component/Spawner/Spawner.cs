@@ -5,19 +5,29 @@ namespace Core
 {
     public class Spawner : Component
     {
+        public new Character Owner => (Character)base.Owner;
         public override ComponentType Type => ComponentType.Spawner;
         public int Range { get; private set; }
         public float Power { get; private set; }
         public float PowerAccrualRate { get; private set; }
+        public List<CharacterType> SpawnableTypes { get; private set; }
 
         private List<Point3Int> spawnLocations = new List<Point3Int>();
+        private Queue<CharacterType> spawnQueue = new Queue<CharacterType>();
         private Random r = new Random();
+        private Dictionary<CharacterType, float> powerMap = new Dictionary<CharacterType, float>();
 
-        public Spawner(Entity owner, int range, float powerAccrualRate, float power) : base(owner)
+        public Spawner(
+            Entity owner,
+            int range,
+            float powerAccrualRate,
+            float power,
+            List<CharacterType> spawnableTypes) : base(owner)
         {
             Range = range;
             PowerAccrualRate = powerAccrualRate;
             Power = power;
+            SpawnableTypes = spawnableTypes;
         }
 
         public override Schema.Component ToSchema()
@@ -27,6 +37,7 @@ namespace Core
                 Range = Range,
                 PowerAccrualRate = PowerAccrualRate,
                 Power = Power,
+                SpawnableTypes = SpawnableTypes,
             };
         }
 
@@ -34,29 +45,92 @@ namespace Core
         {
             base.Tick(deltaTime);
             Power += deltaTime * PowerAccrualRate;
+            Spawn();
         }
 
         private void Spawn()
         {
+            if (spawnQueue.Count == 0)
+            {
+                PopulateSpawnQueue();
+            }
+
+            if (spawnLocations.Count == 0)
+            {
+                FindSpawnLocations();
+            }
+
+            if (spawnQueue.Count == 0 || spawnLocations.Count == 0)
+            {
+                return;
+            }
+
+            if (powerMap[spawnQueue.Peek()] > Power)
+            {
+                return;
+            }
+
             Point3Int location = spawnLocations[r.Next(spawnLocations.Count)];
-            Mob dummy = (Mob)Character.Create(CharacterType.DummyMob, this.Owner.Context, alliance: 1);
-            this.Owner.Context.World.AddCharacter(dummy);
-            this.Power -= dummy.GetPower();
+            Mob toSpawn = (Mob)Character.Create(
+                spawnQueue.Dequeue(),
+                this.Owner.Context,
+                alliance: this.Owner.Alliance
+            );
+            toSpawn.SetLocation(GridHelpers.oddq_offset_to_pixel(location));
+            this.Owner.Context.World.AddCharacter(toSpawn);
+            this.Power -= toSpawn.GetPower();
         }
 
-        private List<Point3Int> FindSpawnLocations()
+        private void PopulateSpawnQueue()
+        {
+            List<CharacterType> reasonableToSpawn = new List<CharacterType>();
+            for (int i = 0; i < SpawnableTypes.Count; i++)
+            {
+                Character c = Character.Create(SpawnableTypes[i], this.Owner.Context, alliance: 1);
+                if (!(c is Mob))
+                {
+                    SpawnableTypes.RemoveAt(i);
+                    i--;
+                    continue;
+                }
+                Mob mob = (Mob)c;
+
+                float secondsToAfford = mob.GetPower() / PowerAccrualRate;
+
+                if (secondsToAfford > .5f && secondsToAfford < 10f)
+                {
+                    reasonableToSpawn.Add(SpawnableTypes[i]);
+                }
+
+                powerMap[SpawnableTypes[i]] = mob.GetPower();
+            }
+
+            if (reasonableToSpawn.Count == 0)
+            {
+                return;
+            }
+
+            this.spawnQueue = new Queue<CharacterType>();
+            for (int i = 0; i < 30; i++)
+            {
+                this.spawnQueue.Enqueue(reasonableToSpawn[r.Next(reasonableToSpawn.Count)]);
+            }
+        }
+
+        private void FindSpawnLocations()
         {
             Keep? keep = this.Owner.Context.World.FindCharacter((Character c) => c is Keep) as Keep;
 
             if (keep == null)
             {
-                return new List<Point3Int>();
+                this.spawnLocations = new List<Point3Int>();
+                return;
             }
 
-            return GridHelpers.BFS(
+            this.spawnLocations = GridHelpers.BFS(
                 this.Owner.Context.World,
                 keep.GridPosition,
-                (Point3Int p, int d) => true,
+                (Point3Int p, int d) => d == Range,
                 Range
             );
         }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Core;
 using Newtonsoft.Json;
 
 namespace Schema
@@ -15,9 +17,12 @@ namespace Schema
         [JsonProperty("power")]
         public float Power { get; set; }
 
+        [JsonProperty("spawnableTypes")]
+        public List<CharacterType> SpawnableTypes { get; set; } = new List<CharacterType>();
+
         public override Core.Component FromSchema(params object[] context)
         {
-            return new Core.Spawner((Core.Entity)context[0], Range, PowerAccrualRate, Power);
+            return new Core.Spawner((Core.Entity)context[0], Range, PowerAccrualRate, Power, SpawnableTypes);
         }
     }
 }

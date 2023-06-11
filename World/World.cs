@@ -77,8 +77,9 @@ namespace Core
 
         public void Tick(float deltaTime)
         {
-            foreach (ulong characterId in this.Characters.Keys)
+            for (int i = 0; i < this.Characters.Count; i++)
             {
+                ulong characterId = this.Characters.Keys.ElementAt(i);
                 Characters[characterId].Tick(deltaTime);
             }
         }
@@ -384,6 +385,11 @@ namespace Core
         public Character? FindCharacter(Func<Character, bool> predicate)
         {
             return this.Characters.Values.FirstOrDefault(predicate);
+        }
+
+        public List<Character> FindCharacters(Func<Character, bool> predicate)
+        {
+            return this.Characters.Values.Where(predicate).ToList();
         }
 
         public Character? GetCharacter(ulong id)

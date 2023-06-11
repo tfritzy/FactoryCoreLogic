@@ -18,7 +18,7 @@ namespace Core
             base.InitComponents();
 
             SetComponent(new Life(this, 100));
-            SetComponent(new Attack(this, cooldown: 5f, damage: 50, range: 1f));
+            SetComponent(new Attack(this, cooldown: 1.5f, damage: 5, range: Attack.MeleeRange));
         }
     }
 }
