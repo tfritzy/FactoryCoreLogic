@@ -15,7 +15,7 @@ public enum TriangleType
     Water,
 }
 
-public enum SubType
+public enum TriangleSubType
 {
     Invalid,
     LandInterior,

@@ -7,7 +7,7 @@ public class TriangleData
     public struct TraingleConfig
     {
         public TriangleType[] Types;
-        public SubType[] SubTypes;
+        public TriangleSubType[] SubTypes;
     }
 
     public static readonly Dictionary<TraingleClass, TraingleConfig> TriangleConfigs = new()
@@ -21,10 +21,10 @@ public class TriangleData
                     TriangleType.Dirt,
                     TriangleType.Stone,
                 },
-                SubTypes=new SubType[]
+                SubTypes=new TriangleSubType[]
                 {
-                    SubType.LandInterior,
-                    SubType.LandExterior,
+                    TriangleSubType.LandInterior,
+                    TriangleSubType.LandExterior,
                 }
             }
         },
@@ -36,11 +36,11 @@ public class TriangleData
                 {
                     TriangleType.StoneBrick,
                 },
-                SubTypes=new SubType[]
+                SubTypes=new TriangleSubType[]
                 {
-                    SubType.BrickHalf1,
-                    SubType.BrickHalf1,
-                    SubType.FullBrick,
+                    TriangleSubType.BrickHalf1,
+                    TriangleSubType.BrickHalf1,
+                    TriangleSubType.FullBrick,
                 }
             }
         },
@@ -52,22 +52,22 @@ public class TriangleData
                 {
                     TriangleType.Water,
                 },
-                SubTypes=new SubType[]
+                SubTypes=new TriangleSubType[]
                 {
-                    SubType.Liquid,
+                    TriangleSubType.Liquid,
                 }
             }
         }
     };
 
-    private static Dictionary<TriangleType, SubType[]> _availableSubTypes = null!;
-    public static Dictionary<TriangleType, SubType[]> AvailableSubTypes
+    private static Dictionary<TriangleType, TriangleSubType[]> _availableSubTypes = null!;
+    public static Dictionary<TriangleType, TriangleSubType[]> AvailableSubTypes
     {
         get
         {
             if (_availableSubTypes == null)
             {
-                _availableSubTypes = new Dictionary<TriangleType, SubType[]>();
+                _availableSubTypes = new Dictionary<TriangleType, TriangleSubType[]>();
                 foreach (var item in TriangleConfigs)
                 {
                     foreach (var type in item.Value.Types)

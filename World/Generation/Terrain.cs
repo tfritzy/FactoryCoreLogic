@@ -2,23 +2,6 @@ using System.Collections.Generic;
 using System.Data;
 using Core;
 
-public enum TraingleSubType
-{
-    LandEdge,
-    LandInterior,
-    SingleBlock,
-    DoubleBlock1,
-    DoubleBock2,
-}
-
-public enum TraingleType
-{
-    Grass,
-    Stone,
-    Water,
-    StoneBrick
-}
-
 public struct TerrainPoint
 {
     public Triangle[] Traingles;

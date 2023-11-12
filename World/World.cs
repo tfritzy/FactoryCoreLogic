@@ -8,15 +8,15 @@ namespace Core
 {
     public class World
     {
-        private Terrain terrain;
+        public Terrain Terrain { get; private set; }
         private Dictionary<Point2Int, ulong> Buildings;
         private Dictionary<ulong, Character> Characters;
         public Dictionary<ulong, Projectile> Projectiles { get; private set; }
         public LinkedList<Update> UnseenUpdates = new LinkedList<Update>();
 
-        public int MaxX => terrain.MaxX;
-        public int MaxY => terrain.MaxY;
-        public int MaxHeight => terrain.MaxZ;
+        public int MaxX => Terrain.MaxX;
+        public int MaxY => Terrain.MaxY;
+        public int MaxHeight => Terrain.MaxZ;
 
         public World() : this(new Terrain(new TriangleType?[0, 0, 0])) { }
 
@@ -25,12 +25,12 @@ namespace Core
             this.Characters = new Dictionary<ulong, Character>();
             this.Buildings = new Dictionary<Point2Int, ulong>();
             this.Projectiles = new Dictionary<ulong, Projectile>();
-            this.terrain = terrain;
+            this.Terrain = terrain;
         }
 
         public void SetTerrain(Terrain terrain)
         {
-            this.terrain = terrain;
+            this.Terrain = terrain;
         }
 
         public void Tick(float deltaTime)
@@ -71,7 +71,7 @@ namespace Core
                 throw new InvalidOperationException("Tried to place building on occupied location");
             }
 
-            if (!terrain.IsInBounds(location))
+            if (!Terrain.IsInBounds(location))
             {
                 throw new InvalidOperationException("Tried to place building out of bounds");
             }
@@ -121,7 +121,7 @@ namespace Core
 
             return new Schema.World
             {
-                Terrain = terrain.ToSchema(),
+                Terrain = Terrain.ToSchema(),
                 Buildings = this.Buildings
                     .Where(kvp => !this.Characters[kvp.Value].IsPreview)
                     .ToDictionary(
@@ -201,12 +201,12 @@ namespace Core
 
         public Point3Int GetTopHex(int x, int y)
         {
-            return this.terrain.GetTopHex(new Point2Int(x, y));
+            return this.Terrain.GetTopHex(new Point2Int(x, y));
         }
 
         public Point3Int GetTopHex(Point2Int location)
         {
-            return this.terrain.GetTopHex(location);
+            return this.Terrain.GetTopHex(location);
         }
     }
 }

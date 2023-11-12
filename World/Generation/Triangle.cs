@@ -1,5 +1,5 @@
 public struct Triangle
 {
     public TriangleType Type;
-    public SubType SubType;
+    public TriangleSubType SubType;
 }
