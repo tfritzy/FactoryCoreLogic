@@ -93,6 +93,12 @@ namespace Core
             this.UnseenUpdates.AddLast(new BuildingRemoved(location));
         }
 
+        public void RemoveBuilding(ulong id)
+        {
+            Point2Int location = this.Buildings.First(kvp => kvp.Value == id).Key;
+            RemoveBuilding(location);
+        }
+
         public Building? GetBuildingAt(int x, int y) => GetBuildingAt(new Point2Int(x, y));
         public Building? GetBuildingAt(Point2Int location)
         {
