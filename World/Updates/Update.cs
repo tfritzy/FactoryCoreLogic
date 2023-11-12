@@ -4,7 +4,8 @@ namespace Core
     {
         Invalid,
         Character,
-        Projectile,
+        ProjectileAdded,
+        ProjectileRemoved,
         BuildingAdded,
         BuildingRemoved,
         HexUncoveredOrAdded,

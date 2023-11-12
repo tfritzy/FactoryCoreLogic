@@ -21,14 +21,10 @@ namespace Core
 
         public static readonly Dictionary<Type, ComponentType> ComponentTypeMap = new Dictionary<Type, ComponentType>()
         {
-            { typeof(Harvestable), ComponentType.Harvestable },
             { typeof(Inventory), ComponentType.Inventory },
-            { typeof(Harvester), ComponentType.Harvester },
             { typeof(ConveyorComponent), ComponentType.Conveyor },
             { typeof(WornItems), ComponentType.WornItems },
             { typeof(ActiveItems), ComponentType.ActiveItems },
-            { typeof(QuarryWorksite), ComponentType.QuarryWorksite },
-            { typeof(VillagerBehavior), ComponentType.VillagerBehavior },
             { typeof(Attack), ComponentType.Attack },
             { typeof(Life), ComponentType.Life },
             { typeof(TowerTargeting), ComponentType.TowerTargeting },

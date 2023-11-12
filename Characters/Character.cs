@@ -49,10 +49,6 @@ namespace Core
                     return new Conveyor(context, alliance);
                 case CharacterType.Player:
                     return new Player(context, alliance);
-                case CharacterType.Villager:
-                    return new Villager(context, alliance);
-                case CharacterType.Quarry:
-                    return new Quarry(context, alliance);
                 case CharacterType.GuardTower:
                     return new GuardTower(context, alliance);
                 case CharacterType.DummyMob:

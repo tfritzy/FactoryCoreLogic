@@ -7,8 +7,6 @@ namespace Core
         Dummy,
         DummyBuilding,
         Player,
-        Villager,
-        Quarry,
         GuardTower,
         Pikeman,
         DummyMob,

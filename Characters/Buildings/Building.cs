@@ -1,3 +1,4 @@
+using System.Numerics;
 using Core;
 using Newtonsoft.Json;
 
@@ -5,7 +6,7 @@ namespace Core
 {
     public abstract class Building : Character
     {
-        public override Point3Float Location => GridHelpers.oddq_offset_to_pixel(GridPosition);
+        public override Point3Float Location => GridHelpers.EvenRToPixelPlusHeight(GridPosition);
         public override Point3Int GridPosition => gridPosition;
 
         private Point3Int gridPosition;
@@ -21,14 +22,8 @@ namespace Core
 
         public virtual void OnAddToGrid(Point2Int gridPosition)
         {
-            int? height = World.GetTopHexHeight(gridPosition);
-
-            if (height == null)
-            {
-                throw new System.Exception("Cannot add building out of bounds.");
-            }
-
-            this.gridPosition = new Point3Int(gridPosition.x, gridPosition.y, height ?? 0);
+            Point3Int top = this.World.GetTopHex(gridPosition);
+            this.gridPosition = top;
             foreach (var cell in Components.Values)
             {
                 cell.OnAddToGrid();

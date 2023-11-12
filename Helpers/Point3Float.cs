@@ -11,6 +11,17 @@ namespace Core
         public float y;
         public float z;
 
+        public static readonly Point3Float Zero = new Point3Float(0, 0, 0);
+        public static readonly Point3Float One = new Point3Float(1, 1, 1);
+        public static readonly Point3Float MinValue = new Point3Float(float.MinValue, float.MinValue, float.MinValue);
+        public static readonly Point3Float MaxValue = new Point3Float(float.MaxValue, float.MaxValue, float.MaxValue);
+        public static readonly Point3Float Forward = new Point3Float(0, 1, 0);
+        public static readonly Point3Float Backward = new Point3Float(0, -1, 0);
+        public static readonly Point3Float Left = new Point3Float(-1, 0, 0);
+        public static readonly Point3Float Right = new Point3Float(1, 0, 0);
+        public static readonly Point3Float Up = new Point3Float(0, 0, 1);
+        public static readonly Point3Float Down = new Point3Float(0, 0, -1);
+
         public Point3Float(float x, float y, float z)
         {
             this.x = x;

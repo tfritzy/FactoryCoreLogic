@@ -31,6 +31,11 @@ namespace Core
         public void Damage(int damage)
         {
             Health -= damage;
+
+            if (Health <= 0)
+            {
+                Owner.Destroy();
+            }
         }
     }
 }

@@ -2,11 +2,11 @@ namespace Core
 {
     public enum HexSide
     {
-        North,
         NorthEast,
+        East,
         SouthEast,
-        South,
         SouthWest,
+        West,
         NorthWest,
         Up,
         Down

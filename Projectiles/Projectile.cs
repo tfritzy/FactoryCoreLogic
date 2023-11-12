@@ -15,6 +15,9 @@ namespace Core
         public PhysicsRequest? PhysicsRequest { get; private set; }
 
         private HashSet<ulong> hits = new HashSet<ulong>();
+        private float timeSinceCreation = 0f;
+
+        public const float SELF_DESTRUCT_TIME_S = 10f;
 
         public Projectile(
             Context context,
@@ -50,25 +53,23 @@ namespace Core
                     PhysicsRequest = new SpherePhysicsRequest(Location, ExplosionRadius);
                 else
                     DealDamage(character);
+
+                if (HitsRemaining <= 0)
+                {
+                    Velocity = Point3Float.Zero;
+                }
             }
-        }
-
-        public void OnCollide(Hex hex)
-        {
-            if (HitsRemaining <= 0)
-            {
-                return;
-            }
-
-            HitsRemaining = 0;
-
-            if (ExplosionRadius > 0f)
-                PhysicsRequest = new SpherePhysicsRequest(Location, ExplosionRadius);
         }
 
         public void Tick(float deltaTime)
         {
             Location += Velocity * deltaTime;
+            timeSinceCreation += deltaTime;
+
+            if (timeSinceCreation > SELF_DESTRUCT_TIME_S)
+            {
+                Destroy();
+            }
         }
 
         public void FulfillPhysicsRequest(List<Character> hits)
@@ -84,6 +85,20 @@ namespace Core
                     DealDamage(hit);
                 }
             }
+        }
+
+        public void OnCollideWithGround()
+        {
+            if (HitsRemaining <= 0)
+            {
+                return;
+            }
+
+            if (ExplosionRadius > 0f)
+                PhysicsRequest = new SpherePhysicsRequest(Location, ExplosionRadius);
+
+            HitsRemaining = 0;
+            Velocity = Point3Float.Zero;
         }
 
         public override Schema.Entity BuildSchemaObject()

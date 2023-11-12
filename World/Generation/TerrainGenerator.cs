@@ -2,14 +2,14 @@ namespace Core
 {
     public class TerrainGenerator
     {
-        private HexType?[,,] Hexes;
+        private TriangleType?[,,] Hexes;
 
         public TerrainGenerator(int dimX, int dimY, int dimZ)
         {
-            Hexes = new HexType?[dimX, dimY, dimZ];
+            Hexes = new TriangleType?[dimX, dimY, dimZ];
         }
 
-        public HexType?[,,] GenerateFlatWorld(Context context)
+        public TriangleType?[,,] GenerateFlatWorld(Context context)
         {
             int z = 0;
             for (; z < Hexes.GetLength(2) / 2; z++)
@@ -18,7 +18,7 @@ namespace Core
                 {
                     for (int y = 0; y < Hexes.GetLength(1); y++)
                     {
-                        Hexes[x, y, z] = HexType.Stone;
+                        Hexes[x, y, z] = TriangleType.Stone;
                     }
                 }
             }
@@ -27,7 +27,7 @@ namespace Core
             {
                 for (int y = 0; y < Hexes.GetLength(1); y++)
                 {
-                    Hexes[x, y, z] = HexType.Dirt;
+                    Hexes[x, y, z] = TriangleType.Dirt;
                 }
             }
 

@@ -8,42 +8,42 @@ namespace Core
     {
         private static readonly Point2Int[] oddNeighborPattern = new Point2Int[]
         {
-            new Point2Int(0, 1), // north
-            new Point2Int(1, 1), // northeast
-            new Point2Int(1, 0), // southeast
-            new Point2Int(0, -1), // south
-            new Point2Int(-1, 0), // southwest
-            new Point2Int(-1, 1) // northwest
+            new Point2Int(0, -1), // northeast
+            new Point2Int(1, 0), // east
+            new Point2Int(0, 1), // southeast
+            new Point2Int(-1, 1), // southwest
+            new Point2Int(-1, 0), // west
+            new Point2Int(-1, -1) // northwest
         };
 
         private static readonly Point2Int[] evenNeighborPattern = new Point2Int[]
         {
-            new Point2Int(0, 1), // north
-            new Point2Int(1, 0),  // northeast
-            new Point2Int(1, -1), // southeast
-            new Point2Int(0, -1), // south
-            new Point2Int(-1,-1), // southwest
-            new Point2Int(-1, 0) // northwest
+            new Point2Int(1, -1), // northeast
+            new Point2Int(1, 0), // east
+            new Point2Int(1, 1), // southeast
+            new Point2Int(0, 1), // southwest
+            new Point2Int(-1, 0), // west
+            new Point2Int(0, -1) // northwest
         };
 
         private static readonly Dictionary<Point2Int, HexSide> oddNeighborPatternMap = new Dictionary<Point2Int, HexSide>()
         {
-            { new Point2Int(0, 1), HexSide.North },
-            { new Point2Int(1, 1), HexSide.NorthEast },
-            { new Point2Int(1, 0), HexSide.SouthEast },
-            { new Point2Int(0, -1), HexSide.South },
-            { new Point2Int(-1, 0), HexSide.SouthWest },
-            { new Point2Int(-1, 1), HexSide.NorthWest }
+            { oddNeighborPattern[0], HexSide.NorthEast },
+            { oddNeighborPattern[1], HexSide.East },
+            { oddNeighborPattern[2], HexSide.SouthEast },
+            { oddNeighborPattern[3], HexSide.SouthWest },
+            { oddNeighborPattern[4], HexSide.West },
+            { oddNeighborPattern[5], HexSide.NorthWest }
         };
 
         private static readonly Dictionary<Point2Int, HexSide> evenNeighborPatternMap = new Dictionary<Point2Int, HexSide>()
         {
-            { new Point2Int(0, 1), HexSide.North },
-            { new Point2Int(1, 0), HexSide.NorthEast },
-            { new Point2Int(1, -1), HexSide.SouthEast },
-            { new Point2Int(0, -1), HexSide.South },
-            { new Point2Int(-1,-1), HexSide.SouthWest },
-            { new Point2Int(-1, 0), HexSide.NorthWest }
+            { evenNeighborPattern[0], HexSide.NorthEast },
+            { evenNeighborPattern[1], HexSide.East },
+            { evenNeighborPattern[2], HexSide.SouthEast },
+            { evenNeighborPattern[3], HexSide.SouthWest },
+            { evenNeighborPattern[4], HexSide.West },
+            { evenNeighborPattern[5], HexSide.NorthWest }
         };
 
         public static Point2Int GetNeighbor(int x, int y, HexSide direction)
@@ -55,7 +55,7 @@ namespace Core
         {
             Point2Int position;
 
-            if (pos.x % 2 == 0)
+            if (pos.y % 2 == 0)
             {
                 position = pos + evenNeighborPattern[(int)direction];
             }
@@ -83,7 +83,7 @@ namespace Core
                 return position;
             }
 
-            if (pos.x % 2 == 0)
+            if (pos.y % 2 == 0)
             {
                 position = pos + evenNeighborPattern[(int)direction];
             }
@@ -95,36 +95,11 @@ namespace Core
             return position;
         }
 
-        public static bool IsInBounds(Point3Int pos, Hex?[,,] grid)
-        {
-            return IsInBounds(pos.x, pos.y, pos.z, grid);
-        }
-
-        public static bool IsInBounds(int x, int y, int z, Hex?[,,] grid)
-        {
-            if (x < 0 || x >= grid.GetLength(0))
-            {
-                return false;
-            }
-
-            if (y < 0 || y >= grid.GetLength(1))
-            {
-                return false;
-            }
-
-            if (z < 0 || z >= grid.GetLength(2))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         public static HexSide? GetNeighborSide(Point2Int pos, Point2Int neighborPos)
         {
             Point2Int direction = neighborPos - pos;
 
-            if (pos.x % 2 == 0)
+            if (pos.y % 2 == 0)
             {
                 if (evenNeighborPatternMap.ContainsKey(direction))
                 {
@@ -153,76 +128,80 @@ namespace Core
             return (HexSide)(((int)side + 3) % 6);
         }
 
-        public static Point2Int CubeToOffset(CubeCoord cube)
+        public static Point2Int CubeToEvenR(CubeCoord cube)
         {
-            return CubeToOffset(cube.q, cube.r, cube.s);
+            return CubeToEvenR(cube.q, cube.r, cube.s);
         }
 
-        public static Point2Int CubeToOffset(int q, int r, int s)
+        public static Point2Int CubeToEvenR(int q, int r, int s)
         {
-            var col = q;
-            var row = r + (q - (q & 1)) / 2;
+            int col = q + (r + (r & 1)) / 2;
+            int row = r;
             return new Point2Int(col, row);
         }
 
-        public static CubeCoord OffsetToCube(Point2Int point)
+        public static CubeCoord EvenRToCube(Point2Int point)
         {
-            int q = point.x;
-            int r = point.y - (point.x - (point.x & 1)) / 2;
+            int q = point.x - (point.y + (point.y & 1)) / 2;
+            int r = point.y;
             int s = -q - r;
-
             return new CubeCoord(q, r, s);
         }
 
-        public static CubeCoord OffsetToCube(Point2Float point)
-        {
-            float q = point.x;
-            float r = point.y - (point.x - ((int)point.x & 1)) / 2f;
-            float s = -q - r;
-
-            return new CubeCoord((int)q, (int)r, (int)s);
-        }
-
         /*
-            Stolen from: https://www.redblobgames.com/grids/hexagons/more-pixel-to-hex.html#boristhebrave
+            Stolen from: https://www.redblobgames.com/grids/hexagons/more-pixel-to-hex.html#mark-steere
         */
-        private static float[] pick_tri(float x, float y)
+        public static Point2Int pixel_to_evenr_offset(Point2Float point)
         {
-            return new float[] {
-                MathF.Ceiling(( 1 * x - MathF.Sqrt(3) / 3 * y) / Constants.HEX_RADIUS),
-                MathF.Floor((    MathF.Sqrt(3) * 2 / 3 * y) / Constants.HEX_RADIUS) + 1,
-                MathF.Ceiling((-1 * x - MathF.Sqrt(3) / 3 * y) / Constants.HEX_RADIUS)
-            };
+            /*
+            // Convert to their coordinate system
+            y = -y
+            // Algorithm from Mark Steere
+            let s_to_s = sqrt(3) // "side to side" distance, "w" on my page
+            let u = (sqrt(3) * y - x) / 2
+            let v = (sqrt(3) * y + x) / 2
+            let x_halfcell = floor(2 * x / s_to_s)
+            let u_halfcell = floor(2 * u / s_to_s)
+            let v_halfcell = floor(2 * v / s_to_s)
+            let W = floor((x_halfcell + v_halfcell + 2) / 3)
+            let Y = floor((u_halfcell + v_halfcell + 2) / 3)
+            return {q: W, r: -Y}
+            */
+            float s_to_s = MathF.Sqrt(3);
+            float u = (MathF.Sqrt(3) * point.y - point.x) / 2;
+            float v = (MathF.Sqrt(3) * point.y + point.x) / 2;
+            float x_halfcell = MathF.Floor(2 * point.x / s_to_s);
+            float u_halfcell = MathF.Floor(2 * u / s_to_s);
+            float v_halfcell = MathF.Floor(2 * v / s_to_s);
+            float W = MathF.Floor((x_halfcell + v_halfcell + 2) / 3);
+            float Y = MathF.Floor((u_halfcell + v_halfcell + 2) / 3);
+            var cube = new CubeCoord((int)W, (int)-Y);
+            return CubeToEvenR(cube);
         }
 
-        private static CubeCoord tri_to_hex(float x, float y, float z)
+        public static Point3Int PixelToEvenRPlusHeight(Point3Float point)
         {
-            return new CubeCoord(
-                (int)MathF.Round((x - z) / 3),
-                (int)MathF.Round((y - x) / 3),
-                (int)MathF.Round((z - y) / 3) // not needed for axial
-            );
+            Point2Int evenR = pixel_to_evenr_offset((Point2Float)point);
+            return new Point3Int(evenR.x, evenR.y, (int)(point.z / Constants.HEX_HEIGHT));
         }
 
-        public static Point3Int pixel_to_oddq_offset(Point3Float point)
+        public static Point3Float EvenRToPixelPlusHeight(Point3Int hex)
         {
-            var abc = pick_tri(point.x, point.y); // swap for pointy/flat
-            var cube = tri_to_hex(abc[0], abc[1], abc[2]);
-            Point3Int result = (Point3Int)CubeToOffset(cube);
-            result.z = (int)(point.z / Constants.HEX_HEIGHT);
-            return result;
+            Point2Float evenR = evenr_offset_to_pixel(hex);
+            return new Point3Float(evenR.x, evenR.y, hex.z * Constants.HEX_HEIGHT);
         }
 
-        public static Point3Float oddq_offset_to_pixel(Point3Int hex)
+        public static Point2Float evenr_offset_to_pixel(Point3Int hex)
         {
-            float x = Constants.HEX_RADIUS * 3 / 2 * hex.x;
-            float y = Constants.HEX_RADIUS * MathF.Sqrt(3) * (hex.y + 0.5f * (hex.x & 1));
-            return new Point3Float(x, y, hex.z / Constants.HEX_HEIGHT);
+            float x = Constants.HEX_RADIUS * MathF.Sqrt(3) * (hex.x - 0.5f * (hex.y & 1));
+            float y = Constants.HEX_RADIUS * 3 / 2 * hex.y;
+            y = -y;
+            return new Point2Float(x, y);
         }
 
         public static List<Point2Int> GetHexInRange(Point2Int origin, int radius)
         {
-            var cube = OffsetToCube(origin);
+            var cube = EvenRToCube(origin);
             List<Point2Int> results = new List<Point2Int>();
             for (int q = -radius + cube.q; q <= +radius + cube.q; q++)
             {
@@ -232,7 +211,7 @@ namespace Core
                     {
                         if (q + r + s == 0)
                         {
-                            results.Add(GridHelpers.CubeToOffset(q, r, s));
+                            results.Add(GridHelpers.CubeToEvenR(q, r, s));
                         }
                     }
                 }
@@ -279,51 +258,6 @@ namespace Core
                 ? points.Skip(rotation).Concat(points.Take(rotation)).ToArray()
                 : points.Skip((points.Length - rotation) % points.Length).Concat(points.Take((points.Length - rotation) % points.Length)).ToArray();
             return new CubeCoord(rotated[0], rotated[1], rotated[2]);
-        }
-
-        public static List<Point3Int> BFS(World world, Point3Int origin, Func<Point3Int, int, bool> isEligible, int maxDistance)
-        {
-            var visited = new HashSet<Point3Int>();
-            var queue = new Queue<Tuple<Point3Int, int>>();
-            var results = new List<Point3Int>();
-
-            queue.Enqueue(new Tuple<Point3Int, int>(origin, 0));
-
-            while (queue.Count > 0)
-            {
-                var tuple = queue.Dequeue();
-                Point3Int current = tuple.Item1;
-
-                if (visited.Contains(current))
-                    continue;
-
-                int distance = tuple.Item2;
-                if (distance > maxDistance)
-                    continue;
-
-                visited.Add(current);
-
-                if (isEligible(current, distance))
-                {
-                    results.Add(current);
-                }
-
-                for (int i = 0; i < 6; i++)
-                {
-                    Point2Int neighborCol = GetNeighbor((Point2Int)current, (HexSide)i);
-                    Hex? topHex = world.GetTopHex(neighborCol);
-
-                    // TODO: Ramps
-                    if (topHex == null || topHex?.GridPosition.z != current.z)
-                    {
-                        continue;
-                    }
-
-                    queue.Enqueue(new Tuple<Point3Int, int>(topHex.GridPosition, distance + 1));
-                }
-            }
-
-            return results;
         }
     }
 }

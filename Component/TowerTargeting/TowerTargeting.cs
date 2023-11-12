@@ -41,6 +41,7 @@ namespace Core
                 PhysicsRequest = new SpherePhysicsRequest(
                     Owner.Location,
                     Owner.GetComponent<Attack>().Range);
+                timeSinceLastTargetCheck = 0f;
             }
         }
 
@@ -77,6 +78,11 @@ namespace Core
             }
 
             return minChar;
+        }
+
+        public void ClearTarget()
+        {
+            Target = null;
         }
     }
 }
