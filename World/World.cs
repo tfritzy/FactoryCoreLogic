@@ -90,13 +90,18 @@ namespace Core
             this.Buildings.Remove(location);
             building.OnRemoveFromGrid();
 
-            this.UnseenUpdates.AddLast(new BuildingRemoved(location));
+            this.UnseenUpdates.AddLast(new BuildingRemoved(buildingId));
         }
 
         public void RemoveBuilding(ulong id)
         {
-            Point2Int location = this.Buildings.First(kvp => kvp.Value == id).Key;
-            RemoveBuilding(location);
+            if (!this.Characters.ContainsKey(id))
+            {
+                return;
+            }
+
+            var building = this.Characters[id];
+            RemoveBuilding((Point2Int)building.GridPosition);
         }
 
         public Building? GetBuildingAt(int x, int y) => GetBuildingAt(new Point2Int(x, y));
