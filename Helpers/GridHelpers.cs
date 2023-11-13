@@ -182,7 +182,7 @@ namespace Core
         public static Point3Int PixelToEvenRPlusHeight(Point3Float point)
         {
             Point2Int evenR = pixel_to_evenr_offset((Point2Float)point);
-            return new Point3Int(evenR.x, evenR.y, (int)(point.z / Constants.HEX_HEIGHT));
+            return new Point3Int(evenR.x, -evenR.y, (int)(point.z / Constants.HEX_HEIGHT));
         }
 
         public static Point3Float EvenRToPixelPlusHeight(Point3Int hex)
