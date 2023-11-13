@@ -72,5 +72,10 @@ namespace Core
             this.ActiveItems.DecrementCountOf(itemIndex, 1);
             building.ClearPreview();
         }
+
+        public void PlaceBlockFromItem()
+        {
+
+        }
     }
 }

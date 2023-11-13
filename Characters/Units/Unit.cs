@@ -4,7 +4,17 @@ namespace Core
     {
         private Point3Float _location;
         public override Point3Float Location => _location;
-        public override Point3Int GridPosition => GridHelpers.PixelToEvenRPlusHeight(Location);
+        public override Point3Int GridPosition
+        {
+            get
+            {
+                return GridHelpers.PixelToEvenRPlusHeight(Location);
+            }
+            set
+            {
+                _location = GridHelpers.EvenRToPixelPlusHeight(value);
+            }
+        }
 
         public Unit(Context context, int alliance) : base(context, alliance)
         {

@@ -15,21 +15,13 @@ namespace Schema
         [JsonProperty("alliance")]
         public int Alliance { get; set; }
 
+        [JsonProperty("pos")]
+        public Point3Int GridPosition { get; set; }
+
         protected override Core.Entity BuildCoreObject(Context context)
         {
-            return Core.Character.Create(this.Type, context, Alliance);
-        }
-
-        protected Core.Character ToCore(params object[] context)
-        {
-            if (context.Length == 0 || context[0] == null || !(context[0] is Context))
-                throw new ArgumentException("Conveyor requires a Context as context[0]");
-
-            Context worldContext = (Context)context[0];
-
-            Core.Character character = (Core.Character)base.CreateCore(context);
-            character.Id = this.Id;
-
+            var character = Core.Character.Create(this.Type, context, Alliance);
+            character.GridPosition = this.GridPosition;
             return character;
         }
 

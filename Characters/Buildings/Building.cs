@@ -7,7 +7,17 @@ namespace Core
     public abstract class Building : Character
     {
         public override Point3Float Location => GridHelpers.EvenRToPixelPlusHeight(GridPosition);
-        public override Point3Int GridPosition => gridPosition;
+        public override Point3Int GridPosition
+        {
+            get
+            {
+                return gridPosition;
+            }
+            set
+            {
+                gridPosition = value;
+            }
+        }
 
         private Point3Int gridPosition;
 

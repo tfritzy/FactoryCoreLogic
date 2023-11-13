@@ -6,7 +6,7 @@ namespace Core
     public abstract class Character : Entity
     {
         public abstract CharacterType Type { get; }
-        public abstract Point3Int GridPosition { get; }
+        public abstract Point3Int GridPosition { get; set; }
         public abstract Point3Float Location { get; }
         public bool IsPreview { get; private set; }
         public int Alliance { get; private set; }
@@ -66,6 +66,7 @@ namespace Core
         {
             var character = (Schema.Character)base.ToSchema();
             character.Alliance = this.Alliance;
+            character.GridPosition = this.GridPosition;
             return character;
         }
 

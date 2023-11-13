@@ -1,14 +1,17 @@
 using System.Collections.Generic;
 using System.Data;
+using System.Text.Json;
 using Core;
-
-public struct TerrainPoint
-{
-    public Triangle[] Traingles;
-}
+using Newtonsoft.Json;
 
 namespace Core
 {
+    public struct TerrainPoint
+    {
+        [JsonProperty("tri")]
+        public Triangle[] Traingles;
+    }
+
     public class Terrain
     {
         public readonly TerrainPoint?[,,] TerrainData;
@@ -85,8 +88,10 @@ namespace Core
 
         public Schema.Terrain ToSchema()
         {
-            // TODO: Implement
-            return new Schema.Terrain();
+            return new Schema.Terrain()
+            {
+                TerrainData = this.TerrainData,
+            };
         }
 
         public TerrainPoint? GetAt(Point3Int location)

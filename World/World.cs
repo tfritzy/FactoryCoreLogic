@@ -129,7 +129,6 @@ namespace Core
 
         public Schema.World ToSchema()
         {
-
             return new Schema.World
             {
                 Terrain = Terrain.ToSchema(),
