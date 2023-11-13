@@ -89,6 +89,9 @@ namespace Core
         {
             return $"({x}, {y}, {z})";
         }
+
+        public static Point3Int Up = new(0, 0, 1);
+        public static Point3Int Zero = new(0, 0, 0);
     }
 
     public class Point3IntConverter : JsonConverter<Point3Int>

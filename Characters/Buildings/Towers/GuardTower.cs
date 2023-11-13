@@ -5,6 +5,7 @@ namespace Core
         public override CharacterType Type => CharacterType.GuardTower;
         public static Point3Float ProjectileOffset = new Point3Float(0, 0, 3f);
         public override Point3Float ProjectileSpawnOffset => ProjectileOffset;
+        public override int Height => 5;
 
         public override Schema.Entity BuildSchemaObject()
         {

@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-public struct Triangle
+public class Triangle
 {
     [JsonProperty("t")]
     public TriangleType Type;

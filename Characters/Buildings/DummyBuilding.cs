@@ -6,6 +6,7 @@ namespace Core
     public class DummyBuilding : Building
     {
         public override CharacterType Type => CharacterType.DummyBuilding;
+        public override int Height => 2;
 
         protected override void InitComponents() { }
 

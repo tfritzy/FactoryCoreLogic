@@ -8,8 +8,8 @@ namespace Core
         ProjectileRemoved,
         BuildingAdded,
         BuildingRemoved,
-        HexUncoveredOrAdded,
-        HexHiddenOrDestroyed
+        TriUncoveredOrAdded,
+        TriHiddenOrDestroyed
     }
 
     public abstract class Update

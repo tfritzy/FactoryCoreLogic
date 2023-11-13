@@ -18,7 +18,8 @@ namespace Core
         public int MaxY => Terrain.MaxY;
         public int MaxHeight => Terrain.MaxZ;
 
-        public World() : this(new Terrain(new TriangleType?[0, 0, 0])) { }
+        [Obsolete("Only to be used during deserialization")]
+        public World() : this(new Terrain(new TriangleType?[0, 0, 0], null!)) { }
 
         public World(Terrain terrain)
         {
@@ -74,6 +75,11 @@ namespace Core
             if (!Terrain.IsInBounds(location))
             {
                 throw new InvalidOperationException("Tried to place building out of bounds");
+            }
+
+            if (!Terrain.IsTopHexSolid(location))
+            {
+                throw new InvalidOperationException("Must place building on solid ground");
             }
 
             this.Characters[building.Id] = building;

@@ -1,27 +1,25 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Core;
 using Newtonsoft.Json;
 
 namespace Core
 {
-    public struct TerrainPoint
-    {
-        [JsonProperty("tri")]
-        public Triangle[] Traingles;
-    }
-
     public class Terrain
     {
-        public readonly TerrainPoint?[,,] TerrainData;
+        public readonly Triangle?[]?[,,] TerrainData;
         public int MaxX => this.TerrainData.GetLength(0);
         public int MaxY => this.TerrainData.GetLength(1);
         public int MaxZ => this.TerrainData.GetLength(2);
 
-        public Terrain(TriangleType?[,,] Types)
+        private Context context;
+
+        public Terrain(TriangleType?[,,] Types, Context context)
         {
-            TerrainData = new TerrainPoint?[Types.GetLength(0), Types.GetLength(1), Types.GetLength(2)];
+            this.context = context;
+            TerrainData = new Triangle?[]?[Types.GetLength(0), Types.GetLength(1), Types.GetLength(2)];
 
             for (int x = 0; x < Types.GetLength(0); x++)
             {
@@ -31,7 +29,7 @@ namespace Core
                     {
                         if (Types[x, y, z] != null)
                         {
-                            var triangles = new Triangle[6];
+                            var triangles = new Triangle?[6];
                             for (int i = 0; i < 6; i++)
                             {
                                 triangles[i] = new Triangle()
@@ -41,10 +39,7 @@ namespace Core
                                 };
                             }
 
-                            TerrainData[x, y, z] = new TerrainPoint()
-                            {
-                                Traingles = triangles
-                            };
+                            TerrainData[x, y, z] = triangles;
                         }
                     }
                 }
@@ -81,9 +76,10 @@ namespace Core
             return true;
         }
 
-        public Terrain(TerrainPoint?[,,] TerrainData)
+        public Terrain(Triangle?[]?[,,] TerrainData, Context context)
         {
             this.TerrainData = TerrainData;
+            this.context = context;
         }
 
         public Schema.Terrain ToSchema()
@@ -94,58 +90,28 @@ namespace Core
             };
         }
 
-        public TerrainPoint? GetAt(Point3Int location)
+        public Triangle?[]? GetAt(Point3Int location)
         {
             return TerrainData[location.x, location.y, location.z];
         }
 
-        // private void CalculateInitialUncovered()
-        // {
-        //     if (!GridHelpers.IsInBounds(0, 0, this.MaxHeight - 1, this.Hexes))
-        //     {
-        //         return;
-        //     }
+        public void SetTriangle(Point3Int location, Triangle? triangle, HexSide side)
+        {
+            if (TerrainData[location.x, location.y, location.z] == null)
+            {
+                TerrainData[location.x, location.y, location.z] = new Triangle[6];
+            }
+            TerrainData[location.x, location.y, location.z]![(int)side] = triangle;
 
-        //     HashSet<Point3Int> visited = new HashSet<Point3Int>();
-        //     Queue<Point3Int> queue = new Queue<Point3Int>();
-
-        //     queue.Enqueue(new Point3Int(0, 0, this.MaxHeight - 1));
-
-        //     while (queue.Count > 0)
-        //     {
-        //         Point3Int current = queue.Dequeue();
-        //         if (Hexes[current.x, current.y, current.z] != null)
-        //         {
-        //             if (this.UncoveredHexes[current.x, current.y] == null)
-        //             {
-        //                 this.UncoveredHexes[current.x, current.y] = new HashSet<int>();
-        //             }
-
-        //             this.UncoveredHexes[current.x, current.y].Add(current.z);
-        //         }
-
-        //         Hex? hex = Hexes[current.x, current.y, current.z];
-        //         if (hex == null || hex.Transparent)
-        //         {
-        //             for (int i = 0; i < 8; i++)
-        //             {
-        //                 Point3Int neighbor = GridHelpers.GetNeighbor(current, (HexSide)i);
-        //                 if (!GridHelpers.IsInBounds(neighbor, this.Hexes))
-        //                 {
-        //                     continue;
-        //                 }
-
-        //                 if (visited.Contains(neighbor))
-        //                 {
-        //                     continue;
-        //                 }
-
-        //                 visited.Add(neighbor);
-        //                 queue.Enqueue(neighbor);
-        //             }
-        //         }
-        //     }
-        // }
+            if (triangle != null)
+            {
+                context.World.UnseenUpdates.AddLast(new TriUncoveredOrAdded(location, side));
+            }
+            else
+            {
+                context.World.UnseenUpdates.AddLast(new TriHiddenOrDestroyed(location, side));
+            }
+        }
 
         public Point3Int GetTopHex(Point2Int location)
         {
@@ -158,6 +124,26 @@ namespace Core
             }
 
             return new Point3Int(location.x, location.y, 0);
+        }
+
+        public bool IsTopHexSolid(Point2Int col)
+        {
+            Point3Int topHex = GetTopHex(col);
+            var hex = GetAt(topHex);
+            if (hex == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < hex.Length; i++)
+            {
+                if (hex[i] == null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

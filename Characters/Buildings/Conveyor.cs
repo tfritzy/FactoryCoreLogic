@@ -10,6 +10,7 @@ namespace Core
     {
         public ConveyorComponent? Component => this.GetComponent<ConveyorComponent>();
         public override CharacterType Type => CharacterType.Conveyor;
+        public override int Height => 1;
 
         public Conveyor(Context context, int alliance) : base(context, alliance) { }
 
