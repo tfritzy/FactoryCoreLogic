@@ -245,7 +245,7 @@ namespace Core
             return true;
         }
 
-        private int? AngleBetweenThreePoints(Point2Int a, Point2Int b, Point2Int c)
+        public static int? AngleBetweenThreePoints(Point2Int a, Point2Int b, Point2Int c)
         {
             HexSide? ba = GridHelpers.GetNeighborSide(b, a);
             HexSide? bc = GridHelpers.GetNeighborSide(b, c);

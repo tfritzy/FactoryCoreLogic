@@ -8,22 +8,23 @@ namespace Core
     {
         private static readonly Point2Int[] oddNeighborPattern = new Point2Int[]
         {
-            new Point2Int(0, -1), // northeast
+            new Point2Int(0, 1), // northeast
             new Point2Int(1, 0), // east
-            new Point2Int(0, 1), // southeast
-            new Point2Int(-1, 1), // southwest
+            new Point2Int(0, -1), // southeast
+            new Point2Int(-1, -1), // southwest
             new Point2Int(-1, 0), // west
-            new Point2Int(-1, -1) // northwest
+            new Point2Int(-1, 1), // northwest
         };
 
         private static readonly Point2Int[] evenNeighborPattern = new Point2Int[]
         {
-            new Point2Int(1, -1), // northeast
+            new Point2Int(1, 1), // northeast
             new Point2Int(1, 0), // east
-            new Point2Int(1, 1), // southeast
-            new Point2Int(0, 1), // southwest
-            new Point2Int(-1, 0), // west
-            new Point2Int(0, -1) // northwest
+            new Point2Int(1, -1), // southeast 
+            new Point2Int(0, -1), // southwest 
+            new Point2Int(-1, 0), // west 
+            new Point2Int(0, 1), // northwest 
+            
         };
 
         private static readonly Dictionary<Point2Int, HexSide> oddNeighborPatternMap = new Dictionary<Point2Int, HexSide>()
@@ -54,34 +55,6 @@ namespace Core
         public static Point2Int GetNeighbor(Point2Int pos, HexSide direction)
         {
             Point2Int position;
-
-            if (pos.y % 2 == 0)
-            {
-                position = pos + evenNeighborPattern[(int)direction];
-            }
-            else
-            {
-                position = pos + oddNeighborPattern[(int)direction];
-            }
-
-            return position;
-        }
-
-        public static Point3Int GetNeighbor(Point3Int pos, HexSide direction)
-        {
-            Point3Int position = pos;
-
-            if (direction == HexSide.Up)
-            {
-                position.z += 1;
-                return position;
-            }
-
-            if (direction == HexSide.Down)
-            {
-                position.z -= 1;
-                return position;
-            }
 
             if (pos.y % 2 == 0)
             {
