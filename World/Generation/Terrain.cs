@@ -90,7 +90,23 @@ namespace Core
 
         public Triangle?[]? GetAt(Point3Int location)
         {
+            if (!IsInBounds(location))
+            {
+                return null;
+            }
+
             return TerrainData[location.x, location.y, location.z];
+        }
+
+        public Triangle? GetTri(Point3Int location, HexSide tri)
+        {
+            var data = TerrainData[location.x, location.y, location.z];
+            if (data == null || data.Length == 0)
+            {
+                return null;
+            }
+
+            return data[(int)tri];
         }
 
         public void SetTriangle(Point3Int location, Triangle? triangle, HexSide side)
@@ -142,6 +158,99 @@ namespace Core
             }
 
             return true;
+        }
+
+
+        public TriangleSubType ClassifyTri(Point3Int point, HexSide tri)
+        {
+            if (GetTri(point, tri)?.Type == TriangleType.Water)
+            {
+                return TriangleSubType.Liquid;
+            }
+
+            // If the triangle opposite this triangle's face is water, it's an outy.
+            if (IsOppositeTriFaceWaterOrAir(point, tri))
+            {
+                return TriangleSubType.LandOuty;
+            }
+
+            // If the traingle opposite this traingle's cornor is water, it's an inny.
+            var innyCheck = IsOppositeTriCornerWaterOrAir(point, tri);
+            if (innyCheck != null)
+            {
+                return innyCheck.Value;
+            }
+
+            // Otherwise it's land locked.
+            return TriangleSubType.LandFull;
+        }
+
+        private bool IsOppositeTriFaceWaterOrAir(Point3Int point, HexSide tri)
+        {
+            Point3Int opposite = GridHelpers.GetNeighbor(point, tri);
+            if (!IsInBounds(opposite))
+            {
+                return true;
+            }
+
+            var oppositeHex = GetAt(opposite);
+            if (oppositeHex == null || oppositeHex[(int)GridHelpers.OppositeSide(tri)] == null)
+            {
+                return true;
+            }
+
+            if (oppositeHex[(int)GridHelpers.OppositeSide(tri)]!.Type == TriangleType.Water)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private TriangleSubType? IsOppositeTriCornerWaterOrAir(Point3Int point, HexSide tri)
+        {
+            bool leftOpen = false;
+            bool rightOpen = false;
+
+            HexSide counterClockwise = GridHelpers.Rotate60(tri, clockwise: false);
+            HexSide clockwise = GridHelpers.Rotate60(tri, clockwise: true);
+
+            var hexOppositeCounterClockwise = GetAt(GridHelpers.GetNeighbor(point, counterClockwise));
+            if (hexOppositeCounterClockwise != null)
+            {
+                TriangleType? relevantSide = hexOppositeCounterClockwise[(int)clockwise]?.Type;
+                if (relevantSide == null || relevantSide == TriangleType.Water)
+                {
+                    leftOpen = true;
+                }
+            }
+            else
+            {
+                leftOpen = true;
+            }
+
+            var hexOppositeClockwise = GetAt(GridHelpers.GetNeighbor(point, clockwise));
+            if (hexOppositeClockwise != null)
+            {
+                TriangleType? relevantSide = hexOppositeClockwise[(int)counterClockwise]?.Type;
+                if (relevantSide == null || relevantSide == TriangleType.Water)
+                {
+                    rightOpen = true;
+                }
+            }
+            else
+            {
+                rightOpen = true;
+            }
+
+            if (leftOpen && rightOpen)
+                return TriangleSubType.LandInnyBoth;
+            else if (leftOpen)
+                return TriangleSubType.LandInnyLeft;
+            else if (rightOpen)
+                return TriangleSubType.LandInnyRight;
+            else
+                return null;
         }
     }
 }

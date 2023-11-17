@@ -68,6 +68,23 @@ namespace Core
             return position;
         }
 
+        public static Point3Int GetNeighbor(Point3Int pos, HexSide direction)
+        {
+            if (direction == HexSide.Up)
+            {
+                return pos + Point3Int.Up;
+            }
+            else if (direction == HexSide.Down)
+            {
+                return pos + Point3Int.Down;
+            }
+            else
+            {
+                var neighbor = GetNeighbor((Point2Int)pos, direction);
+                return new Point3Int(neighbor.x, neighbor.y, pos.z);
+            }
+        }
+
         public static HexSide? GetNeighborSide(Point2Int pos, Point2Int neighborPos)
         {
             Point2Int direction = neighborPos - pos;
@@ -231,6 +248,14 @@ namespace Core
                 ? points.Skip(rotation).Concat(points.Take(rotation)).ToArray()
                 : points.Skip((points.Length - rotation) % points.Length).Concat(points.Take((points.Length - rotation) % points.Length)).ToArray();
             return new CubeCoord(rotated[0], rotated[1], rotated[2]);
+        }
+
+        public static HexSide Rotate60(HexSide side, int numSteps = 1, bool clockwise = true)
+        {
+            int dir = clockwise ? 1 : -1;
+            while (dir < 0)
+                dir += 6;
+            return (HexSide)(((int)side + dir * numSteps) % 6);
         }
     }
 }

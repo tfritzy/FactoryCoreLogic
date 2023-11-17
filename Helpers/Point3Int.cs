@@ -91,6 +91,7 @@ namespace Core
         }
 
         public static Point3Int Up = new(0, 0, 1);
+        public static Point3Int Down = new(0, 0, -1);
         public static Point3Int Zero = new(0, 0, 0);
     }
 

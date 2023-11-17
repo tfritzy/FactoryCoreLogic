@@ -23,8 +23,11 @@ public class TriangleData
                 },
                 SubTypes=new TriangleSubType[]
                 {
-                    TriangleSubType.LandInterior,
-                    TriangleSubType.LandExterior,
+                    TriangleSubType.LandFull,
+                    TriangleSubType.LandInnyLeft,
+                    TriangleSubType.LandInnyRight,
+                    TriangleSubType.LandInnyBoth,
+                    TriangleSubType.LandOuty,
                 }
             }
         },
