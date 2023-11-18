@@ -4,7 +4,7 @@ namespace Core
     {
         public const float HEX_APOTHEM = 0.86602540378f;
         public const float HEX_RADIUS = 1f;
-        public const float HEX_HEIGHT = 1f;
+        public const float HEX_HEIGHT = .5f;
 
         public static class Alliance
         {
