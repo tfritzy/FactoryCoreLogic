@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Core;
 using Newtonsoft.Json;
 
@@ -40,6 +41,37 @@ namespace Core
                             TerrainData[x, y, z] = triangles;
                         }
                     }
+                }
+            }
+        }
+
+        private void RemoveNonExposedHexes()
+        {
+            HashSet<Point3Int> visited = new();
+            Queue<Point3Int> queue = new();
+            queue.Enqueue(new Point3Int(0, 0, MaxZ - 1));
+            bool[,,] exposed = new bool[MaxX, MaxY, MaxZ];
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+                if (visited.Contains(current))
+                {
+                    continue;
+                }
+                visited.Add(current);
+
+                var hex = TerrainData[current.x, current.y, current.z];
+                if (hex == null || hex[0] == null || hex[0]?.Type == TriangleType.Water)
+                {
+                    for (int i = 0; i < 8; i++)
+                    {
+                        queue.Enqueue(GridHelpers.GetNeighbor(current, (HexSide)i));
+                    }
+                }
+
+                if (hex != null && hex[0] != null)
+                {
+                    exposed[current.x, current.y, current.z] = true;
                 }
             }
         }
