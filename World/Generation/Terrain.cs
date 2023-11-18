@@ -43,6 +43,32 @@ namespace Core
                     }
                 }
             }
+
+            CategorizeTerrain();
+        }
+
+        private void CategorizeTerrain()
+        {
+            for (int x = 0; x < TerrainData.GetLength(0); x++)
+            {
+                for (int y = 0; y < TerrainData.GetLength(1); y++)
+                {
+                    for (int z = 0; z < TerrainData.GetLength(2); z++)
+                    {
+                        if (TerrainData[x, y, z] != null)
+                        {
+                            for (int i = 0; i < 6; i++)
+                            {
+                                var tri = TerrainData[x, y, z]![i];
+                                if (tri != null)
+                                {
+                                    tri.SubType = ClassifyTri(new Point3Int(x, y, z), (HexSide)i);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void RemoveNonExposedHexes()
