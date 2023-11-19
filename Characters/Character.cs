@@ -57,6 +57,8 @@ namespace Core
                     return new Pikeman(context, alliance);
                 case CharacterType.Keep:
                     return new Keep(context, alliance);
+                case CharacterType.Mineshaft:
+                    return new Mineshaft(context, alliance);
                 default:
                     throw new ArgumentException("Invalid character type " + character);
             }

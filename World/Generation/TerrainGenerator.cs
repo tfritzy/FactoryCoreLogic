@@ -1,5 +1,3 @@
-using NoiseTest;
-
 namespace Core
 {
     public class TerrainGenerator
@@ -38,29 +36,29 @@ namespace Core
 
         public TriangleType?[,,] GenerateRollingHills(Context context)
         {
-            OpenSimplexNoise noise = new OpenSimplexNoise();
+            // OpenSimplexNoise noise = new OpenSimplexNoise();
 
-            for (int x = 0; x < Hexes.GetLength(0); x++)
-            {
-                for (int y = 0; y < Hexes.GetLength(1); y++)
-                {
-                    int height = (int)(noise.Evaluate(x / 125f, y / 125f) * (Hexes.GetLength(2) / 2));
-                    for (int z = 0; z < height; z++)
-                    {
-                        Hexes[x, y, z] = TriangleType.Stone;
-                    }
-                }
-            }
+            // for (int x = 0; x < Hexes.GetLength(0); x++)
+            // {
+            //     for (int y = 0; y < Hexes.GetLength(1); y++)
+            //     {
+            //         int height = (int)(noise.Evaluate(x / 125f, y / 125f) * (Hexes.GetLength(2) / 2));
+            //         for (int z = 0; z < height; z++)
+            //         {
+            //             Hexes[x, y, z] = TriangleType.Stone;
+            //         }
+            //     }
+            // }
 
-            for (int x = 0; x < Hexes.GetLength(0); x++)
-            {
-                for (int y = 0; y < Hexes.GetLength(1); y++)
-                {
-                    Hexes[x, y, 0] = TriangleType.Stone;
-                }
-            }
+            // for (int x = 0; x < Hexes.GetLength(0); x++)
+            // {
+            //     for (int y = 0; y < Hexes.GetLength(1); y++)
+            //     {
+            //         Hexes[x, y, 0] = TriangleType.Stone;
+            //     }
+            // }
 
-            return Hexes;
+            return null;
         }
     }
 }

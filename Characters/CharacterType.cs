@@ -10,6 +10,7 @@ namespace Core
         GuardTower,
         Pikeman,
         DummyMob,
-        Keep
+        Keep,
+        Mineshaft,
     }
 }

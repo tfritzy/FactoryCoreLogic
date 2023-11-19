@@ -12,5 +12,7 @@ namespace Core
         IronBar,
         IronPickaxe,
         Conveyor,
+        Coal,
+        IronOre,
     }
 }

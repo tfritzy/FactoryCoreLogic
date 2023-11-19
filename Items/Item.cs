@@ -69,6 +69,10 @@ namespace Core
                     return new IronPickaxe();
                 case ItemType.Conveyor:
                     return new ConveyorItem();
+                case ItemType.Coal:
+                    return new Coal();
+                case ItemType.IronOre:
+                    return new IronOre();
                 default:
                     throw new ArgumentException("Invalid item type " + type);
             }
