@@ -96,7 +96,7 @@ namespace Core
             this.Buildings.Remove(location);
             building.OnRemoveFromGrid();
 
-            this.UnseenUpdates.AddLast(new BuildingRemoved(buildingId));
+            this.UnseenUpdates.AddLast(new BuildingRemoved(buildingId, building.GridPosition));
         }
 
         public void RemoveBuilding(ulong id)

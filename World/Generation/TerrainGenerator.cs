@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using NoiseTest;
 
 namespace Core
@@ -13,23 +14,11 @@ namespace Core
 
         public TriangleType?[,,] GenerateFlatWorld(Context context)
         {
-            int z = 0;
-            for (; z < Hexes.GetLength(2) / 2; z++)
-            {
-                for (int x = 0; x < Hexes.GetLength(0); x++)
-                {
-                    for (int y = 0; y < Hexes.GetLength(1); y++)
-                    {
-                        Hexes[x, y, z] = TriangleType.Stone;
-                    }
-                }
-            }
-
             for (int x = 0; x < Hexes.GetLength(0); x++)
             {
                 for (int y = 0; y < Hexes.GetLength(1); y++)
                 {
-                    Hexes[x, y, z] = TriangleType.Dirt;
+                    Hexes[x, y, 0] = TriangleType.Dirt;
                 }
             }
 
@@ -44,7 +33,9 @@ namespace Core
             {
                 for (int y = 0; y < Hexes.GetLength(1); y++)
                 {
-                    int height = (int)(noise.Evaluate(x / 125f, y / 125f) * (Hexes.GetLength(2) / 2));
+                    double noiseVal = noise.Evaluate(x / 125f, y / 125f);
+                    noiseVal = (noiseVal + 1) / 2;
+                    int height = (int)(noiseVal * 4);
                     for (int z = 0; z < height; z++)
                     {
                         Hexes[x, y, z] = TriangleType.Stone;
