@@ -6,5 +6,6 @@ namespace Core
         public override int MaxStack => 16;
         public Coal(int quantity) : base(quantity) { }
         public Coal() : base() { }
+        override public float Width => .3f;
     }
 }

@@ -14,5 +14,6 @@ namespace Core
         Conveyor,
         Coal,
         IronOre,
+        Mineshaft,
     }
 }
