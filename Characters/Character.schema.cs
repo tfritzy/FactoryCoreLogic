@@ -43,6 +43,7 @@ namespace Schema
             { CharacterType.Pikeman, typeof (Pikeman) },
             { CharacterType.DummyMob, typeof(DummyMob) },
             { CharacterType.Keep, typeof (Keep) },
+            { CharacterType.Mineshaft, typeof (Mineshaft) },
         };
 
         public override bool CanConvert(Type objectType)

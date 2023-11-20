@@ -5,15 +5,11 @@ namespace Core
         Invalid,
         Conveyor,
         Inventory,
-        Harvester,
-        Harvestable,
         Life,
         WornItems,
         ActiveItems,
-        VillagerBehavior,
-        QuarryWorksite,
         Attack,
         TowerTargeting,
-        Spawner
+        Mine
     }
 }

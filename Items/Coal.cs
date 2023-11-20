@@ -1,0 +1,10 @@
+namespace Core
+{
+    public class Coal : Item
+    {
+        public override ItemType Type => ItemType.Coal;
+        public override int MaxStack => 16;
+        public Coal(int quantity) : base(quantity) { }
+        public Coal() : base() { }
+    }
+}

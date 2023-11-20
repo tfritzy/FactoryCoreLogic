@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using NoiseTest;
 
 namespace Core
@@ -28,7 +27,6 @@ namespace Core
         public TriangleType?[,,] GenerateRollingHills(Context context)
         {
             OpenSimplexNoise noise = new OpenSimplexNoise();
-
             for (int x = 0; x < Hexes.GetLength(0); x++)
             {
                 for (int y = 0; y < Hexes.GetLength(1); y++)
@@ -43,15 +41,7 @@ namespace Core
                 }
             }
 
-            for (int x = 0; x < Hexes.GetLength(0); x++)
-            {
-                for (int y = 0; y < Hexes.GetLength(1); y++)
-                {
-                    Hexes[x, y, 0] = TriangleType.Stone;
-                }
-            }
-
-            return Hexes;
+            return null;
         }
     }
 }
