@@ -130,7 +130,15 @@ namespace Core
                     return minBoundsOfNextItem.Value + GetTotalDistance() - item.Value.Item.Width / 2;
                 }
 
-                return GetTotalDistance() - item.Value.Item.Width / 2;
+                // Only extend past the end of the conveyor if there is a next one. 
+                if (this.Next == null)
+                {
+                    return GetTotalDistance() - item.Value.Item.Width / 2;
+                }
+                else
+                {
+                    return GetTotalDistance();
+                }
             }
             else
             {
