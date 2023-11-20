@@ -73,6 +73,8 @@ namespace Core
                     return new Coal();
                 case ItemType.IronOre:
                     return new IronOre();
+                case ItemType.Mineshaft:
+                    return new MineshaftItem();
                 default:
                     throw new ArgumentException("Invalid item type " + type);
             }

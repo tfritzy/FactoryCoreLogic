@@ -127,10 +127,10 @@ namespace Core
                 // If the next conveyor's first item overlaps the end of this conveyor, it is the limiter.
                 if (minBoundsOfNextItem != null && minBoundsOfNextItem.Value < 0)
                 {
-                    return minBoundsOfNextItem.Value + GetTotalDistance();
+                    return minBoundsOfNextItem.Value + GetTotalDistance() - item.Value.Item.Width / 2;
                 }
 
-                return GetTotalDistance();
+                return GetTotalDistance() - item.Value.Item.Width / 2;
             }
             else
             {
