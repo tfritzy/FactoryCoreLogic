@@ -19,6 +19,7 @@ namespace Core
             this.SetComponent(new Mine(this));
             this.SetComponent(new Inventory(this, 4, 4));
             this.SetComponent(new ConveyorComponent(this));
+            this.SetComponent(new TransferToConveyor(this));
         }
 
         public override Schema.Entity BuildSchemaObject()

@@ -13,11 +13,22 @@ namespace Core
 
         public TriangleType?[,,] GenerateFlatWorld(Context context)
         {
+            for (int z = 0; z < Hexes.GetLength(2) / 2; z++)
+            {
+                for (int x = 0; x < Hexes.GetLength(0); x++)
+                {
+                    for (int y = 0; y < Hexes.GetLength(1); y++)
+                    {
+                        Hexes[x, y, z] = TriangleType.Stone;
+                    }
+                }
+            }
+
             for (int x = 0; x < Hexes.GetLength(0); x++)
             {
                 for (int y = 0; y < Hexes.GetLength(1); y++)
                 {
-                    Hexes[x, y, 0] = TriangleType.Dirt;
+                    Hexes[x, y, Hexes.GetLength(2) / 2] = TriangleType.Dirt;
                 }
             }
 

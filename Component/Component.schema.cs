@@ -27,6 +27,7 @@ namespace Schema
             { ComponentType.Life, typeof(Life) },
             { ComponentType.TowerTargeting, typeof(TowerTargeting) },
             { ComponentType.Mine, typeof(Mine) },
+            { ComponentType.TransferToConveyor, typeof(TransferToConveyor) },
         };
 
         public override bool CanConvert(Type objectType)
