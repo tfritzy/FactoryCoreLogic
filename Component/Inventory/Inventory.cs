@@ -154,11 +154,20 @@ namespace Core
             return items[index];
         }
 
-        public Item? FindItem(ItemType itemType)
+        /// <summary>
+        /// Returns the first item in the inventory that matches the given type.
+        /// If no type is given, the first item in the inventory is returned.
+        /// </summary>
+        /// <param name="itemType">The type of item to find</param>
+        /// <returns>The first item in the inventory that matches the given type</returns>
+        public Item? FindItem(ItemType? itemType = null)
         {
             for (int i = 0; i < items.Length; i++)
             {
-                if (items[i]?.Type == itemType)
+                if (itemType == null && items[i] != null)
+                    return items[i];
+
+                if (itemType != null && items[i]?.Type == itemType)
                     return items[i];
             }
 

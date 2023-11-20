@@ -79,6 +79,8 @@ namespace Core
         {
             return $"{x},{y}";
         }
+
+        public static Point2Int Zero => new(0, 0);
     }
 
     public class Point2IntConverter : TypeConverter

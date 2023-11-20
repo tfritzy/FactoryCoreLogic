@@ -10,6 +10,7 @@ namespace Core
         ActiveItems,
         Attack,
         TowerTargeting,
-        Mine
+        Mine,
+        TransferToConveyor
     }
 }
