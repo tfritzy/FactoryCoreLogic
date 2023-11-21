@@ -7,8 +7,8 @@ namespace Core
 
         public ItemOnBelt(Item item, float progressMeters)
         {
-            this.Item = item;
-            this.ProgressMeters = progressMeters;
+            Item = item;
+            ProgressMeters = progressMeters;
         }
 
         public Schema.ItemOnBelt ToSchema()

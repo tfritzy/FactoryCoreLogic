@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
 namespace Core
@@ -13,10 +12,11 @@ namespace Core
         public override ComponentType Type => ComponentType.Conveyor;
         public HexSide? NextSide;
         public HexSide? PrevSide;
+        public bool BlockPassthrough { get; private set; }
 
         protected Character OwnerCharacter =>
-            this.Owner is Character ?
-                (Character)this.Owner :
+            Owner is Character ?
+                (Character)Owner :
                 throw new Exception("The owner of a conveyorcell must be a character");
 
         public ConveyorComponent? Next => NextSide.HasValue ?
@@ -35,9 +35,10 @@ namespace Core
         public const float STRAIGHT_DISTANCE = Constants.HEX_APOTHEM * 2;
         public const float CURVE_DISTANCE = STRAIGHT_DISTANCE;
 
-        public ConveyorComponent(Character owner) : base(owner)
+        public ConveyorComponent(Character owner, bool blockPassthrough = false) : base(owner)
         {
             Items = new LinkedList<ItemOnBelt>();
+            BlockPassthrough = blockPassthrough;
         }
 
         public bool IsCurved()
@@ -83,9 +84,8 @@ namespace Core
             while (current != null)
             {
                 ItemOnBelt item = current.Value;
-
+                float maxPosition = GetMaxPositionOfItem(current);
                 item.ProgressMeters += movementAmount;
-
                 if (item.ProgressMeters >= GetTotalDistance())
                 {
                     if (Next != null && Next.CanAcceptItem(item.Item))
@@ -97,7 +97,7 @@ namespace Core
                     }
                 }
 
-                float maxPosition = GetMaxPositionOfItem(current);
+
                 if (item.ProgressMeters > maxPosition)
                 {
                     item.ProgressMeters = maxPosition;
@@ -122,7 +122,12 @@ namespace Core
         {
             if (item.Next == null)
             {
-                float? minBoundsOfNextItem = this.Next?.MinBoundsOfFirstItem();
+                if (BlockPassthrough && item.Value.ProgressMeters <= GetTotalDistance() / 2)
+                {
+                    return GetTotalDistance() / 2;
+                }
+
+                float? minBoundsOfNextItem = Next?.MinBoundsOfFirstItem();
 
                 // If the next conveyor's first item overlaps the end of this conveyor, it is the limiter.
                 if (minBoundsOfNextItem != null && minBoundsOfNextItem.Value < 0)
@@ -130,13 +135,13 @@ namespace Core
                     return minBoundsOfNextItem.Value + GetTotalDistance() - item.Value.Item.Width / 2;
                 }
 
-                // Only extend past the end of the conveyor if there is a next one. 
-                if (this.Next == null)
+                if (Next == null)
                 {
                     return GetTotalDistance() - item.Value.Item.Width / 2;
                 }
                 else
                 {
+                    // Only extend past the end of the conveyor if there is a next one.
                     return GetTotalDistance();
                 }
             }
@@ -144,7 +149,16 @@ namespace Core
             {
                 var nextItem = item.Next.Value;
                 float nextItemProgress = item.Next.Value.ProgressMeters;
-                return nextItemProgress - nextItem.Item.Width / 2 - item.Value.Item.Width / 2;
+                float maxIfLimitedByNext = nextItemProgress - nextItem.Item.Width / 2 - item.Value.Item.Width / 2;
+
+                if (BlockPassthrough && item.Value.ProgressMeters < GetTotalDistance() / 2)
+                {
+                    return Math.Min(GetTotalDistance() / 2, maxIfLimitedByNext);
+                }
+                else
+                {
+                    return maxIfLimitedByNext;
+                }
             }
         }
 
@@ -167,7 +181,7 @@ namespace Core
                 throw new Exception("Cannot accept item.");
             }
 
-            float? minBoundsOfFirstItem = this.MinBoundsOfFirstItem();
+            float? minBoundsOfFirstItem = MinBoundsOfFirstItem();
             if (minBoundsOfFirstItem != null)
             {
                 atPoint = Math.Min(atPoint, minBoundsOfFirstItem.Value - item.Width / 2);
@@ -216,7 +230,7 @@ namespace Core
             if (conveyor.Next != null)
             {
                 if (AngleBetweenThreePoints(
-                    (Point2Int)this.OwnerCharacter.GridPosition,
+                    (Point2Int)OwnerCharacter.GridPosition,
                     (Point2Int)conveyor.OwnerCharacter.GridPosition,
                     (Point2Int)conveyor.Next.OwnerCharacter.GridPosition) < 2)
                 {
@@ -242,7 +256,7 @@ namespace Core
             if (conveyor.Prev != null)
             {
                 if (AngleBetweenThreePoints(
-                    (Point2Int)this.OwnerCharacter.GridPosition,
+                    (Point2Int)OwnerCharacter.GridPosition,
                     (Point2Int)conveyor.OwnerCharacter.GridPosition,
                     (Point2Int)conveyor.Prev.OwnerCharacter.GridPosition) < 2)
                 {
@@ -268,36 +282,36 @@ namespace Core
 
         private void LinkTo(ConveyorComponent conveyorCell, HexSide outputDirection)
         {
-            this.NextSide = outputDirection;
+            NextSide = outputDirection;
             conveyorCell.PrevSide = GridHelpers.OppositeSide(outputDirection);
         }
 
         private void DisconnectNext()
         {
-            if (this.Next != null)
+            if (Next != null)
             {
-                this.Next.PrevSide = null;
+                Next.PrevSide = null;
             }
 
-            this.NextSide = null;
+            NextSide = null;
         }
 
         private void DisconnectPrev()
         {
-            if (this.Prev != null)
+            if (Prev != null)
             {
-                this.Prev.NextSide = null;
+                Prev.NextSide = null;
             }
 
-            this.PrevSide = null;
+            PrevSide = null;
         }
 
         public void FindNeighborConveyors()
         {
             for (int i = 0; i < 6; i++)
             {
-                var neighborPos = GridHelpers.GetNeighbor((Point2Int)this.OwnerCharacter.GridPosition, (HexSide)i);
-                var neighbor = this.World.GetBuildingAt(neighborPos);
+                var neighborPos = GridHelpers.GetNeighbor((Point2Int)OwnerCharacter.GridPosition, (HexSide)i);
+                var neighbor = World.GetBuildingAt(neighborPos);
 
                 ConveyorComponent? neighborCell = neighbor?.GetComponent<ConveyorComponent>();
 
@@ -308,7 +322,7 @@ namespace Core
 
                 if (neighborCell != null && CanBeNext(neighborCell))
                 {
-                    this.LinkTo(neighborCell, (HexSide)i);
+                    LinkTo(neighborCell, (HexSide)i);
                 }
             }
         }
@@ -317,9 +331,10 @@ namespace Core
         {
             return new Schema.ConveyorComponent()
             {
-                Items = new LinkedList<Schema.ItemOnBelt>(this.Items.Select(x => x.ToSchema())),
-                NextSide = this.NextSide,
-                PrevSide = this.PrevSide,
+                Items = new LinkedList<Schema.ItemOnBelt>(Items.Select(x => x.ToSchema())),
+                NextSide = NextSide,
+                PrevSide = PrevSide,
+                BlocksPassthrough = BlockPassthrough,
             };
         }
 

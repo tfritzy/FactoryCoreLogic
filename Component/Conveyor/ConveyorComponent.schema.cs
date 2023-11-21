@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using Core;
 using Newtonsoft.Json;
 using static Core.Component;
@@ -20,6 +21,9 @@ namespace Schema
         [JsonProperty("prevSide")]
         public HexSide? PrevSide;
 
+        [JsonProperty("blocksPassthrough")]
+        public bool? BlocksPassthrough;
+
         public override Core.Component FromSchema(object[] context)
         {
             if (context.Length == 0 || context[0] == null || !(context[0] is Core.Character))
@@ -27,7 +31,7 @@ namespace Schema
 
             Core.Character owner = (Core.Character)context[0];
 
-            var component = new Core.ConveyorComponent(owner);
+            var component = new Core.ConveyorComponent(owner, BlocksPassthrough ?? false);
             component.NextSide = NextSide;
             component.PrevSide = PrevSide;
 
