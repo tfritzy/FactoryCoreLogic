@@ -44,6 +44,7 @@ namespace Core
                 }
             }
 
+            RemoveNonExposedHexes();
             CategorizeTerrain();
         }
 
@@ -84,20 +85,46 @@ namespace Core
                 {
                     continue;
                 }
+
+                if (!IsInBounds(current))
+                {
+                    continue;
+                }
+
                 visited.Add(current);
+
+                exposed[current.x, current.y, current.z] = true;
+                for (int i = 0; i < 6; i++)
+                {
+                    var neighbor = GridHelpers.GetNeighbor(current, (HexSide)i);
+                    if (IsInBounds(neighbor))
+                    {
+                        exposed[neighbor.x, neighbor.y, neighbor.z] = true;
+                    }
+                }
 
                 var hex = TerrainData[current.x, current.y, current.z];
                 if (hex == null || hex[0] == null || hex[0]?.Type == TriangleType.Water)
                 {
                     for (int i = 0; i < 8; i++)
                     {
-                        queue.Enqueue(GridHelpers.GetNeighbor(current, (HexSide)i));
+                        var neighbor = GridHelpers.GetNeighbor(current, (HexSide)i);
+                        queue.Enqueue(neighbor);
                     }
                 }
+            }
 
-                if (hex != null && hex[0] != null)
+            for (int x = 0; x < exposed.GetLength(0); x++)
+            {
+                for (int y = 0; y < exposed.GetLength(1); y++)
                 {
-                    exposed[current.x, current.y, current.z] = true;
+                    for (int z = 0; z < exposed.GetLength(2); z++)
+                    {
+                        if (!exposed[x, y, z])
+                        {
+                            TerrainData[x, y, z] = null;
+                        }
+                    }
                 }
             }
         }
