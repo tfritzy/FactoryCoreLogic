@@ -25,7 +25,7 @@ namespace Core
             }
             checkCooldown = .1f;
 
-            if (Owner.Conveyor == null)
+            if (Owner.Conveyor == null || Owner.Conveyor.Next == null)
             {
                 return;
             }

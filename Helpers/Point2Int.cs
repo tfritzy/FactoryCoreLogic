@@ -81,6 +81,13 @@ namespace Core
         }
 
         public static Point2Int Zero => new(0, 0);
+
+        public readonly Point2Int WalkNorthEast => GridHelpers.GetNeighbor(this, HexSide.NorthEast);
+        public readonly Point2Int WalkEast => GridHelpers.GetNeighbor(this, HexSide.East);
+        public readonly Point2Int WalkSouthEast => GridHelpers.GetNeighbor(this, HexSide.SouthEast);
+        public readonly Point2Int WalkSouthWest => GridHelpers.GetNeighbor(this, HexSide.SouthWest);
+        public readonly Point2Int WalkWest => GridHelpers.GetNeighbor(this, HexSide.West);
+        public readonly Point2Int WalkNorthWest => GridHelpers.GetNeighbor(this, HexSide.NorthWest);
     }
 
     public class Point2IntConverter : TypeConverter
@@ -103,5 +110,6 @@ namespace Core
 
             throw new NotSupportedException($"Cannot convert \"{value}\" to {typeof(Point2Int)}.");
         }
+
     }
 }
