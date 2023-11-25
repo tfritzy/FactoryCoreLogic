@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Xml;
 
 namespace Core
 {
@@ -13,6 +14,8 @@ namespace Core
         public int HitsRemaining { get; private set; }
         public float ExplosionRadius { get; private set; }
         public PhysicsRequest? PhysicsRequest { get; private set; }
+        private static readonly string name = "Projectile";
+        public override string Name => name;
 
         private HashSet<ulong> hits = new HashSet<ulong>();
         private float timeSinceCreation = 0f;
