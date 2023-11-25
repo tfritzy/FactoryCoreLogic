@@ -13,6 +13,7 @@ namespace Core
         public HexSide? NextSide;
         public HexSide? PrevSide;
         public bool BlockPassthrough { get; private set; }
+        public int Version { get; private set; }
 
         protected Character OwnerCharacter =>
             Owner is Character ?
@@ -92,6 +93,7 @@ namespace Core
                     {
                         Next.AddItem(item.Item, item.ProgressMeters - GetTotalDistance());
                         Items.Remove(current);
+                        Version++;
                         current = current.Previous;
                         continue;
                     }
@@ -180,6 +182,8 @@ namespace Core
             {
                 throw new Exception("Cannot accept item.");
             }
+
+            Version++;
 
             float? minBoundsOfFirstItem = MinBoundsOfFirstItem();
             if (minBoundsOfFirstItem != null)
