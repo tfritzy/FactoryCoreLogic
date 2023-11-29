@@ -44,6 +44,7 @@ namespace Schema
             { CharacterType.DummyMob, typeof(DummyMob) },
             { CharacterType.Keep, typeof (Keep) },
             { CharacterType.Mineshaft, typeof (Mineshaft) },
+            { CharacterType.Depot, typeof (Depot) },
         };
 
         public override bool CanConvert(Type objectType)
