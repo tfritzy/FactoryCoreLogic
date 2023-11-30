@@ -7,7 +7,7 @@ namespace Core
     public class Mine : Component
     {
         public override ComponentType Type => ComponentType.Mine;
-        public const float CollectionTime = 2f;
+        public const float CollectionTime = 20f;
         public ItemType UpcomingItemType { get; private set; }
 
         private float collectionTimeRemaining;

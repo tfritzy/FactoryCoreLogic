@@ -3,6 +3,8 @@ namespace Core
     public class TransferToInventory : Component
     {
         public override ComponentType Type => ComponentType.TransferToInventory;
+        public const float PickupMinPercent = .2f;
+        public const float PickupMaxPercent = .55f;
 
         public TransferToInventory(Entity owner) : base(owner)
         {
@@ -39,26 +41,16 @@ namespace Core
             float totalDist = Owner.Conveyor.GetTotalDistance();
             while (curr != null)
             {
-
-
                 float percent = curr.Value.ProgressMeters / totalDist;
-                if (percent > .2f && percent < .5f)
+                if (percent > PickupMinPercent && percent <= PickupMaxPercent)
                 {
-
+                    if (Owner.Inventory.CanAddItem(curr.Value.Item))
+                    {
+                        Owner.Conveyor.Items.Remove(curr);
+                        Owner.Inventory.AddItem(curr.Value.Item);
+                    }
                 }
                 curr = curr.Next;
-            }
-
-            var item = Owner.Inventory.FindItem();
-            if (item == null)
-            {
-                return;
-            }
-
-            if (Owner.Conveyor.CanAcceptItem(item))
-            {
-                Owner.Inventory.RemoveCount(item.Type, 1);
-                Owner.Conveyor.AddItem(item);
             }
         }
     }

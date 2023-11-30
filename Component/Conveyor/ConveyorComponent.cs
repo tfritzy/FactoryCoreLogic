@@ -85,20 +85,26 @@ namespace Core
             while (current != null)
             {
                 ItemOnBelt item = current.Value;
-                float maxPosition = GetMaxPositionOfItem(current);
+                float maxPosition = GetMaxPositionOfItem(current, current.Next);
+                float? maxPosOnNext = Next?.GetMaxPositionOfItem(current, Next.Items.First);
                 item.ProgressMeters += movementAmount;
-                if (item.ProgressMeters >= GetTotalDistance())
+                if (item.ProgressMeters >= GetTotalDistance() && maxPosition >= GetTotalDistance())
                 {
-                    if (Next != null && Next.CanAcceptItem(item.Item))
+                    if (Next != null && maxPosOnNext != null)
                     {
-                        Next.AddItem(item.Item, item.ProgressMeters - GetTotalDistance());
-                        Items.Remove(current);
-                        Version++;
-                        current = current.Previous;
-                        continue;
+                        float desiredDist = item.ProgressMeters - GetTotalDistance();
+                        float insertDist = MathF.Min(desiredDist, maxPosOnNext.Value);
+
+                        if (Next.CanAcceptItem(item.Item, insertDist))
+                        {
+                            Next.AddItem(item.Item, insertDist);
+                            Items.Remove(current);
+                            Version++;
+                            current = current.Previous;
+                            continue;
+                        }
                     }
                 }
-
 
                 if (item.ProgressMeters > maxPosition)
                 {
@@ -120,9 +126,9 @@ namespace Core
             return firstItem.ProgressMeters - firstItem.Item.Width / 2;
         }
 
-        public float GetMaxPositionOfItem(LinkedListNode<ItemOnBelt> item)
+        public float GetMaxPositionOfItem(LinkedListNode<ItemOnBelt> item, LinkedListNode<ItemOnBelt>? nextItem)
         {
-            if (item.Next == null)
+            if (nextItem == null)
             {
                 if (BlockPassthrough && item.Value.ProgressMeters <= GetTotalDistance() / 2)
                 {
@@ -134,7 +140,7 @@ namespace Core
                 // If the next conveyor's first item overlaps the end of this conveyor, it is the limiter.
                 if (minBoundsOfNextItem != null && minBoundsOfNextItem.Value < 0)
                 {
-                    return minBoundsOfNextItem.Value + GetTotalDistance() - item.Value.Item.Width / 2;
+                    return minBoundsOfNextItem.Value + GetTotalDistance() - item.Value.Item.Width / 2 - .0001f;
                 }
 
                 if (Next == null)
@@ -149,9 +155,12 @@ namespace Core
             }
             else
             {
-                var nextItem = item.Next.Value;
-                float nextItemProgress = item.Next.Value.ProgressMeters;
-                float maxIfLimitedByNext = nextItemProgress - nextItem.Item.Width / 2 - item.Value.Item.Width / 2;
+                float nextItemProgress = nextItem.Value.ProgressMeters;
+                float maxIfLimitedByNext =
+                    nextItemProgress
+                    - nextItem.Value.Item.Width / 2
+                    - item.Value.Item.Width / 2
+                    - .0001f;
 
                 if (BlockPassthrough && item.Value.ProgressMeters < GetTotalDistance() / 2)
                 {
@@ -164,34 +173,70 @@ namespace Core
             }
         }
 
-        public bool CanAcceptItem(Item item)
+        public bool CanAcceptItem(Item item, float atPoint = 0f)
         {
-            var firstItem = Items.First?.Value;
-            if (firstItem == null)
+            return GetInsertionIndex(item, atPoint) != -1;
+        }
+
+        private int GetInsertionIndex(Item item, float atPoint)
+        {
+            if (atPoint < 0)
             {
-                return true;
+                return -1;
             }
 
-            float minBoundsOfFirstItem = firstItem.ProgressMeters - firstItem.Item.Width / 2;
-            return minBoundsOfFirstItem > item.Width / 2;
+            int insertionIndex = 0;
+            float itemMin = atPoint - item.Width / 2;
+            float itemMax = atPoint + item.Width / 2;
+
+            var iter = Items.First;
+            while (iter != null)
+            {
+                if (itemMin >= iter.Value.Min && itemMin <= iter.Value.Max)
+                {
+                    return -1;
+                }
+
+                if (itemMax >= iter.Value.Min && itemMax <= iter.Value.Max)
+                {
+                    return -1;
+                }
+
+                if (iter.Value.Min > itemMax)
+                {
+                    break;
+                }
+
+                insertionIndex += 1;
+                iter = iter.Next;
+            }
+
+            return insertionIndex;
         }
 
         public void AddItem(Item item, float atPoint = 0f)
         {
-            if (!CanAcceptItem(item))
+            int insertionIndex = GetInsertionIndex(item, atPoint);
+            if (insertionIndex == -1)
             {
                 throw new Exception("Cannot accept item.");
             }
 
             Version++;
-
-            float? minBoundsOfFirstItem = MinBoundsOfFirstItem();
-            if (minBoundsOfFirstItem != null)
+            if (insertionIndex > 0)
             {
-                atPoint = Math.Min(atPoint, minBoundsOfFirstItem.Value - item.Width / 2);
+                var iter = Items.First;
+                for (int i = 0; i < insertionIndex - 1; i++)
+                {
+                    iter = iter?.Next;
+                }
+                Items.AddAfter(iter!, new ItemOnBelt(item, atPoint));
+            }
+            else
+            {
+                Items.AddFirst(new ItemOnBelt(item, atPoint));
             }
 
-            Items.AddFirst(new ItemOnBelt(item, atPoint));
         }
 
         public LinkedList<ItemOnBelt> GetItems()
@@ -233,10 +278,11 @@ namespace Core
 
             if (conveyor.Next != null)
             {
-                if (AngleBetweenThreePoints(
+                var angle = AngleBetweenThreePoints(
                     (Point2Int)OwnerCharacter.GridPosition,
                     (Point2Int)conveyor.OwnerCharacter.GridPosition,
-                    (Point2Int)conveyor.Next.OwnerCharacter.GridPosition) < 2)
+                    (Point2Int)conveyor.Next.OwnerCharacter.GridPosition);
+                if (angle < 2 || angle > 4)
                 {
                     return false;
                 }
