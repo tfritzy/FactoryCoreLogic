@@ -259,10 +259,11 @@ namespace Core
 
             if (conveyor.Prev != null)
             {
-                if (AngleBetweenThreePoints(
+                var angle = AngleBetweenThreePoints(
                     (Point2Int)OwnerCharacter.GridPosition,
                     (Point2Int)conveyor.OwnerCharacter.GridPosition,
-                    (Point2Int)conveyor.Prev.OwnerCharacter.GridPosition) < 2)
+                    (Point2Int)conveyor.Prev.OwnerCharacter.GridPosition);
+                if (angle < 2 || angle > 4)
                 {
                     return false;
                 }
