@@ -22,7 +22,7 @@ namespace Core
         {
             this.Context = context;
             this.Components = new Dictionary<Type, Component>();
-            this.Id = GenerateId();
+            this.Id = IdGenerator.GenerateId();
             InitComponents();
         }
 
@@ -64,16 +64,6 @@ namespace Core
         }
 
         protected virtual void InitComponents() { }
-
-        public static ulong GenerateId()
-        {
-            byte[] bytes = new byte[8];
-            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(bytes);
-            }
-            return BitConverter.ToUInt64(bytes, 0);
-        }
 
         public abstract Schema.Entity BuildSchemaObject();
         public virtual Schema.Entity ToSchema()

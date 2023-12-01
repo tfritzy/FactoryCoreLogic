@@ -10,10 +10,14 @@ namespace Schema
         [JsonProperty("quantity")]
         public int Quantity { get; set; }
 
+        [JsonProperty("id")]
+        public ulong Id { get; set; }
+
         public Core.Item FromSchema(params object[] context)
         {
             Core.Item item = Core.Item.Create(Type);
             item.SetQuantity(Quantity);
+            item.Id = Id;
             return item;
         }
     }

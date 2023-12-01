@@ -7,6 +7,7 @@ namespace Core
     {
         public abstract ItemType Type { get; }
         public int Quantity { get; private set; }
+        public ulong Id { get; set; }
 
         public virtual float Width => 0.1f;
         public virtual int MaxStack => 1;
@@ -18,6 +19,7 @@ namespace Core
         public Item(int quantity)
         {
             this.Quantity = quantity;
+            this.Id = IdGenerator.GenerateId();
         }
 
         public void AddToStack(int amount)
@@ -86,6 +88,7 @@ namespace Core
             {
                 Type = Type,
                 Quantity = Quantity,
+                Id = Id,
             };
         }
 
