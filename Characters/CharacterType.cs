@@ -12,5 +12,6 @@ namespace Core
         DummyMob,
         Keep,
         Mineshaft,
+        Depot,
     }
 }

@@ -10,6 +10,7 @@ namespace Core
         public int Width { get; private set; }
         public int Height { get; private set; }
         private Item?[] items;
+        public int Version { get; private set; }
 
         public override ComponentType Type => ComponentType.Inventory;
 
@@ -83,12 +84,14 @@ namespace Core
 
             if (currentSlot == null)
             {
+                Version++;
                 items[index] = item;
                 return true;
             }
 
             if (currentSlot.Type == item.Type && currentSlot.Quantity < currentSlot.MaxStack)
             {
+                Version++;
                 int maxAddable = currentSlot.MaxStack - currentSlot.Quantity;
                 int numToAdd = Math.Min(maxAddable, item.Quantity);
 
@@ -128,6 +131,7 @@ namespace Core
 
                     currentSlot.AddToStack(numToAdd);
                     item.RemoveFromStack(numToAdd);
+                    Version++;
                 }
             }
 
@@ -139,6 +143,7 @@ namespace Core
                 if (items[i] == null)
                 {
                     items[i] = item;
+                    Version++;
                     return true;
                 }
             }
@@ -206,7 +211,10 @@ namespace Core
 
             item.RemoveFromStack(quantity);
             if (item.Quantity <= 0)
+            {
                 items[index] = null;
+                Version++;
+            }
         }
 
         public void RemoveCount(ItemType itemType, int quantity)
@@ -245,7 +253,7 @@ namespace Core
                 return;
 
             bool fullyAdded = other.AddItem(item);
-
+            Version++;
             if (fullyAdded)
                 items[sourceIndex] = null;
         }
@@ -263,6 +271,7 @@ namespace Core
                 return;
 
             bool fullyAdded = other.AddItem(item, toIndex);
+            Version++;
 
             if (fullyAdded)
                 items[fromIndex] = null;
@@ -283,6 +292,7 @@ namespace Core
             Item toAdd = Item.Create(item.Type);
 
             bool fullyAdded = other.AddItem(toAdd, toIndex);
+            Version++;
 
             if (fullyAdded)
                 DecrementCountOf(fromIndex, 1);
@@ -296,6 +306,8 @@ namespace Core
             Item? item = GetItemAt(indexes[0]);
             if (item == null)
                 return;
+
+            Version++;
 
             indexes = new List<int>(indexes);
             for (int i = 0; i < indexes.Count; i++)

@@ -93,6 +93,13 @@ namespace Core
         public static Point3Int Up = new(0, 0, 1);
         public static Point3Int Down = new(0, 0, -1);
         public static Point3Int Zero = new(0, 0, 0);
+
+        public readonly Point3Int WalkNorthEast => GridHelpers.GetNeighbor(this, HexSide.NorthEast);
+        public readonly Point3Int WalkEast => GridHelpers.GetNeighbor(this, HexSide.East);
+        public readonly Point3Int WalkSouthEast => GridHelpers.GetNeighbor(this, HexSide.SouthEast);
+        public readonly Point3Int WalkSouthWest => GridHelpers.GetNeighbor(this, HexSide.SouthWest);
+        public readonly Point3Int WalkWest => GridHelpers.GetNeighbor(this, HexSide.West);
+        public readonly Point3Int WalkNorthWest => GridHelpers.GetNeighbor(this, HexSide.NorthWest);
     }
 
     public class Point3IntConverter : JsonConverter<Point3Int>

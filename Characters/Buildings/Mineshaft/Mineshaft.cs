@@ -8,9 +8,10 @@ namespace Core
 {
     public class Mineshaft : Building
     {
-        public Mine? Component => this.GetComponent<Mine>();
         public override CharacterType Type => CharacterType.Mineshaft;
         public override int Height => 3;
+        private static readonly string name = "Mine";
+        public override string Name => name;
 
         public Mineshaft(Context context, int alliance) : base(context, alliance) { }
 

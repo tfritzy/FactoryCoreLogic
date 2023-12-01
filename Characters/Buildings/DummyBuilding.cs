@@ -7,6 +7,8 @@ namespace Core
     {
         public override CharacterType Type => CharacterType.DummyBuilding;
         public override int Height => 2;
+        private static readonly string name = "Dummy building";
+        public override string Name => name;
 
         protected override void InitComponents() { }
 

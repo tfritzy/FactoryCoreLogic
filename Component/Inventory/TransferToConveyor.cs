@@ -3,6 +3,7 @@ namespace Core
     public class TransferToConveyor : Component
     {
         public override ComponentType Type => ComponentType.TransferToConveyor;
+        public const float DepositPercentPoint = .75f;
 
         public TransferToConveyor(Entity owner) : base(owner)
         {
@@ -30,6 +31,11 @@ namespace Core
                 return;
             }
 
+            if (Owner.Conveyor.Next == null || Owner.Conveyor.Next.Owner.IsPreview)
+            {
+                return;
+            }
+
             if (Owner.Inventory == null)
             {
                 return;
@@ -41,10 +47,11 @@ namespace Core
                 return;
             }
 
-            if (Owner.Conveyor.CanAcceptItem(item))
+            float dropPoint = Owner.Conveyor.GetTotalDistance() * DepositPercentPoint;
+            if (Owner.Conveyor.CanAcceptItem(item, dropPoint))
             {
                 Owner.Inventory.RemoveCount(item.Type, 1);
-                Owner.Conveyor.AddItem(item);
+                Owner.Conveyor.AddItem(item, dropPoint);
             }
         }
     }

@@ -14,6 +14,7 @@ namespace Core
         public ulong Id;
         public Context Context { get; set; }
         public World World => Context.World;
+        public abstract string Name { get; }
 
         public Inventory? Inventory => GetComponent<Inventory>();
         public ConveyorComponent? Conveyor => GetComponent<ConveyorComponent>();

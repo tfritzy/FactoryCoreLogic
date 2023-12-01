@@ -42,9 +42,9 @@ namespace Core
             {
                 for (int y = 0; y < Hexes.GetLength(1); y++)
                 {
-                    double noiseVal = noise.Evaluate(x / 125f, y / 125f);
+                    double noiseVal = noise.Evaluate(x / 20f, y / 20f);
                     noiseVal = (noiseVal + 1) / 2;
-                    int height = (int)(noiseVal * 4);
+                    int height = (int)(noiseVal * 10);
                     for (int z = 0; z < height; z++)
                     {
                         Hexes[x, y, z] = TriangleType.Stone;
@@ -52,7 +52,7 @@ namespace Core
                 }
             }
 
-            return null;
+            return Hexes;
         }
     }
 }

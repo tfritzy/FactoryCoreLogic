@@ -3,6 +3,8 @@ namespace Core
     public class Pikeman : Mob
     {
         public override CharacterType Type => CharacterType.Pikeman;
+        private static readonly string name = "Pikeman";
+        public override string Name => name;
 
         public override Schema.Entity BuildSchemaObject()
         {

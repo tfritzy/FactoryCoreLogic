@@ -8,6 +8,8 @@ namespace Core
         public override CharacterType Type => CharacterType.Player;
         public WornItems WornItems => this.GetComponent<WornItems>();
         public ActiveItems ActiveItems => this.GetComponent<ActiveItems>();
+        private static readonly string name = "Traveler";
+        public override string Name => name;
 
         public Player(Context context, int alliance) : base(context, alliance)
         {
@@ -21,8 +23,8 @@ namespace Core
 
         protected override void InitComponents()
         {
-            this.SetComponent(new Inventory(this, 10, 14));
-            this.SetComponent(new ActiveItems(this, 10, 3));
+            this.SetComponent(new Inventory(this, 5, 8));
+            this.SetComponent(new ActiveItems(this, 8, 2));
             this.SetComponent(new WornItems(this, 1, 5));
         }
 

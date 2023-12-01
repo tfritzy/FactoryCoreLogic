@@ -59,6 +59,8 @@ namespace Core
                     return new Keep(context, alliance);
                 case CharacterType.Mineshaft:
                     return new Mineshaft(context, alliance);
+                case CharacterType.Depot:
+                    return new Depot(context, alliance);
                 default:
                     throw new ArgumentException("Invalid character type " + character);
             }
