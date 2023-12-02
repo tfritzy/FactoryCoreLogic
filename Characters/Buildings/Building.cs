@@ -7,6 +7,7 @@ namespace Core
     public abstract class Building : Character
     {
         public abstract int Height { get; }
+        public int Rotation { get; set; }
         public override Point3Float Location => GridHelpers.EvenRToPixelPlusHeight(GridPosition);
         public override Point3Int GridPosition
         {
@@ -53,6 +54,13 @@ namespace Core
         {
             this.World.RemoveBuilding((Point2Int)this.GridPosition);
             base.Destroy();
+        }
+
+        public override Schema.Entity ToSchema()
+        {
+            var schema = (Schema.Building)base.ToSchema();
+            schema.Rotation = this.Rotation;
+            return schema;
         }
     }
 }

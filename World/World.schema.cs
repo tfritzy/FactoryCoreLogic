@@ -38,7 +38,7 @@ namespace Schema
             {
                 foreach (var kvp in Buildings)
                 {
-                    Building? building = (Building?)world.GetCharacter(kvp.Value);
+                    Core.Building? building = (Core.Building?)world.GetCharacter(kvp.Value);
 
                     if (building == null)
                     {

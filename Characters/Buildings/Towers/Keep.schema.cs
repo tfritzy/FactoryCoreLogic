@@ -2,7 +2,7 @@ using Core;
 
 namespace Schema
 {
-    public class Keep : Character
+    public class Keep : Building
     {
         public override CharacterType Type => CharacterType.Keep;
     }

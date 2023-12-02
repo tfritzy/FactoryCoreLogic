@@ -2,7 +2,7 @@ using Core;
 
 namespace Schema
 {
-    public class Depot : Character
+    public class Depot : Building
     {
         public override CharacterType Type => CharacterType.Depot;
     }
