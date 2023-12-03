@@ -352,6 +352,13 @@ namespace Core
             PrevSide = null;
         }
 
+        public override void OnOwnerRotationChanged(int rotation)
+        {
+            base.OnOwnerRotationChanged(rotation);
+
+            FindNeighborConveyors();
+        }
+
         public void FindNeighborConveyors()
         {
             HexSide rotation = (HexSide)Owner.Rotation;

@@ -13,7 +13,7 @@ namespace Schema
         protected override Core.Entity BuildCoreObject(Context context)
         {
             Core.Building building = (Core.Building)base.BuildCoreObject(context);
-            building.Rotation = this.Rotation;
+            building.SetRotation(this.Rotation);
             return building;
         }
 

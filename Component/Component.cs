@@ -10,6 +10,8 @@ namespace Core
         public virtual void Tick(float deltaTime) { }
         public virtual void OnAddToGrid() { }
         public virtual void OnRemoveFromGrid() { }
+        public virtual void OnOwnerRotationChanged(int rotation) { }
+
         public bool Disabled { get; set; }
 
         protected World World => Owner.Context.World;
