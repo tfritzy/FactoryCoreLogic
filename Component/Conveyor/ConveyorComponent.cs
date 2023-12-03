@@ -42,7 +42,7 @@ namespace Core
         {
             if (Prev != null)
             {
-                Point2Int nextPos = GridHelpers
+                var nextPos = GridHelpers
                     .GetNeighbor((Point2Int)Owner.GridPosition, Owner.Rotation);
                 int? angle = AngleBetweenThreePoints(
                     (Point2Int)Prev.Owner.GridPosition,
@@ -301,7 +301,14 @@ namespace Core
                 return false;
             }
 
-            HexSide prevSide = GridHelpers.OppositeSide((HexSide)conveyor.Owner.Rotation);
+            if (GridHelpers.GetNeighbor(
+                (Point2Int)conveyor.Owner.GridPosition, conveyor.Owner.Rotation) !=
+                (Point2Int)Owner.GridPosition)
+            {
+                return false;
+            }
+
+            HexSide prevSide = GridHelpers.OppositeSide((HexSide)Owner.Rotation);
             var prevPos = GridHelpers
                 .GetNeighbor((Point2Int)conveyor.Owner.GridPosition, prevSide);
             var angle = AngleBetweenThreePoints(
