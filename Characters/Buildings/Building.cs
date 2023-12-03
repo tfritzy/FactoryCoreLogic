@@ -7,7 +7,7 @@ namespace Core
     public abstract class Building : Character
     {
         public abstract int Height { get; }
-        public int Rotation { get; private set; }
+        public HexSide Rotation { get; private set; }
         public override Point3Float Location => GridHelpers.EvenRToPixelPlusHeight(GridPosition);
         public override Point3Int GridPosition
         {
@@ -27,7 +27,7 @@ namespace Core
         {
         }
 
-        public void SetRotation(int rotation)
+        public void SetRotation(HexSide rotation)
         {
             Rotation = rotation;
 

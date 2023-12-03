@@ -39,12 +39,14 @@ namespace Core
 
         public bool IsCurved()
         {
-            if (Prev != null && Next != null)
+            if (Prev != null)
             {
+                Point2Int nextPos = GridHelpers
+                    .GetNeighbor((Point2Int)Owner.GridPosition, Owner.Rotation);
                 int? angle = AngleBetweenThreePoints(
                     (Point2Int)Prev.Owner.GridPosition,
                     (Point2Int)Owner.GridPosition,
-                    (Point2Int)Next.Owner.GridPosition);
+                    nextPos);
 
                 if (angle == 2 || angle == 4)
                 {
@@ -352,7 +354,7 @@ namespace Core
             PrevSide = null;
         }
 
-        public override void OnOwnerRotationChanged(int rotation)
+        public override void OnOwnerRotationChanged(HexSide rotation)
         {
             base.OnOwnerRotationChanged(rotation);
 

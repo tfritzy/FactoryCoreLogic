@@ -8,7 +8,7 @@ namespace Schema
     public abstract class Building : Character, SchemaOf<Core.Building>
     {
         [JsonProperty("rotation")]
-        public int Rotation { get; set; }
+        public HexSide Rotation { get; set; }
 
         protected override Core.Entity BuildCoreObject(Context context)
         {
