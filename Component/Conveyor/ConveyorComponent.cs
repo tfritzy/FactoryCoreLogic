@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Newtonsoft.Json;
 
@@ -363,6 +364,7 @@ namespace Core
 
         public void FindNeighborConveyors()
         {
+            UnityEngine.Debug.Log("Finding neighbors with rotation " + (HexSide)Owner.Rotation);
             HexSide rotation = (HexSide)Owner.Rotation;
             HexSide prevSide = GridHelpers.OppositeSide(rotation);
 
