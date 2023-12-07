@@ -191,6 +191,18 @@ namespace Core
             return count;
         }
 
+        public int NumOpenSlots()
+        {
+            int count = 0;
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i] == null)
+                    count++;
+            }
+
+            return count;
+        }
+
         public void DecrementCountOf(int index, int quantity)
         {
             if (Disabled)

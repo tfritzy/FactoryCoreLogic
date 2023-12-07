@@ -15,5 +15,6 @@ namespace Core
         Coal,
         IronOre,
         Mineshaft,
+        Depot,
     }
 }
