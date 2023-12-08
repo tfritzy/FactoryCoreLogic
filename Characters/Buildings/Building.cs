@@ -7,7 +7,7 @@ namespace Core
     public abstract class Building : Character
     {
         public abstract int Height { get; }
-        public int Rotation { get; set; }
+        public HexSide Rotation { get; private set; }
         public override Point3Float Location => GridHelpers.EvenRToPixelPlusHeight(GridPosition);
         public override Point3Int GridPosition
         {
@@ -25,6 +25,16 @@ namespace Core
 
         protected Building(Context context, int alliance) : base(context, alliance)
         {
+        }
+
+        public void SetRotation(HexSide rotation)
+        {
+            Rotation = rotation;
+
+            foreach (var component in Components.Values)
+            {
+                component.OnOwnerRotationChanged(rotation);
+            }
         }
 
         public void SetGridPosition(Point3Int gridPosition)

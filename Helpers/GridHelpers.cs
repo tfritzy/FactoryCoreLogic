@@ -55,14 +55,15 @@ namespace Core
         public static Point2Int GetNeighbor(Point2Int pos, HexSide direction)
         {
             Point2Int position;
+            int dir = Math.Abs((int)direction) % 6;
 
-            if (pos.y % 2 == 0)
+            if (Math.Abs(pos.y) % 2 == 0)
             {
-                position = pos + evenNeighborPattern[(int)direction];
+                position = pos + evenNeighborPattern[dir];
             }
             else
             {
-                position = pos + oddNeighborPattern[(int)direction];
+                position = pos + oddNeighborPattern[dir];
             }
 
             return position;
@@ -89,7 +90,7 @@ namespace Core
         {
             Point2Int direction = neighborPos - pos;
 
-            if (pos.y % 2 == 0)
+            if (Math.Abs(pos.y) % 2 == 0)
             {
                 if (evenNeighborPatternMap.ContainsKey(direction))
                 {
@@ -253,9 +254,10 @@ namespace Core
         public static HexSide Rotate60(HexSide side, int numSteps = 1, bool clockwise = true)
         {
             int dir = clockwise ? 1 : -1;
-            while (dir < 0)
-                dir += 6;
-            return (HexSide)(((int)side + dir * numSteps) % 6);
+            int final = (int)side + dir * numSteps;
+            while (final < 0)
+                final += 6;
+            return (HexSide)(final % 6);
         }
     }
 }
