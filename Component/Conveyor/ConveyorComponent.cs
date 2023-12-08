@@ -406,6 +406,12 @@ namespace Core
             };
         }
 
+        public void RemoveItem(LinkedListNode<ItemOnBelt> item)
+        {
+            Items.Remove(item);
+            Version++;
+        }
+
         public int GetRotation()
         {
             return 0;
