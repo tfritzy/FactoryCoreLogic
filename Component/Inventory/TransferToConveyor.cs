@@ -50,8 +50,9 @@ namespace Core
             float dropPoint = Owner.Conveyor.GetTotalDistance() * DepositPercentPoint;
             if (Owner.Conveyor.CanAcceptItem(item, dropPoint))
             {
-                Owner.Inventory.RemoveCount(item.Type, 1);
-                Owner.Conveyor.AddItem(item, dropPoint);
+                Item? toTransfer = Owner.Inventory.Take1Quantity();
+                if (toTransfer != null)
+                    Owner.Conveyor.AddItem(toTransfer, dropPoint);
             }
         }
     }
