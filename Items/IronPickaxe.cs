@@ -7,6 +7,8 @@ namespace Core
         public override ItemType Type => ItemType.IronPickaxe;
         public override int MaxStack => 1;
         public override Dictionary<ItemType, int> Recipe => recipe;
+        private const string name = "Iron pickaxe";
+        public override string Name => name;
 
         public IronPickaxe(int quantity) : base(quantity) { }
         public IronPickaxe() : base() { }

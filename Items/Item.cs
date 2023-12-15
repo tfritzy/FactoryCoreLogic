@@ -6,6 +6,7 @@ namespace Core
     public abstract class Item
     {
         public abstract ItemType Type { get; }
+        public abstract string Name { get; }
         public int Quantity { get; private set; }
         public ulong Id { get; set; }
 

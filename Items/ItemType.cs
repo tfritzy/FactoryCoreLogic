@@ -4,6 +4,7 @@ namespace Core
     {
         Invalid,
         Stone,
+        StoneBrick,
         Dirt,
         Wood,
         Arrowhead,

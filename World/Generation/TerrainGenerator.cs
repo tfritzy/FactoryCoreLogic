@@ -42,7 +42,7 @@ namespace Core
             {
                 for (int y = 0; y < Hexes.GetLength(1); y++)
                 {
-                    double noiseVal = noise.Evaluate(x / 20f, y / 20f);
+                    double noiseVal = noise.Evaluate(x / 50f, y / 50f);
                     noiseVal = (noiseVal + 1) / 2;
                     int height = (int)(noiseVal * 10);
                     for (int z = 0; z < height; z++)

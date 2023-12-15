@@ -6,5 +6,7 @@ namespace Core
         public override int MaxStack => 4;
         public Dirt(int quantity) : base(quantity) { }
         public Dirt() : base() { }
+        private const string name = "Dirt";
+        public override string Name => name;
     }
 }

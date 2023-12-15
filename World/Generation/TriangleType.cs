@@ -20,6 +20,7 @@ public enum TriangleType
 public enum TriangleSubType
 {
     Invalid,
+    LandActuallyFull, // Optimization to combine 6 full triangles into 1. Doesn't actually live in the datastructure
     LandFull,
     LandInnyLeft,
     LandInnyRight,
