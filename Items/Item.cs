@@ -14,6 +14,7 @@ namespace Core
         public virtual int MaxStack => 1;
         public virtual Dictionary<ItemType, int>? Recipe => null;
         public virtual CharacterType? Builds => null;
+        public virtual Triangle? Places => null;
 
         public Item() : this(1) { }
 
@@ -58,6 +59,8 @@ namespace Core
                     return new Dirt();
                 case ItemType.Stone:
                     return new Stone();
+                case ItemType.StoneBrick:
+                    return new StoneBrick();
                 case ItemType.Wood:
                     return new Wood();
                 case ItemType.Arrowhead:

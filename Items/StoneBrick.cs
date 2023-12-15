@@ -9,5 +9,11 @@ namespace Core
         public override float Width => .4f;
         private const string name = "Stone brick";
         public override string Name => name;
+        public override Triangle? Places => places;
+        private static Triangle places = new Triangle()
+        {
+            Type = TriangleType.Stone,
+            SubType = TriangleSubType.FullBrick
+        };
     }
 }

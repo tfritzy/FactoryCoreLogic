@@ -53,6 +53,35 @@ namespace Core
             return newBuilding;
         }
 
+        public void BuidPreviewBlockFromItem(int itemIndex, Point3Int location, HexSide subIndex)
+        {
+            Item? item = this.ActiveItems.GetItemAt(itemIndex);
+            if (item == null)
+            {
+                return;
+            }
+
+            Triangle? block = item.Places;
+            if (block == null)
+            {
+                return;
+            }
+
+            if (this.Context.World.Terrain.GetTri(location, subIndex) != null)
+            {
+                return;
+            }
+
+            Triangle toPlace = new Triangle()
+            {
+                Type = block.Type,
+                SubType = block.SubType,
+                IsPreview = true
+            };
+
+            this.Context.World.Terrain.SetTriangle(location, toPlace, subIndex);
+        }
+
         public void MakePreviewBuildingRealFromItem(int itemIndex, Building building)
         {
             Item? item = this.ActiveItems.GetItemAt(itemIndex);
@@ -73,6 +102,27 @@ namespace Core
 
             this.ActiveItems.DecrementCountOf(itemIndex, 1);
             building.ClearPreview();
+        }
+
+        public void MakePreviewBlockRealFromItem(int itemIndex, Point3Int location, HexSide subIndex)
+        {
+            Item? item = this.ActiveItems.GetItemAt(itemIndex);
+            if (item == null)
+                return;
+
+            Triangle? terrainTri = Context.World.Terrain.GetTri(location, subIndex);
+            if (terrainTri == null)
+                return;
+
+            if (!terrainTri.IsPreview)
+                return;
+
+            if (item.Places != terrainTri)
+                return;
+
+            this.ActiveItems.DecrementCountOf(itemIndex, 1);
+            terrainTri.IsPreview = false;
+            Context.World.Terrain.SetTriangle(location, terrainTri, subIndex);
         }
     }
 }
