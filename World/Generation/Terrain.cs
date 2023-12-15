@@ -216,9 +216,16 @@ namespace Core
         {
             for (int z = this.MaxZ - 1; z >= 0; z--)
             {
-                if (this.TerrainData[location.x, location.y, z] != null)
+                var hex = this.TerrainData[location.x, location.y, z];
+                if (hex != null)
                 {
-                    return new Point3Int(location.x, location.y, z);
+                    for (int i = 0; i < 6; i++)
+                    {
+                        if (hex[i] != null && hex[i]!.IsPreview == false)
+                        {
+                            return new Point3Int(location.x, location.y, z);
+                        }
+                    }
                 }
             }
 
