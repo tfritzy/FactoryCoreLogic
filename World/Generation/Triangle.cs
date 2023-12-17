@@ -9,8 +9,11 @@ public class Triangle
     [JsonProperty("s")]
     public TriangleSubType SubType;
 
-    [JsonIgnore]
-    public Boolean IsPreview;
+    public Triangle(TriangleType type, TriangleSubType subType)
+    {
+        Type = type;
+        SubType = subType;
+    }
 
     public override bool Equals(object? obj)
     {
