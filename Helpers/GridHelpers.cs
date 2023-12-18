@@ -170,19 +170,64 @@ namespace Core
             return CubeToEvenR(cube);
         }
 
+        public static HexSide pixel_hex_side(Point2Float point)
+        {
+            Point2Int evenR = pixel_to_evenr_offset(point);
+            Point2Float pixel = evenr_offset_to_pixel(evenR);
+            point.x -= pixel.x;
+            point.y -= pixel.y;
+            // Algorithm from Mark Steere
+            float s_to_s = MathF.Sqrt(3);
+            float u = (MathF.Sqrt(3) * point.y - point.x) / 2;
+            float v = (MathF.Sqrt(3) * point.y + point.x) / 2;
+            float x_halfcell = MathF.Floor(2 * point.x / s_to_s);
+            float u_halfcell = MathF.Floor(2 * u / s_to_s);
+            float v_halfcell = MathF.Floor(2 * v / s_to_s);
+
+            if (x_halfcell == 0 && u_halfcell == 0 && v_halfcell == 0)
+            {
+                return HexSide.NorthEast;
+            }
+            else if (x_halfcell == 0 && u_halfcell == -1 && v_halfcell == 0)
+            {
+                return HexSide.East;
+            }
+            else if (x_halfcell == 0 && u_halfcell == -1 && v_halfcell == -1)
+            {
+                return HexSide.SouthEast;
+            }
+            else if (x_halfcell == -1 && u_halfcell == -1 && v_halfcell == -1)
+            {
+                return HexSide.SouthWest;
+            }
+            else if (x_halfcell == -1 && u_halfcell == 0 && v_halfcell == -1)
+            {
+                return HexSide.West;
+            }
+            else if (x_halfcell == -1 && u_halfcell == 0 && v_halfcell == 0)
+            {
+                return HexSide.NorthWest;
+            }
+            else
+            {
+                throw new Exception("Invalid hex side");
+            }
+
+        }
+
         public static Point3Int PixelToEvenRPlusHeight(Point3Float point)
         {
             Point2Int evenR = pixel_to_evenr_offset((Point2Float)point);
-            return new Point3Int(evenR.x, evenR.y, (int)(point.z / Constants.HEX_HEIGHT));
+            return new Point3Int(evenR.x, evenR.y, (int)Math.Round(point.z / Constants.HEX_HEIGHT));
         }
 
         public static Point3Float EvenRToPixelPlusHeight(Point3Int hex)
         {
-            Point2Float evenR = evenr_offset_to_pixel(hex);
+            Point2Float evenR = evenr_offset_to_pixel((Point2Int)hex);
             return new Point3Float(evenR.x, evenR.y, hex.z * Constants.HEX_HEIGHT);
         }
 
-        public static Point2Float evenr_offset_to_pixel(Point3Int hex)
+        public static Point2Float evenr_offset_to_pixel(Point2Int hex)
         {
             float x = Constants.HEX_RADIUS * MathF.Sqrt(3) * (hex.x - 0.5f * (hex.y & 1));
             float y = Constants.HEX_RADIUS * 3 / 2 * hex.y;
