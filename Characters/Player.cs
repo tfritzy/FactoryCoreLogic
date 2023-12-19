@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Core
 {
@@ -85,15 +86,38 @@ namespace Core
             if (existingTri != null)
                 return;
 
-            Triangle? toPlace = item.Places;
+            Item.PlacedTriangleMetadata[]? toPlace = item.Places;
             if (toPlace == null)
                 return;
 
             this.ActiveItems.DecrementCountOf(itemIndex, 1);
-            Context.World.Terrain.SetTriangle(
-                location,
-                new Triangle(toPlace.Type, toPlace.SubType),
-                subIndex);
+
+            List<Point3Int> locations = new List<Point3Int>();
+            List<HexSide> subIndices = new List<HexSide>();
+            foreach (Item.PlacedTriangleMetadata placed in toPlace)
+            {
+                Point3Int placeLocation = location;
+                foreach (HexSide posOffset in placed.PositionOffset)
+                {
+                    placeLocation = GridHelpers.GetNeighbor(
+                        placeLocation,
+                        (HexSide)(((int)posOffset + (int)subIndex) % 6));
+                }
+                var rotatedSubIndex = (HexSide)(((int)placed.RotationOffset + (int)subIndex) % 6);
+
+                if (Context.World.Terrain.GetTri(placeLocation, rotatedSubIndex) != null)
+                    return;
+
+                locations.Add(placeLocation);
+                subIndices.Add(rotatedSubIndex);
+            }
+
+            for (int i = 0; i < locations.Count; i++)
+            {
+                Point3Int placeLocation = locations[i];
+                HexSide rotatedSubIndex = subIndices[i];
+                Context.World.Terrain.SetTriangle(placeLocation, toPlace[i].Triangle, rotatedSubIndex);
+            }
         }
     }
 }

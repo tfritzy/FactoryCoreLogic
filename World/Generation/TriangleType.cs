@@ -26,8 +26,7 @@ public enum TriangleSubType
     LandInnyRight,
     LandInnyBoth,
     LandOuty,
-    BrickHalf1,
-    BrickHalf2,
+    BrickHalf,
     FullBrick,
     Liquid
 }

@@ -5,6 +5,7 @@ namespace Core
         Invalid,
         Stone,
         StoneBrick,
+        StoneDoubleBrick,
         Dirt,
         Wood,
         Arrowhead,

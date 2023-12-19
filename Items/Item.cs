@@ -14,7 +14,14 @@ namespace Core
         public virtual int MaxStack => 1;
         public virtual Dictionary<ItemType, int>? Recipe => null;
         public virtual CharacterType? Builds => null;
-        public virtual Triangle? Places => null;
+        public virtual PlacedTriangleMetadata[]? Places => null;
+
+        public struct PlacedTriangleMetadata
+        {
+            public Triangle Triangle;
+            public HexSide[] PositionOffset;
+            public HexSide RotationOffset;
+        }
 
         public Item() : this(1) { }
 
@@ -61,6 +68,8 @@ namespace Core
                     return new Stone();
                 case ItemType.StoneBrick:
                     return new StoneBrick();
+                case ItemType.StoneDoubleBrick:
+                    return new StoneDoubleBrick();
                 case ItemType.Wood:
                     return new Wood();
                 case ItemType.Arrowhead:

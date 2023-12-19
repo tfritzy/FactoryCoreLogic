@@ -9,7 +9,15 @@ namespace Core
         public override float Width => .4f;
         private const string name = "Stone brick";
         public override string Name => name;
-        public override Triangle? Places => places;
-        private static Triangle places = new Triangle(TriangleType.Stone, TriangleSubType.FullBrick);
+        public override Item.PlacedTriangleMetadata[]? Places => places;
+        private static Item.PlacedTriangleMetadata[] places = new Item.PlacedTriangleMetadata[]
+        {
+            new Item.PlacedTriangleMetadata
+            {
+                Triangle = new Triangle(TriangleType.Stone, TriangleSubType.FullBrick),
+                PositionOffset = new HexSide[] {},
+                RotationOffset = HexSide.NorthEast,
+            }
+        };
     }
 }

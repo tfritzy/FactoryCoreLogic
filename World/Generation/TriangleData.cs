@@ -41,8 +41,7 @@ public class TriangleData
                 },
                 SubTypes=new TriangleSubType[]
                 {
-                    TriangleSubType.BrickHalf1,
-                    TriangleSubType.BrickHalf1,
+                    TriangleSubType.BrickHalf,
                     TriangleSubType.FullBrick,
                 }
             }
