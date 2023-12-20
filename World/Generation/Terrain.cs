@@ -210,14 +210,30 @@ namespace Core
             }
         }
 
-        public Point3Int GetTopHex(Point2Int location)
+        public Point3Int GetTopHex(Point2Int location, HexSide? side = null)
         {
             for (int z = this.MaxZ - 1; z >= 0; z--)
             {
                 var hex = this.TerrainData[location.x, location.y, z];
                 if (hex != null)
                 {
-                    return new Point3Int(location.x, location.y, z);
+                    if (side == null)
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (hex[i] != null)
+                            {
+                                return new Point3Int(location.x, location.y, z);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (hex[(int)side] != null)
+                        {
+                            return new Point3Int(location.x, location.y, z);
+                        }
+                    }
                 }
             }
 
