@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using NoiseTest;
+using Noise;
 
 namespace Core
 {
