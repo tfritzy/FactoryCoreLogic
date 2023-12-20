@@ -1,4 +1,4 @@
-using NoiseTest;
+using Noise;
 
 namespace Core
 {
