@@ -78,7 +78,8 @@ namespace Core
                 return false;
 
             if (index < 0 || index >= items.Length)
-                return false;
+                throw new InvalidOperationException(
+                    "Cannot add item to invalid index: " + index + ". Inventory size is " + items.Length + ".");
 
             Item? currentSlot = items[index];
 
@@ -191,6 +192,18 @@ namespace Core
             return count;
         }
 
+        public int NumOpenSlots()
+        {
+            int count = 0;
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i] == null)
+                    count++;
+            }
+
+            return count;
+        }
+
         public void DecrementCountOf(int index, int quantity)
         {
             if (Disabled)
@@ -215,6 +228,26 @@ namespace Core
                 items[index] = null;
                 Version++;
             }
+        }
+
+        public Item? Take1Quantity(ItemType? itemType = null)
+        {
+            if (Disabled)
+                return null;
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                var item = items[i];
+                if ((item != null && item.Type == itemType) || (itemType == null && item != null))
+                {
+                    DecrementCountOf(i, 1);
+                    var newItem = Item.Create(item.Type);
+                    newItem.SetQuantity(1);
+                    return newItem;
+                }
+            }
+
+            return null;
         }
 
         public void RemoveCount(ItemType itemType, int quantity)

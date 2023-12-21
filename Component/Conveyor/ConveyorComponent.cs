@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
 namespace Core
@@ -132,23 +134,20 @@ namespace Core
                     return GetTotalDistance() / 2;
                 }
 
-                float? minBoundsOfNextItem = Next?.MinBoundsOfFirstItem();
+                if (Next == null || Next.Owner.IsPreview)
+                {
+                    return GetTotalDistance() - item.Value.Item.Width / 2;
+                }
 
+                float? minBoundsOfNextItem = Next?.MinBoundsOfFirstItem();
                 // If the next conveyor's first item overlaps the end of this conveyor, it is the limiter.
                 if (minBoundsOfNextItem != null && minBoundsOfNextItem.Value < 0)
                 {
                     return minBoundsOfNextItem.Value + GetTotalDistance() - item.Value.Item.Width / 2 - .0001f;
                 }
 
-                if (Next == null)
-                {
-                    return GetTotalDistance() - item.Value.Item.Width / 2;
-                }
-                else
-                {
-                    // Only extend past the end of the conveyor if there is a next one.
-                    return GetTotalDistance();
-                }
+                // Only extend past the end of the conveyor if there is a next one.
+                return GetTotalDistance();
             }
             else
             {
@@ -172,6 +171,11 @@ namespace Core
 
         public bool CanAcceptItem(Item item, float atPoint = 0f)
         {
+            if (Owner.IsPreview)
+            {
+                return false;
+            }
+
             return GetInsertionIndex(item, atPoint) != -1;
         }
 
@@ -438,6 +442,12 @@ namespace Core
                 PrevSide = PrevSide,
                 BlocksPassthrough = BlockPassthrough,
             };
+        }
+
+        public void RemoveItem(LinkedListNode<ItemOnBelt> item)
+        {
+            Items.Remove(item);
+            Version++;
         }
 
         public int GetRotation()

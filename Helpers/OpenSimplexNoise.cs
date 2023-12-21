@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-namespace NoiseTest
+namespace Noise
 {
     public class OpenSimplexNoise
     {

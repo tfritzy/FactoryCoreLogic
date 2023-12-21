@@ -224,5 +224,10 @@ namespace Core
         {
             return this.Terrain.GetTopHex(location);
         }
+
+        public Point3Int GetTopHex(int x, int y, HexSide side)
+        {
+            return this.Terrain.GetTopHex(new Point2Int(x, y), side);
+        }
     }
 }

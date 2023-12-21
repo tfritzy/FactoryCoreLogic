@@ -7,6 +7,8 @@ namespace Core
         public override ItemType Type => ItemType.ToolShaft;
         public override int MaxStack => 8;
         public override Dictionary<ItemType, int> Recipe => recipe;
+        private const string name = "Tool shaft";
+        public override string Name => name;
 
         public ToolShaft(int quantity) : base(quantity) { }
         public ToolShaft() : base() { }

@@ -7,5 +7,7 @@ namespace Core
         public Coal(int quantity) : base(quantity) { }
         public Coal() : base() { }
         override public float Width => .3f;
+        private const string name = "Coal";
+        public override string Name => name;
     }
 }

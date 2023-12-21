@@ -7,5 +7,7 @@ namespace Core
         public Stone(int quantity) : base(quantity) { }
         public Stone() : base() { }
         public override float Width => .4f;
+        private const string name = "Stone";
+        public override string Name => name;
     }
 }

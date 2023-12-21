@@ -17,7 +17,7 @@ namespace Core
 
         public override Schema.Component ToSchema()
         {
-            return new Schema.TransferToConveyor()
+            return new Schema.ItemOutput()
             {
                 OutputSideOffsets = OutputSideOffsets
             };

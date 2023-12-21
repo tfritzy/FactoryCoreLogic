@@ -6,6 +6,7 @@ namespace Core
     public abstract class Item
     {
         public abstract ItemType Type { get; }
+        public abstract string Name { get; }
         public int Quantity { get; private set; }
         public ulong Id { get; set; }
 
@@ -13,6 +14,14 @@ namespace Core
         public virtual int MaxStack => 1;
         public virtual Dictionary<ItemType, int>? Recipe => null;
         public virtual CharacterType? Builds => null;
+        public virtual PlacedTriangleMetadata[]? Places => null;
+
+        public struct PlacedTriangleMetadata
+        {
+            public Triangle Triangle;
+            public HexSide[] PositionOffset;
+            public HexSide RotationOffset;
+        }
 
         public Item() : this(1) { }
 
@@ -57,6 +66,10 @@ namespace Core
                     return new Dirt();
                 case ItemType.Stone:
                     return new Stone();
+                case ItemType.StoneBrick:
+                    return new StoneBrick();
+                case ItemType.StoneDoubleBrick:
+                    return new StoneDoubleBrick();
                 case ItemType.Wood:
                     return new Wood();
                 case ItemType.Arrowhead:
@@ -77,6 +90,8 @@ namespace Core
                     return new IronOre();
                 case ItemType.Mineshaft:
                     return new MineshaftItem();
+                case ItemType.Depot:
+                    return new DepotItem();
                 default:
                     throw new ArgumentException("Invalid item type " + type);
             }

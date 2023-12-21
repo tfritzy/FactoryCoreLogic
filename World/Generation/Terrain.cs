@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Core;
 using Newtonsoft.Json;
+using Noise;
 
 namespace Core
 {
@@ -12,6 +14,7 @@ namespace Core
         public int MaxX => this.TerrainData.GetLength(0);
         public int MaxY => this.TerrainData.GetLength(1);
         public int MaxZ => this.TerrainData.GetLength(2);
+        public readonly VegetationType?[,] Vegetation;
 
         private Context context;
 
@@ -19,6 +22,7 @@ namespace Core
         {
             this.context = context;
             TerrainData = new Triangle?[]?[Types.GetLength(0), Types.GetLength(1), Types.GetLength(2)];
+            Vegetation = new VegetationType?[Types.GetLength(0), Types.GetLength(1)];
 
             for (int x = 0; x < Types.GetLength(0); x++)
             {
@@ -31,11 +35,9 @@ namespace Core
                             var triangles = new Triangle?[6];
                             for (int i = 0; i < 6; i++)
                             {
-                                triangles[i] = new Triangle()
-                                {
-                                    Type = Types[x, y, z]!.Value,
-                                    SubType = TriangleData.AvailableSubTypes[Types[x, y, z]!.Value][0],
-                                };
+                                triangles[i] = new Triangle(
+                                    Types[x, y, z]!.Value,
+                                    TriangleData.AvailableSubTypes[Types[x, y, z]!.Value][0]);
                             }
 
                             TerrainData[x, y, z] = triangles;
@@ -46,6 +48,7 @@ namespace Core
 
             RemoveNonExposedHexes();
             CategorizeTerrain();
+            PopulateVegetation();
         }
 
         private void CategorizeTerrain()
@@ -67,6 +70,44 @@ namespace Core
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        private void PopulateVegetation()
+        {
+            Random r = new Random();
+            OpenSimplexNoise birchNoise = new OpenSimplexNoise(r.Next());
+            OpenSimplexNoise pineNoise = new OpenSimplexNoise(r.Next());
+            OpenSimplexNoise treeThinningNoise = new OpenSimplexNoise(r.Next());
+
+            for (int x = 0; x < Vegetation.GetLength(0); x++)
+            {
+                for (int y = 0; y < Vegetation.GetLength(1); y++)
+                {
+                    double birchVal = birchNoise.Evaluate(x / 50f, y / 50f);
+                    birchVal = (birchVal + 1) / 2;
+                    double pineVal = pineNoise.Evaluate(x / 50f, y / 50f);
+                    pineVal = (pineVal + 1) / 2;
+
+                    double treeThinningVal = treeThinningNoise.Evaluate(x * .5f, y * .5f);
+                    treeThinningVal = ((treeThinningVal + 1) / 2) * .2f;
+                    birchVal -= treeThinningVal;
+                    pineVal -= treeThinningVal;
+
+                    double flaxVal = r.NextDouble();
+                    if (birchVal > 0.8)
+                    {
+                        Vegetation[x, y] = VegetationType.BirchTree;
+                    }
+                    else if (pineVal > 0.8)
+                    {
+                        Vegetation[x, y] = VegetationType.PineTree;
+                    }
+                    else if (flaxVal > 0.98)
+                    {
+                        Vegetation[x, y] = VegetationType.Flax;
                     }
                 }
             }
@@ -212,13 +253,30 @@ namespace Core
             }
         }
 
-        public Point3Int GetTopHex(Point2Int location)
+        public Point3Int GetTopHex(Point2Int location, HexSide? side = null)
         {
             for (int z = this.MaxZ - 1; z >= 0; z--)
             {
-                if (this.TerrainData[location.x, location.y, z] != null)
+                var hex = this.TerrainData[location.x, location.y, z];
+                if (hex != null)
                 {
-                    return new Point3Int(location.x, location.y, z);
+                    if (side == null)
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (hex[i] != null)
+                            {
+                                return new Point3Int(location.x, location.y, z);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (hex[(int)side] != null)
+                        {
+                            return new Point3Int(location.x, location.y, z);
+                        }
+                    }
                 }
             }
 

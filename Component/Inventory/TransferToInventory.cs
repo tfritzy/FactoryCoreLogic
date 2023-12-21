@@ -46,7 +46,7 @@ namespace Core
                 {
                     if (Owner.Inventory.CanAddItem(curr.Value.Item))
                     {
-                        Owner.Conveyor.Items.Remove(curr);
+                        Owner.Conveyor.RemoveItem(curr);
                         Owner.Inventory.AddItem(curr.Value.Item);
                     }
                 }

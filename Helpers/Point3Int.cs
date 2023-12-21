@@ -45,6 +45,11 @@ namespace Core
             return new Point3Int(p1.x - p2.x, p1.y - p2.y, p1.z);
         }
 
+        public static Point3Int operator *(Point3Int p1, int p2)
+        {
+            return new Point3Int(p1.x * p2, p1.y * p2, p1.z * p2);
+        }
+
         public static bool operator ==(Point3Int p1, Point3Int p2)
         {
             if (object.Equals(p1, p2))

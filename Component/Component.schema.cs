@@ -27,7 +27,7 @@ namespace Schema
             { ComponentType.Life, typeof(Life) },
             { ComponentType.TowerTargeting, typeof(TowerTargeting) },
             { ComponentType.Mine, typeof(Mine) },
-            { ComponentType.ItemOutput, typeof(TransferToConveyor) },
+            { ComponentType.ItemOutput, typeof(ItemOutput) },
             { ComponentType.TransferToInventory, typeof(TransferToInventory) },
         };
 

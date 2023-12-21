@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Schema
 {
-    public class TransferToConveyor : Inventory
+    public class ItemOutput : Component
     {
         public override ComponentType Type => ComponentType.ItemOutput;
 

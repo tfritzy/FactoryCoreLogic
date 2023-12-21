@@ -4,6 +4,8 @@ namespace Core
     {
         Invalid,
         Stone,
+        StoneBrick,
+        StoneDoubleBrick,
         Dirt,
         Wood,
         Arrowhead,
@@ -15,5 +17,6 @@ namespace Core
         Coal,
         IronOre,
         Mineshaft,
+        Depot,
     }
 }
