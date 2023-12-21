@@ -86,8 +86,9 @@ namespace Core
                 float dropPoint = DepositPoint;
                 if (next.CanAcceptItem(item, dropPoint))
                 {
+                    Item singleQuantity = Item.Create(item.Type);
                     Owner.Inventory.RemoveCount(item.Type, 1);
-                    next.AddItem(item, dropPoint);
+                    next.AddItem(singleQuantity, dropPoint);
                 }
                 else
                 {
