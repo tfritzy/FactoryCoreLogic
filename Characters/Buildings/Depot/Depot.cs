@@ -18,9 +18,10 @@ namespace Core
         protected override void InitComponents()
         {
             SetComponent(new Inventory(this, 4, 6));
-            SetComponent(new TransferToInventory(this));
-            SetComponent(new ConveyorComponent(this, blockPassthrough: true));
-            SetComponent(new ItemOutput(this, new List<int> { 0 }));
+            SetComponent(new ItemPort(
+                this,
+                inputSideOffsets: new List<int> { 3 },
+                outputSideOffsets: new List<int> { 0 }));
         }
 
         public override Schema.Entity BuildSchemaObject()

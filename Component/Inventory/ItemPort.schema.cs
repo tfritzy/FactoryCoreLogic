@@ -8,7 +8,7 @@ namespace Schema
 {
     public class ItemOutput : Component
     {
-        public override ComponentType Type => ComponentType.ItemOutput;
+        public override ComponentType Type => ComponentType.ItemPort;
 
         [JsonProperty("Sides")]
         public List<int> OutputSideOffsets = new();
@@ -16,7 +16,7 @@ namespace Schema
         public override Core.Component FromSchema(object[] context)
         {
             Core.Entity owner = (Core.Entity)context[0];
-            return new Core.ItemOutput(owner, OutputSideOffsets);
+            return new Core.ItemPort(owner, OutputSideOffsets);
         }
     }
 }

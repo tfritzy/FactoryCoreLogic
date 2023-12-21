@@ -20,6 +20,7 @@ namespace Core
                 gridPosition = value;
             }
         }
+        public ItemPort? ItemPort => GetComponent<ItemPort>();
 
         private Point3Int gridPosition;
 

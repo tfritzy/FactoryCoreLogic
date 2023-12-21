@@ -3,16 +3,21 @@ using System.Collections.Generic;
 
 namespace Core
 {
-    public class ItemOutput : Component
+    public class ItemPort : Component
     {
-        public override ComponentType Type => ComponentType.ItemOutput;
+        public override ComponentType Type => ComponentType.ItemPort;
         public const float DepositPoint = -.5f;
         public List<int> OutputSideOffsets { get; private set; }
+        public List<int> InputSideOffsets { get; private set; }
         private Building BuildingOwner => (Building)Owner;
 
-        public ItemOutput(Entity owner, List<int> outputSideOffsets) : base(owner)
+        public ItemPort(
+            Entity owner,
+            List<int>? outputSideOffsets = null,
+            List<int>? inputSideOffsets = null) : base(owner)
         {
-            OutputSideOffsets = outputSideOffsets;
+            OutputSideOffsets = outputSideOffsets ?? new List<int>();
+            InputSideOffsets = inputSideOffsets ?? new List<int>();
         }
 
         public override Schema.Component ToSchema()
@@ -55,6 +60,27 @@ namespace Core
             }
             checkCooldown = .1f;
 
+            DepositItems();
+        }
+
+        public bool CanAccept(Item item)
+        {
+            if (Owner.Inventory == null)
+            {
+                return false;
+            }
+
+            return Owner.Inventory.CanAddItem(item);
+        }
+
+        public void AddItem(Item item)
+        {
+            Owner.Inventory?.AddItem(item);
+            DepositItems();
+        }
+
+        private void DepositItems()
+        {
             if (Owner.Inventory == null)
             {
                 return;
@@ -89,10 +115,6 @@ namespace Core
                     Item singleQuantity = Item.Create(item.Type);
                     Owner.Inventory.RemoveCount(item.Type, 1);
                     next.AddItem(singleQuantity, dropPoint);
-                }
-                else
-                {
-                    Console.WriteLine("Next can't accept item");
                 }
             }
         }
