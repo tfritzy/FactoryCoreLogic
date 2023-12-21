@@ -11,7 +11,8 @@ namespace Core
         Attack,
         TowerTargeting,
         Mine,
-        TransferToConveyor,
-        TransferToInventory
+        ItemOutput,
+        TransferToInventory,
+        Sorter
     }
 }
