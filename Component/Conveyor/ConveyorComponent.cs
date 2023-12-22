@@ -109,10 +109,13 @@ namespace Core
                 }
                 else if (Next?.ItemPort != null)
                 {
-                    if (item.ProgressMeters >= maxPosition && Next.ItemPort.CanAccept(item.Item))
+                    if (item.ProgressMeters >= maxPosition)
                     {
-                        Next.ItemPort.AddItem(item.Item);
-                        Items.Remove(item);
+                        bool wasAdded = Next.ItemPort.TryGiveItem(item.Item);
+                        if (wasAdded)
+                        {
+                            Items.Remove(item);
+                        }
                     }
                 }
 

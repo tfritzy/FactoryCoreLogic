@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace Core
 {
@@ -63,29 +64,46 @@ namespace Core
             DepositItems();
         }
 
-        public bool CanAccept(Item item)
+        public bool TryGiveItem(Item item)
         {
             if (Owner.Inventory == null)
             {
-                return false;
+                var depositTarget = GetDepositTarget(item);
+                if (depositTarget != null)
+                {
+                    depositTarget.AddItem(item);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-
-            return Owner.Inventory.CanAddItem(item);
-        }
-
-        public void AddItem(Item item)
-        {
-            Owner.Inventory?.AddItem(item);
-            DepositItems();
-        }
-
-        private void DepositItems()
-        {
-            if (Owner.Inventory == null)
+            else
             {
-                return;
-            }
+                if (Owner.Inventory.CanAddItem(item))
+                {
+                    var depositTarget = GetDepositTarget(item);
+                    if (depositTarget != null)
+                    {
+                        depositTarget.AddItem(item, DepositPoint);
+                    }
+                    else
+                    {
+                        Owner.Inventory.AddItem(item);
+                    }
 
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        private ConveyorComponent? GetDepositTarget(Item item)
+        {
             foreach (int offset in OutputSideOffsets)
             {
                 HexSide outputSide = GridHelpers.Rotate60(BuildingOwner.Rotation, offset);
@@ -103,19 +121,39 @@ namespace Core
                     continue;
                 }
 
-                var item = Owner.Inventory.FindItem();
                 if (item == null)
                 {
-                    return;
+                    return null;
                 }
 
-                float dropPoint = DepositPoint;
-                if (next.CanAcceptItem(item, dropPoint))
+                if (next.CanAcceptItem(item, DepositPoint))
                 {
-                    Item singleQuantity = Item.Create(item.Type);
-                    Owner.Inventory.RemoveCount(item.Type, 1);
-                    next.AddItem(singleQuantity, dropPoint);
+                    return next;
                 }
+            }
+
+            return null;
+        }
+
+        private void DepositItems()
+        {
+            if (Owner.Inventory == null)
+            {
+                return;
+            }
+
+            var item = Owner.Inventory.FindItem();
+            if (item == null)
+            {
+                return;
+            }
+
+            ConveyorComponent? depositTarget = GetDepositTarget(item);
+            if (depositTarget != null)
+            {
+                Item singleQuantity = Item.Create(item.Type);
+                Owner.Inventory.RemoveCount(item.Type, 1);
+                depositTarget.AddItem(singleQuantity, DepositPoint);
             }
         }
     }
