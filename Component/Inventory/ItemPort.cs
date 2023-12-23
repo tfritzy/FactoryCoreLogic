@@ -127,6 +127,11 @@ namespace Core
                     GridHelpers.GetNeighbor((Point2Int)((Building)Owner).GridPosition, outputSide)
                 )?.Conveyor;
 
+                if (item != null && SideOffsetToFilter.ContainsKey(offset) && SideOffsetToFilter[offset] == item.Type)
+                {
+                    continue;
+                }
+
                 if (next == null || next.Prev != Owner)
                 {
                     continue;

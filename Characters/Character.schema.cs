@@ -45,6 +45,7 @@ namespace Schema
             { CharacterType.Keep, typeof (Keep) },
             { CharacterType.Mineshaft, typeof (Mineshaft) },
             { CharacterType.Depot, typeof (Depot) },
+            { CharacterType.Sorter, typeof (Sorter) },
         };
 
         public override bool CanConvert(Type objectType)

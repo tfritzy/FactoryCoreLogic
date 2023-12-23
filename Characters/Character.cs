@@ -53,6 +53,8 @@ namespace Core
                     return new Mineshaft(context, alliance);
                 case CharacterType.Depot:
                     return new Depot(context, alliance);
+                case CharacterType.Sorter:
+                    return new Sorter(context, alliance);
                 default:
                     throw new ArgumentException("Invalid character type " + character);
             }
