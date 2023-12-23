@@ -111,7 +111,9 @@ namespace Core
                 {
                     if (item.ProgressMeters >= maxPosition)
                     {
-                        bool wasAdded = Next.ItemPort.TryGiveItem(item.Item);
+                        bool wasAdded = Next.ItemPort.TryGiveItem(
+                            item.Item,
+                            GridHelpers.OppositeSide(NextSide!.Value));
                         if (wasAdded)
                         {
                             Items.Remove(item);

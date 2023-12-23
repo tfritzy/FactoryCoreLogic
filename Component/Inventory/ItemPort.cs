@@ -10,15 +10,18 @@ namespace Core
         public const float DepositPoint = -.5f;
         public List<int> OutputSideOffsets { get; private set; }
         public List<int> InputSideOffsets { get; private set; }
+        public Dictionary<int, ItemType> SideOffsetToFilter { get; set; }
         private Building BuildingOwner => (Building)Owner;
 
         public ItemPort(
             Entity owner,
             List<int>? outputSideOffsets = null,
-            List<int>? inputSideOffsets = null) : base(owner)
+            List<int>? inputSideOffsets = null,
+            Dictionary<int, ItemType>? sideOffsetToFilter = null) : base(owner)
         {
             OutputSideOffsets = outputSideOffsets ?? new List<int>();
             InputSideOffsets = inputSideOffsets ?? new List<int>();
+            SideOffsetToFilter = sideOffsetToFilter ?? new Dictionary<int, ItemType>();
         }
 
         public override Schema.Component ToSchema()
@@ -64,14 +67,29 @@ namespace Core
             DepositItems();
         }
 
-        public bool TryGiveItem(Item item)
+        public bool TryGiveItem(Item item, HexSide fromSide)
         {
+            int sideOffset = (int)GridHelpers.Rotate60(BuildingOwner.Rotation, (int)fromSide);
+
+            if (!InputSideOffsets.Contains(sideOffset))
+            {
+                return false;
+            }
+
+            if (SideOffsetToFilter.ContainsKey(sideOffset))
+            {
+                if (SideOffsetToFilter[sideOffset] == item.Type)
+                {
+                    return false;
+                }
+            }
+
             if (Owner.Inventory == null)
             {
-                var depositTarget = GetDepositTarget(item);
-                if (depositTarget != null)
+                var depositInfo = GetDepositSide(item);
+                if (depositInfo != null)
                 {
-                    depositTarget.AddItem(item);
+                    depositInfo.Value.Conveyor.AddItem(item);
                     return true;
                 }
                 else
@@ -83,10 +101,10 @@ namespace Core
             {
                 if (Owner.Inventory.CanAddItem(item))
                 {
-                    var depositTarget = GetDepositTarget(item);
-                    if (depositTarget != null)
+                    var depositInfo = GetDepositSide(item);
+                    if (depositInfo != null)
                     {
-                        depositTarget.AddItem(item, DepositPoint);
+                        depositInfo.Value.Conveyor.AddItem(item, DepositPoint);
                     }
                     else
                     {
@@ -102,7 +120,12 @@ namespace Core
             }
         }
 
-        private ConveyorComponent? GetDepositTarget(Item item)
+        struct DepositInfo
+        {
+            public ConveyorComponent Conveyor;
+            public ItemType itemType;
+        }
+        private DepositInfo? GetDepositSide(Item? item)
         {
             foreach (int offset in OutputSideOffsets)
             {
@@ -121,14 +144,25 @@ namespace Core
                     continue;
                 }
 
-                if (item == null)
+                // If caller didn't specify an item, find the first item that works for this side
+                Item? checkDepositItem =
+                    item ??
+                    Owner.Inventory?.FindWhere(
+                        i => i != null &&
+                            (!SideOffsetToFilter.ContainsKey(offset) ||
+                             SideOffsetToFilter[offset] != i?.Type));
+                if (checkDepositItem == null)
                 {
-                    return null;
+                    continue;
                 }
 
-                if (next.CanAcceptItem(item, DepositPoint))
+                if (next.CanAcceptItem(checkDepositItem, DepositPoint))
                 {
-                    return next;
+                    return new DepositInfo
+                    {
+                        Conveyor = next,
+                        itemType = checkDepositItem.Type
+                    };
                 }
             }
 
@@ -142,18 +176,12 @@ namespace Core
                 return;
             }
 
-            var item = Owner.Inventory.FindItem();
-            if (item == null)
+            DepositInfo? depositInfo = GetDepositSide(null);
+            if (depositInfo != null)
             {
-                return;
-            }
-
-            ConveyorComponent? depositTarget = GetDepositTarget(item);
-            if (depositTarget != null)
-            {
-                Item singleQuantity = Item.Create(item.Type);
-                Owner.Inventory.RemoveCount(item.Type, 1);
-                depositTarget.AddItem(singleQuantity, DepositPoint);
+                Item singleQuantity = Item.Create(depositInfo.Value.itemType);
+                Owner.Inventory.RemoveCount(depositInfo.Value.itemType, 1);
+                depositInfo.Value.Conveyor.AddItem(singleQuantity, DepositPoint);
             }
         }
     }

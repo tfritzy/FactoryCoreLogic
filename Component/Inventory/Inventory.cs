@@ -180,6 +180,17 @@ namespace Core
             return null;
         }
 
+        public Item? FindWhere(Func<Item?, bool> predicate)
+        {
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (predicate(items[i]))
+                    return items[i];
+            }
+
+            return null;
+        }
+
         public int GetItemCount(ItemType itemType)
         {
             int count = 0;
