@@ -25,6 +25,7 @@ namespace Core
             this.Components = new Dictionary<Type, Component>();
             this.Id = IdGenerator.GenerateId();
             InitComponents();
+            ConfigureComponents();
         }
 
         public bool HasComponent<T>() where T : Component
@@ -64,7 +65,11 @@ namespace Core
             Components[component.GetType()] = component;
         }
 
+        // Initially add components to the entity. Used in flows where they're not set through deserialization.
         protected virtual void InitComponents() { }
+
+        // Sets component properties. Useful for setting up post-serialization.
+        public virtual void ConfigureComponents() { }
 
         public abstract Schema.Entity BuildSchemaObject();
         public virtual Schema.Entity ToSchema()

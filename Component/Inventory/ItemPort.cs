@@ -8,28 +8,21 @@ namespace Core
     {
         public override ComponentType Type => ComponentType.ItemPort;
         public const float DepositPoint = -.5f;
-        public List<int> OutputSideOffsets { get; private set; }
-        public List<int> InputSideOffsets { get; private set; }
-        public Dictionary<int, ItemType> SideOffsetToFilter { get; set; }
+        public List<int> OutputSideOffsets;
+        public List<int> InputSideOffsets;
+        public Dictionary<int, ItemType> SideOffsetToFilter;
         private Building BuildingOwner => (Building)Owner;
 
-        public ItemPort(
-            Entity owner,
-            List<int>? outputSideOffsets = null,
-            List<int>? inputSideOffsets = null,
-            Dictionary<int, ItemType>? sideOffsetToFilter = null) : base(owner)
+        public ItemPort(Entity owner) : base(owner)
         {
-            OutputSideOffsets = outputSideOffsets ?? new List<int>();
-            InputSideOffsets = inputSideOffsets ?? new List<int>();
-            SideOffsetToFilter = sideOffsetToFilter ?? new Dictionary<int, ItemType>();
+            OutputSideOffsets = new List<int>();
+            InputSideOffsets = new List<int>();
+            SideOffsetToFilter = new Dictionary<int, ItemType>();
         }
 
         public override Schema.Component ToSchema()
         {
-            return new Schema.ItemOutput()
-            {
-                OutputSideOffsets = OutputSideOffsets
-            };
+            return new Schema.ItemOutput() { };
         }
 
         public override void OnAddToGrid()

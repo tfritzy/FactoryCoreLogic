@@ -19,7 +19,13 @@ namespace Core
         {
             this.SetComponent(new Mine(this));
             this.SetComponent(new Inventory(this, 4, 4));
-            this.SetComponent(new ItemPort(this, new List<int> { 0 }));
+            this.SetComponent(new ItemPort(this));
+        }
+
+        public override void ConfigureComponents()
+        {
+            base.ConfigureComponents();
+            ItemPort!.OutputSideOffsets = new List<int> { 0 };
         }
 
         public override Schema.Entity BuildSchemaObject()

@@ -26,14 +26,6 @@ namespace Core
             }
         }
 
-        public void UpdateOwnerOfCells()
-        {
-            foreach (var cell in Components.Values)
-            {
-                cell.Owner = this;
-            }
-        }
-
         public static Character Create(
             CharacterType character,
             Context context,

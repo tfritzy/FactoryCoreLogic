@@ -32,6 +32,7 @@ namespace Schema
                     entity.SetComponent(deser);
                 }
             }
+            entity.ConfigureComponents();
 
             return entity;
         }
