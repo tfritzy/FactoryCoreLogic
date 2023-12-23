@@ -77,94 +77,91 @@ namespace Core
                 }
             }
 
-            if (Owner.Inventory == null)
+            bool deposited = TryDeposit(item);
+            if (deposited)
             {
-                var depositInfo = GetDepositSide(item);
-                if (depositInfo != null)
-                {
-                    depositInfo.Value.Conveyor.AddItem(item);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
-            else
+
+            if (Owner.Inventory != null)
             {
                 if (Owner.Inventory.CanAddItem(item))
                 {
-                    var depositInfo = GetDepositSide(item);
-                    if (depositInfo != null)
-                    {
-                        depositInfo.Value.Conveyor.AddItem(item, DepositPoint);
-                    }
-                    else
-                    {
-                        Owner.Inventory.AddItem(item);
-                    }
-
+                    Owner.Inventory.AddItem(item);
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
             }
+
+            return false;
         }
 
-        struct DepositInfo
-        {
-            public ConveyorComponent Conveyor;
-            public ItemType itemType;
-        }
-        private DepositInfo? GetDepositSide(Item? item)
+        private bool TryDeposit(Item? item)
         {
             foreach (int offset in OutputSideOffsets)
             {
-                HexSide outputSide = GridHelpers.Rotate60(BuildingOwner.Rotation, offset);
-                ConveyorComponent? next = Owner.Context.World.GetBuildingAt(
-                    GridHelpers.GetNeighbor((Point2Int)((Building)Owner).GridPosition, outputSide)
-                )?.Conveyor;
-
                 if (item != null && SideOffsetToFilter.ContainsKey(offset) && SideOffsetToFilter[offset] == item.Type)
                 {
                     continue;
                 }
 
-                if (next == null || next.Prev != Owner)
-                {
-                    continue;
-                }
-
-                if (next.Owner.IsPreview)
-                {
-                    continue;
-                }
-
                 // If caller didn't specify an item, find the first item that works for this side
-                Item? checkDepositItem =
-                    item ??
-                    Owner.Inventory?.FindWhere(
+                Item? checkDepositItem = item;
+                bool itemFromInventory = false;
+                if (checkDepositItem == null)
+                {
+                    itemFromInventory = true;
+                    checkDepositItem = Owner.Inventory?.FindWhere(
                         i => i != null &&
-                            (!SideOffsetToFilter.ContainsKey(offset) ||
-                             SideOffsetToFilter[offset] != i?.Type));
+                        (!SideOffsetToFilter.ContainsKey(offset) ||
+                        SideOffsetToFilter[offset] != i?.Type));
+                }
+
                 if (checkDepositItem == null)
                 {
                     continue;
                 }
 
-                if (next.CanAcceptItem(checkDepositItem, DepositPoint))
+                HexSide outputSide = GridHelpers.Rotate60(BuildingOwner.Rotation, offset);
+                Building? nextBuilding = Owner.Context.World.GetBuildingAt(
+                    GridHelpers.GetNeighbor((Point2Int)((Building)Owner).GridPosition, outputSide)
+                );
+
+                if (nextBuilding == null || nextBuilding.IsPreview)
                 {
-                    return new DepositInfo
+                    continue;
+                }
+
+                if (nextBuilding?.Conveyor != null)
+                {
+                    ConveyorComponent next = nextBuilding.Conveyor;
+                    if (next == null || next.Prev != Owner)
                     {
-                        Conveyor = next,
-                        itemType = checkDepositItem.Type
-                    };
+                        continue;
+                    }
+
+                    if (next.CanAcceptItem(checkDepositItem, DepositPoint))
+                    {
+                        Item singleQuantity = Item.Create(checkDepositItem.Type);
+                        singleQuantity.SetQuantity(1);
+                        next.AddItem(singleQuantity, DepositPoint);
+                        if (itemFromInventory)
+                            Owner.Inventory?.RemoveCount(checkDepositItem.Type, 1);
+                        return true;
+                    }
+                }
+                else if (nextBuilding?.ItemPort != null)
+                {
+                    ItemPort next = nextBuilding.ItemPort;
+                    if (next == null)
+                    {
+                        continue;
+                    }
+
+                    return next.TryGiveItem(checkDepositItem, GridHelpers.OppositeSide(outputSide));
                 }
             }
 
-            return null;
+            return false;
         }
 
         private void DepositItems()
@@ -174,13 +171,7 @@ namespace Core
                 return;
             }
 
-            DepositInfo? depositInfo = GetDepositSide(null);
-            if (depositInfo != null)
-            {
-                Item singleQuantity = Item.Create(depositInfo.Value.itemType);
-                Owner.Inventory.RemoveCount(depositInfo.Value.itemType, 1);
-                depositInfo.Value.Conveyor.AddItem(singleQuantity, DepositPoint);
-            }
+            TryDeposit(null);
         }
     }
 }
