@@ -62,8 +62,7 @@ namespace Core
 
         public bool TryGiveItem(Item item, HexSide fromSide)
         {
-            int sideOffset = (int)GridHelpers.Rotate60(BuildingOwner.Rotation, (int)fromSide);
-
+            int sideOffset = GridHelpers.HexDelta(BuildingOwner.Rotation, fromSide);
             if (!InputSideOffsets.Contains(sideOffset))
             {
                 return false;

@@ -304,5 +304,13 @@ namespace Core
                 final += 6;
             return (HexSide)(final % 6);
         }
+
+        public static int HexDelta(HexSide a, HexSide b)
+        {
+            int delta = b - a;
+            while (delta < 0)
+                delta += 6;
+            return delta % 6;
+        }
     }
 }
