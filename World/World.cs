@@ -13,6 +13,7 @@ namespace Core
         private Dictionary<ulong, Character> Characters;
         public Dictionary<ulong, Projectile> Projectiles { get; private set; }
         public LinkedList<Update> UnseenUpdates = new LinkedList<Update>();
+        public float OutsideAirTemperatureCelsious = 20f;
 
         public int MaxX => Terrain.MaxX;
         public int MaxY => Terrain.MaxY;

@@ -55,6 +55,8 @@ namespace Core
                     return new Depot(context, alliance);
                 case CharacterType.Sorter:
                     return new Sorter(context, alliance);
+                case CharacterType.ClayFurnace:
+                    return new ClayFurnace(context, alliance);
                 default:
                     throw new ArgumentException("Invalid character type " + character);
             }

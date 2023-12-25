@@ -21,6 +21,7 @@ namespace Core
             }
         }
         public ItemPort? ItemPort => GetComponent<ItemPort>();
+        public Smelt? Smelt => GetComponent<Smelt>();
 
         private Point3Int gridPosition;
 

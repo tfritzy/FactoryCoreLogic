@@ -13,6 +13,7 @@ namespace Core
         Keep,
         Mineshaft,
         Depot,
-        Sorter
+        Sorter,
+        ClayFurnace,
     }
 }
