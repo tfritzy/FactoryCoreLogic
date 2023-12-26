@@ -3,9 +3,9 @@ namespace Core
     public enum ItemType
     {
         Invalid,
-        Stone,
-        StoneBrick,
-        StoneDoubleBrick,
+        Limestone,
+        LimestoneBrick,
+        LimestoneDoubleBrick,
         Dirt,
         Wood,
         Arrowhead,
@@ -15,7 +15,9 @@ namespace Core
         CopperBar,
         IronPickaxe,
         Conveyor,
-        Coal,
+        AnthraciteCoal,
+        BituminousCoal,
+        LigniteCoal,
         Mineshaft,
         Depot,
         Chalcopyrite,

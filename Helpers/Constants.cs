@@ -1,3 +1,5 @@
+// For copy paste: ₀₁₂₃₄₅₆₇₈₉
+
 namespace Core
 {
     public static class Constants

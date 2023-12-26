@@ -9,6 +9,7 @@ namespace Core
         public override Dictionary<ItemType, int> Recipe => recipe;
         private const string name = "Tool shaft";
         public override string Name => name;
+        public override string? ChemicalFormula => "C₆H₁₀O₅";
 
         public ToolShaft(int quantity) : base(quantity) { }
         public ToolShaft() : base() { }

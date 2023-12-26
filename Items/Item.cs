@@ -7,6 +7,7 @@ namespace Core
     {
         public abstract ItemType Type { get; }
         public abstract string Name { get; }
+        public abstract string? ChemicalFormula { get; }
         public int Quantity { get; private set; }
         public ulong Id { get; set; }
 
@@ -15,6 +16,14 @@ namespace Core
         public virtual Dictionary<ItemType, int>? Recipe => null;
         public virtual CharacterType? Builds => null;
         public virtual PlacedTriangleMetadata[]? Places => null;
+        public virtual CombustionProperties? Combustion => null;
+        public virtual float? SpecificHeat_JoulesPerKgPerDegreeCelsious => null;
+
+        public struct CombustionProperties
+        {
+            public float BurnRateKgPerHr;
+            public float CalorificValue_JoulesPerKg;
+        }
 
         public struct PlacedTriangleMetadata
         {
@@ -64,12 +73,12 @@ namespace Core
             {
                 case ItemType.Dirt:
                     return new Dirt();
-                case ItemType.Stone:
-                    return new Stone();
-                case ItemType.StoneBrick:
-                    return new StoneBrick();
-                case ItemType.StoneDoubleBrick:
-                    return new StoneDoubleBrick();
+                case ItemType.Limestone:
+                    return new Limestone();
+                case ItemType.LimestoneBrick:
+                    return new LimestoneBrick();
+                case ItemType.LimestoneDoubleBrick:
+                    return new LimestoneDoubleBrick();
                 case ItemType.Wood:
                     return new Wood();
                 case ItemType.Arrowhead:
@@ -84,8 +93,12 @@ namespace Core
                     return new IronPickaxe();
                 case ItemType.Conveyor:
                     return new ConveyorItem();
-                case ItemType.Coal:
-                    return new Coal();
+                case ItemType.AnthraciteCoal:
+                    return new AnthraciteCoal();
+                case ItemType.BituminousCoal:
+                    return new BituminousCoal();
+                case ItemType.LigniteCoal:
+                    return new LigniteCoal();
                 case ItemType.Chalcopyrite:
                     return new Chalcopyrite();
                 case ItemType.Mineshaft:
@@ -98,6 +111,29 @@ namespace Core
                     return new Magnetite();
                 default:
                     throw new ArgumentException("Invalid item type " + type);
+            }
+        }
+
+        private static Dictionary<ItemType, Item>? _itemProperties = null;
+        public static Dictionary<ItemType, Item> ItemProperties
+        {
+            get
+            {
+                if (_itemProperties == null)
+                {
+                    _itemProperties = new Dictionary<ItemType, Item>();
+                    foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
+                    {
+                        if (type == ItemType.Invalid)
+                        {
+                            continue;
+                        }
+
+                        _itemProperties[type] = Create(type);
+                    }
+                }
+
+                return _itemProperties;
             }
         }
 

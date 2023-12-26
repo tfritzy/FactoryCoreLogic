@@ -57,12 +57,12 @@ namespace Core
                 }
             }
 
-            return ItemType.Stone;
+            return ItemType.Limestone;
         }
 
         private const float MaxOrePercent = .5f;
         private static readonly List<ItemType> OreTypes = new() {
-            ItemType.Coal,
+            ItemType.AnthraciteCoal,
             ItemType.Chalcopyrite,
             ItemType.Magnetite
         };
@@ -96,7 +96,7 @@ namespace Core
                 weights.Add(OreTypes[i], percents[i]);
             }
 
-            weights.Add(ItemType.Stone, 1 - updatedSum);
+            weights.Add(ItemType.Limestone, 1 - updatedSum);
 
             return weights;
         }

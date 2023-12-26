@@ -9,6 +9,7 @@ namespace Core
         public override CharacterType? Builds => CharacterType.Conveyor;
         private const string name = "Conveyor";
         public override string Name => name;
+        public override string? ChemicalFormula => null;
 
         public ConveyorItem(int quantity) : base(quantity) { }
         public ConveyorItem() : base() { }

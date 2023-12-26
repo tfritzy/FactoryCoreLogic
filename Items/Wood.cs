@@ -8,5 +8,6 @@ namespace Core
         public Wood() : base() { }
         private const string name = "Wood";
         public override string Name => name;
+        public override string? ChemicalFormula => "C₆H₁₀O₅";
     }
 }

@@ -9,6 +9,7 @@ namespace Core
         public override CharacterType? Builds => CharacterType.Mineshaft;
         private const string name = "Mine";
         public override string Name => name;
+        public override string? ChemicalFormula => null;
 
         public MineshaftItem(int quantity) : base(quantity) { }
         public MineshaftItem() : base() { }

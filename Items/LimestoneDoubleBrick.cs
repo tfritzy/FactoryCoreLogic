@@ -1,14 +1,16 @@
 namespace Core
 {
-    public class StoneDoubleBrick : Item
+    public class LimestoneDoubleBrick : Item
     {
-        public override ItemType Type => ItemType.StoneDoubleBrick;
+        public override ItemType Type => ItemType.LimestoneDoubleBrick;
         public override int MaxStack => 32;
-        public StoneDoubleBrick(int quantity) : base(quantity) { }
-        public StoneDoubleBrick() : base() { }
+        public LimestoneDoubleBrick(int quantity) : base(quantity) { }
+        public LimestoneDoubleBrick() : base() { }
         public override float Width => .4f;
-        private const string name = "Stone double brick";
+        private const string name = "Limestone double brick";
         public override string Name => name;
+        public override string? ChemicalFormula => "CaCO₃";
+
         public override Item.PlacedTriangleMetadata[]? Places => places;
         private static Item.PlacedTriangleMetadata[] places = new Item.PlacedTriangleMetadata[]
         {

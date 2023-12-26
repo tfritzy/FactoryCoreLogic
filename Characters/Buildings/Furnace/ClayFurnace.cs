@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 namespace Core
 {
     public class ClayFurnace : Building
@@ -26,7 +28,8 @@ namespace Core
                 heatTransferCoefficient: Constants.HeatTransferCoefficient.FireclayBrick,
                 specificHeatCapacityJoulesPerKgCelsious: Constants.SpecificHeatCapacity.FireclayBrick,
                 surfaceAreaSquareMeters: 2f,
-                massKg: 100f
+                massKg: 100f,
+                combustionEfficiency: .55f
             );
         }
 

@@ -72,7 +72,7 @@ namespace Core
         /// <param name="item">The item to add.</param>
         /// <param name="index">THe index the item will occupy</param>
         /// <returns>true if item was fully added, false otherwise</returns>
-        public bool AddItem(Item item, int index)
+        public virtual bool AddItem(Item item, int index)
         {
             if (Disabled)
                 return false;
@@ -113,7 +113,7 @@ namespace Core
         /// </summary>
         /// <param name="item">The item to add to the inventory</param>
         /// <returns>true if item was fully added, false otherwise</returns>
-        public bool AddItem(Item item)
+        public virtual bool AddItem(Item item)
         {
             if (Disabled)
                 return false;

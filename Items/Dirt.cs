@@ -8,5 +8,6 @@ namespace Core
         public Dirt() : base() { }
         private const string name = "Dirt";
         public override string Name => name;
+        public override string? ChemicalFormula => null;
     }
 }

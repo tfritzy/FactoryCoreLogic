@@ -9,13 +9,14 @@ namespace Core
         public override Dictionary<ItemType, int> Recipe => recipe;
         private const string name = "Arrowhead";
         public override string Name => name;
+        public override string? ChemicalFormula => throw new System.NotImplementedException();
 
         public Arrowhead(int quantity) : base(quantity) { }
         public Arrowhead() : base() { }
 
         private static Dictionary<ItemType, int> recipe = new Dictionary<ItemType, int>()
         {
-            { ItemType.Stone, 1 },
+            { ItemType.Limestone, 1 },
         };
     }
 }

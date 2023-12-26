@@ -1,14 +1,14 @@
 namespace Core
 {
-    public class OreInventory : Inventory
+    public class FuelInventory : Inventory
     {
-        public OreInventory(Entity owner, int width, int height) : base(owner, width, height)
+        public FuelInventory(Entity owner, int width, int height) : base(owner, width, height)
         {
         }
 
         public override bool CanAddItem(ItemType itemType, int quantity)
         {
-            if (!SmeltingRecipes.RecipeIngredients.Contains(itemType))
+            if (Item.ItemProperties[itemType].Combustion == null)
             {
                 return false;
             }
@@ -18,7 +18,7 @@ namespace Core
 
         public override bool AddItem(Item item)
         {
-            if (!SmeltingRecipes.RecipeIngredients.Contains(item.Type))
+            if (item.Combustion == null)
             {
                 return false;
             }
@@ -28,7 +28,7 @@ namespace Core
 
         public override bool AddItem(Item item, int index)
         {
-            if (!SmeltingRecipes.RecipeIngredients.Contains(item.Type))
+            if (item.Combustion == null)
             {
                 return false;
             }

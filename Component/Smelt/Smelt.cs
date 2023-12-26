@@ -27,6 +27,7 @@ namespace Core
         public float HeatTransferCoefficient { get; private set; }
         public float SurfaceAreaSquareMeters { get; private set; }
         public float SpecificHeatCapacityJoulesPerKgCelsious { get; private set; }
+        public float CombustionEfficiency { get; private set; }
         public float MassKg { get; private set; }
         public override ComponentType Type => ComponentType.Smelt;
 
@@ -66,12 +67,14 @@ namespace Core
             float heatTransferCoefficient,
             float surfaceAreaSquareMeters,
             float specificHeatCapacityJoulesPerKgCelsious,
-            float massKg)
+            float massKg,
+            float combustionEfficiency)
         {
             HeatTransferCoefficient = heatTransferCoefficient;
             SurfaceAreaSquareMeters = surfaceAreaSquareMeters;
             SpecificHeatCapacityJoulesPerKgCelsious = specificHeatCapacityJoulesPerKgCelsious;
             MassKg = massKg;
+            CombustionEfficiency = combustionEfficiency;
         }
 
         public override Schema.Component ToSchema()
