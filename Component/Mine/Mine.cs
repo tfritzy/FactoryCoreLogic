@@ -61,7 +61,11 @@ namespace Core
         }
 
         private const float MaxOrePercent = .5f;
-        private static readonly List<ItemType> OreTypes = new() { ItemType.Coal, ItemType.IronOre };
+        private static readonly List<ItemType> OreTypes = new() {
+            ItemType.Coal,
+            ItemType.Chalcopyrite,
+            ItemType.Magnetite
+        };
         public static Dictionary<ItemType, float> GetResourceWeights(int seed, Point2Int location)
         {
             Dictionary<ItemType, float> weights = new();

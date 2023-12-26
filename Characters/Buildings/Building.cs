@@ -22,6 +22,7 @@ namespace Core
         }
         public ItemPort? ItemPort => GetComponent<ItemPort>();
         public Smelt? Smelt => GetComponent<Smelt>();
+        public OreInventory? OreInventory => GetComponent<OreInventory>();
 
         private Point3Int gridPosition;
 

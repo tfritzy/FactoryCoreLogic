@@ -86,12 +86,16 @@ namespace Core
                     return new ConveyorItem();
                 case ItemType.Coal:
                     return new Coal();
-                case ItemType.IronOre:
-                    return new IronOre();
+                case ItemType.Chalcopyrite:
+                    return new Chalcopyrite();
                 case ItemType.Mineshaft:
                     return new MineshaftItem();
                 case ItemType.Depot:
                     return new DepotItem();
+                case ItemType.CopperBar:
+                    return new CopperBar();
+                case ItemType.Magnetite:
+                    return new Magnetite();
                 default:
                     throw new ArgumentException("Invalid item type " + type);
             }

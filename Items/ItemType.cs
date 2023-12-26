@@ -12,11 +12,13 @@ namespace Core
         ToolShaft,
         Log,
         IronBar,
+        CopperBar,
         IronPickaxe,
         Conveyor,
         Coal,
-        IronOre,
         Mineshaft,
         Depot,
+        Chalcopyrite,
+        Magnetite
     }
 }

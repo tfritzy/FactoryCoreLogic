@@ -35,7 +35,7 @@ namespace Core
             return CanAddItem(item.Type, item.Quantity);
         }
 
-        public bool CanAddItem(ItemType itemType, int quantity)
+        public virtual bool CanAddItem(ItemType itemType, int quantity)
         {
             if (Disabled)
                 return false;
