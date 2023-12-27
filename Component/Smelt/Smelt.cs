@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+
 namespace Core
 {
     // This thing
@@ -23,13 +27,14 @@ namespace Core
 
     public class Smelt : Component
     {
-        public float TemperatureCelsious { get; set; }
-        public float HeatTransferCoefficient { get; private set; }
-        public float SurfaceAreaSquareMeters { get; private set; }
-        public float SpecificHeatCapacityJoulesPerKgCelsious { get; private set; }
         public float CombustionEfficiency { get; private set; }
         public float MassKg { get; private set; }
         public override ComponentType Type => ComponentType.Smelt;
+        public Building BuildingOwner => (Building)Owner;
+        public const float TempRatioRequiredToSmelt = 1.2f;
+
+        public float SmeltingItemTemperature_Celsius { get; private set; }
+        private SmeltingRecipe? recipeBeingSmelted;
 
         public Smelt(Entity owner) : base(owner)
         {
@@ -38,42 +43,108 @@ namespace Core
         public override void Tick(float deltaTime)
         {
             base.Tick(deltaTime);
-            CoolDown(deltaTime);
+            SmeltOres(deltaTime);
         }
 
-        // Heat loss is calculated as ΔT = Q / (m * c)
-        // Q is the amount of heat lost(in joules, J),
-        // m is the mass of the material(in kilograms, kg),
-        // c is the specific heat capacity of the material(in joules per kilogram per degree Celsius, J/kg°C),
-        // 
-        // Q (heat loss over time) is Q = h * A * (Tmaterial​ − Tenvironment​) * time
-        // h is the heat transfer coefficient (in watts per square meter per degree Celsius, W/m²°C),
-        // A is the surface area through which heat is being lost (in square meters, m²),
-        // Tmaterial​ is the initial temperature of the material (in degrees Celsius, °C),
-        // Tenvironment​ is the temperature of the surroundings (in degrees Celsius, °C),
-        // t is the time over which heat is lost(in seconds, s).
-        private void CoolDown(float deltaTime)
+        private void SmeltOres(float deltaTime)
         {
-            float heatLoss =
-                HeatTransferCoefficient
-                * SurfaceAreaSquareMeters
-                * (TemperatureCelsious - Owner.Context.World.OutsideAirTemperatureCelsious)
-                * deltaTime;
-            float temperatureChange = heatLoss / (MassKg * SpecificHeatCapacityJoulesPerKgCelsious);
-            TemperatureCelsious -= temperatureChange;
+            if (BuildingOwner.FuelInventory == null)
+            {
+                return;
+            }
+
+            recipeBeingSmelted ??= GetCompleteSmeltingRecipe();
+
+            if (recipeBeingSmelted == null)
+            {
+                return;
+            }
+
+            if (!StillHasIngredientsOfSmeltingRecipe())
+            {
+                recipeBeingSmelted = null;
+                SmeltingItemTemperature_Celsius = Owner.World.OutsideAirTemperatureCelsious;
+                return;
+            }
+
+            Item? fuel = BuildingOwner.FuelInventory?.FindItem();
+            if (fuel == null || fuel.Combustion == null)
+            {
+                return;
+            }
+
+            float amountOfFuelCombusted_Kg = fuel.Combustion.Value.BurnRateKgPerSecond * deltaTime;
+            float energyAdded_Joules =
+                amountOfFuelCombusted_Kg *
+                fuel.Combustion.Value.CalorificValue_JoulesPerKg;
+            float averageSpecificHeat_Celsious =
+                recipeBeingSmelted.Inputs.Keys.Average((t) => Item.ItemProperties[t].SpecificHeat_JoulesPerKgPerDegreeCelsious ?? 0);
+            float temperatureChange = energyAdded_Joules / averageSpecificHeat_Celsious;
+            SmeltingItemTemperature_Celsius += temperatureChange;
+
+            float highestMeltingPoint = recipeBeingSmelted.Inputs.Keys.Max((t) => Item.ItemProperties[t].MeltingPoint_Celsious ?? 0);
+            if (SmeltingItemTemperature_Celsius > highestMeltingPoint * TempRatioRequiredToSmelt)
+            {
+                foreach (ItemType type in recipeBeingSmelted.Outputs.Keys)
+                {
+                    Item item = Item.Create(type);
+                    item.SetQuantity(recipeBeingSmelted.Outputs[type]);
+                    Owner.Inventory?.AddItem(item);
+                }
+
+                recipeBeingSmelted = null;
+                SmeltingItemTemperature_Celsius = Owner.Context.World.OutsideAirTemperatureCelsious;
+            }
+        }
+
+        private SmeltingRecipe? GetCompleteSmeltingRecipe()
+        {
+            if (BuildingOwner.OreInventory == null)
+            {
+                return null;
+            }
+
+            foreach (SmeltingRecipe recipe in SmeltingRecipes.Recipes)
+            {
+                bool hasEntireRecipe = true;
+                foreach (ItemType type in recipe.Inputs.Keys)
+                {
+                    if (BuildingOwner.OreInventory.GetItemCount(type) < recipe.Inputs[type])
+                    {
+                        hasEntireRecipe = false;
+                    }
+                }
+
+                if (hasEntireRecipe)
+                {
+                    return recipe;
+                }
+            }
+
+            return null;
+        }
+
+        private bool StillHasIngredientsOfSmeltingRecipe()
+        {
+            if (recipeBeingSmelted == null)
+            {
+                return true;
+            }
+
+            foreach (ItemType type in recipeBeingSmelted.Inputs.Keys)
+            {
+                if (BuildingOwner.OreInventory?.GetItemCount(type) < recipeBeingSmelted.Inputs[type])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public void SetConstants(
-            float heatTransferCoefficient,
-            float surfaceAreaSquareMeters,
-            float specificHeatCapacityJoulesPerKgCelsious,
-            float massKg,
             float combustionEfficiency)
         {
-            HeatTransferCoefficient = heatTransferCoefficient;
-            SurfaceAreaSquareMeters = surfaceAreaSquareMeters;
-            SpecificHeatCapacityJoulesPerKgCelsious = specificHeatCapacityJoulesPerKgCelsious;
-            MassKg = massKg;
             CombustionEfficiency = combustionEfficiency;
         }
 
@@ -81,7 +152,6 @@ namespace Core
         {
             return new Schema.Smelt()
             {
-                Heat = TemperatureCelsious,
             };
         }
     }

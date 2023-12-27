@@ -13,7 +13,7 @@ namespace Core
         public override CombustionProperties? Combustion => properties;
         private static CombustionProperties properties = new()
         {
-            BurnRateKgPerHr = .7f,
+            BurnRateKgPerSecond = 0.0138888889f,
             CalorificValue_JoulesPerKg = 30_000_000
         };
     }

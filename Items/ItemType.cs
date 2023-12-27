@@ -12,6 +12,7 @@ namespace Core
         ToolShaft,
         Log,
         IronBar,
+        IronSiliconSlag,
         CopperBar,
         IronPickaxe,
         Conveyor,

@@ -18,10 +18,11 @@ namespace Core
         public virtual PlacedTriangleMetadata[]? Places => null;
         public virtual CombustionProperties? Combustion => null;
         public virtual float? SpecificHeat_JoulesPerKgPerDegreeCelsious => null;
+        public virtual float? MeltingPoint_Celsious => null;
 
         public struct CombustionProperties
         {
-            public float BurnRateKgPerHr;
+            public float BurnRateKgPerSecond;
             public float CalorificValue_JoulesPerKg;
         }
 
@@ -109,6 +110,8 @@ namespace Core
                     return new CopperBar();
                 case ItemType.Magnetite:
                     return new Magnetite();
+                case ItemType.IronSiliconSlag:
+                    return new IronSiliconSlag();
                 default:
                     throw new ArgumentException("Invalid item type " + type);
             }

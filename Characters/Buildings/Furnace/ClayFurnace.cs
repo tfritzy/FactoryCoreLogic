@@ -25,10 +25,6 @@ namespace Core
         {
             base.ConfigureComponents();
             Smelt!.SetConstants(
-                heatTransferCoefficient: Constants.HeatTransferCoefficient.FireclayBrick,
-                specificHeatCapacityJoulesPerKgCelsious: Constants.SpecificHeatCapacity.FireclayBrick,
-                surfaceAreaSquareMeters: 2f,
-                massKg: 100f,
                 combustionEfficiency: .55f
             );
         }

@@ -53,10 +53,10 @@ namespace Core
                 ),
                 new SmeltingRecipe(
                     inputs: new Dictionary<ItemType, int>() {
-                        {ItemType.Chalcopyrite, 2}
+                        {ItemType.Chalcopyrite, 1}
                     },
                     outputs: new Dictionary<ItemType, int>() {
-                        {ItemType.IronBar, 1},
+                        {ItemType.IronSiliconSlag, 1},
                         {ItemType.CopperBar, 1}
                     }
                 ),
