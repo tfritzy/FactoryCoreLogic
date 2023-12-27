@@ -12,6 +12,5 @@ namespace Core
         public override string? ChemicalFormula => null;
 
         public MineshaftItem(int quantity) : base(quantity) { }
-        public MineshaftItem() : base() { }
     }
 }

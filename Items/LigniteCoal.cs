@@ -5,7 +5,6 @@ namespace Core
         public override ItemType Type => ItemType.LigniteCoal;
         public override int MaxStack => 16;
         public LigniteCoal(int quantity) : base(quantity) { }
-        public LigniteCoal() : base() { }
         override public float Width => .3f;
         private const string name = "Lignite coal";
         public override string Name => name;

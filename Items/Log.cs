@@ -12,6 +12,5 @@ namespace Core
         public override string? ChemicalFormula => "C₆H₁₀O₅";
 
         public Log(int quantity) : base(quantity) { }
-        public Log() : base() { }
     }
 }

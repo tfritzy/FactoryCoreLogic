@@ -9,6 +9,7 @@ namespace Core
         public abstract string Name { get; }
         public abstract string? ChemicalFormula { get; }
         public int Quantity { get; private set; }
+        public virtual bool KgQuantity => false; // Quantity is interpreted by shifting by 4 decimal places
         public ulong Id { get; set; }
 
         public virtual float Width => 0.1f;
@@ -32,8 +33,6 @@ namespace Core
             public HexSide[] PositionOffset;
             public HexSide RotationOffset;
         }
-
-        public Item() : this(1) { }
 
         public Item(int quantity)
         {
@@ -68,50 +67,50 @@ namespace Core
             Quantity = quantity;
         }
 
-        public static Item Create(ItemType type)
+        public static Item Create(ItemType type, int quantity = 1)
         {
             switch (type)
             {
                 case ItemType.Dirt:
-                    return new Dirt();
+                    return new Dirt(quantity);
                 case ItemType.Limestone:
-                    return new Limestone();
+                    return new Limestone(quantity);
                 case ItemType.LimestoneBrick:
-                    return new LimestoneBrick();
+                    return new LimestoneBrick(quantity);
                 case ItemType.LimestoneDoubleBrick:
-                    return new LimestoneDoubleBrick();
+                    return new LimestoneDoubleBrick(quantity);
                 case ItemType.Wood:
-                    return new Wood();
+                    return new Wood(quantity);
                 case ItemType.Arrowhead:
-                    return new Arrowhead();
+                    return new Arrowhead(quantity);
                 case ItemType.ToolShaft:
-                    return new ToolShaft();
+                    return new ToolShaft(quantity);
                 case ItemType.Log:
-                    return new Log();
+                    return new Log(quantity);
                 case ItemType.IronBar:
-                    return new IronBar();
+                    return new IronBar(quantity);
                 case ItemType.IronPickaxe:
-                    return new IronPickaxe();
+                    return new IronPickaxe(quantity);
                 case ItemType.Conveyor:
-                    return new ConveyorItem();
+                    return new ConveyorItem(quantity);
                 case ItemType.AnthraciteCoal:
-                    return new AnthraciteCoal();
+                    return new AnthraciteCoal(quantity);
                 case ItemType.BituminousCoal:
-                    return new BituminousCoal();
+                    return new BituminousCoal(quantity);
                 case ItemType.LigniteCoal:
-                    return new LigniteCoal();
+                    return new LigniteCoal(quantity);
                 case ItemType.Chalcopyrite:
-                    return new Chalcopyrite();
+                    return new Chalcopyrite(quantity);
                 case ItemType.Mineshaft:
-                    return new MineshaftItem();
+                    return new MineshaftItem(quantity);
                 case ItemType.Depot:
-                    return new DepotItem();
+                    return new DepotItem(quantity);
                 case ItemType.CopperBar:
-                    return new CopperBar();
+                    return new CopperBar(quantity);
                 case ItemType.Magnetite:
-                    return new Magnetite();
+                    return new Magnetite(quantity);
                 case ItemType.IronSiliconSlag:
-                    return new IronSiliconSlag();
+                    return new IronSiliconSlag(quantity);
                 default:
                     throw new ArgumentException("Invalid item type " + type);
             }

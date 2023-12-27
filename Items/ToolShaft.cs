@@ -12,7 +12,6 @@ namespace Core
         public override string? ChemicalFormula => "C₆H₁₀O₅";
 
         public ToolShaft(int quantity) : base(quantity) { }
-        public ToolShaft() : base() { }
 
         private static Dictionary<ItemType, int> recipe = new Dictionary<ItemType, int>()
         {

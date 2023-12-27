@@ -12,7 +12,6 @@ namespace Core
         public override string? ChemicalFormula => null;
 
         public IronPickaxe(int quantity) : base(quantity) { }
-        public IronPickaxe() : base() { }
 
         private static Dictionary<ItemType, int> recipe = new Dictionary<ItemType, int>()
         {

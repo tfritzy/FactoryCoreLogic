@@ -12,6 +12,5 @@ namespace Core
         public override string ChemicalFormula => "Fe";
 
         public IronBar(int quantity) : base(quantity) { }
-        public IronBar() : base() { }
     }
 }

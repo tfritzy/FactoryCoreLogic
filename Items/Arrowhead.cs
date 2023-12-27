@@ -12,7 +12,6 @@ namespace Core
         public override string? ChemicalFormula => throw new System.NotImplementedException();
 
         public Arrowhead(int quantity) : base(quantity) { }
-        public Arrowhead() : base() { }
 
         private static Dictionary<ItemType, int> recipe = new Dictionary<ItemType, int>()
         {
