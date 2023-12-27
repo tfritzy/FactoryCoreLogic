@@ -2,7 +2,8 @@ namespace Core
 {
     public abstract class Ore : Item
     {
-        public override bool KgQuantity => true;
-        protected Ore(int quantity) : base(quantity) { }
+        protected Ore(uint quantity) : base(quantity) { }
+        public override uint MaxStack => 50_000_000;
+        public override UnitType Units => UnitType.Milligram;
     }
 }

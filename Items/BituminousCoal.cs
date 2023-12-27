@@ -3,8 +3,9 @@ namespace Core
     public class BituminousCoal : Item
     {
         public override ItemType Type => ItemType.BituminousCoal;
-        public override int MaxStack => 16;
-        public BituminousCoal(int quantity) : base(quantity) { }
+        public override uint MaxStack => 50_000_000;
+        public override UnitType Units => UnitType.Milligram;
+        public BituminousCoal(uint quantity) : base(quantity) { }
         override public float Width => .3f;
         private const string name = "Bituminous coal";
         public override string Name => name;

@@ -8,7 +8,7 @@ namespace Schema
         public Core.ItemType Type { get; set; }
 
         [JsonProperty("quantity")]
-        public int Quantity { get; set; }
+        public uint Quantity { get; set; }
 
         [JsonProperty("id")]
         public ulong Id { get; set; }

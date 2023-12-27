@@ -8,13 +8,13 @@ namespace Core
         public abstract ItemType Type { get; }
         public abstract string Name { get; }
         public abstract string? ChemicalFormula { get; }
-        public int Quantity { get; private set; }
-        public virtual bool KgQuantity => false; // Quantity is interpreted by shifting by 4 decimal places
+        public uint Quantity { get; private set; }
+        public virtual UnitType Units => UnitType.Unit;
         public ulong Id { get; set; }
 
         public virtual float Width => 0.1f;
-        public virtual int MaxStack => 1;
-        public virtual Dictionary<ItemType, int>? Recipe => null;
+        public virtual uint MaxStack => 1;
+        public virtual Dictionary<ItemType, uint>? Recipe => null;
         public virtual CharacterType? Builds => null;
         public virtual PlacedTriangleMetadata[]? Places => null;
         public virtual CombustionProperties? Combustion => null;
@@ -27,6 +27,12 @@ namespace Core
             public float CalorificValue_JoulesPerKg;
         }
 
+        public enum UnitType
+        {
+            Unit,
+            Milligram
+        }
+
         public struct PlacedTriangleMetadata
         {
             public Triangle Triangle;
@@ -34,13 +40,13 @@ namespace Core
             public HexSide RotationOffset;
         }
 
-        public Item(int quantity)
+        public Item(uint quantity)
         {
             this.Quantity = quantity;
             this.Id = IdGenerator.GenerateId();
         }
 
-        public void AddToStack(int amount)
+        public void AddToStack(uint amount)
         {
             if (Quantity + amount > MaxStack)
                 throw new InvalidOperationException("Cannot add to stack, would exceed max stack size.");
@@ -48,18 +54,15 @@ namespace Core
             Quantity += amount;
         }
 
-        public void RemoveFromStack(int amount)
+        public void RemoveFromStack(uint amount)
         {
-            if (Quantity - amount < 0)
+            if (amount > Quantity)
                 throw new InvalidOperationException("Cannot remove from stack, would go below 0.");
-
-            if (amount < 0)
-                throw new InvalidOperationException("Cannot remove negative amount from stack.");
 
             Quantity -= amount;
         }
 
-        public void SetQuantity(int quantity)
+        public void SetQuantity(uint quantity)
         {
             if (quantity > MaxStack)
                 throw new InvalidOperationException("Cannot set quantity, would exceed max stack size.");
@@ -67,7 +70,7 @@ namespace Core
             Quantity = quantity;
         }
 
-        public static Item Create(ItemType type, int quantity = 1)
+        public static Item Create(ItemType type, uint quantity = 1)
         {
             switch (type)
             {

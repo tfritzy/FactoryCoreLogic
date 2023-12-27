@@ -18,7 +18,7 @@ namespace Core
 
             foreach (var (ingredientType, quantity) in item.Recipe)
             {
-                int ingredientCount = inventory.GetItemCount(ingredientType);
+                uint ingredientCount = inventory.GetItemCount(ingredientType);
 
                 if (ingredientCount < quantity)
                 {
@@ -50,14 +50,14 @@ namespace Core
             return false;
         }
 
-        private static bool RemovingItemOpensSlot(ItemType itemType, int quantity, Inventory inventory)
+        private static bool RemovingItemOpensSlot(ItemType itemType, uint quantity, Inventory inventory)
         {
-            int remainingToRemove = quantity;
+            uint remainingToRemove = quantity;
             for (int i = 0; i < inventory.Size; i++)
             {
                 if (inventory.GetItemAt(i)?.Type == itemType)
                 {
-                    int numToRemove = System.Math.Min(remainingToRemove, inventory.GetItemAt(i)?.Quantity ?? 0);
+                    uint numToRemove = System.Math.Min(remainingToRemove, inventory.GetItemAt(i)?.Quantity ?? 0);
                     remainingToRemove -= numToRemove;
 
                     if (numToRemove == inventory.GetItemAt(i)?.Quantity)

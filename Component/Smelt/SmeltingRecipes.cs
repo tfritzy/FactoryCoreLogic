@@ -5,12 +5,12 @@ namespace Core
 {
     public class SmeltingRecipe
     {
-        public Dictionary<ItemType, int> Inputs;
-        public Dictionary<ItemType, int> Outputs;
+        public Dictionary<ItemType, uint> Inputs;
+        public Dictionary<ItemType, uint> Outputs;
 
         public SmeltingRecipe(
-            Dictionary<ItemType, int> inputs,
-            Dictionary<ItemType, int> outputs
+            Dictionary<ItemType, uint> inputs,
+            Dictionary<ItemType, uint> outputs
         )
         {
             Inputs = inputs;
@@ -44,18 +44,18 @@ namespace Core
         public static readonly List<SmeltingRecipe> Recipes =
             new List<SmeltingRecipe>{
                 new SmeltingRecipe(
-                    inputs: new Dictionary<ItemType, int>() {
+                    inputs: new Dictionary<ItemType, uint>() {
                         {ItemType.Magnetite, 1}
                     },
-                    outputs: new Dictionary<ItemType, int>() {
+                    outputs: new Dictionary<ItemType, uint>() {
                         {ItemType.IronBar, 1}
                     }
                 ),
                 new SmeltingRecipe(
-                    inputs: new Dictionary<ItemType, int>() {
+                    inputs: new Dictionary<ItemType, uint>() {
                         {ItemType.Chalcopyrite, 1}
                     },
-                    outputs: new Dictionary<ItemType, int>() {
+                    outputs: new Dictionary<ItemType, uint>() {
                         {ItemType.IronSiliconSlag, 1},
                         {ItemType.CopperBar, 1}
                     }

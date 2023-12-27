@@ -5,12 +5,12 @@ namespace Core
     public class DepotItem : Item
     {
         public override ItemType Type => ItemType.Depot;
-        public override int MaxStack => 4;
+        public override uint MaxStack => 4;
         public override CharacterType? Builds => CharacterType.Depot;
         private const string name = "Depot";
         public override string Name => name;
         public override string? ChemicalFormula => null;
 
-        public DepotItem(int quantity) : base(quantity) { }
+        public DepotItem(uint quantity) : base(quantity) { }
     }
 }

@@ -6,7 +6,7 @@ namespace Core
         {
         }
 
-        public override bool CanAddItem(ItemType itemType, int quantity)
+        public override bool CanAddItem(ItemType itemType, uint quantity)
         {
             if (!SmeltingRecipes.RecipeIngredients.Contains(itemType))
             {

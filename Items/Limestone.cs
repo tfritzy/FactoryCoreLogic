@@ -3,11 +3,12 @@ namespace Core
     public class Limestone : Item
     {
         public override ItemType Type => ItemType.Limestone;
-        public override int MaxStack => 8;
-        public Limestone(int quantity) : base(quantity) { }
+        public Limestone(uint quantity) : base(quantity) { }
         public override float Width => .4f;
         private const string name = "Limestone";
         public override string Name => name;
         public override string? ChemicalFormula => "CaCO₃";
+        public override uint MaxStack => 50_000_000;
+        public override UnitType Units => UnitType.Milligram;
     }
 }

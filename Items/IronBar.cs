@@ -5,12 +5,12 @@ namespace Core
     public class IronBar : Item
     {
         public override ItemType Type => ItemType.IronBar;
-        public override int MaxStack => 8;
-        public override Dictionary<ItemType, int>? Recipe => null;
+        public override uint MaxStack => 8;
+        public override Dictionary<ItemType, uint>? Recipe => null;
         private const string name = "Iron bar";
         public override string Name => name;
         public override string ChemicalFormula => "Fe";
 
-        public IronBar(int quantity) : base(quantity) { }
+        public IronBar(uint quantity) : base(quantity) { }
     }
 }

@@ -5,15 +5,15 @@ namespace Core
     public class ToolShaft : Item
     {
         public override ItemType Type => ItemType.ToolShaft;
-        public override int MaxStack => 8;
-        public override Dictionary<ItemType, int> Recipe => recipe;
+        public override uint MaxStack => 8;
+        public override Dictionary<ItemType, uint> Recipe => recipe;
         private const string name = "Tool shaft";
         public override string Name => name;
         public override string? ChemicalFormula => "C₆H₁₀O₅";
 
-        public ToolShaft(int quantity) : base(quantity) { }
+        public ToolShaft(uint quantity) : base(quantity) { }
 
-        private static Dictionary<ItemType, int> recipe = new Dictionary<ItemType, int>()
+        private static readonly Dictionary<ItemType, uint> recipe = new()
         {
             { ItemType.Log, 1 },
         };
