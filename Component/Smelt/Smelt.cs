@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -33,11 +34,13 @@ namespace Core
         public Building BuildingOwner => (Building)Owner;
         public const float TempRatioRequiredToSmelt = 1.2f;
 
-        public float SmeltingItemTemperature_Celsius { get; private set; }
+        public float SmeltingItemTemperature_C { get; private set; }
         private SmeltingRecipe? recipeBeingSmelted;
+        Queue<Item> smeltedItems = new Queue<Item>();
 
         public Smelt(Entity owner) : base(owner)
         {
+            SmeltingItemTemperature_C = Owner.Context.World.OutsideAirTemperature_C;
         }
 
         public override void Tick(float deltaTime)
@@ -48,7 +51,19 @@ namespace Core
 
         private void SmeltOres(float deltaTime)
         {
-            if (BuildingOwner.FuelInventory == null)
+            if (BuildingOwner.FuelInventory == null ||
+                Owner.Inventory == null ||
+                BuildingOwner.OreInventory == null)
+            {
+                return;
+            }
+
+            while (smeltedItems.Count > 0 && Owner.Inventory.CanAddItem(smeltedItems.First()))
+            {
+                Owner.Inventory.AddItem(smeltedItems.Dequeue());
+            }
+
+            if (smeltedItems.Count > 0)
             {
                 return;
             }
@@ -63,37 +78,62 @@ namespace Core
             if (!StillHasIngredientsOfSmeltingRecipe())
             {
                 recipeBeingSmelted = null;
-                SmeltingItemTemperature_Celsius = Owner.World.OutsideAirTemperatureCelsious;
+                SmeltingItemTemperature_C = Owner.World.OutsideAirTemperature_C;
                 return;
             }
 
-            Item? fuel = BuildingOwner.FuelInventory?.FindItem();
+            Item? fuel = BuildingOwner.FuelInventory.FindItem();
             if (fuel == null || fuel.Combustion == null)
             {
                 return;
             }
 
-            float amountOfFuelCombusted_Kg = fuel.Combustion.Value.BurnRateKgPerSecond * deltaTime;
+            uint amountOfFuelCombusted_mg = (uint)(fuel.Combustion.Value.BurnRateMilligramPerSecond * deltaTime);
+            amountOfFuelCombusted_mg =
+                Math.Min(
+                    BuildingOwner.FuelInventory.GetItemCount(fuel.Type),
+                    amountOfFuelCombusted_mg);
+            BuildingOwner.FuelInventory.RemoveCount(fuel.Type, amountOfFuelCombusted_mg);
             float energyAdded_Joules =
-                amountOfFuelCombusted_Kg *
-                fuel.Combustion.Value.CalorificValue_JoulesPerKg;
-            float averageSpecificHeat_Celsious =
-                recipeBeingSmelted.Inputs.Keys.Average((t) => Item.ItemProperties[t].SpecificHeat_JoulesPerKgPerDegreeCelsious ?? 0);
-            float temperatureChange = energyAdded_Joules / averageSpecificHeat_Celsious;
-            SmeltingItemTemperature_Celsius += temperatureChange;
+                amountOfFuelCombusted_mg *
+                fuel.Combustion.Value.CalorificValue_JoulesPerMg
+                * CombustionEfficiency;
+            float averageSpecificHeat_JoulesPerMgPerDegreeCelsious =
+                recipeBeingSmelted.Inputs.Keys.Average(
+                    (t) => Item.ItemProperties[t].SpecificHeat_JoulesPerMgPerDegreeCelsious ?? 0);
+            float totalMassOfIngredients_Mg = recipeBeingSmelted.Inputs.Values.Sum((v) => v);
 
-            float highestMeltingPoint = recipeBeingSmelted.Inputs.Keys.Max((t) => Item.ItemProperties[t].MeltingPoint_Celsious ?? 0);
-            if (SmeltingItemTemperature_Celsius > highestMeltingPoint * TempRatioRequiredToSmelt)
+            float temperatureChange_C =
+                (energyAdded_Joules / averageSpecificHeat_JoulesPerMgPerDegreeCelsious) / totalMassOfIngredients_Mg;
+            SmeltingItemTemperature_C += temperatureChange_C;
+
+            float highestMeltingPoint =
+                recipeBeingSmelted.Inputs.Keys.Max((t) => Item.ItemProperties[t].MeltingPoint_Celsious ?? 0);
+            if (SmeltingItemTemperature_C > highestMeltingPoint * TempRatioRequiredToSmelt)
             {
+                foreach (ItemType type in recipeBeingSmelted.Inputs.Keys)
+                {
+                    BuildingOwner.OreInventory.RemoveCount(type, recipeBeingSmelted.Inputs[type]);
+                }
+
                 foreach (ItemType type in recipeBeingSmelted.Outputs.Keys)
                 {
                     Item item = Item.Create(type);
                     item.SetQuantity(recipeBeingSmelted.Outputs[type]);
-                    Owner.Inventory?.AddItem(item);
+
+                    if (Owner.Inventory.CanAddItem(item))
+                    {
+                        Owner.Inventory.AddItem(item);
+                    }
+                    else
+                    {
+                        smeltedItems.Enqueue(item);
+                    }
                 }
 
+
                 recipeBeingSmelted = null;
-                SmeltingItemTemperature_Celsius = Owner.Context.World.OutsideAirTemperatureCelsious;
+                SmeltingItemTemperature_C = Owner.Context.World.OutsideAirTemperature_C;
             }
         }
 

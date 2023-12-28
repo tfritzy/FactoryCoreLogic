@@ -18,13 +18,13 @@ namespace Core
         public virtual CharacterType? Builds => null;
         public virtual PlacedTriangleMetadata[]? Places => null;
         public virtual CombustionProperties? Combustion => null;
-        public virtual float? SpecificHeat_JoulesPerKgPerDegreeCelsious => null;
+        public virtual float? SpecificHeat_JoulesPerMgPerDegreeCelsious => null;
         public virtual float? MeltingPoint_Celsious => null;
 
         public struct CombustionProperties
         {
-            public float BurnRateKgPerSecond;
-            public float CalorificValue_JoulesPerKg;
+            public int BurnRateMilligramPerSecond;
+            public float CalorificValue_JoulesPerMg;
         }
 
         public enum UnitType

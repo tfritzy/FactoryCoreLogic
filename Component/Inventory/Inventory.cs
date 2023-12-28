@@ -197,7 +197,7 @@ namespace Core
             for (int i = 0; i < items.Length; i++)
             {
                 if (items[i]?.Type == itemType)
-                    count += items[i]?.Quantity ?? 0;
+                    count += items[i]?.Quantity ?? 0u;
             }
 
             return count;
@@ -280,6 +280,20 @@ namespace Core
 
                     if (remainingToRemove <= 0)
                         return;
+                }
+            }
+        }
+
+        public void RemoveAll(ItemType itemType)
+        {
+            if (Disabled)
+                return;
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i]?.Type == itemType)
+                {
+                    items[i] = null;
                 }
             }
         }
