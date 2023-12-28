@@ -20,6 +20,8 @@ namespace Core
         BituminousCoal,
         LigniteCoal,
         Mineshaft,
+        ClayFurnace,
+        Sorter,
         Depot,
         Chalcopyrite,
         Magnetite

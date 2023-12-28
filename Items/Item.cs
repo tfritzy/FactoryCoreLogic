@@ -12,7 +12,7 @@ namespace Core
         public virtual UnitType Units => UnitType.Unit;
         public ulong Id { get; set; }
 
-        public virtual float Width => 0.1f;
+        public virtual float Width => 0.3f;
         public virtual uint MaxStack => 1;
         public virtual Dictionary<ItemType, uint>? Recipe => null;
         public virtual CharacterType? Builds => null;
@@ -106,6 +106,10 @@ namespace Core
                     return new Chalcopyrite(quantity);
                 case ItemType.Mineshaft:
                     return new MineshaftItem(quantity);
+                case ItemType.ClayFurnace:
+                    return new ClayFurnaceItem(quantity);
+                case ItemType.Sorter:
+                    return new SorterItem(quantity);
                 case ItemType.Depot:
                     return new DepotItem(quantity);
                 case ItemType.CopperBar:

@@ -29,7 +29,7 @@ namespace Core
             {
                 if (Owner?.Inventory != null && Owner.Inventory.CanAddItem(UpcomingItemType, 1))
                 {
-                    Item item = Item.Create(UpcomingItemType);
+                    Item item = Item.Create(UpcomingItemType, 30_000_000u);
                     Owner.Inventory.AddItem(item);
 
                     collectionTimeRemaining = CollectionTime;
@@ -64,7 +64,6 @@ namespace Core
         private static readonly List<ItemType> OreTypes = new() {
             ItemType.AnthraciteCoal,
             ItemType.Chalcopyrite,
-            ItemType.Magnetite
         };
         public static Dictionary<ItemType, float> GetResourceWeights(int seed, Point2Int location)
         {
