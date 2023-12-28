@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Core
 {
@@ -7,6 +8,9 @@ namespace Core
     {
         public Dictionary<ItemType, uint> Inputs;
         public Dictionary<ItemType, uint> Outputs;
+        public float TotalMassOfIngredients_Mg;
+        public float AverageSpecificHeat_JPerMgPerC;
+        public float HighestMeltingPoint_C;
 
         public SmeltingRecipe(
             Dictionary<ItemType, uint> inputs,
@@ -15,6 +19,11 @@ namespace Core
         {
             Inputs = inputs;
             Outputs = outputs;
+
+            TotalMassOfIngredients_Mg = Inputs.Values.Sum((v) => v);
+            AverageSpecificHeat_JPerMgPerC = Inputs.Keys.Average(
+                (t) => Item.ItemProperties[t].SpecificHeat_JoulesPerMgPerDegreeCelsious ?? 0);
+            HighestMeltingPoint_C = Inputs.Keys.Max((t) => Item.ItemProperties[t].MeltingPoint_Celsious ?? 0);
         }
     }
 

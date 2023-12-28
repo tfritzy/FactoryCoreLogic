@@ -68,6 +68,12 @@ namespace Core
                 return;
             }
 
+            Item? fuel = BuildingOwner.FuelInventory.FindItem();
+            if (fuel == null || fuel.Combustion == null)
+            {
+                return;
+            }
+
             recipeBeingSmelted ??= GetCompleteSmeltingRecipe();
 
             if (recipeBeingSmelted == null)
@@ -82,12 +88,6 @@ namespace Core
                 return;
             }
 
-            Item? fuel = BuildingOwner.FuelInventory.FindItem();
-            if (fuel == null || fuel.Combustion == null)
-            {
-                return;
-            }
-
             uint amountOfFuelCombusted_mg = (uint)(fuel.Combustion.Value.BurnRateMilligramPerSecond * deltaTime);
             amountOfFuelCombusted_mg =
                 Math.Min(
@@ -98,18 +98,14 @@ namespace Core
                 amountOfFuelCombusted_mg *
                 fuel.Combustion.Value.CalorificValue_JoulesPerMg
                 * CombustionEfficiency;
-            float averageSpecificHeat_JoulesPerMgPerDegreeCelsious =
-                recipeBeingSmelted.Inputs.Keys.Average(
-                    (t) => Item.ItemProperties[t].SpecificHeat_JoulesPerMgPerDegreeCelsious ?? 0);
-            float totalMassOfIngredients_Mg = recipeBeingSmelted.Inputs.Values.Sum((v) => v);
 
             float temperatureChange_C =
-                (energyAdded_Joules / averageSpecificHeat_JoulesPerMgPerDegreeCelsious) / totalMassOfIngredients_Mg;
+                energyAdded_Joules /
+                recipeBeingSmelted.AverageSpecificHeat_JPerMgPerC /
+                recipeBeingSmelted.TotalMassOfIngredients_Mg;
             SmeltingItemTemperature_C += temperatureChange_C;
 
-            float highestMeltingPoint =
-                recipeBeingSmelted.Inputs.Keys.Max((t) => Item.ItemProperties[t].MeltingPoint_Celsious ?? 0);
-            if (SmeltingItemTemperature_C > highestMeltingPoint * TempRatioRequiredToSmelt)
+            if (SmeltingItemTemperature_C > recipeBeingSmelted.HighestMeltingPoint_C * TempRatioRequiredToSmelt)
             {
                 foreach (ItemType type in recipeBeingSmelted.Inputs.Keys)
                 {
@@ -130,7 +126,6 @@ namespace Core
                         smeltedItems.Enqueue(item);
                     }
                 }
-
 
                 recipeBeingSmelted = null;
                 SmeltingItemTemperature_C = Owner.Context.World.OutsideAirTemperature_C;
@@ -190,8 +185,25 @@ namespace Core
 
         public override Schema.Component ToSchema()
         {
-            return new Schema.Smelt()
+            return new Schema.Smelt() { };
+        }
+
+        public static Func<Item, Inventory?> GetItemDirectionFunction(Building owner)
+        {
+            return (item) =>
             {
+                if (item.Combustion != null)
+                {
+                    return owner.FuelInventory;
+                }
+                else if (SmeltingRecipes.RecipeIngredients.Contains(item.Type))
+                {
+                    return owner.OreInventory;
+                }
+                else
+                {
+                    return null;
+                }
             };
         }
     }

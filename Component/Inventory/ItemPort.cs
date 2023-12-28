@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Net;
 
@@ -11,6 +12,7 @@ namespace Core
         public List<int> OutputSideOffsets;
         public List<int> InputSideOffsets;
         public Dictionary<int, ItemType> SideOffsetToFilter;
+        public Func<Item, Inventory?> GetDestinationForItem;
         private Building BuildingOwner => (Building)Owner;
 
         public ItemPort(Entity owner) : base(owner)
@@ -18,6 +20,7 @@ namespace Core
             OutputSideOffsets = new List<int>();
             InputSideOffsets = new List<int>();
             SideOffsetToFilter = new Dictionary<int, ItemType>();
+            GetDestinationForItem = (item) => Owner.Inventory;
         }
 
         public override Schema.Component ToSchema()
@@ -76,17 +79,23 @@ namespace Core
                 }
             }
 
-            bool deposited = TryDeposit(item);
-            if (deposited)
+            Inventory? targetInventory = GetDestinationForItem(item);
+
+            // Deposit isn't attempted from other inventories.
+            if (targetInventory == Owner.Inventory)
             {
-                return true;
+                bool deposited = TryDeposit(item);
+                if (deposited)
+                {
+                    return true;
+                }
             }
 
-            if (Owner.Inventory != null)
+            if (targetInventory != null)
             {
-                if (Owner.Inventory.CanAddItem(item))
+                if (targetInventory.CanAddItem(item))
                 {
-                    Owner.Inventory.AddItem(item);
+                    targetInventory.AddItem(item);
                     return true;
                 }
             }
