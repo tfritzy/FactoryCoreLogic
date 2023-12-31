@@ -9,7 +9,7 @@ namespace Core
     public class ItemPort : Component
     {
         public override ComponentType Type => ComponentType.ItemPort;
-        public const float DepositPoint = -.5f;
+        public const float DepositPoint = 0f;
         public List<int> OutputSideOffsets;
         public List<int> InputSideOffsets;
         private Dictionary<int, ItemType> SideToOnlyAllowedItem;
