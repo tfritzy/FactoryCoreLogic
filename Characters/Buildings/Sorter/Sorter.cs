@@ -17,11 +17,11 @@ namespace Core
                 _filter = value;
                 if (_filter != null)
                 {
-                    ItemPort!.SideOffsetToFilter = new Dictionary<int, ItemType> { { 0, _filter.Value } };
+                    ItemPort!.OnlyLetItemThroughSide(_filter.Value, 1);
                 }
                 else
                 {
-                    ItemPort!.SideOffsetToFilter = new Dictionary<int, ItemType>();
+                    ItemPort!.RemoveAllFilters();
                 }
             }
         }
@@ -41,11 +41,7 @@ namespace Core
             base.ConfigureComponents();
             ItemPort!.OutputSideOffsets = new List<int> { 0, 1 };
             ItemPort!.InputSideOffsets = new List<int> { 3 };
-
-            if (Filter != null)
-            {
-                ItemPort!.SideOffsetToFilter = new Dictionary<int, ItemType> { { 0, Filter.Value } };
-            }
+            Filter = _filter; // Refreshes the ItemPort's filters;
         }
 
         public override Schema.Entity BuildSchemaObject()
