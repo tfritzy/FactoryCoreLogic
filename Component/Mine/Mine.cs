@@ -9,6 +9,7 @@ namespace Core
         public override ComponentType Type => ComponentType.Mine;
         public const float CollectionTime = 5f;
         public ItemType UpcomingItemType { get; private set; }
+        public const uint OreWeightPerMined = 10_000_000u;
 
         private float collectionTimeRemaining;
         public readonly Dictionary<ItemType, float> ResourceWeights;
@@ -29,7 +30,7 @@ namespace Core
             {
                 if (Owner?.Inventory != null && Owner.Inventory.CanAddItem(UpcomingItemType, 1))
                 {
-                    Item item = Item.Create(UpcomingItemType, 30_000_000u);
+                    Item item = Item.Create(UpcomingItemType, OreWeightPerMined);
                     Owner.Inventory.AddItem(item);
 
                     collectionTimeRemaining = CollectionTime;

@@ -35,12 +35,12 @@ namespace Core
             return CanAddItem(item.Type, item.Quantity);
         }
 
-        public virtual bool CanAddItem(ItemType itemType, uint quantity)
+        public virtual bool CanAddItem(ItemType itemType, ulong quantity)
         {
             if (Disabled)
                 return false;
 
-            uint remainingUnplaced = quantity;
+            ulong remainingUnplaced = quantity;
             for (int i = 0; i < items.Length; i++)
             {
                 Item? currentSlot = items[i];
@@ -50,8 +50,8 @@ namespace Core
 
                 if (currentSlot.Type == itemType && currentSlot.Quantity < currentSlot.MaxStack)
                 {
-                    uint maxAddable = currentSlot.MaxStack - currentSlot.Quantity;
-                    uint numToAdd = Math.Min(maxAddable, remainingUnplaced);
+                    ulong maxAddable = currentSlot.MaxStack - currentSlot.Quantity;
+                    ulong numToAdd = Math.Min(maxAddable, remainingUnplaced);
 
                     remainingUnplaced -= numToAdd;
 
@@ -93,8 +93,8 @@ namespace Core
             if (currentSlot.Type == item.Type && currentSlot.Quantity < currentSlot.MaxStack)
             {
                 Version++;
-                uint maxAddable = currentSlot.MaxStack - currentSlot.Quantity;
-                uint numToAdd = Math.Min(maxAddable, item.Quantity);
+                ulong maxAddable = currentSlot.MaxStack - currentSlot.Quantity;
+                ulong numToAdd = Math.Min(maxAddable, item.Quantity);
 
                 currentSlot.AddToStack(numToAdd);
                 item.RemoveFromStack(numToAdd);
@@ -127,8 +127,8 @@ namespace Core
 
                 if (currentSlot.Type == item.Type && currentSlot.Quantity < currentSlot.MaxStack)
                 {
-                    uint maxAddable = currentSlot.MaxStack - currentSlot.Quantity;
-                    uint numToAdd = Math.Min(maxAddable, item.Quantity);
+                    ulong maxAddable = currentSlot.MaxStack - currentSlot.Quantity;
+                    ulong numToAdd = Math.Min(maxAddable, item.Quantity);
 
                     currentSlot.AddToStack(numToAdd);
                     item.RemoveFromStack(numToAdd);
@@ -191,9 +191,9 @@ namespace Core
             return null;
         }
 
-        public uint GetItemCount(ItemType itemType)
+        public ulong GetItemCount(ItemType itemType)
         {
-            uint count = 0;
+            ulong count = 0;
             for (int i = 0; i < items.Length; i++)
             {
                 if (items[i]?.Type == itemType)
@@ -215,7 +215,7 @@ namespace Core
             return count;
         }
 
-        public void DecrementCountOf(int index, uint quantity)
+        public void DecrementCountOf(int index, ulong quantity)
         {
             if (Disabled)
                 return;
@@ -261,7 +261,7 @@ namespace Core
             return null;
         }
 
-        public void RemoveCount(ItemType itemType, uint quantity)
+        public void RemoveCount(ItemType itemType, ulong quantity)
         {
             if (Disabled)
                 return;
@@ -269,12 +269,12 @@ namespace Core
             if (GetItemCount(itemType) < quantity)
                 throw new InvalidOperationException("Cannot remove more items than are in the inventory.");
 
-            uint remainingToRemove = quantity;
+            ulong remainingToRemove = quantity;
             for (int i = 0; i < items.Length; i++)
             {
                 if (items[i]?.Type == itemType)
                 {
-                    uint numToRemove = Math.Min(items[i]?.Quantity ?? 0, remainingToRemove);
+                    ulong numToRemove = Math.Min(items[i]?.Quantity ?? 0, remainingToRemove);
                     DecrementCountOf(i, numToRemove);
                     remainingToRemove -= numToRemove;
 
@@ -379,7 +379,7 @@ namespace Core
                 }
             }
 
-            uint totalQuantity = 0;
+            ulong totalQuantity = 0;
             for (int i = 0; i < indexes.Count; i++)
             {
                 Item? currentItem = GetItemAt(indexes[i]);
@@ -387,29 +387,29 @@ namespace Core
                     totalQuantity += currentItem.Quantity;
             }
 
-            uint numTargets = (uint)indexes.Count;
-            uint quantityPerTarget = totalQuantity / numTargets;
-            uint remainder = totalQuantity % numTargets;
+            ulong numTargets = (ulong)indexes.Count;
+            ulong quantityPerTarget = totalQuantity / (ulong)numTargets;
+            ulong remainder = totalQuantity % (ulong)numTargets;
 
-            for (int i = 0; i < numTargets; i++)
+            for (ulong i = 0; i < numTargets; i++)
             {
-                Item? currentItem = GetItemAt(indexes[i]);
+                Item? currentItem = GetItemAt(indexes[(int)i]);
 
                 if (currentItem == null)
                 {
                     Item toAdd = Item.Create(item.Type);
                     toAdd.SetQuantity(0);
 
-                    uint quantity = quantityPerTarget;
+                    ulong quantity = quantityPerTarget;
                     if (i < remainder)
                         quantity++;
                     toAdd.SetQuantity(quantity);
 
-                    AddItem(toAdd, indexes[i]);
+                    AddItem(toAdd, indexes[(int)i]);
                 }
                 else
                 {
-                    uint quantityToAdd = quantityPerTarget - currentItem.Quantity;
+                    ulong quantityToAdd = quantityPerTarget - currentItem.Quantity;
                     if (i < remainder)
                         quantityToAdd++;
 

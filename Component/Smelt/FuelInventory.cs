@@ -6,7 +6,7 @@ namespace Core
         {
         }
 
-        public override bool CanAddItem(ItemType itemType, uint quantity)
+        public override bool CanAddItem(ItemType itemType, ulong quantity)
         {
             if (Item.ItemProperties[itemType].Combustion == null)
             {

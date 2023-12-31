@@ -153,7 +153,7 @@ namespace Core
                     if (next.CanAcceptItem(checkDepositItem, DepositPoint))
                     {
                         Item singleQuantity = Item.Create(checkDepositItem.Type);
-                        uint quantity = checkDepositItem.Units == Item.UnitType.Milligram ? 10_000_000u : 1u;
+                        ulong quantity = checkDepositItem.Units == Item.UnitType.Milligram ? 10_000_000u : 1u;
                         quantity = Math.Min(checkDepositItem.Quantity, quantity);
                         singleQuantity.SetQuantity(quantity);
                         next.AddItem(singleQuantity, DepositPoint);
