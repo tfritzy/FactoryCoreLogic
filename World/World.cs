@@ -16,6 +16,7 @@ namespace Core
         public LinkedList<Update> UnseenUpdates = new LinkedList<Update>();
         public float OutsideAirTemperature_C = 20f;
         public LocalClient Api;
+        public Dictionary<ulong, ItemObject> ItemObjects = new();
 
         public int MaxX => Terrain.MaxX;
         public int MaxY => Terrain.MaxY;
@@ -262,6 +263,13 @@ namespace Core
             Terrain.Vegetation[pos.x, pos.y] = VegetationType.StrippedBush;
             plucker.Inventory?.AddItem(new Stick(1));
             plucker.Inventory?.AddItem(new Leaves(1));
+            UnseenUpdates.AddLast(new VegetationChange(pos, VegetationType.StrippedBush));
+        }
+
+        public void AddItemObject(Item item, Point3Float point)
+        {
+            ItemObject objectForm = new ItemObject(item, point);
+            ItemObjects.Add(item.Id, objectForm);
         }
     }
 }

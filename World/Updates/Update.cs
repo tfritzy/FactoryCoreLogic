@@ -9,7 +9,8 @@ namespace Core
         BuildingAdded,
         BuildingRemoved,
         TriUncoveredOrAdded,
-        TriHiddenOrDestroyed
+        TriHiddenOrDestroyed,
+        VegetationChange,
     }
 
     public abstract class Update
