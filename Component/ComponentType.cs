@@ -12,6 +12,7 @@ namespace Core
         TowerTargeting,
         Mine,
         ItemPort,
-        Smelt
+        Smelt,
+        Command
     }
 }

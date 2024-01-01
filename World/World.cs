@@ -14,6 +14,7 @@ namespace Core
         public Dictionary<ulong, Projectile> Projectiles { get; private set; }
         public LinkedList<Update> UnseenUpdates = new LinkedList<Update>();
         public float OutsideAirTemperature_C = 20f;
+        public WorldApi Api;
 
         public int MaxX => Terrain.MaxX;
         public int MaxY => Terrain.MaxY;
@@ -28,6 +29,7 @@ namespace Core
             this.Buildings = new Dictionary<Point2Int, ulong>();
             this.Projectiles = new Dictionary<ulong, Projectile>();
             this.Terrain = terrain;
+            this.Api = new WorldApi(this);
         }
 
         public void SetTerrain(Terrain terrain)

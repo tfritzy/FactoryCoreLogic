@@ -15,6 +15,8 @@ namespace Core
                 _location = GridHelpers.EvenRToPixelPlusHeight(value);
             }
         }
+        public CommandComponent? Command => GetComponent<CommandComponent>();
+
 
         public Unit(Context context, int alliance) : base(context, alliance)
         {
