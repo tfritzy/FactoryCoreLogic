@@ -8,6 +8,9 @@ namespace Core
         public const float HEX_RADIUS = 1f;
         public const float HEX_HEIGHT = .5f;
 
+        // Picking up items, plucking bushes, what not
+        public const float InteractionRange_Sq = .5f * .5f;
+
         public static class Alliance
         {
             public const int NEUTRAL = 0;

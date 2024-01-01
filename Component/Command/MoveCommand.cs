@@ -14,7 +14,7 @@ namespace Core
         {
             if ((targetPosition - owner.Location).SquareMagnitude() < MaxDistanceToComplete_Sq)
             {
-                owner.Command?.CompleteCommand(this);
+                IsComplete = true;
             }
         }
     }

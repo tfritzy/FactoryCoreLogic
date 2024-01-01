@@ -107,7 +107,7 @@ namespace Core
                     }
                     else if (flaxVal > 0.99)
                     {
-                        Vegetation[x, y] = VegetationType.Flax;
+                        Vegetation[x, y] = VegetationType.Bush;
                     }
                 }
             }
@@ -394,6 +394,16 @@ namespace Core
                 return TriangleSubType.LandInnyRight;
             else
                 return null;
+        }
+
+        public VegetationType? GetVegetation(Point2Int pos)
+        {
+            if (!IsInBounds(pos))
+            {
+                return null;
+            }
+
+            return Vegetation[pos.x, pos.y];
         }
     }
 }

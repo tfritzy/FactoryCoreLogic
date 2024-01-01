@@ -4,6 +4,7 @@ namespace Core
     {
         BirchTree,
         PineTree,
-        Flax,
+        StrippedBush,
+        Bush,
     }
 }

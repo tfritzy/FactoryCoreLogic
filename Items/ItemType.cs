@@ -8,6 +8,8 @@ namespace Core
         LimestoneDoubleBrick,
         Dirt,
         Wood,
+        Stick,
+        Leaves,
         Arrowhead,
         ToolShaft,
         Log,

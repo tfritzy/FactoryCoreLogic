@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
@@ -14,7 +15,7 @@ namespace Core
         public Dictionary<ulong, Projectile> Projectiles { get; private set; }
         public LinkedList<Update> UnseenUpdates = new LinkedList<Update>();
         public float OutsideAirTemperature_C = 20f;
-        public WorldApi Api;
+        public LocalClient Api;
 
         public int MaxX => Terrain.MaxX;
         public int MaxY => Terrain.MaxY;
@@ -29,7 +30,7 @@ namespace Core
             this.Buildings = new Dictionary<Point2Int, ulong>();
             this.Projectiles = new Dictionary<ulong, Projectile>();
             this.Terrain = terrain;
-            this.Api = new WorldApi(this);
+            this.Api = new LocalClient(this);
         }
 
         public void SetTerrain(Terrain terrain)
@@ -231,6 +232,36 @@ namespace Core
         public Point3Int GetTopHex(int x, int y, HexSide side)
         {
             return this.Terrain.GetTopHex(new Point2Int(x, y), side);
+        }
+
+        public void PluckBush(ulong pluckerId, Point2Int pos)
+        {
+            if (!Terrain.IsInBounds(pos))
+            {
+                return;
+            }
+
+            if (Terrain.Vegetation[pos.x, pos.y] != VegetationType.Bush)
+            {
+                return;
+            }
+
+            Character? plucker = GetCharacter(pluckerId);
+            if (plucker == null)
+            {
+                return;
+            }
+
+            Point3Float bushPos = GridHelpers.EvenRToPixelPlusHeight(GetTopHex(pos));
+            float sqDistance = (bushPos - plucker.Location).SquareMagnitude();
+            if (sqDistance > Constants.InteractionRange_Sq)
+            {
+                return;
+            }
+
+            Terrain.Vegetation[pos.x, pos.y] = VegetationType.StrippedBush;
+            plucker.Inventory?.AddItem(new Stick(1));
+            plucker.Inventory?.AddItem(new Leaves(1));
         }
     }
 }

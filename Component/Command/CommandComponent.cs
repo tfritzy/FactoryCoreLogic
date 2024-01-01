@@ -29,20 +29,20 @@ namespace Core
             commands.Enqueue(command);
         }
 
-        public void CompleteCommand(Command command)
-        {
-            if (commands.FirstOrDefault() == command)
-            {
-                commands.Dequeue();
-            }
-        }
-
         public Command? CurrentCommand => commands.FirstOrDefault();
 
         public override void Tick(float deltaTime)
         {
             base.Tick(deltaTime);
-            CurrentCommand?.CheckIsComplete();
+
+            if (CurrentCommand != null)
+            {
+                CurrentCommand.CheckIsComplete();
+                if (CurrentCommand.IsComplete)
+                {
+                    commands.Dequeue();
+                }
+            }
         }
     }
 }

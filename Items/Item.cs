@@ -118,6 +118,10 @@ namespace Core
                     return new Magnetite(quantity);
                 case ItemType.IronSiliconSlag:
                     return new IronSiliconSlag(quantity);
+                case ItemType.Stick:
+                    return new Stick(quantity);
+                case ItemType.Leaves:
+                    return new Leaves(quantity);
                 default:
                     throw new ArgumentException("Invalid item type " + type);
             }
