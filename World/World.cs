@@ -15,7 +15,6 @@ namespace Core
         public Dictionary<ulong, Projectile> Projectiles { get; private set; }
         public LinkedList<Update> UnseenUpdates = new LinkedList<Update>();
         public float OutsideAirTemperature_C = 20f;
-        public LocalClient Api;
         public Dictionary<ulong, ItemObject> ItemObjects = new();
 
         public int MaxX => Terrain.MaxX;
@@ -31,7 +30,6 @@ namespace Core
             this.Buildings = new Dictionary<Point2Int, ulong>();
             this.Projectiles = new Dictionary<ulong, Projectile>();
             this.Terrain = terrain;
-            this.Api = new LocalClient(this);
         }
 
         public void SetTerrain(Terrain terrain)
@@ -266,10 +264,47 @@ namespace Core
             UnseenUpdates.AddLast(new VegetationChange(pos, VegetationType.StrippedBush));
         }
 
-        public void AddItemObject(Item item, Point3Float point)
+        public void AddItemObject(Item item, Point3Float point, Point3Float rotation)
         {
-            ItemObject objectForm = new ItemObject(item, point);
+            ItemObject objectForm = new ItemObject(item, point, rotation);
             ItemObjects.Add(item.Id, objectForm);
+            UnseenUpdates.AddLast(new ItemObjectAdded(objectForm));
+        }
+
+        public void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float rotation)
+        {
+            ItemObjects.TryGetValue(itemId, out ItemObject? itemObj);
+            if (itemObj == null)
+            {
+                return;
+            }
+
+            itemObj.Position = pos;
+            itemObj.Rotation = rotation;
+            UnseenUpdates.AddLast(new ItemMoved(itemId, pos, rotation));
+        }
+
+        public void PickupItem(ulong pickerUperId, ulong itemId)
+        {
+            Character? picker = GetCharacter(pickerUperId);
+            if (picker == null)
+            {
+                return;
+            }
+
+            if (picker.Inventory == null)
+            {
+                return;
+            }
+
+            ItemObjects.TryGetValue(itemId, out ItemObject? itemObject);
+            if (itemObject == null)
+            {
+                return;
+            }
+
+            ItemObjects.Remove(itemId);
+            picker.Inventory.AddItem(itemObject.Item);
         }
     }
 }

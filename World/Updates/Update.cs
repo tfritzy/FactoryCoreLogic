@@ -11,6 +11,8 @@ namespace Core
         TriUncoveredOrAdded,
         TriHiddenOrDestroyed,
         VegetationChange,
+        ItemMoved,
+        ItemObjectAdded,
     }
 
     public abstract class Update

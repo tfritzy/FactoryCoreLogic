@@ -5,12 +5,15 @@ namespace Core
     public class ItemObject
     {
         public Item Item;
-        public Point3Float Position;
 
-        public ItemObject(Item item, Point3Float position)
+        public Point3Float Position;
+        public Point3Float Rotation;
+
+        public ItemObject(Item item, Point3Float position, Point3Float rotation)
         {
             this.Item = item;
             this.Position = position;
+            this.Rotation = rotation;
         }
     }
 }
