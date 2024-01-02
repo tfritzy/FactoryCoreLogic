@@ -3,7 +3,7 @@ namespace Core
     public class LigniteCoal : Item
     {
         public override ItemType Type => ItemType.LigniteCoal;
-        public LigniteCoal(uint quantity) : base(quantity) { }
+        public LigniteCoal(ulong quantity) : base(quantity) { }
         override public float Width => .3f;
         private const string name = "Lignite coal";
         public override string Name => name;

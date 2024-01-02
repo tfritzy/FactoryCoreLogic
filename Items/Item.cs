@@ -40,7 +40,7 @@ namespace Core
             public HexSide RotationOffset;
         }
 
-        public Item(uint quantity)
+        public Item(ulong quantity)
         {
             this.Quantity = quantity;
             this.Id = IdGenerator.GenerateId();
@@ -70,7 +70,7 @@ namespace Core
             Quantity = quantity;
         }
 
-        public static Item Create(ItemType type, uint quantity = 1)
+        public static Item Create(ItemType type, ulong quantity = 1)
         {
             switch (type)
             {

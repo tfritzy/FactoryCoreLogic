@@ -21,17 +21,6 @@ namespace Core
             this.Owner = owner;
         }
 
-        public static readonly Dictionary<Type, ComponentType> ComponentTypeMap = new Dictionary<Type, ComponentType>()
-        {
-            { typeof(Inventory), ComponentType.Inventory },
-            { typeof(ConveyorComponent), ComponentType.Conveyor },
-            { typeof(WornItems), ComponentType.WornItems },
-            { typeof(ActiveItems), ComponentType.ActiveItems },
-            { typeof(Attack), ComponentType.Attack },
-            { typeof(Life), ComponentType.Life },
-            { typeof(TowerTargeting), ComponentType.TowerTargeting },
-        };
-
         public abstract Schema.Component ToSchema();
     }
 }

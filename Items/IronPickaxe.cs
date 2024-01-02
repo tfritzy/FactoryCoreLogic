@@ -11,7 +11,7 @@ namespace Core
         public override string Name => name;
         public override string? ChemicalFormula => null;
 
-        public IronPickaxe(uint quantity) : base(quantity) { }
+        public IronPickaxe(ulong quantity) : base(quantity) { }
 
         private static Dictionary<ItemType, uint> recipe = new()
         {

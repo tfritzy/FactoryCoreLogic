@@ -11,6 +11,6 @@ namespace Core
         public override string Name => name;
         public override string ChemicalFormula => "Cu";
 
-        public CopperBar(uint quantity) : base(quantity) { }
+        public CopperBar(ulong quantity) : base(quantity) { }
     }
 }

@@ -259,8 +259,20 @@ namespace Core
             }
 
             Terrain.Vegetation[pos.x, pos.y] = VegetationType.StrippedBush;
-            plucker.Inventory?.AddItem(new Stick(1));
-            plucker.Inventory?.AddItem(new Leaves(1));
+
+            var stick = new Stick(1);
+            var leaves = new Leaves(1);
+
+            if (plucker.Inventory != null && plucker.Inventory.CanAddItem(stick))
+                plucker.Inventory!.AddItem(stick);
+            else
+                AddItemObject(stick, plucker.Location, Point3Float.Zero);
+
+            if (plucker.Inventory != null && plucker.Inventory.CanAddItem(leaves))
+                plucker.Inventory!.AddItem(leaves);
+            else
+                AddItemObject(leaves, plucker.Location, Point3Float.Zero);
+
             UnseenUpdates.AddLast(new VegetationChange(pos, VegetationType.StrippedBush));
         }
 

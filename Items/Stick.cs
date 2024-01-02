@@ -3,7 +3,7 @@ namespace Core
     public class Stick : Item
     {
         public override ItemType Type => ItemType.Stick;
-        public Stick(uint quantity) : base(quantity) { }
+        public Stick(ulong quantity) : base(quantity) { }
         public override float Width => .3f;
         private const string name = "Stick";
         public override string Name => name;

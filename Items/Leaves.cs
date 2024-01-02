@@ -3,7 +3,7 @@ namespace Core
     public class Leaves : Item
     {
         public override ItemType Type => ItemType.Leaves;
-        public Leaves(uint quantity) : base(quantity) { }
+        public Leaves(ulong quantity) : base(quantity) { }
         public override float Width => .3f;
         private const string name = "Leaves";
         public override string Name => name;
