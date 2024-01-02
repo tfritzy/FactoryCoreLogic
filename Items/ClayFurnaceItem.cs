@@ -11,6 +11,6 @@ namespace Core
         public override string Name => name;
         public override string? ChemicalFormula => null;
 
-        public ClayFurnaceItem(uint quantity) : base(quantity) { }
+        public ClayFurnaceItem(ulong quantity) : base(quantity) { }
     }
 }

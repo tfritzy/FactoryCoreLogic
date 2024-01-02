@@ -8,7 +8,7 @@ namespace Core
         public abstract ItemType Type { get; }
         public abstract string Name { get; }
         public abstract string? ChemicalFormula { get; }
-        public uint Quantity { get; private set; }
+        public ulong Quantity { get; private set; }
         public virtual UnitType Units => UnitType.Unit;
         public ulong Id { get; set; }
 
@@ -40,13 +40,13 @@ namespace Core
             public HexSide RotationOffset;
         }
 
-        public Item(uint quantity)
+        public Item(ulong quantity)
         {
             this.Quantity = quantity;
             this.Id = IdGenerator.GenerateId();
         }
 
-        public void AddToStack(uint amount)
+        public void AddToStack(ulong amount)
         {
             if (Quantity + amount > MaxStack)
                 throw new InvalidOperationException("Cannot add to stack, would exceed max stack size.");
@@ -54,7 +54,7 @@ namespace Core
             Quantity += amount;
         }
 
-        public void RemoveFromStack(uint amount)
+        public void RemoveFromStack(ulong amount)
         {
             if (amount > Quantity)
                 throw new InvalidOperationException("Cannot remove from stack, would go below 0.");
@@ -62,7 +62,7 @@ namespace Core
             Quantity -= amount;
         }
 
-        public void SetQuantity(uint quantity)
+        public void SetQuantity(ulong quantity)
         {
             if (quantity > MaxStack)
                 throw new InvalidOperationException("Cannot set quantity, would exceed max stack size.");
@@ -70,7 +70,7 @@ namespace Core
             Quantity = quantity;
         }
 
-        public static Item Create(ItemType type, uint quantity = 1)
+        public static Item Create(ItemType type, ulong quantity = 1)
         {
             switch (type)
             {
@@ -118,6 +118,10 @@ namespace Core
                     return new Magnetite(quantity);
                 case ItemType.IronSiliconSlag:
                     return new IronSiliconSlag(quantity);
+                case ItemType.Stick:
+                    return new Stick(quantity);
+                case ItemType.Leaves:
+                    return new Leaves(quantity);
                 default:
                     throw new ArgumentException("Invalid item type " + type);
             }

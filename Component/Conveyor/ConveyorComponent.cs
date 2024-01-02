@@ -89,7 +89,7 @@ namespace Core
 
                 if (Next?.Conveyor != null)
                 {
-                    if (item.ProgressMeters >= GetTotalDistance() /* remove -> */ && maxPosition >= GetTotalDistance())
+                    if (item.ProgressMeters >= GetTotalDistance() && maxPosition >= GetTotalDistance())
                     {
                         if (Next != null && maxPosOnNext != null)
                         {
@@ -109,7 +109,7 @@ namespace Core
                 }
                 else if (Next?.ItemPort != null)
                 {
-                    if (item.ProgressMeters >= maxPosition)
+                    if (item.ProgressMeters >= GetTotalDistance() && maxPosition >= GetTotalDistance())
                     {
                         bool wasAdded = Next.ItemPort.TryGiveItem(
                             item.Item,

@@ -3,7 +3,7 @@ namespace Core
     public class Limestone : Item
     {
         public override ItemType Type => ItemType.Limestone;
-        public Limestone(uint quantity) : base(quantity) { }
+        public Limestone(ulong quantity) : base(quantity) { }
         public override float Width => .4f;
         private const string name = "Limestone";
         public override string Name => name;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
@@ -14,6 +15,7 @@ namespace Core
         public Dictionary<ulong, Projectile> Projectiles { get; private set; }
         public LinkedList<Update> UnseenUpdates = new LinkedList<Update>();
         public float OutsideAirTemperature_C = 20f;
+        public Dictionary<ulong, ItemObject> ItemObjects = new();
 
         public int MaxX => Terrain.MaxX;
         public int MaxY => Terrain.MaxY;
@@ -229,6 +231,92 @@ namespace Core
         public Point3Int GetTopHex(int x, int y, HexSide side)
         {
             return this.Terrain.GetTopHex(new Point2Int(x, y), side);
+        }
+
+        public void PluckBush(ulong pluckerId, Point2Int pos)
+        {
+            if (!Terrain.IsInBounds(pos))
+            {
+                return;
+            }
+
+            if (Terrain.Vegetation[pos.x, pos.y] != VegetationType.Bush)
+            {
+                return;
+            }
+
+            Character? plucker = GetCharacter(pluckerId);
+            if (plucker == null)
+            {
+                return;
+            }
+
+            Point3Float bushPos = GridHelpers.EvenRToPixelPlusHeight(GetTopHex(pos));
+            float sqDistance = (bushPos - plucker.Location).SquareMagnitude();
+            if (sqDistance > Constants.InteractionRange_Sq)
+            {
+                return;
+            }
+
+            Terrain.Vegetation[pos.x, pos.y] = VegetationType.StrippedBush;
+
+            var stick = new Stick(1);
+            var leaves = new Leaves(1);
+
+            if (plucker.Inventory != null && plucker.Inventory.CanAddItem(stick))
+                plucker.Inventory!.AddItem(stick);
+            else
+                AddItemObject(stick, plucker.Location, Point3Float.Zero);
+
+            if (plucker.Inventory != null && plucker.Inventory.CanAddItem(leaves))
+                plucker.Inventory!.AddItem(leaves);
+            else
+                AddItemObject(leaves, plucker.Location, Point3Float.Zero);
+
+            UnseenUpdates.AddLast(new VegetationChange(pos, VegetationType.StrippedBush));
+        }
+
+        public void AddItemObject(Item item, Point3Float point, Point3Float rotation)
+        {
+            ItemObject objectForm = new ItemObject(item, point, rotation);
+            ItemObjects.Add(item.Id, objectForm);
+            UnseenUpdates.AddLast(new ItemObjectAdded(objectForm));
+        }
+
+        public void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float rotation)
+        {
+            ItemObjects.TryGetValue(itemId, out ItemObject? itemObj);
+            if (itemObj == null)
+            {
+                return;
+            }
+
+            itemObj.Position = pos;
+            itemObj.Rotation = rotation;
+            UnseenUpdates.AddLast(new ItemMoved(itemId, pos, rotation));
+        }
+
+        public void PickupItem(ulong pickerUperId, ulong itemId)
+        {
+            Character? picker = GetCharacter(pickerUperId);
+            if (picker == null)
+            {
+                return;
+            }
+
+            if (picker.Inventory == null)
+            {
+                return;
+            }
+
+            ItemObjects.TryGetValue(itemId, out ItemObject? itemObject);
+            if (itemObject == null)
+            {
+                return;
+            }
+
+            ItemObjects.Remove(itemId);
+            picker.Inventory.AddItem(itemObject.Item);
         }
     }
 }

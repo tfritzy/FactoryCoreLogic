@@ -88,7 +88,7 @@ namespace Core
                 return;
             }
 
-            uint amountOfFuelCombusted_mg = (uint)(fuel.Combustion.Value.BurnRateMilligramPerSecond * deltaTime);
+            ulong amountOfFuelCombusted_mg = (uint)(fuel.Combustion.Value.BurnRateMilligramPerSecond * deltaTime);
             amountOfFuelCombusted_mg =
                 Math.Min(
                     BuildingOwner.FuelInventory.GetItemCount(fuel.Type),

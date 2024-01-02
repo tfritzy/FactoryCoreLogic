@@ -11,7 +11,7 @@ namespace Core
         public override string Name => name;
         public override string? ChemicalFormula => "C₆H₁₀O₅";
 
-        public ToolShaft(uint quantity) : base(quantity) { }
+        public ToolShaft(ulong quantity) : base(quantity) { }
 
         private static readonly Dictionary<ItemType, uint> recipe = new()
         {

@@ -4,7 +4,7 @@ namespace Core
     {
         public override ItemType Type => ItemType.LimestoneDoubleBrick;
         public override uint MaxStack => 32;
-        public LimestoneDoubleBrick(uint quantity) : base(quantity) { }
+        public LimestoneDoubleBrick(ulong quantity) : base(quantity) { }
         public override float Width => .4f;
         private const string name = "Limestone double brick";
         public override string Name => name;

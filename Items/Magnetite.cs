@@ -10,6 +10,6 @@ namespace Core
         public override uint MaxStack => 200_000_000;
         public override UnitType Units => UnitType.Milligram;
 
-        public Magnetite(uint quantity) : base(quantity) { }
+        public Magnetite(ulong quantity) : base(quantity) { }
     }
 }

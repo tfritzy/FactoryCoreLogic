@@ -1,6 +1,7 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 namespace Core
@@ -11,7 +12,8 @@ namespace Core
         public const float DepositPoint = 0f;
         public List<int> OutputSideOffsets;
         public List<int> InputSideOffsets;
-        public Dictionary<int, ItemType> SideOffsetToFilter;
+        private Dictionary<int, ItemType> SideToOnlyAllowedItem;
+        private Dictionary<ItemType, int> ItemToOnlyAllowedSide;
         public Func<Item, Inventory?> GetDestinationForItem;
         private Building BuildingOwner => (Building)Owner;
 
@@ -19,7 +21,8 @@ namespace Core
         {
             OutputSideOffsets = new List<int>();
             InputSideOffsets = new List<int>();
-            SideOffsetToFilter = new Dictionary<int, ItemType>();
+            SideToOnlyAllowedItem = new Dictionary<int, ItemType>();
+            ItemToOnlyAllowedSide = new Dictionary<ItemType, int>();
             GetDestinationForItem = (item) => Owner.Inventory;
         }
 
@@ -71,14 +74,6 @@ namespace Core
                 return false;
             }
 
-            if (SideOffsetToFilter.ContainsKey(sideOffset))
-            {
-                if (SideOffsetToFilter[sideOffset] == item.Type)
-                {
-                    return false;
-                }
-            }
-
             Inventory? targetInventory = GetDestinationForItem(item);
 
             // Deposit isn't attempted from other inventories.
@@ -107,9 +102,17 @@ namespace Core
         {
             foreach (int offset in OutputSideOffsets)
             {
-                if (item != null && SideOffsetToFilter.ContainsKey(offset) && SideOffsetToFilter[offset] == item.Type)
+                if (item != null)
                 {
-                    continue;
+                    if (SideToOnlyAllowedItem.ContainsKey(offset) && SideToOnlyAllowedItem[offset] != item.Type)
+                    {
+                        continue;
+                    }
+
+                    if (ItemToOnlyAllowedSide.ContainsKey(item.Type) && ItemToOnlyAllowedSide[item.Type] != offset)
+                    {
+                        continue;
+                    }
                 }
 
                 // If caller didn't specify an item, find the first item that works for this side
@@ -120,8 +123,8 @@ namespace Core
                     itemFromInventory = true;
                     checkDepositItem = Owner.Inventory?.FindWhere(
                         i => i != null &&
-                        (!SideOffsetToFilter.ContainsKey(offset) ||
-                        SideOffsetToFilter[offset] != i?.Type));
+                        (!SideToOnlyAllowedItem.ContainsKey(offset) ||
+                        SideToOnlyAllowedItem[offset] != i?.Type));
                 }
 
                 if (checkDepositItem == null)
@@ -150,7 +153,7 @@ namespace Core
                     if (next.CanAcceptItem(checkDepositItem, DepositPoint))
                     {
                         Item singleQuantity = Item.Create(checkDepositItem.Type);
-                        uint quantity = checkDepositItem.Units == Item.UnitType.Milligram ? 10_000_000u : 1u;
+                        ulong quantity = checkDepositItem.Units == Item.UnitType.Milligram ? 10_000_000u : 1u;
                         quantity = Math.Min(checkDepositItem.Quantity, quantity);
                         singleQuantity.SetQuantity(quantity);
                         next.AddItem(singleQuantity, DepositPoint);
@@ -182,6 +185,18 @@ namespace Core
             }
 
             TryDeposit(null);
+        }
+
+        public void OnlyLetItemThroughSide(ItemType itemType, int sideOffset)
+        {
+            SideToOnlyAllowedItem[sideOffset] = itemType;
+            ItemToOnlyAllowedSide[itemType] = sideOffset;
+        }
+
+        public void RemoveAllFilters()
+        {
+            SideToOnlyAllowedItem = new Dictionary<int, ItemType>();
+            ItemToOnlyAllowedSide = new Dictionary<ItemType, int>();
         }
     }
 }
