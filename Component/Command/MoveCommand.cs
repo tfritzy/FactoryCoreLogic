@@ -3,16 +3,16 @@ namespace Core
     public class MoveCommand : Command
     {
         public const float MaxDistanceToComplete_Sq = .1f * .1f;
-        private Point3Float targetPosition;
+        public Point3Float TargetPosition { get; private set; }
 
         public MoveCommand(Point3Float position, Unit owner) : base(owner)
         {
-            targetPosition = position;
+            TargetPosition = position;
         }
 
         public override void CheckIsComplete()
         {
-            if ((targetPosition - owner.Location).SquareMagnitude() < MaxDistanceToComplete_Sq)
+            if ((TargetPosition - owner.Location).SquareMagnitude() < MaxDistanceToComplete_Sq)
             {
                 IsComplete = true;
             }
