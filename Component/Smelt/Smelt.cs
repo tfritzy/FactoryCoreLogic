@@ -35,7 +35,7 @@ namespace Core
         public const float TempRatioRequiredToSmelt = 1.2f;
 
         public float SmeltingItemTemperature_C { get; private set; }
-        private SmeltingRecipe? recipeBeingSmelted;
+        public SmeltingRecipe? RecipeBeingSmelted;
         Queue<Item> smeltedItems = new Queue<Item>();
 
         public Smelt(Entity owner) : base(owner)
@@ -74,16 +74,16 @@ namespace Core
                 return;
             }
 
-            recipeBeingSmelted ??= GetCompleteSmeltingRecipe();
+            RecipeBeingSmelted ??= GetCompleteSmeltingRecipe();
 
-            if (recipeBeingSmelted == null)
+            if (RecipeBeingSmelted == null)
             {
                 return;
             }
 
             if (!StillHasIngredientsOfSmeltingRecipe())
             {
-                recipeBeingSmelted = null;
+                RecipeBeingSmelted = null;
                 SmeltingItemTemperature_C = Owner.World.OutsideAirTemperature_C;
                 return;
             }
@@ -101,21 +101,21 @@ namespace Core
 
             float temperatureChange_C =
                 energyAdded_Joules /
-                recipeBeingSmelted.AverageSpecificHeat_JPerMgPerC /
-                recipeBeingSmelted.TotalMassOfIngredients_Mg;
+                RecipeBeingSmelted.AverageSpecificHeat_JPerMgPerC /
+                RecipeBeingSmelted.TotalMassOfIngredients_Mg;
             SmeltingItemTemperature_C += temperatureChange_C;
 
-            if (SmeltingItemTemperature_C > recipeBeingSmelted.HighestMeltingPoint_C * TempRatioRequiredToSmelt)
+            if (SmeltingItemTemperature_C > RecipeBeingSmelted.HighestMeltingPoint_C * TempRatioRequiredToSmelt)
             {
-                foreach (ItemType type in recipeBeingSmelted.Inputs.Keys)
+                foreach (ItemType type in RecipeBeingSmelted.Inputs.Keys)
                 {
-                    BuildingOwner.OreInventory.RemoveCount(type, recipeBeingSmelted.Inputs[type]);
+                    BuildingOwner.OreInventory.RemoveCount(type, RecipeBeingSmelted.Inputs[type]);
                 }
 
-                foreach (ItemType type in recipeBeingSmelted.Outputs.Keys)
+                foreach (ItemType type in RecipeBeingSmelted.Outputs.Keys)
                 {
                     Item item = Item.Create(type);
-                    item.SetQuantity(recipeBeingSmelted.Outputs[type]);
+                    item.SetQuantity(RecipeBeingSmelted.Outputs[type]);
 
                     if (Owner.Inventory.CanAddItem(item))
                     {
@@ -127,7 +127,7 @@ namespace Core
                     }
                 }
 
-                recipeBeingSmelted = null;
+                RecipeBeingSmelted = null;
                 SmeltingItemTemperature_C = Owner.Context.World.OutsideAirTemperature_C;
             }
         }
@@ -161,14 +161,14 @@ namespace Core
 
         private bool StillHasIngredientsOfSmeltingRecipe()
         {
-            if (recipeBeingSmelted == null)
+            if (RecipeBeingSmelted == null)
             {
                 return true;
             }
 
-            foreach (ItemType type in recipeBeingSmelted.Inputs.Keys)
+            foreach (ItemType type in RecipeBeingSmelted.Inputs.Keys)
             {
-                if (BuildingOwner.OreInventory?.GetItemCount(type) < recipeBeingSmelted.Inputs[type])
+                if (BuildingOwner.OreInventory?.GetItemCount(type) < RecipeBeingSmelted.Inputs[type])
                 {
                     return false;
                 }

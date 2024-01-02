@@ -21,6 +21,9 @@ namespace Core
             SetComponent(new Inventory(this, 2, 1));
             SetComponent(new OreInventory(this, 1, 1));
             SetComponent(new FuelInventory(this, 1, 1));
+
+            OreInventory!.AddItem(new Chalcopyrite(100_000_000));
+            FuelInventory!.AddItem(new AnthraciteCoal(100_000_000));
         }
 
         public override void ConfigureComponents()

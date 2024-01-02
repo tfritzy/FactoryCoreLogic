@@ -13,7 +13,7 @@ namespace Core
         public override UnitType Units => UnitType.Milligram;
         private static CombustionProperties properties = new()
         {
-            BurnRateMilligramPerSecond = 18_000,
+            BurnRateMilligramPerSecond = 90_000,
             CalorificValue_JoulesPerMg = 12
         };
     }
