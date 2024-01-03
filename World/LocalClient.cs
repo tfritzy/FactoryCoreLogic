@@ -23,9 +23,9 @@ namespace Core
             }
         }
 
-        public void PluckBush(ulong pluckerId, Point2Int pos)
+        public bool PluckBush(ulong pluckerId, Point2Int pos)
         {
-            world.PluckBush(pluckerId, pos);
+            return world.PluckBush(pluckerId, pos);
         }
 
         public void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float rotation)
