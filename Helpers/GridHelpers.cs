@@ -224,7 +224,12 @@ namespace Core
         public static Point3Float EvenRToPixelPlusHeight(Point3Int hex)
         {
             Point2Float evenR = evenr_offset_to_pixel((Point2Int)hex);
-            return new Point3Float(evenR.x, evenR.y, hex.z * Constants.HEX_HEIGHT);
+            return new Point3Float(evenR.x, -evenR.y, hex.z * Constants.HEX_HEIGHT);
+        }
+
+        public static Point3Float ToPoint3Float(this Point3Int hex)
+        {
+            return EvenRToPixelPlusHeight(hex);
         }
 
         public static Point2Float evenr_offset_to_pixel(Point2Int hex)

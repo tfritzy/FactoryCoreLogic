@@ -27,6 +27,7 @@ namespace Core
             this.SetComponent(new Inventory(this, 5, 8));
             this.SetComponent(new ActiveItems(this, 8, 2));
             this.SetComponent(new WornItems(this, 1, 5));
+            this.SetComponent(new CommandComponent(this));
         }
 
         public Building? BuidPreviewBuildingFromItem(int itemIndex, Point2Int location)

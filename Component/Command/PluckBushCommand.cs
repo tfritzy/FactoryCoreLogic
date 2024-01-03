@@ -2,17 +2,17 @@ namespace Core
 {
     public class PluckBushCommand : Command
     {
-        private Point2Int pos;
+        public Point2Int Pos { get; private set; }
 
         public PluckBushCommand(Point2Int vegepos, Unit owner) : base(owner)
         {
-            this.pos = vegepos;
+            this.Pos = vegepos;
         }
 
         public override void CheckIsComplete()
         {
             // This action will be completed by the client calling the PluckBush command.
-            if (owner.Context.World.Terrain.GetVegetation(pos) != VegetationType.Bush)
+            if (owner.Context.World.Terrain.GetVegetation(Pos) != VegetationType.Bush)
             {
                 IsComplete = true;
             }

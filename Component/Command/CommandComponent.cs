@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Core
@@ -7,7 +8,7 @@ namespace Core
     public class CommandComponent : Component
     {
         public override ComponentType Type => ComponentType.Command;
-        private Queue<Command> commands = new();
+        public Queue<Command> Commands = new();
 
         public CommandComponent(Entity owner) : base(owner)
         {
@@ -20,16 +21,21 @@ namespace Core
 
         public void ReplaceCommands(Command command)
         {
-            commands.Clear();
-            commands.Enqueue(command);
+            Commands.Clear();
+            Commands.Enqueue(command);
         }
 
         public void AddCommand(Command command)
         {
-            commands.Enqueue(command);
+            Commands.Enqueue(command);
         }
 
-        public Command? CurrentCommand => commands.FirstOrDefault();
+        public void ClearCommands()
+        {
+            Commands.Clear();
+        }
+
+        public Command? CurrentCommand => Commands.FirstOrDefault();
 
         public override void Tick(float deltaTime)
         {
@@ -40,7 +46,7 @@ namespace Core
                 CurrentCommand.CheckIsComplete();
                 if (CurrentCommand.IsComplete)
                 {
-                    commands.Dequeue();
+                    Commands.Dequeue();
                 }
             }
         }
