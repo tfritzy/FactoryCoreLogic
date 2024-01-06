@@ -15,6 +15,9 @@ namespace Schema
         [JsonProperty("characters")]
         public Dictionary<ulong, Character>? Characters;
 
+        [JsonProperty("items")]
+        public Dictionary<ulong, ItemObject>? ItemObject;
+
         public Core.World FromSchema(params object[] context)
         {
             if (Terrain == null)
@@ -46,6 +49,15 @@ namespace Schema
                     }
 
                     world.AddBuilding(building, (Point2Int)building.GridPosition);
+                }
+            }
+
+            if (ItemObject != null)
+            {
+                foreach (ulong itemId in ItemObject.Keys)
+                {
+                    Core.ItemObject itemObject = ItemObject[itemId].FromSchema(worldContext);
+                    world.AddItemObject(itemObject.Item, itemObject.Position, itemObject.Rotation);
                 }
             }
 

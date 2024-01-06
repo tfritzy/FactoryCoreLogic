@@ -149,6 +149,10 @@ namespace Core
                     .ToDictionary(
                         kvp => kvp.Key,
                         kvp => (Schema.Character)kvp.Value.ToSchema()),
+                ItemObject = this.ItemObjects
+                    .ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value.ToSchema()),
             };
         }
 
@@ -282,6 +286,12 @@ namespace Core
             UnseenUpdates.AddLast(new ItemObjectAdded(objectForm));
         }
 
+        public void RemoveItemObject(ulong itemId)
+        {
+            ItemObjects.Remove(itemId);
+            UnseenUpdates.AddLast(new ItemObjectRemoved(itemId));
+        }
+
         public void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float rotation)
         {
             ItemObjects.TryGetValue(itemId, out ItemObject? itemObj);
@@ -314,7 +324,13 @@ namespace Core
                 return;
             }
 
-            ItemObjects.Remove(itemId);
+            float sqDistance = (itemObject.Position - picker.Location).SquareMagnitude();
+            if (sqDistance > Constants.InteractionRange_Sq)
+            {
+                return;
+            }
+
+            RemoveItemObject(itemId);
             picker.Inventory.AddItem(itemObject.Item);
         }
     }

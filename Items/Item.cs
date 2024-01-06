@@ -156,7 +156,7 @@ namespace Core
             {
                 Type = Type,
                 Quantity = Quantity,
-                Id = Id,
+                Id = Id
             };
         }
 

@@ -13,6 +13,7 @@ namespace Core
         VegetationChange,
         ItemMoved,
         ItemObjectAdded,
+        ItemObjectRemoved,
     }
 
     public abstract class Update

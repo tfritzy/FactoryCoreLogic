@@ -5,7 +5,6 @@ namespace Core
     public class ItemObject
     {
         public Item Item;
-
         public Point3Float Position;
         public Point3Float Rotation;
 
@@ -14,6 +13,16 @@ namespace Core
             this.Item = item;
             this.Position = position;
             this.Rotation = rotation;
+        }
+
+        public Schema.ItemObject ToSchema()
+        {
+            return new Schema.ItemObject()
+            {
+                Item = Item.ToSchema(),
+                Position = Position,
+                Rotation = Rotation,
+            };
         }
     }
 }
