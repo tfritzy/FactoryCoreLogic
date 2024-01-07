@@ -23,19 +23,9 @@ namespace Core
             }
         }
 
-        public void PluckBush(ulong pluckerId, Point2Int pos)
-        {
-            world.PluckBush(pluckerId, pos);
-        }
-
         public void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float rotation)
         {
             world.SetItemObjectPos(itemId, pos, rotation);
-        }
-
-        public void PickupItem(ulong pickerUperId, ulong itemId)
-        {
-            world.PickupItem(pickerUperId, itemId);
         }
     }
 }

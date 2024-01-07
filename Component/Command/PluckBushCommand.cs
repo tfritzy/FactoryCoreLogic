@@ -17,5 +17,11 @@ namespace Core
                 IsComplete = true;
             }
         }
+
+        public void ExecutePluck()
+        {
+            owner.Context.World.PluckBush(owner.Id, Pos);
+            IsComplete = true;
+        }
     }
 }
