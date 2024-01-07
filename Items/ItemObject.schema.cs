@@ -21,5 +21,10 @@ namespace Schema
         {
             return new Core.ItemObject(Item.FromSchema(context), Position, Rotation);
         }
+
+        public override int GetHashCode()
+        {
+            return Item.GetHashCode() ^ Position.GetHashCode() ^ Rotation.GetHashCode();
+        }
     }
 }

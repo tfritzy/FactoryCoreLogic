@@ -5,9 +5,9 @@ namespace Core
     public class ItemObjectAdded : Update
     {
         public override UpdateType Type => UpdateType.ItemObjectAdded;
-        public ItemObject ItemObject;
+        public Schema.ItemObject ItemObject;
 
-        public ItemObjectAdded(ItemObject itemObject)
+        public ItemObjectAdded(Schema.ItemObject itemObject)
         {
             this.ItemObject = itemObject;
         }

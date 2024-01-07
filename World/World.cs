@@ -283,7 +283,7 @@ namespace Core
         {
             ItemObject objectForm = new ItemObject(item, point, rotation);
             ItemObjects.Add(item.Id, objectForm);
-            UnseenUpdates.AddLast(new ItemObjectAdded(objectForm));
+            UnseenUpdates.AddLast(new ItemObjectAdded(objectForm.ToSchema()));
         }
 
         public void RemoveItemObject(ulong itemId)
