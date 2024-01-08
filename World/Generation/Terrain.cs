@@ -86,9 +86,9 @@ namespace Core
             {
                 for (int y = 0; y < Vegetation.GetLength(1); y++)
                 {
-                    double birchVal = birchNoise.Evaluate(x / 40f, y / 40f);
+                    double birchVal = birchNoise.Evaluate(x / 2f, y / 2f);
                     birchVal = (birchVal + 1) / 2;
-                    double pineVal = pineNoise.Evaluate(x / 40f, y / 40f);
+                    double pineVal = pineNoise.Evaluate(x / 2f, y / 40f);
                     pineVal = (pineVal + 1) / 2;
 
                     double treeThinningVal = treeThinningNoise.Evaluate(x * .5f, y * .5f);
@@ -97,6 +97,7 @@ namespace Core
                     pineVal -= treeThinningVal;
 
                     double flaxVal = r.NextDouble();
+                    double mushroomValue = r.NextDouble();
                     if (birchVal > 0.8)
                     {
                         Vegetation[x, y] = VegetationType.BirchTree;
@@ -108,6 +109,10 @@ namespace Core
                     else if (flaxVal > 0.99)
                     {
                         Vegetation[x, y] = VegetationType.Bush;
+                    }
+                    else if (mushroomValue > 0.98)
+                    {
+                        Vegetation[x, y] = VegetationType.Mushroom;
                     }
                 }
             }
