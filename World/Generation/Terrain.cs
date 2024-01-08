@@ -15,6 +15,8 @@ namespace Core
         public int MaxY => this.TerrainData.GetLength(1);
         public int MaxZ => this.TerrainData.GetLength(2);
         public readonly VegetationType?[,] Vegetation;
+        public Point3Float MaxBounds;
+        public Point3Float MinBounds;
 
         private Context context;
 
@@ -23,6 +25,15 @@ namespace Core
             this.context = context;
             TerrainData = new Triangle?[]?[Types.GetLength(0), Types.GetLength(1), Types.GetLength(2)];
             Vegetation = new VegetationType?[Types.GetLength(0), Types.GetLength(1)];
+
+            MaxBounds = new Point3Float(
+                (MaxX + 1) * Constants.HEX_WIDTH,
+                (MaxY + 1) * Constants.HEX_LENGTH,
+                (MaxZ + 1) * Constants.HEX_HEIGHT);
+            MinBounds = new Point3Float(
+                -1 * Constants.HEX_WIDTH,
+                -1 * Constants.HEX_LENGTH,
+                -1 * Constants.HEX_HEIGHT);
 
             for (int x = 0; x < Types.GetLength(0); x++)
             {
@@ -198,6 +209,26 @@ namespace Core
             }
 
             if (z < 0 || z >= TerrainData.GetLength(2))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool IsInBounds(Point3Float point)
+        {
+            if (point.x < MinBounds.x || point.x > MaxBounds.x)
+            {
+                return false;
+            }
+
+            if (point.y < MinBounds.y || point.y > MaxBounds.y)
+            {
+                return false;
+            }
+
+            if (point.z < MinBounds.z || point.z > MaxBounds.z)
             {
                 return false;
             }

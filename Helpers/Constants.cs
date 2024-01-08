@@ -7,6 +7,8 @@ namespace Core
         public const float HEX_APOTHEM = 0.86602540378f;
         public const float HEX_RADIUS = 1f;
         public const float HEX_HEIGHT = .5f;
+        public const float HEX_WIDTH = HEX_APOTHEM * 2f;
+        public const float HEX_LENGTH = HEX_RADIUS * 2f;
 
         // Picking up items, plucking bushes, what not
         public const float InteractionRange_Sq = 1f * 1f;

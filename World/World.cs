@@ -47,6 +47,8 @@ namespace Core
             {
                 projectile.Tick(deltaTime);
             }
+
+            CleanupOutOfBoundsItems();
         }
 
         public void AddCharacter(Character character)
@@ -336,7 +338,12 @@ namespace Core
 
         private void CleanupOutOfBoundsItems()
         {
-            List<ulong> toRemove = new List<ulong>();
+            if (ItemObjects.Count == 0)
+            {
+                return;
+            }
+
+            List<ulong> toRemove = new();
             foreach (var kvp in ItemObjects)
             {
                 if (!Terrain.IsInBounds(kvp.Value.Position))
