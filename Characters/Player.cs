@@ -8,7 +8,6 @@ namespace Core
     {
         public override CharacterType Type => CharacterType.Player;
         public WornItems WornItems => this.GetComponent<WornItems>();
-        public ActiveItems ActiveItems => this.GetComponent<ActiveItems>();
         private static readonly string name = "Traveler";
         public override string Name => name;
 

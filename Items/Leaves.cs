@@ -8,6 +8,6 @@ namespace Core
         private const string name = "Leaves";
         public override string Name => name;
         public override string? ChemicalFormula => null;
-        public override uint MaxStack => 64;
+        public override ulong MaxStack => 64;
     }
 }

@@ -5,7 +5,7 @@ namespace Core
     public class IronPickaxe : Item
     {
         public override ItemType Type => ItemType.IronPickaxe;
-        public override uint MaxStack => 1;
+        public override ulong MaxStack => 1;
         public override Dictionary<ItemType, uint> Recipe => recipe;
         private const string name = "Iron pickaxe";
         public override string Name => name;

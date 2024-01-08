@@ -5,7 +5,7 @@ namespace Core
     public class Arrowhead : Item
     {
         public override ItemType Type => ItemType.Arrowhead;
-        public override uint MaxStack => 16;
+        public override ulong MaxStack => 16;
         public override Dictionary<ItemType, uint> Recipe => recipe;
         private const string name = "Arrowhead";
         public override string Name => name;

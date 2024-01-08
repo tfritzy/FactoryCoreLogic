@@ -8,7 +8,7 @@ namespace Core
         private const string name = "Limestone";
         public override string Name => name;
         public override string? ChemicalFormula => "CaCO₃";
-        public override uint MaxStack => 200_000_000;
+        public override ulong MaxStack => 200_000_000;
         public override UnitType Units => UnitType.Milligram;
     }
 }

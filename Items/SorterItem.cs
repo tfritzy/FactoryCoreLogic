@@ -5,7 +5,7 @@ namespace Core
     public class SorterItem : Item
     {
         public override ItemType Type => ItemType.Sorter;
-        public override uint MaxStack => 1;
+        public override ulong MaxStack => 1;
         public override CharacterType? Builds => CharacterType.Sorter;
         private const string name = "Sorter";
         public override string Name => name;

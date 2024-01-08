@@ -17,6 +17,7 @@ namespace Core
         public abstract string Name { get; }
 
         public Inventory? Inventory => GetComponent<Inventory>();
+        public ActiveItems? ActiveItems => this.GetComponent<ActiveItems>();
         public ConveyorComponent? Conveyor => GetComponent<ConveyorComponent>();
 
         public Entity(Context context)
@@ -84,5 +85,47 @@ namespace Core
         }
 
         public abstract void Destroy();
+
+        public bool CanGiveItem(Item item)
+        {
+            if (ActiveItems != null)
+            {
+                if (ActiveItems.CanAddItem(item))
+                {
+                    return true;
+                }
+            }
+
+            if (Inventory != null)
+            {
+                if (Inventory.CanAddItem(item))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool GiveItem(Item item)
+        {
+            if (ActiveItems != null)
+            {
+                if (ActiveItems.AddItem(item))
+                {
+                    return true;
+                }
+            }
+
+            if (Inventory != null)
+            {
+                if (Inventory.AddItem(item))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

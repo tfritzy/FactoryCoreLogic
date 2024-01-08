@@ -13,7 +13,7 @@ namespace Core
         public ulong Id { get; set; }
 
         public virtual float Width => 0.3f;
-        public virtual uint MaxStack => 1;
+        public virtual ulong MaxStack => 1;
         public virtual Dictionary<ItemType, uint>? Recipe => null;
         public virtual CharacterType? Builds => null;
         public virtual PlacedTriangleMetadata[]? Places => null;

@@ -5,7 +5,7 @@ namespace Core
     public class Log : Item
     {
         public override ItemType Type => ItemType.Log;
-        public override uint MaxStack => 4;
+        public override ulong MaxStack => 4;
         public override Dictionary<ItemType, uint>? Recipe => null;
         private const string name = "Log";
         public override string Name => name;

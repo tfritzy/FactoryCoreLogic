@@ -5,7 +5,7 @@ namespace Core
     public class IronBar : Item
     {
         public override ItemType Type => ItemType.IronBar;
-        public override uint MaxStack => 8;
+        public override ulong MaxStack => 8;
         public override Dictionary<ItemType, uint>? Recipe => null;
         private const string name = "Iron bar";
         public override string Name => name;

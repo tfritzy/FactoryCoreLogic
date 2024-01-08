@@ -8,6 +8,6 @@ namespace Core
         private const string name = "Stick";
         public override string Name => name;
         public override string? ChemicalFormula => "C₆H₁₀O₅";
-        public override uint MaxStack => 64;
+        public override ulong MaxStack => 64;
     }
 }

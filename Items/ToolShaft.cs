@@ -5,7 +5,7 @@ namespace Core
     public class ToolShaft : Item
     {
         public override ItemType Type => ItemType.ToolShaft;
-        public override uint MaxStack => 8;
+        public override ulong MaxStack => 8;
         public override Dictionary<ItemType, uint> Recipe => recipe;
         private const string name = "Tool shaft";
         public override string Name => name;

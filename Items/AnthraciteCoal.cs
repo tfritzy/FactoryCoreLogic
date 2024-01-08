@@ -3,7 +3,7 @@ namespace Core
     public class AnthraciteCoal : Item
     {
         public override ItemType Type => ItemType.AnthraciteCoal;
-        public override uint MaxStack => 50_000_000;
+        public override ulong MaxStack => 50_000_000;
         public override UnitType Units => UnitType.Milligram;
         public AnthraciteCoal(ulong quantity) : base(quantity) { }
         override public float Width => .3f;

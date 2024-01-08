@@ -332,8 +332,15 @@ namespace Core
                 return;
             }
 
-            RemoveItemObject(itemId);
-            picker.Inventory.AddItem(itemObject.Item);
+            bool fullyGiven = picker.GiveItem(itemObject.Item);
+            if (!fullyGiven)
+            {
+                SetItemObjectPos(itemId, itemObject.Position + Point3Float.Up * .5f, itemObject.Rotation);
+            }
+            else
+            {
+                RemoveItemObject(itemId);
+            }
         }
 
         private void CleanupOutOfBoundsItems()
