@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Core
 {
     public class ProjectileRemoved : Update

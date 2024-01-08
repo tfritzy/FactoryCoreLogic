@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Core
 {
     // Hidden can mean destroyed in this context. They're the same
