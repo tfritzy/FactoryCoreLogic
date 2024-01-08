@@ -16,7 +16,7 @@ namespace Core
 
         public override Schema.Component ToSchema()
         {
-            throw new System.NotImplementedException();
+            return new Schema.CommandComponent();
         }
 
         public void ReplaceCommands(Command command)

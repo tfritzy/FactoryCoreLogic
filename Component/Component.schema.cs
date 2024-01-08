@@ -28,7 +28,8 @@ namespace Schema
             { ComponentType.TowerTargeting, typeof(TowerTargeting) },
             { ComponentType.Mine, typeof(Mine) },
             { ComponentType.ItemPort, typeof(ItemOutput) },
-            { ComponentType.Smelt, typeof(Smelt) }
+            { ComponentType.Smelt, typeof(Smelt) },
+            { ComponentType.Command, typeof(CommandComponent) }
         };
 
         public override bool CanConvert(Type objectType)

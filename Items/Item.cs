@@ -65,7 +65,7 @@ namespace Core
         public void SetQuantity(ulong quantity)
         {
             if (quantity > MaxStack)
-                throw new InvalidOperationException("Cannot set quantity, would exceed max stack size.");
+                throw new InvalidOperationException($"Cannot set quantity to {quantity} on {Type}, would exceed max stack size of {MaxStack}.");
 
             Quantity = quantity;
         }

@@ -333,5 +333,22 @@ namespace Core
             RemoveItemObject(itemId);
             picker.Inventory.AddItem(itemObject.Item);
         }
+
+        private void CleanupOutOfBoundsItems()
+        {
+            List<ulong> toRemove = new List<ulong>();
+            foreach (var kvp in ItemObjects)
+            {
+                if (!Terrain.IsInBounds(kvp.Value.Position))
+                {
+                    toRemove.Add(kvp.Key);
+                }
+            }
+
+            foreach (ulong id in toRemove)
+            {
+                RemoveItemObject(id);
+            }
+        }
     }
 }
