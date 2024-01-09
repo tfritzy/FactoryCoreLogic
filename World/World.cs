@@ -267,15 +267,18 @@ namespace Core
             var stick = new Stick(1);
             var leaves = new Leaves(1);
 
-            if (plucker.Inventory != null && plucker.Inventory.CanAddItem(stick))
-                plucker.Inventory!.AddItem(stick);
-            else
-                AddItemObject(stick, plucker.Location, Point3Float.Zero);
+            bool sticksGiven = plucker.GiveItem(stick);
+            bool leavesGiven = plucker.GiveItem(leaves);
 
-            if (plucker.Inventory != null && plucker.Inventory.CanAddItem(leaves))
-                plucker.Inventory!.AddItem(leaves);
-            else
-                AddItemObject(leaves, plucker.Location, Point3Float.Zero);
+            if (!sticksGiven)
+            {
+                AddItemObject(stick, bushPos + Point3Float.Up * .5f, Point3Float.Zero);
+            }
+
+            if (!leavesGiven)
+            {
+                AddItemObject(leaves, bushPos + Point3Float.Up * .5f, Point3Float.Zero);
+            }
 
             UnseenUpdates.AddLast(new VegetationChange(pos, VegetationType.StrippedBush));
             return true;
