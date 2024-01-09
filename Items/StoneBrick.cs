@@ -1,3 +1,5 @@
+using Schema;
+
 namespace Core
 {
     public class LimestoneBrick : Item
@@ -14,7 +16,7 @@ namespace Core
         {
             new Item.PlacedTriangleMetadata
             {
-                Triangle = new Triangle(TriangleType.Stone, TriangleSubType.FullBrick),
+                Triangle = new Triangle{Type = TriangleType.Stone, SubType = TriangleSubType.FullBrick},
                 PositionOffset = new HexSide[] {},
                 RotationOffset = HexSide.NorthEast,
             }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Schema;
 
 namespace Core
 {
@@ -244,7 +245,7 @@ namespace Core
                 return false;
             }
 
-            if (Terrain.Vegetation[pos.x, pos.y] != VegetationType.Bush)
+            if (Terrain.TerrainObjects[pos.x, pos.y] != VegetationType.Bush)
             {
                 return false;
             }
@@ -262,7 +263,7 @@ namespace Core
                 return false;
             }
 
-            Terrain.Vegetation[pos.x, pos.y] = VegetationType.StrippedBush;
+            Terrain.TerrainObjects[pos.x, pos.y] = VegetationType.StrippedBush;
 
             var stick = new Stick(1);
             var leaves = new Leaves(1);

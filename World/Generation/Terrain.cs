@@ -1,20 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using Core;
-using Newtonsoft.Json;
 using Noise;
+using Schema;
 
 namespace Core
 {
     public class Terrain
     {
         public readonly Triangle?[]?[,,] TerrainData;
-        public int MaxX => this.TerrainData.GetLength(0);
-        public int MaxY => this.TerrainData.GetLength(1);
-        public int MaxZ => this.TerrainData.GetLength(2);
-        public readonly VegetationType?[,] Vegetation;
+        public int MaxX => TerrainData.GetLength(0);
+        public int MaxY => TerrainData.GetLength(1);
+        public int MaxZ => TerrainData.GetLength(2);
+        public readonly VegetationType?[,] TerrainObjects;
         public Point3Float MaxBounds;
         public Point3Float MinBounds;
 
@@ -24,7 +21,7 @@ namespace Core
         {
             this.context = context;
             TerrainData = new Triangle?[]?[Types.GetLength(0), Types.GetLength(1), Types.GetLength(2)];
-            Vegetation = new VegetationType?[Types.GetLength(0), Types.GetLength(1)];
+            TerrainObjects = new VegetationType?[Types.GetLength(0), Types.GetLength(1)];
 
             MaxBounds = new Point3Float(
                 (MaxX + 1) * Constants.HEX_WIDTH,
@@ -46,9 +43,11 @@ namespace Core
                             var triangles = new Triangle?[6];
                             for (int i = 0; i < 6; i++)
                             {
-                                triangles[i] = new Triangle(
-                                    Types[x, y, z]!.Value,
-                                    TriangleData.AvailableSubTypes[Types[x, y, z]!.Value][0]);
+                                triangles[i] = new Triangle
+                                {
+                                    Type = Types[x, y, z]!.Value,
+                                    SubType = TriangleData.AvailableSubTypes[Types[x, y, z]!.Value][0]
+                                };
                             }
 
                             TerrainData[x, y, z] = triangles;
@@ -93,9 +92,9 @@ namespace Core
             OpenSimplexNoise pineNoise = new OpenSimplexNoise(r.Next());
             OpenSimplexNoise treeThinningNoise = new OpenSimplexNoise(r.Next());
 
-            for (int x = 0; x < Vegetation.GetLength(0); x++)
+            for (int x = 0; x < TerrainObjects.GetLength(0); x++)
             {
-                for (int y = 0; y < Vegetation.GetLength(1); y++)
+                for (int y = 0; y < TerrainObjects.GetLength(1); y++)
                 {
                     double birchVal = birchNoise.Evaluate(x / 2f, y / 2f);
                     birchVal = (birchVal + 1) / 2;
@@ -111,19 +110,19 @@ namespace Core
                     double mushroomValue = r.NextDouble();
                     if (birchVal > 0.8)
                     {
-                        Vegetation[x, y] = VegetationType.BirchTree;
+                        TerrainObjects[x, y] = VegetationType.BirchTree;
                     }
                     else if (pineVal > 0.8)
                     {
-                        Vegetation[x, y] = VegetationType.PineTree;
+                        TerrainObjects[x, y] = VegetationType.PineTree;
                     }
                     else if (flaxVal > 0.99)
                     {
-                        Vegetation[x, y] = VegetationType.Bush;
+                        TerrainObjects[x, y] = VegetationType.Bush;
                     }
                     else if (mushroomValue > 0.98)
                     {
-                        Vegetation[x, y] = VegetationType.Mushroom;
+                        TerrainObjects[x, y] = VegetationType.Mushroom;
                     }
                 }
             }
@@ -439,7 +438,7 @@ namespace Core
                 return null;
             }
 
-            return Vegetation[pos.x, pos.y];
+            return TerrainObjects[pos.x, pos.y];
         }
     }
 }
