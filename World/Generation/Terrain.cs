@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Noise;
 using Schema;
 
 namespace Core
 {
-    public class Terrain
+    public class Terrain : ISchema<SchemaTerrain>
     {
         public readonly Triangle?[]?[,,] TerrainData;
         public int MaxX => TerrainData.GetLength(0);
@@ -16,6 +17,17 @@ namespace Core
         public Point3Float MinBounds;
 
         private Context context;
+
+        public Terrain(SchemaTerrain schema, Context context) : this(ParseTerrainData(schema), context)
+        {
+        }
+
+        public Terrain(Triangle?[]?[,,] terrainData, Context context)
+        {
+            this.TerrainData = terrainData;
+            this.context = context;
+            TerrainObjects = new VegetationType?[terrainData.GetLength(0), terrainData.GetLength(1)];
+        }
 
         public Terrain(TriangleType?[,,] Types, Context context)
         {
@@ -235,18 +247,81 @@ namespace Core
             return true;
         }
 
-        public Terrain(Triangle?[]?[,,] TerrainData, Context context)
+
+        private static Triangle?[]?[,,] ParseTerrainData(SchemaTerrain schema)
         {
-            this.TerrainData = TerrainData;
-            this.context = context;
+            Triangle?[]?[,,] data = new Triangle?[]?[schema.XLength, schema.YLength, schema.ZLength];
+            for (int x = 0; x < schema.XLength; x++)
+            {
+                for (int y = 0; y < schema.YLength; y++)
+                {
+                    for (int z = 0; z < schema.ZLength; z++)
+                    {
+                        Schema.NullableHex hex = schema.FlatTerrainData[
+                            x * schema.YLength * schema.ZLength + y * schema.ZLength + z];
+                        switch (hex.ValueCase)
+                        {
+                            case NullableHex.ValueOneofCase.Hex:
+                                data[x, y, z] = hex.Hex.Tris.ToArray();
+                                break;
+                            case NullableHex.ValueOneofCase.NullValue:
+                                break;
+                            case NullableHex.ValueOneofCase.None:
+                                break;
+                        }
+                    }
+                }
+            }
+
+            return data;
         }
 
-        public Schema.Terrain ToSchema()
+        private static Schema.NullableHex[] FlattenTerrainData(Triangle?[]?[,,] terrainData)
         {
-            return new Schema.Terrain()
+            Schema.NullableHex[] data = new Schema.NullableHex[
+                terrainData.GetLength(0) * terrainData.GetLength(1) * terrainData.GetLength(2)];
+            for (int x = 0; x < terrainData.GetLength(0); x++)
             {
-                TerrainData = this.TerrainData,
+                for (int y = 0; y < terrainData.GetLength(1); y++)
+                {
+                    for (int z = 0; z < terrainData.GetLength(2); z++)
+                    {
+                        if (terrainData[x, y, z] == null)
+                        {
+                            data[
+                                x * terrainData.GetLength(1) * terrainData.GetLength(2) +
+                                y * terrainData.GetLength(2) + z] =
+                                    new Schema.NullableHex { NullValue = new() };
+                        }
+                        else
+                        {
+                            var hex = new Schema.Hex();
+                            hex.Tris.AddRange(terrainData[x, y, z]!);
+                            data[
+                                x * terrainData.GetLength(1) * terrainData.GetLength(2) +
+                                y * terrainData.GetLength(2) + z] = new Schema.NullableHex { Hex = hex };
+                        }
+                    }
+                }
+            }
+
+            return data;
+        }
+
+        public SchemaTerrain ToSchema()
+        {
+            return new SchemaTerrain()
+            {
+                FlatTerrainData = { FlattenTerrainData(TerrainData) },
+                XLength = MaxX,
+                YLength = MaxY,
+                ZLength = MaxZ
             };
+        }
+
+        public static Terrain FromSchema(SchemaTerrain schema, params object[] context)
+        {
+            return new Terrain(schema, (Context)context[0]);
         }
 
         public Triangle?[]? GetAt(Point3Int location)

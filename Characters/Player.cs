@@ -32,7 +32,7 @@ namespace Core
 
         public Building? BuidPreviewBuildingFromItem(int itemIndex, Point2Int location)
         {
-            Item? item = this.ActiveItems.GetItemAt(itemIndex);
+            Item? item = ActiveItems?.GetItemAt(itemIndex);
             if (item == null)
             {
                 return null;
@@ -57,7 +57,12 @@ namespace Core
 
         public void MakePreviewBuildingRealFromItem(int itemIndex, Building building)
         {
-            Item? item = this.ActiveItems.GetItemAt(itemIndex);
+            if (ActiveItems == null)
+            {
+                return;
+            }
+
+            Item? item = ActiveItems.GetItemAt(itemIndex);
             if (item == null)
             {
                 return;
@@ -73,13 +78,18 @@ namespace Core
                 return;
             }
 
-            this.ActiveItems.DecrementCountOf(itemIndex, 1);
+            ActiveItems.DecrementCountOf(itemIndex, 1);
             building.ClearPreview();
         }
 
         public void PlaceBlockFromItem(int itemIndex, Point3Int location, HexSide subIndex)
         {
-            Item? item = this.ActiveItems.GetItemAt(itemIndex);
+            if (ActiveItems == null)
+            {
+                return;
+            }
+
+            Item? item = ActiveItems.GetItemAt(itemIndex);
             if (item == null)
                 return;
 
@@ -91,7 +101,7 @@ namespace Core
             if (toPlace == null)
                 return;
 
-            this.ActiveItems.DecrementCountOf(itemIndex, 1);
+            ActiveItems.DecrementCountOf(itemIndex, 1);
 
             List<Point3Int> locations = new List<Point3Int>();
             List<HexSide> subIndices = new List<HexSide>();

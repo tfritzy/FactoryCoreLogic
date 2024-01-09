@@ -7,7 +7,7 @@ namespace Schema
     public class World : SchemaOf<Core.World>
     {
         [JsonProperty("terrain")]
-        public Schema.Terrain? Terrain;
+        public byte[]? Terrain;
 
         [JsonProperty("buildings")]
         public Dictionary<Point2Int, ulong>? Buildings;
@@ -25,7 +25,8 @@ namespace Schema
 
             Core.World world = new Core.World();
             Context worldContext = new Context(world);
-            world.SetTerrain(Terrain.FromSchema(worldContext));
+            SchemaTerrain terrain = SchemaTerrain.Parser.ParseFrom(Terrain);
+            world.SetTerrain(new Core.Terrain(terrain, worldContext));
 
             if (Characters != null)
             {

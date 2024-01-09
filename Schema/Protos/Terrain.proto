@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package schema;
+
+enum TriangleType {
+    TypeInvalid = 0;
+    Dirt = 1;
+    Stone = 2;
+    StoneBrick = 3;
+    Water = 4;
+}
+
+enum TriangleSubType
+{
+    SubInvalid = 0;
+    LandActuallyFull = 1; // Optimization to combine 6 full triangles into 1. Doesn't actually live in the datastructure
+    LandFull = 2;
+    LandInnyLeft = 3;
+    LandInnyRight = 4;
+    LandInnyBoth = 5;
+    LandOuty = 6;
+    BrickHalf = 7;
+    FullBrick = 8;
+    Liquid = 9;
+}
+
+enum TerrainObjectType
+{
+    BirchTree = 0;
+    PineTree = 1;
+    StrippedBush = 2;
+    Bush = 3;
+    Mushroom = 4;
+}
+
+message SchemaTerrainObject {
+    TerrainObjectType type = 1;
+    float percentHarvested = 2;
+}
+
+message Triangle {
+    TriangleType type = 1;
+    TriangleSubType SubType = 2;
+}
+
+message Hex {
+    repeated Triangle tris = 1;
+}
+
+message NullValue { }
+
+message NullableHex {
+    oneof value {
+        Hex hex = 1;
+        NullValue null_value = 2;
+    }
+}
+
+message SchemaTerrain {
+    repeated NullableHex flat_terrain_data = 1;
+    int32 xLength = 2; 
+    int32 yLength = 3; 
+    int32 zLength = 4; 
+}

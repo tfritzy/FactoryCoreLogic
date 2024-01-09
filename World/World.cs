@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Google.Protobuf;
 using Newtonsoft.Json;
 using Schema;
 
@@ -141,7 +142,7 @@ namespace Core
         {
             return new Schema.World
             {
-                Terrain = Terrain.ToSchema(),
+                Terrain = Terrain.ToSchema().ToByteArray(),
                 Buildings = this.Buildings
                     .Where(kvp => !this.Characters[kvp.Value].IsPreview)
                     .ToDictionary(
