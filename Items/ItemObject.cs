@@ -1,3 +1,5 @@
+using Schema;
+
 namespace Core
 {
     // An object living in the world as an object. rolls around with physics
@@ -15,14 +17,23 @@ namespace Core
             this.Rotation = rotation;
         }
 
-        public Schema.ItemObject ToSchema()
+        public SchemaItemObject ToSchema()
         {
-            return new Schema.ItemObject()
+            return new SchemaItemObject()
             {
                 Item = Item.ToSchema(),
-                Position = Position,
-                Rotation = Rotation,
+                Position = Position.ToSchema(),
+                Rotation = Rotation.ToSchema(),
             };
+        }
+
+        public static ItemObject FromSchema(SchemaItemObject schema)
+        {
+            return new ItemObject(
+                Item.FromSchema(schema.Item),
+                Point3Float.FromSchema(schema.Position),
+                Point3Float.FromSchema(schema.Rotation)
+            );
         }
     }
 }

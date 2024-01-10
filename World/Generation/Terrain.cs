@@ -6,7 +6,7 @@ using Schema;
 
 namespace Core
 {
-    public class Terrain : ISchema<SchemaTerrain>
+    public class Terrain
     {
         public readonly Triangle?[]?[,,] TerrainData;
         public int MaxX => TerrainData.GetLength(0);

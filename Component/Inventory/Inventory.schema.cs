@@ -10,7 +10,7 @@ namespace Schema
         public override ComponentType Type => ComponentType.Inventory;
 
         [JsonProperty("items")]
-        public Item?[]? Items { get; set; }
+        public SchemaItem?[]? Items { get; set; }
 
         [JsonProperty("w")]
         public int Width;
@@ -28,7 +28,7 @@ namespace Schema
             if (Items == null)
                 throw new ArgumentException("To build an InventoryComponent, Items must not be null.");
 
-            Core.Item?[] items = this.Items.Select(item => item?.FromSchema()).ToArray();
+            Core.Item?[] items = Items.Select(i => i != null ? Item.FromSchema(i) : null).ToArray();
 
             return new Core.Inventory(owner, items, Width, Height);
         }

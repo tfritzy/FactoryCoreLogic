@@ -24,32 +24,25 @@ namespace Schema {
     static TerrainReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg1UZXJyYWluLnByb3RvEgZzY2hlbWEiPgoTU2NoZW1hVGVycmFpbk9iamVj",
-            "dBInCgR0eXBlGAEgASgOMhkuc2NoZW1hLlRlcnJhaW5PYmplY3RUeXBlIn4K",
-            "G051bGxhYmxlU2NoZW1hVGVycmFpbk9iamVjdBItCgZvYmplY3QYASABKAsy",
-            "Gy5zY2hlbWEuU2NoZW1hVGVycmFpbk9iamVjdEgAEicKCm51bGxfdmFsdWUY",
-            "AiABKAsyES5zY2hlbWEuTnVsbFZhbHVlSABCBwoFdmFsdWUiWAoIVHJpYW5n",
-            "bGUSIgoEdHlwZRgBIAEoDjIULnNjaGVtYS5UcmlhbmdsZVR5cGUSKAoHU3Vi",
-            "VHlwZRgCIAEoDjIXLnNjaGVtYS5UcmlhbmdsZVN1YlR5cGUiJQoDSGV4Eh4K",
-            "BHRyaXMYASADKAsyEC5zY2hlbWEuVHJpYW5nbGUiCwoJTnVsbFZhbHVlIlsK",
-            "C051bGxhYmxlSGV4EhoKA2hleBgBIAEoCzILLnNjaGVtYS5IZXhIABInCgpu",
-            "dWxsX3ZhbHVlGAIgASgLMhEuc2NoZW1hLk51bGxWYWx1ZUgAQgcKBXZhbHVl",
-            "ItYBCg1TY2hlbWFUZXJyYWluEi4KEWZsYXRfdGVycmFpbl9kYXRhGAEgAygL",
-            "MhMuc2NoZW1hLk51bGxhYmxlSGV4Eg8KB3hMZW5ndGgYAiABKAUSDwoHeUxl",
-            "bmd0aBgDIAEoBRIPCgd6TGVuZ3RoGAQgASgFEjQKB29iamVjdHMYBSADKAsy",
-            "Iy5zY2hlbWEuTnVsbGFibGVTY2hlbWFUZXJyYWluT2JqZWN0EhUKDXhPYmpl",
-            "Y3RMZW5ndGgYBiABKAUSFQoNeU9iamVjdExlbmd0aBgHIAEoBSpPCgxUcmlh",
-            "bmdsZVR5cGUSDwoLVHlwZUludmFsaWQQABIICgREaXJ0EAESCQoFU3RvbmUQ",
-            "AhIOCgpTdG9uZUJyaWNrEAMSCQoFV2F0ZXIQBCq0AQoPVHJpYW5nbGVTdWJU",
-            "eXBlEg4KClN1YkludmFsaWQQABIUChBMYW5kQWN0dWFsbHlGdWxsEAESDAoI",
-            "TGFuZEZ1bGwQAhIQCgxMYW5kSW5ueUxlZnQQAxIRCg1MYW5kSW5ueVJpZ2h0",
-            "EAQSEAoMTGFuZElubnlCb3RoEAUSDAoITGFuZE91dHkQBhINCglCcmlja0hh",
-            "bGYQBxINCglGdWxsQnJpY2sQCBIKCgZMaXF1aWQQCSpaChFUZXJyYWluT2Jq",
-            "ZWN0VHlwZRINCglCaXJjaFRyZWUQABIMCghQaW5lVHJlZRABEhAKDFN0cmlw",
-            "cGVkQnVzaBACEggKBEJ1c2gQAxIMCghNdXNocm9vbRAEYgZwcm90bzM="));
+            "Cg1UZXJyYWluLnByb3RvEgZzY2hlbWEaE1RyaWFuZ2xlVHlwZXMucHJvdG8i",
+            "PAoTU2NoZW1hVGVycmFpbk9iamVjdBIlCgR0eXBlGAEgASgOMhcuY29yZS5U",
+            "ZXJyYWluT2JqZWN0VHlwZSJ+ChtOdWxsYWJsZVNjaGVtYVRlcnJhaW5PYmpl",
+            "Y3QSLQoGb2JqZWN0GAEgASgLMhsuc2NoZW1hLlNjaGVtYVRlcnJhaW5PYmpl",
+            "Y3RIABInCgpudWxsX3ZhbHVlGAIgASgLMhEuc2NoZW1hLk51bGxWYWx1ZUgA",
+            "QgcKBXZhbHVlIlQKCFRyaWFuZ2xlEiAKBHR5cGUYASABKA4yEi5jb3JlLlRy",
+            "aWFuZ2xlVHlwZRImCgdTdWJUeXBlGAIgASgOMhUuY29yZS5UcmlhbmdsZVN1",
+            "YlR5cGUiJQoDSGV4Eh4KBHRyaXMYASADKAsyEC5zY2hlbWEuVHJpYW5nbGUi",
+            "CwoJTnVsbFZhbHVlIlsKC051bGxhYmxlSGV4EhoKA2hleBgBIAEoCzILLnNj",
+            "aGVtYS5IZXhIABInCgpudWxsX3ZhbHVlGAIgASgLMhEuc2NoZW1hLk51bGxW",
+            "YWx1ZUgAQgcKBXZhbHVlItYBCg1TY2hlbWFUZXJyYWluEi4KEWZsYXRfdGVy",
+            "cmFpbl9kYXRhGAEgAygLMhMuc2NoZW1hLk51bGxhYmxlSGV4Eg8KB3hMZW5n",
+            "dGgYAiABKAUSDwoHeUxlbmd0aBgDIAEoBRIPCgd6TGVuZ3RoGAQgASgFEjQK",
+            "B29iamVjdHMYBSADKAsyIy5zY2hlbWEuTnVsbGFibGVTY2hlbWFUZXJyYWlu",
+            "T2JqZWN0EhUKDXhPYmplY3RMZW5ndGgYBiABKAUSFQoNeU9iamVjdExlbmd0",
+            "aBgHIAEoBWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Schema.TriangleType), typeof(global::Schema.TriangleSubType), typeof(global::Schema.TerrainObjectType), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::FileDescriptor[] { global::Core.TriangleTypesReflection.Descriptor, },
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.SchemaTerrainObject), global::Schema.SchemaTerrainObject.Parser, new[]{ "Type" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.NullableSchemaTerrainObject), global::Schema.NullableSchemaTerrainObject.Parser, new[]{ "Object", "NullValue" }, new[]{ "Value" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Triangle), global::Schema.Triangle.Parser, new[]{ "Type", "SubType" }, null, null, null, null),
@@ -62,41 +55,6 @@ namespace Schema {
     #endregion
 
   }
-  #region Enums
-  public enum TriangleType {
-    [pbr::OriginalName("TypeInvalid")] TypeInvalid = 0,
-    [pbr::OriginalName("Dirt")] Dirt = 1,
-    [pbr::OriginalName("Stone")] Stone = 2,
-    [pbr::OriginalName("StoneBrick")] StoneBrick = 3,
-    [pbr::OriginalName("Water")] Water = 4,
-  }
-
-  public enum TriangleSubType {
-    [pbr::OriginalName("SubInvalid")] SubInvalid = 0,
-    /// <summary>
-    /// Optimization to combine 6 full triangles into 1. Doesn't actually live in the datastructure
-    /// </summary>
-    [pbr::OriginalName("LandActuallyFull")] LandActuallyFull = 1,
-    [pbr::OriginalName("LandFull")] LandFull = 2,
-    [pbr::OriginalName("LandInnyLeft")] LandInnyLeft = 3,
-    [pbr::OriginalName("LandInnyRight")] LandInnyRight = 4,
-    [pbr::OriginalName("LandInnyBoth")] LandInnyBoth = 5,
-    [pbr::OriginalName("LandOuty")] LandOuty = 6,
-    [pbr::OriginalName("BrickHalf")] BrickHalf = 7,
-    [pbr::OriginalName("FullBrick")] FullBrick = 8,
-    [pbr::OriginalName("Liquid")] Liquid = 9,
-  }
-
-  public enum TerrainObjectType {
-    [pbr::OriginalName("BirchTree")] BirchTree = 0,
-    [pbr::OriginalName("PineTree")] PineTree = 1,
-    [pbr::OriginalName("StrippedBush")] StrippedBush = 2,
-    [pbr::OriginalName("Bush")] Bush = 3,
-    [pbr::OriginalName("Mushroom")] Mushroom = 4,
-  }
-
-  #endregion
-
   #region Messages
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SchemaTerrainObject : pb::IMessage<SchemaTerrainObject>
@@ -145,10 +103,10 @@ namespace Schema {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::Schema.TerrainObjectType type_ = global::Schema.TerrainObjectType.BirchTree;
+    private global::Core.TerrainObjectType type_ = global::Core.TerrainObjectType.BirchTree;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Schema.TerrainObjectType Type {
+    public global::Core.TerrainObjectType Type {
       get { return type_; }
       set {
         type_ = value;
@@ -178,7 +136,7 @@ namespace Schema {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::Schema.TerrainObjectType.BirchTree) hash ^= Type.GetHashCode();
+      if (Type != global::Core.TerrainObjectType.BirchTree) hash ^= Type.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -197,7 +155,7 @@ namespace Schema {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::Schema.TerrainObjectType.BirchTree) {
+      if (Type != global::Core.TerrainObjectType.BirchTree) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -211,7 +169,7 @@ namespace Schema {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::Schema.TerrainObjectType.BirchTree) {
+      if (Type != global::Core.TerrainObjectType.BirchTree) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -225,7 +183,7 @@ namespace Schema {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::Schema.TerrainObjectType.BirchTree) {
+      if (Type != global::Core.TerrainObjectType.BirchTree) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (_unknownFields != null) {
@@ -240,7 +198,7 @@ namespace Schema {
       if (other == null) {
         return;
       }
-      if (other.Type != global::Schema.TerrainObjectType.BirchTree) {
+      if (other.Type != global::Core.TerrainObjectType.BirchTree) {
         Type = other.Type;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -259,7 +217,7 @@ namespace Schema {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::Schema.TerrainObjectType) input.ReadEnum();
+            Type = (global::Core.TerrainObjectType) input.ReadEnum();
             break;
           }
         }
@@ -278,7 +236,7 @@ namespace Schema {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::Schema.TerrainObjectType) input.ReadEnum();
+            Type = (global::Core.TerrainObjectType) input.ReadEnum();
             break;
           }
         }
@@ -622,10 +580,10 @@ namespace Schema {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::Schema.TriangleType type_ = global::Schema.TriangleType.TypeInvalid;
+    private global::Core.TriangleType type_ = global::Core.TriangleType.TypeInvalid;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Schema.TriangleType Type {
+    public global::Core.TriangleType Type {
       get { return type_; }
       set {
         type_ = value;
@@ -634,10 +592,10 @@ namespace Schema {
 
     /// <summary>Field number for the "SubType" field.</summary>
     public const int SubTypeFieldNumber = 2;
-    private global::Schema.TriangleSubType subType_ = global::Schema.TriangleSubType.SubInvalid;
+    private global::Core.TriangleSubType subType_ = global::Core.TriangleSubType.SubInvalid;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Schema.TriangleSubType SubType {
+    public global::Core.TriangleSubType SubType {
       get { return subType_; }
       set {
         subType_ = value;
@@ -668,8 +626,8 @@ namespace Schema {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::Schema.TriangleType.TypeInvalid) hash ^= Type.GetHashCode();
-      if (SubType != global::Schema.TriangleSubType.SubInvalid) hash ^= SubType.GetHashCode();
+      if (Type != global::Core.TriangleType.TypeInvalid) hash ^= Type.GetHashCode();
+      if (SubType != global::Core.TriangleSubType.SubInvalid) hash ^= SubType.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -688,11 +646,11 @@ namespace Schema {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::Schema.TriangleType.TypeInvalid) {
+      if (Type != global::Core.TriangleType.TypeInvalid) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      if (SubType != global::Schema.TriangleSubType.SubInvalid) {
+      if (SubType != global::Core.TriangleSubType.SubInvalid) {
         output.WriteRawTag(16);
         output.WriteEnum((int) SubType);
       }
@@ -706,11 +664,11 @@ namespace Schema {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::Schema.TriangleType.TypeInvalid) {
+      if (Type != global::Core.TriangleType.TypeInvalid) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      if (SubType != global::Schema.TriangleSubType.SubInvalid) {
+      if (SubType != global::Core.TriangleSubType.SubInvalid) {
         output.WriteRawTag(16);
         output.WriteEnum((int) SubType);
       }
@@ -724,10 +682,10 @@ namespace Schema {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::Schema.TriangleType.TypeInvalid) {
+      if (Type != global::Core.TriangleType.TypeInvalid) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
-      if (SubType != global::Schema.TriangleSubType.SubInvalid) {
+      if (SubType != global::Core.TriangleSubType.SubInvalid) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) SubType);
       }
       if (_unknownFields != null) {
@@ -742,10 +700,10 @@ namespace Schema {
       if (other == null) {
         return;
       }
-      if (other.Type != global::Schema.TriangleType.TypeInvalid) {
+      if (other.Type != global::Core.TriangleType.TypeInvalid) {
         Type = other.Type;
       }
-      if (other.SubType != global::Schema.TriangleSubType.SubInvalid) {
+      if (other.SubType != global::Core.TriangleSubType.SubInvalid) {
         SubType = other.SubType;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -764,11 +722,11 @@ namespace Schema {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::Schema.TriangleType) input.ReadEnum();
+            Type = (global::Core.TriangleType) input.ReadEnum();
             break;
           }
           case 16: {
-            SubType = (global::Schema.TriangleSubType) input.ReadEnum();
+            SubType = (global::Core.TriangleSubType) input.ReadEnum();
             break;
           }
         }
@@ -787,11 +745,11 @@ namespace Schema {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::Schema.TriangleType) input.ReadEnum();
+            Type = (global::Core.TriangleType) input.ReadEnum();
             break;
           }
           case 16: {
-            SubType = (global::Schema.TriangleSubType) input.ReadEnum();
+            SubType = (global::Core.TriangleSubType) input.ReadEnum();
             break;
           }
         }

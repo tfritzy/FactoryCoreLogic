@@ -151,14 +151,21 @@ namespace Core
             }
         }
 
-        public Schema.Item ToSchema()
+        public SchemaItem ToSchema()
         {
-            return new Schema.Item()
+            return new SchemaItem()
             {
                 Type = Type,
                 Quantity = Quantity,
                 Id = Id
             };
+        }
+
+        public static Item FromSchema(SchemaItem schemaItem)
+        {
+            Item item = Create(schemaItem.Type, schemaItem.Quantity);
+            item.Id = schemaItem.Id;
+            return item;
         }
 
         public override bool Equals(object? obj)

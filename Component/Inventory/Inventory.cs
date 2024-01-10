@@ -2,6 +2,7 @@ using System; // Needed in 4.7.1
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Schema;
 
 namespace Core
 {

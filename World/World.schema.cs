@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Schema
 {
-    public class World : SchemaOf<Core.World>
+    public class World
     {
         [JsonProperty("terrain")]
         public byte[]? Terrain;
@@ -16,7 +16,7 @@ namespace Schema
         public Dictionary<ulong, Character>? Characters;
 
         [JsonProperty("items")]
-        public Dictionary<ulong, ItemObject>? ItemObject;
+        public SchemaItemObject[]? ItemObjects;
 
         public Core.World FromSchema(params object[] context)
         {
@@ -53,11 +53,11 @@ namespace Schema
                 }
             }
 
-            if (ItemObject != null)
+            if (ItemObjects != null)
             {
-                foreach (ulong itemId in ItemObject.Keys)
+                foreach (SchemaItemObject schemaItemObject in ItemObjects)
                 {
-                    Core.ItemObject itemObject = ItemObject[itemId].FromSchema(worldContext);
+                    Core.ItemObject itemObject = ItemObject.FromSchema(schemaItemObject);
                     world.AddItemObject(itemObject.Item, itemObject.Position, itemObject.Rotation);
                 }
             }

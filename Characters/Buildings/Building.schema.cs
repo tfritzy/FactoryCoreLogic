@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Schema
 {
-    public abstract class Building : Character, SchemaOf<Core.Building>
+    public abstract class Building : Character
     {
         [JsonProperty("rotation")]
         public HexSide Rotation { get; set; }

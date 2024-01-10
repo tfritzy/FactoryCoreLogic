@@ -1,11 +1,12 @@
+using Core;
 using Newtonsoft.Json;
 
 namespace Schema
 {
-    public class ItemOnBelt : SchemaOf<Core.ItemOnBelt>
+    public class ItemOnBelt
     {
         [JsonProperty("item")]
-        public Item? Item { get; set; }
+        public SchemaItem? Item { get; set; }
 
         [JsonProperty("progressMeters")]
         public float? ProgressMeters { get; set; }
@@ -18,7 +19,7 @@ namespace Schema
             if (ProgressMeters == null)
                 throw new System.ArgumentException("To build an ItemOnBelt, ProgressMeters must not be null.");
 
-            return new Core.ItemOnBelt(Item.FromSchema(), ProgressMeters.Value);
+            return new Core.ItemOnBelt(Core.Item.FromSchema(Item), ProgressMeters.Value);
         }
     }
 }

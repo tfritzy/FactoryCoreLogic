@@ -2,7 +2,7 @@ using Schema;
 
 namespace Core
 {
-    public class TerrainObject : ISchema<SchemaTerrainObject>
+    public class TerrainObject
     {
         public TerrainObjectType Type;
 

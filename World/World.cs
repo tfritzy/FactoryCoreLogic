@@ -143,20 +143,17 @@ namespace Core
             return new Schema.World
             {
                 Terrain = Terrain.ToSchema().ToByteArray(),
-                Buildings = this.Buildings
-                    .Where(kvp => !this.Characters[kvp.Value].IsPreview)
+                Buildings = Buildings
+                    .Where(kvp => !Characters[kvp.Value].IsPreview)
                     .ToDictionary(
                         kvp => new Point2Int(kvp.Key.x, kvp.Key.y),
                         kvp => kvp.Value),
-                Characters = this.Characters
+                Characters = Characters
                     .Where(kvp => !kvp.Value.IsPreview)
                     .ToDictionary(
                         kvp => kvp.Key,
                         kvp => (Schema.Character)kvp.Value.ToSchema()),
-                ItemObject = this.ItemObjects
-                    .ToDictionary(
-                        kvp => kvp.Key,
-                        kvp => kvp.Value.ToSchema()),
+                ItemObjects = ItemObjects.Values.Select(io => io.ToSchema()).ToArray(),
             };
         }
 

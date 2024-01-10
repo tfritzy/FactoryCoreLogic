@@ -1,6 +1,7 @@
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Schema;
 
 namespace Core
 {
@@ -109,6 +110,21 @@ namespace Core
         public override string ToString()
         {
             return $"({x}, {y}, {z})";
+        }
+
+        public SchemaPoint3Float ToSchema()
+        {
+            return new SchemaPoint3Float()
+            {
+                X = x,
+                Y = y,
+                Z = z
+            };
+        }
+
+        public static Point3Float FromSchema(SchemaPoint3Float schema)
+        {
+            return new Point3Float(schema.X, schema.Y, schema.Z);
         }
     }
 

@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package core;
+
+enum ItemType
+{
+    Invalid = 0;
+    Limestone = 1;
+    LimestoneBrick = 2;
+    LimestoneDoubleBrick = 3;
+    Dirt = 4;
+    Wood = 5;
+    Stick = 6;
+    Leaves = 7;
+    Arrowhead = 8;
+    ToolShaft = 9;
+    Log = 10;
+    IronBar = 11;
+    IronSiliconSlag = 12;
+    CopperBar = 13;
+    IronPickaxe = 14;
+    Conveyor = 15;
+    AnthraciteCoal = 16;
+    BituminousCoal = 17;
+    LigniteCoal = 18;
+    Mineshaft = 19;
+    ClayFurnace = 20;
+    Sorter = 21;
+    Depot = 22;
+    Chalcopyrite = 23;
+    Magnetite = 24;
+}

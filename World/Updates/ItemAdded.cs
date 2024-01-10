@@ -1,13 +1,13 @@
-using Newtonsoft.Json;
+using Schema;
 
 namespace Core
 {
     public class ItemObjectAdded : Update
     {
         public override UpdateType Type => UpdateType.ItemObjectAdded;
-        public Schema.ItemObject ItemObject;
+        public SchemaItemObject ItemObject;
 
-        public ItemObjectAdded(Schema.ItemObject itemObject)
+        public ItemObjectAdded(SchemaItemObject itemObject)
         {
             this.ItemObject = itemObject;
         }
