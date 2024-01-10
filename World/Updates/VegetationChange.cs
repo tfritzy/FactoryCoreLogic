@@ -3,13 +3,13 @@ using Schema;
 
 namespace Core
 {
-    public class VegetationChange : Update
+    public class TerrainObjectChange : Update
     {
-        public override UpdateType Type => UpdateType.VegetationChange;
+        public override UpdateType Type => UpdateType.TerrainObjectChange;
         public Point2Int GridPosition { get; private set; }
-        public VegetationType NewVegeType { get; private set; }
+        public TerrainObjectType NewVegeType { get; private set; }
 
-        public VegetationChange(Point2Int location, VegetationType newType)
+        public TerrainObjectChange(Point2Int location, TerrainObjectType newType)
         {
             GridPosition = location;
             NewVegeType = newType;

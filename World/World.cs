@@ -246,7 +246,7 @@ namespace Core
                 return false;
             }
 
-            if (Terrain.TerrainObjects[pos.x, pos.y] != VegetationType.Bush)
+            if (Terrain.TerrainObjects[pos.x, pos.y]?.Type != TerrainObjectType.Bush)
             {
                 return false;
             }
@@ -264,7 +264,7 @@ namespace Core
                 return false;
             }
 
-            Terrain.TerrainObjects[pos.x, pos.y] = VegetationType.StrippedBush;
+            Terrain.TerrainObjects[pos.x, pos.y] = new TerrainObject(TerrainObjectType.StrippedBush);
 
             var stick = new Stick(1);
             var leaves = new Leaves(1);
@@ -282,7 +282,7 @@ namespace Core
                 AddItemObject(leaves, bushPos + Point3Float.Up * .5f, Point3Float.Zero);
             }
 
-            UnseenUpdates.AddLast(new VegetationChange(pos, VegetationType.StrippedBush));
+            UnseenUpdates.AddLast(new TerrainObjectChange(pos, TerrainObjectType.StrippedBush));
             return true;
         }
 

@@ -24,34 +24,39 @@ namespace Schema {
     static TerrainReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg1UZXJyYWluLnByb3RvEgZzY2hlbWEiWAoTU2NoZW1hVGVycmFpbk9iamVj",
-            "dBInCgR0eXBlGAEgASgOMhkuc2NoZW1hLlRlcnJhaW5PYmplY3RUeXBlEhgK",
-            "EHBlcmNlbnRIYXJ2ZXN0ZWQYAiABKAIiWAoIVHJpYW5nbGUSIgoEdHlwZRgB",
-            "IAEoDjIULnNjaGVtYS5UcmlhbmdsZVR5cGUSKAoHU3ViVHlwZRgCIAEoDjIX",
-            "LnNjaGVtYS5UcmlhbmdsZVN1YlR5cGUiJQoDSGV4Eh4KBHRyaXMYASADKAsy",
-            "EC5zY2hlbWEuVHJpYW5nbGUiCwoJTnVsbFZhbHVlIlsKC051bGxhYmxlSGV4",
-            "EhoKA2hleBgBIAEoCzILLnNjaGVtYS5IZXhIABInCgpudWxsX3ZhbHVlGAIg",
-            "ASgLMhEuc2NoZW1hLk51bGxWYWx1ZUgAQgcKBXZhbHVlInIKDVNjaGVtYVRl",
-            "cnJhaW4SLgoRZmxhdF90ZXJyYWluX2RhdGEYASADKAsyEy5zY2hlbWEuTnVs",
-            "bGFibGVIZXgSDwoHeExlbmd0aBgCIAEoBRIPCgd5TGVuZ3RoGAMgASgFEg8K",
-            "B3pMZW5ndGgYBCABKAUqTwoMVHJpYW5nbGVUeXBlEg8KC1R5cGVJbnZhbGlk",
-            "EAASCAoERGlydBABEgkKBVN0b25lEAISDgoKU3RvbmVCcmljaxADEgkKBVdh",
-            "dGVyEAQqtAEKD1RyaWFuZ2xlU3ViVHlwZRIOCgpTdWJJbnZhbGlkEAASFAoQ",
-            "TGFuZEFjdHVhbGx5RnVsbBABEgwKCExhbmRGdWxsEAISEAoMTGFuZElubnlM",
-            "ZWZ0EAMSEQoNTGFuZElubnlSaWdodBAEEhAKDExhbmRJbm55Qm90aBAFEgwK",
-            "CExhbmRPdXR5EAYSDQoJQnJpY2tIYWxmEAcSDQoJRnVsbEJyaWNrEAgSCgoG",
-            "TGlxdWlkEAkqWgoRVGVycmFpbk9iamVjdFR5cGUSDQoJQmlyY2hUcmVlEAAS",
-            "DAoIUGluZVRyZWUQARIQCgxTdHJpcHBlZEJ1c2gQAhIICgRCdXNoEAMSDAoI",
-            "TXVzaHJvb20QBGIGcHJvdG8z"));
+            "Cg1UZXJyYWluLnByb3RvEgZzY2hlbWEiPgoTU2NoZW1hVGVycmFpbk9iamVj",
+            "dBInCgR0eXBlGAEgASgOMhkuc2NoZW1hLlRlcnJhaW5PYmplY3RUeXBlIn4K",
+            "G051bGxhYmxlU2NoZW1hVGVycmFpbk9iamVjdBItCgZvYmplY3QYASABKAsy",
+            "Gy5zY2hlbWEuU2NoZW1hVGVycmFpbk9iamVjdEgAEicKCm51bGxfdmFsdWUY",
+            "AiABKAsyES5zY2hlbWEuTnVsbFZhbHVlSABCBwoFdmFsdWUiWAoIVHJpYW5n",
+            "bGUSIgoEdHlwZRgBIAEoDjIULnNjaGVtYS5UcmlhbmdsZVR5cGUSKAoHU3Vi",
+            "VHlwZRgCIAEoDjIXLnNjaGVtYS5UcmlhbmdsZVN1YlR5cGUiJQoDSGV4Eh4K",
+            "BHRyaXMYASADKAsyEC5zY2hlbWEuVHJpYW5nbGUiCwoJTnVsbFZhbHVlIlsK",
+            "C051bGxhYmxlSGV4EhoKA2hleBgBIAEoCzILLnNjaGVtYS5IZXhIABInCgpu",
+            "dWxsX3ZhbHVlGAIgASgLMhEuc2NoZW1hLk51bGxWYWx1ZUgAQgcKBXZhbHVl",
+            "ItYBCg1TY2hlbWFUZXJyYWluEi4KEWZsYXRfdGVycmFpbl9kYXRhGAEgAygL",
+            "MhMuc2NoZW1hLk51bGxhYmxlSGV4Eg8KB3hMZW5ndGgYAiABKAUSDwoHeUxl",
+            "bmd0aBgDIAEoBRIPCgd6TGVuZ3RoGAQgASgFEjQKB29iamVjdHMYBSADKAsy",
+            "Iy5zY2hlbWEuTnVsbGFibGVTY2hlbWFUZXJyYWluT2JqZWN0EhUKDXhPYmpl",
+            "Y3RMZW5ndGgYBiABKAUSFQoNeU9iamVjdExlbmd0aBgHIAEoBSpPCgxUcmlh",
+            "bmdsZVR5cGUSDwoLVHlwZUludmFsaWQQABIICgREaXJ0EAESCQoFU3RvbmUQ",
+            "AhIOCgpTdG9uZUJyaWNrEAMSCQoFV2F0ZXIQBCq0AQoPVHJpYW5nbGVTdWJU",
+            "eXBlEg4KClN1YkludmFsaWQQABIUChBMYW5kQWN0dWFsbHlGdWxsEAESDAoI",
+            "TGFuZEZ1bGwQAhIQCgxMYW5kSW5ueUxlZnQQAxIRCg1MYW5kSW5ueVJpZ2h0",
+            "EAQSEAoMTGFuZElubnlCb3RoEAUSDAoITGFuZE91dHkQBhINCglCcmlja0hh",
+            "bGYQBxINCglGdWxsQnJpY2sQCBIKCgZMaXF1aWQQCSpaChFUZXJyYWluT2Jq",
+            "ZWN0VHlwZRINCglCaXJjaFRyZWUQABIMCghQaW5lVHJlZRABEhAKDFN0cmlw",
+            "cGVkQnVzaBACEggKBEJ1c2gQAxIMCghNdXNocm9vbRAEYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Schema.TriangleType), typeof(global::Schema.TriangleSubType), typeof(global::Schema.TerrainObjectType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.SchemaTerrainObject), global::Schema.SchemaTerrainObject.Parser, new[]{ "Type", "PercentHarvested" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.SchemaTerrainObject), global::Schema.SchemaTerrainObject.Parser, new[]{ "Type" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.NullableSchemaTerrainObject), global::Schema.NullableSchemaTerrainObject.Parser, new[]{ "Object", "NullValue" }, new[]{ "Value" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Triangle), global::Schema.Triangle.Parser, new[]{ "Type", "SubType" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Hex), global::Schema.Hex.Parser, new[]{ "Tris" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.NullValue), global::Schema.NullValue.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.NullableHex), global::Schema.NullableHex.Parser, new[]{ "Hex", "NullValue" }, new[]{ "Value" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.SchemaTerrain), global::Schema.SchemaTerrain.Parser, new[]{ "FlatTerrainData", "XLength", "YLength", "ZLength" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.SchemaTerrain), global::Schema.SchemaTerrain.Parser, new[]{ "FlatTerrainData", "XLength", "YLength", "ZLength", "Objects", "XObjectLength", "YObjectLength" }, null, null, null, null)
           }));
     }
     #endregion
@@ -129,7 +134,6 @@ namespace Schema {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public SchemaTerrainObject(SchemaTerrainObject other) : this() {
       type_ = other.type_;
-      percentHarvested_ = other.percentHarvested_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -151,18 +155,6 @@ namespace Schema {
       }
     }
 
-    /// <summary>Field number for the "percentHarvested" field.</summary>
-    public const int PercentHarvestedFieldNumber = 2;
-    private float percentHarvested_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float PercentHarvested {
-      get { return percentHarvested_; }
-      set {
-        percentHarvested_ = value;
-      }
-    }
-
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -179,7 +171,6 @@ namespace Schema {
         return true;
       }
       if (Type != other.Type) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(PercentHarvested, other.PercentHarvested)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -188,7 +179,6 @@ namespace Schema {
     public override int GetHashCode() {
       int hash = 1;
       if (Type != global::Schema.TerrainObjectType.BirchTree) hash ^= Type.GetHashCode();
-      if (PercentHarvested != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(PercentHarvested);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -211,10 +201,6 @@ namespace Schema {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      if (PercentHarvested != 0F) {
-        output.WriteRawTag(21);
-        output.WriteFloat(PercentHarvested);
-      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -229,10 +215,6 @@ namespace Schema {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      if (PercentHarvested != 0F) {
-        output.WriteRawTag(21);
-        output.WriteFloat(PercentHarvested);
-      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -245,9 +227,6 @@ namespace Schema {
       int size = 0;
       if (Type != global::Schema.TerrainObjectType.BirchTree) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
-      }
-      if (PercentHarvested != 0F) {
-        size += 1 + 4;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -263,9 +242,6 @@ namespace Schema {
       }
       if (other.Type != global::Schema.TerrainObjectType.BirchTree) {
         Type = other.Type;
-      }
-      if (other.PercentHarvested != 0F) {
-        PercentHarvested = other.PercentHarvested;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -284,10 +260,6 @@ namespace Schema {
             break;
           case 8: {
             Type = (global::Schema.TerrainObjectType) input.ReadEnum();
-            break;
-          }
-          case 21: {
-            PercentHarvested = input.ReadFloat();
             break;
           }
         }
@@ -309,8 +281,290 @@ namespace Schema {
             Type = (global::Schema.TerrainObjectType) input.ReadEnum();
             break;
           }
-          case 21: {
-            PercentHarvested = input.ReadFloat();
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class NullableSchemaTerrainObject : pb::IMessage<NullableSchemaTerrainObject>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<NullableSchemaTerrainObject> _parser = new pb::MessageParser<NullableSchemaTerrainObject>(() => new NullableSchemaTerrainObject());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<NullableSchemaTerrainObject> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Schema.TerrainReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public NullableSchemaTerrainObject() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public NullableSchemaTerrainObject(NullableSchemaTerrainObject other) : this() {
+      switch (other.ValueCase) {
+        case ValueOneofCase.Object:
+          Object = other.Object.Clone();
+          break;
+        case ValueOneofCase.NullValue:
+          NullValue = other.NullValue.Clone();
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public NullableSchemaTerrainObject Clone() {
+      return new NullableSchemaTerrainObject(this);
+    }
+
+    /// <summary>Field number for the "object" field.</summary>
+    public const int ObjectFieldNumber = 1;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Schema.SchemaTerrainObject Object {
+      get { return valueCase_ == ValueOneofCase.Object ? (global::Schema.SchemaTerrainObject) value_ : null; }
+      set {
+        value_ = value;
+        valueCase_ = value == null ? ValueOneofCase.None : ValueOneofCase.Object;
+      }
+    }
+
+    /// <summary>Field number for the "null_value" field.</summary>
+    public const int NullValueFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Schema.NullValue NullValue {
+      get { return valueCase_ == ValueOneofCase.NullValue ? (global::Schema.NullValue) value_ : null; }
+      set {
+        value_ = value;
+        valueCase_ = value == null ? ValueOneofCase.None : ValueOneofCase.NullValue;
+      }
+    }
+
+    private object value_;
+    /// <summary>Enum of possible cases for the "value" oneof.</summary>
+    public enum ValueOneofCase {
+      None = 0,
+      Object = 1,
+      NullValue = 2,
+    }
+    private ValueOneofCase valueCase_ = ValueOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ValueOneofCase ValueCase {
+      get { return valueCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearValue() {
+      valueCase_ = ValueOneofCase.None;
+      value_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as NullableSchemaTerrainObject);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(NullableSchemaTerrainObject other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Object, other.Object)) return false;
+      if (!object.Equals(NullValue, other.NullValue)) return false;
+      if (ValueCase != other.ValueCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (valueCase_ == ValueOneofCase.Object) hash ^= Object.GetHashCode();
+      if (valueCase_ == ValueOneofCase.NullValue) hash ^= NullValue.GetHashCode();
+      hash ^= (int) valueCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (valueCase_ == ValueOneofCase.Object) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Object);
+      }
+      if (valueCase_ == ValueOneofCase.NullValue) {
+        output.WriteRawTag(18);
+        output.WriteMessage(NullValue);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (valueCase_ == ValueOneofCase.Object) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Object);
+      }
+      if (valueCase_ == ValueOneofCase.NullValue) {
+        output.WriteRawTag(18);
+        output.WriteMessage(NullValue);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (valueCase_ == ValueOneofCase.Object) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Object);
+      }
+      if (valueCase_ == ValueOneofCase.NullValue) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(NullValue);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(NullableSchemaTerrainObject other) {
+      if (other == null) {
+        return;
+      }
+      switch (other.ValueCase) {
+        case ValueOneofCase.Object:
+          if (Object == null) {
+            Object = new global::Schema.SchemaTerrainObject();
+          }
+          Object.MergeFrom(other.Object);
+          break;
+        case ValueOneofCase.NullValue:
+          if (NullValue == null) {
+            NullValue = new global::Schema.NullValue();
+          }
+          NullValue.MergeFrom(other.NullValue);
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            global::Schema.SchemaTerrainObject subBuilder = new global::Schema.SchemaTerrainObject();
+            if (valueCase_ == ValueOneofCase.Object) {
+              subBuilder.MergeFrom(Object);
+            }
+            input.ReadMessage(subBuilder);
+            Object = subBuilder;
+            break;
+          }
+          case 18: {
+            global::Schema.NullValue subBuilder = new global::Schema.NullValue();
+            if (valueCase_ == ValueOneofCase.NullValue) {
+              subBuilder.MergeFrom(NullValue);
+            }
+            input.ReadMessage(subBuilder);
+            NullValue = subBuilder;
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            global::Schema.SchemaTerrainObject subBuilder = new global::Schema.SchemaTerrainObject();
+            if (valueCase_ == ValueOneofCase.Object) {
+              subBuilder.MergeFrom(Object);
+            }
+            input.ReadMessage(subBuilder);
+            Object = subBuilder;
+            break;
+          }
+          case 18: {
+            global::Schema.NullValue subBuilder = new global::Schema.NullValue();
+            if (valueCase_ == ValueOneofCase.NullValue) {
+              subBuilder.MergeFrom(NullValue);
+            }
+            input.ReadMessage(subBuilder);
+            NullValue = subBuilder;
             break;
           }
         }
@@ -335,7 +589,7 @@ namespace Schema {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Schema.TerrainReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Schema.TerrainReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -562,7 +816,7 @@ namespace Schema {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Schema.TerrainReflection.Descriptor.MessageTypes[2]; }
+      get { return global::Schema.TerrainReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -741,7 +995,7 @@ namespace Schema {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Schema.TerrainReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Schema.TerrainReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -894,7 +1148,7 @@ namespace Schema {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Schema.TerrainReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Schema.TerrainReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1180,7 +1434,7 @@ namespace Schema {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Schema.TerrainReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Schema.TerrainReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1204,6 +1458,9 @@ namespace Schema {
       xLength_ = other.xLength_;
       yLength_ = other.yLength_;
       zLength_ = other.zLength_;
+      objects_ = other.objects_.Clone();
+      xObjectLength_ = other.xObjectLength_;
+      yObjectLength_ = other.yObjectLength_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1260,6 +1517,41 @@ namespace Schema {
       }
     }
 
+    /// <summary>Field number for the "objects" field.</summary>
+    public const int ObjectsFieldNumber = 5;
+    private static readonly pb::FieldCodec<global::Schema.NullableSchemaTerrainObject> _repeated_objects_codec
+        = pb::FieldCodec.ForMessage(42, global::Schema.NullableSchemaTerrainObject.Parser);
+    private readonly pbc::RepeatedField<global::Schema.NullableSchemaTerrainObject> objects_ = new pbc::RepeatedField<global::Schema.NullableSchemaTerrainObject>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::Schema.NullableSchemaTerrainObject> Objects {
+      get { return objects_; }
+    }
+
+    /// <summary>Field number for the "xObjectLength" field.</summary>
+    public const int XObjectLengthFieldNumber = 6;
+    private int xObjectLength_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int XObjectLength {
+      get { return xObjectLength_; }
+      set {
+        xObjectLength_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "yObjectLength" field.</summary>
+    public const int YObjectLengthFieldNumber = 7;
+    private int yObjectLength_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int YObjectLength {
+      get { return yObjectLength_; }
+      set {
+        yObjectLength_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1279,6 +1571,9 @@ namespace Schema {
       if (XLength != other.XLength) return false;
       if (YLength != other.YLength) return false;
       if (ZLength != other.ZLength) return false;
+      if(!objects_.Equals(other.objects_)) return false;
+      if (XObjectLength != other.XObjectLength) return false;
+      if (YObjectLength != other.YObjectLength) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1290,6 +1585,9 @@ namespace Schema {
       if (XLength != 0) hash ^= XLength.GetHashCode();
       if (YLength != 0) hash ^= YLength.GetHashCode();
       if (ZLength != 0) hash ^= ZLength.GetHashCode();
+      hash ^= objects_.GetHashCode();
+      if (XObjectLength != 0) hash ^= XObjectLength.GetHashCode();
+      if (YObjectLength != 0) hash ^= YObjectLength.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1321,6 +1619,15 @@ namespace Schema {
         output.WriteRawTag(32);
         output.WriteInt32(ZLength);
       }
+      objects_.WriteTo(output, _repeated_objects_codec);
+      if (XObjectLength != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(XObjectLength);
+      }
+      if (YObjectLength != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(YObjectLength);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1344,6 +1651,15 @@ namespace Schema {
         output.WriteRawTag(32);
         output.WriteInt32(ZLength);
       }
+      objects_.WriteTo(ref output, _repeated_objects_codec);
+      if (XObjectLength != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(XObjectLength);
+      }
+      if (YObjectLength != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(YObjectLength);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1363,6 +1679,13 @@ namespace Schema {
       }
       if (ZLength != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(ZLength);
+      }
+      size += objects_.CalculateSize(_repeated_objects_codec);
+      if (XObjectLength != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(XObjectLength);
+      }
+      if (YObjectLength != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(YObjectLength);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1385,6 +1708,13 @@ namespace Schema {
       }
       if (other.ZLength != 0) {
         ZLength = other.ZLength;
+      }
+      objects_.Add(other.objects_);
+      if (other.XObjectLength != 0) {
+        XObjectLength = other.XObjectLength;
+      }
+      if (other.YObjectLength != 0) {
+        YObjectLength = other.YObjectLength;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1417,6 +1747,18 @@ namespace Schema {
             ZLength = input.ReadInt32();
             break;
           }
+          case 42: {
+            objects_.AddEntriesFrom(input, _repeated_objects_codec);
+            break;
+          }
+          case 48: {
+            XObjectLength = input.ReadInt32();
+            break;
+          }
+          case 56: {
+            YObjectLength = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -1446,6 +1788,18 @@ namespace Schema {
           }
           case 32: {
             ZLength = input.ReadInt32();
+            break;
+          }
+          case 42: {
+            objects_.AddEntriesFrom(ref input, _repeated_objects_codec);
+            break;
+          }
+          case 48: {
+            XObjectLength = input.ReadInt32();
+            break;
+          }
+          case 56: {
+            YObjectLength = input.ReadInt32();
             break;
           }
         }

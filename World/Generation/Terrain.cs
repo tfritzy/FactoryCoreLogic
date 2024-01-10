@@ -12,28 +12,28 @@ namespace Core
         public int MaxX => TerrainData.GetLength(0);
         public int MaxY => TerrainData.GetLength(1);
         public int MaxZ => TerrainData.GetLength(2);
-        public readonly VegetationType?[,] TerrainObjects;
+        public readonly TerrainObject?[,] TerrainObjects;
         public Point3Float MaxBounds;
         public Point3Float MinBounds;
 
         private Context context;
 
-        public Terrain(SchemaTerrain schema, Context context) : this(ParseTerrainData(schema), context)
+        public Terrain(SchemaTerrain schema, Context context) : this(ParseTerrainData(schema), ParseTerrainObjects(schema), context)
         {
         }
 
-        public Terrain(Triangle?[]?[,,] terrainData, Context context)
+        public Terrain(Triangle?[]?[,,] terrainData, TerrainObject?[,] terrainObjects, Context context)
         {
             this.TerrainData = terrainData;
             this.context = context;
-            TerrainObjects = new VegetationType?[terrainData.GetLength(0), terrainData.GetLength(1)];
+            TerrainObjects = terrainObjects;
         }
 
         public Terrain(TriangleType?[,,] Types, Context context)
         {
             this.context = context;
             TerrainData = new Triangle?[]?[Types.GetLength(0), Types.GetLength(1), Types.GetLength(2)];
-            TerrainObjects = new VegetationType?[Types.GetLength(0), Types.GetLength(1)];
+            TerrainObjects = new TerrainObject?[Types.GetLength(0), Types.GetLength(1)];
 
             MaxBounds = new Point3Float(
                 (MaxX + 1) * Constants.HEX_WIDTH,
@@ -118,23 +118,23 @@ namespace Core
                     birchVal -= treeThinningVal;
                     pineVal -= treeThinningVal;
 
-                    double flaxVal = r.NextDouble();
+                    double bushVal = r.NextDouble();
                     double mushroomValue = r.NextDouble();
                     if (birchVal > 0.8)
                     {
-                        TerrainObjects[x, y] = VegetationType.BirchTree;
+                        TerrainObjects[x, y] = new TerrainObject(TerrainObjectType.BirchTree);
                     }
                     else if (pineVal > 0.8)
                     {
-                        TerrainObjects[x, y] = VegetationType.PineTree;
+                        TerrainObjects[x, y] = new TerrainObject(TerrainObjectType.PineTree);
                     }
-                    else if (flaxVal > 0.99)
+                    else if (bushVal > 0.99)
                     {
-                        TerrainObjects[x, y] = VegetationType.Bush;
+                        TerrainObjects[x, y] = new TerrainObject(TerrainObjectType.Bush);
                     }
                     else if (mushroomValue > 0.98)
                     {
-                        TerrainObjects[x, y] = VegetationType.Mushroom;
+                        TerrainObjects[x, y] = new TerrainObject(TerrainObjectType.Mushroom);
                     }
                 }
             }
@@ -276,6 +276,30 @@ namespace Core
             return data;
         }
 
+        private static TerrainObject?[,] ParseTerrainObjects(SchemaTerrain schema)
+        {
+            TerrainObject?[,] data = new TerrainObject?[schema.XLength, schema.YLength];
+            for (int x = 0; x < schema.XObjectLength; x++)
+            {
+                for (int y = 0; y < schema.YObjectLength; y++)
+                {
+                    NullableSchemaTerrainObject obj = schema.Objects[x * schema.YObjectLength + y];
+                    switch (obj.ValueCase)
+                    {
+                        case NullableSchemaTerrainObject.ValueOneofCase.Object:
+                            data[x, y] = TerrainObject.FromSchema(obj.Object);
+                            break;
+                        case NullableSchemaTerrainObject.ValueOneofCase.NullValue:
+                            break;
+                        case NullableSchemaTerrainObject.ValueOneofCase.None:
+                            break;
+                    }
+                }
+            }
+
+            return data;
+        }
+
         private static Schema.NullableHex[] FlattenTerrainData(Triangle?[]?[,,] terrainData)
         {
             Schema.NullableHex[] data = new Schema.NullableHex[
@@ -308,6 +332,33 @@ namespace Core
             return data;
         }
 
+        private static Schema.NullableSchemaTerrainObject[] FlattenTerrainObjects(TerrainObject?[,] terrainObjects)
+        {
+            Schema.NullableSchemaTerrainObject[] data = new Schema.NullableSchemaTerrainObject[
+                terrainObjects.GetLength(0) * terrainObjects.GetLength(1)];
+            for (int x = 0; x < terrainObjects.GetLength(0); x++)
+            {
+                for (int y = 0; y < terrainObjects.GetLength(1); y++)
+                {
+                    if (terrainObjects[x, y] == null)
+                    {
+                        data[x * terrainObjects.GetLength(1) + y] =
+                            new Schema.NullableSchemaTerrainObject { NullValue = new() };
+                    }
+                    else
+                    {
+                        data[x * terrainObjects.GetLength(1) + y] =
+                            new Schema.NullableSchemaTerrainObject
+                            {
+                                Object = terrainObjects[x, y]!.ToSchema()
+                            };
+                    }
+                }
+            }
+
+            return data;
+        }
+
         public SchemaTerrain ToSchema()
         {
             return new SchemaTerrain()
@@ -315,7 +366,11 @@ namespace Core
                 FlatTerrainData = { FlattenTerrainData(TerrainData) },
                 XLength = MaxX,
                 YLength = MaxY,
-                ZLength = MaxZ
+                ZLength = MaxZ,
+
+                Objects = { FlattenTerrainObjects(TerrainObjects) },
+                XObjectLength = TerrainObjects.GetLength(0),
+                YObjectLength = TerrainObjects.GetLength(1),
             };
         }
 
@@ -506,7 +561,7 @@ namespace Core
                 return null;
         }
 
-        public VegetationType? GetVegetation(Point2Int pos)
+        public TerrainObject? GetTerrainObject(Point2Int pos)
         {
             if (!IsInBounds(pos))
             {

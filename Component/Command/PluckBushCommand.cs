@@ -1,3 +1,4 @@
+using System;
 using Schema;
 
 namespace Core
@@ -14,7 +15,7 @@ namespace Core
         public override void CheckIsComplete()
         {
             // This action will be completed by the client calling the PluckBush command.
-            if (owner.Context.World.Terrain.GetVegetation(Pos) != VegetationType.Bush)
+            if (owner.Context.World.Terrain.GetTerrainObject(Pos)?.Type != TerrainObjectType.Bush)
             {
                 IsComplete = true;
             }

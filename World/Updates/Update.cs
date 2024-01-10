@@ -15,7 +15,7 @@ namespace Core
         BuildingRemoved,
         TriUncoveredOrAdded,
         TriHiddenOrDestroyed,
-        VegetationChange,
+        TerrainObjectChange,
         ItemMoved,
         ItemObjectAdded,
         ItemObjectRemoved,

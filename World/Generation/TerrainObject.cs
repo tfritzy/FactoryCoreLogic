@@ -5,24 +5,23 @@ namespace Core
     public class TerrainObject : ISchema<SchemaTerrainObject>
     {
         public TerrainObjectType Type;
-        public float PercentHarvested;
+
+        public TerrainObject(TerrainObjectType type)
+        {
+            Type = type;
+        }
 
         public SchemaTerrainObject ToSchema()
         {
             return new SchemaTerrainObject
             {
                 Type = Type,
-                PercentHarvested = PercentHarvested,
             };
         }
 
         public static TerrainObject FromSchema(SchemaTerrainObject schema)
         {
-            return new TerrainObject
-            {
-                Type = schema.Type,
-                PercentHarvested = schema.PercentHarvested,
-            };
+            return new TerrainObject(schema.Type);
         }
     }
 }
