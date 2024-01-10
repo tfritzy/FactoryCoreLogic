@@ -7,13 +7,18 @@ namespace Core
         public int Health { get; private set; }
         public bool IsAlive => Health > 0;
 
-        public override Schema.Component ToSchema()
+        public override Schema.OneofComponent ToSchema()
         {
-            return new Schema.Life
+            var schema = new Schema.OneofComponent
             {
-                BaseHealth = BaseHealth,
-                Health = Health,
+                Life = new Schema.Life()
+                {
+                    Component = new Schema.Component { Type = Type },
+                    MaxHealth = BaseHealth,
+                    Health = Health,
+                }
             };
+            return schema;
         }
 
         public Life(Entity owner, int health) : base(owner)

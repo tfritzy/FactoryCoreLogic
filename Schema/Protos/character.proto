@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+import "units.proto";
+import "character_type.proto";
+import "item_type.proto";
+import "hex_side.proto";
+import "entity.proto";
+
+package schema;
+
+message Character {
+    core.CharacterType type = 1;
+    Entity entity = 2;
+    int32 alliance = 3;
+    Point3Int pos = 4;
+}
+
+message Building {
+    Character character = 1;
+    core.HexSide rotation = 2;
+}
+
+message OneofCharacter {
+    oneof character {
+        Conveyor conveyor = 1;
+        Dummy dummy = 2;
+        DummyBuilding dummy_building = 3;
+        Player player = 4;
+        GuardTower guard_tower = 5;
+        Pikeman pikeman = 6;
+        DummyMob dummy_mob = 7;
+        Keep keep = 8;
+        Mineshaft mineshaft = 9;
+        Depot depot = 10;
+        Sorter sorter = 11;
+        ClayFurnace clay_furnace = 12;
+    }
+}
+
+// Temporary. TODO: Remove
+message CharacterArray {
+    repeated OneofCharacter characters = 1;
+}
+
+message Conveyor {
+    Building building = 1;
+}
+
+message Dummy {
+    Character character = 1;
+}
+
+message DummyBuilding {
+    Building building = 1;
+}
+
+message Player {
+    Character character = 1;
+}
+
+message GuardTower {
+    Building building = 1;
+}
+
+message Pikeman {
+    Character character = 1;
+}
+
+message DummyMob {
+    Character character = 1;
+}
+
+message Keep {
+    Building building = 1;
+}
+
+message Mineshaft {
+    Building building = 1;
+}
+
+message Depot {
+    Building building = 1;
+}
+
+message Sorter {
+    Building building = 1;
+    core.NullableItemType filter = 2;
+}
+
+message ClayFurnace {
+    Building building = 1;
+}

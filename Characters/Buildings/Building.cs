@@ -70,11 +70,14 @@ namespace Core
             base.Destroy();
         }
 
-        public override Schema.Entity ToSchema()
+        public new Schema.Building ToSchema()
         {
-            var schema = (Schema.Building)base.ToSchema();
-            schema.Rotation = this.Rotation;
-            return schema;
+            var building = new Schema.Building()
+            {
+                Character = base.ToSchema(),
+                Rotation = this.Rotation,
+            };
+            return building;
         }
     }
 }

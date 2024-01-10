@@ -21,6 +21,14 @@ namespace Core
             this.Owner = owner;
         }
 
-        public abstract Schema.Component ToSchema();
+        public Schema.Component BuildSchemaComponent()
+        {
+            return new Schema.Component
+            {
+                Type = Type,
+            };
+        }
+
+        public abstract Schema.OneofComponent ToSchema();
     }
 }

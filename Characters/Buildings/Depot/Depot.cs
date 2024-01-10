@@ -28,9 +28,15 @@ namespace Core
             ItemPort!.OutputSideOffsets = new List<int> { 0 };
         }
 
-        public override Schema.Entity BuildSchemaObject()
+        public new Schema.OneofCharacter ToSchema()
         {
-            return new Schema.Depot();
+            return new Schema.OneofCharacter
+            {
+                Depot = new Schema.Depot()
+                {
+                    Building = base.ToSchema(),
+                }
+            };
         }
     }
 }

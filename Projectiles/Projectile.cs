@@ -104,11 +104,6 @@ namespace Core
             Velocity = Point3Float.Zero;
         }
 
-        public override Schema.Entity BuildSchemaObject()
-        {
-            throw new NotImplementedException("Projectiles shouldn't be serialized.");
-        }
-
         public override void Destroy()
         {
             this.Context.World.RemoveProjectile(this.Id);

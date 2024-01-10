@@ -39,9 +39,12 @@ namespace Core
             }
         }
 
-        public override Schema.Component ToSchema()
+        public override Schema.OneofComponent ToSchema()
         {
-            return new Schema.Mine();
+            return new Schema.OneofComponent
+            {
+                Mine = new Schema.Mine(),
+            };
         }
 
         private ItemType GetRandomResource()

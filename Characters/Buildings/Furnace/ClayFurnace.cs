@@ -34,9 +34,15 @@ namespace Core
             ItemPort!.GetDestinationForItem = Smelt.GetItemDirectionFunction(this);
         }
 
-        public override Schema.Entity BuildSchemaObject()
+        public new Schema.OneofCharacter ToSchema()
         {
-            return new Schema.ClayFurnace();
+            return new Schema.OneofCharacter
+            {
+                ClayFurnace = new Schema.ClayFurnace()
+                {
+                    Building = base.ToSchema(),
+                }
+            };
         }
     }
 }

@@ -1,16 +1,16 @@
 syntax = "proto3";
 
-import "TriangleTypes.proto";
+import "triangle_types.proto";
 
 package schema;
 
-message SchemaTerrainObject {
+message TerrainObject {
     core.TerrainObjectType type = 1;
 }
 
-message NullableSchemaTerrainObject {
+message NullableTerrainObject {
     oneof value {
-        SchemaTerrainObject object = 1;
+        TerrainObject object = 1;
         NullValue null_value = 2;
     }
 }
@@ -33,13 +33,13 @@ message NullableHex {
     }
 }
 
-message SchemaTerrain {
+message Terrain {
     repeated NullableHex flat_terrain_data = 1;
     int32 xLength = 2; 
     int32 yLength = 3; 
     int32 zLength = 4; 
 
-    repeated NullableSchemaTerrainObject objects = 5;
+    repeated NullableTerrainObject objects = 5;
     int32 xObjectLength = 6;
     int32 yObjectLength = 7;
 }

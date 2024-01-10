@@ -14,13 +14,16 @@ namespace Core
 
         public const float MeleeRange = .5f;
 
-        public override Schema.Component ToSchema()
+        public override Schema.OneofComponent ToSchema()
         {
-            return new Schema.Attack
+            return new Schema.OneofComponent
             {
-                BaseDamage = BaseDamage,
-                BaseCooldown = BaseCooldown,
-                Projectile = Projectile,
+                Attack = new Schema.Attack()
+                {
+                    BaseDamage = BaseDamage,
+                    BaseCooldown = BaseCooldown,
+                    ProjectileType = Projectile,
+                }
             };
         }
 
@@ -29,7 +32,7 @@ namespace Core
             float cooldown,
             int damage,
             float range,
-            ProjectileType projectile = ProjectileType.Invalid
+            ProjectileType projectile = ProjectileType.InvalidProjectileType
             ) : base(owner)
         {
             BaseCooldown = cooldown;
@@ -53,7 +56,7 @@ namespace Core
                 return;
             }
 
-            if (Projectile != ProjectileType.Invalid)
+            if (Projectile != ProjectileType.InvalidProjectileType)
             {
                 BuildProjectile();
             }

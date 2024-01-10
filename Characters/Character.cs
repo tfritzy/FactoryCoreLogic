@@ -49,7 +49,7 @@ namespace Core
                     return new Pikeman(context, alliance);
                 case CharacterType.Keep:
                     return new Keep(context, alliance);
-                case CharacterType.Mineshaft:
+                case CharacterType.MineShaft:
                     return new Mineshaft(context, alliance);
                 case CharacterType.Depot:
                     return new Depot(context, alliance);
@@ -62,12 +62,15 @@ namespace Core
             }
         }
 
-        public override Schema.Entity ToSchema()
+        public new Schema.Character ToSchema()
         {
-            var character = (Schema.Character)base.ToSchema();
-            character.Alliance = this.Alliance;
-            character.GridPosition = this.GridPosition;
-            return character;
+            return new Schema.Character()
+            {
+                Alliance = this.Alliance,
+                Pos = this.GridPosition.ToSchema(),
+                Type = this.Type,
+                Entity = base.ToSchema(),
+            };
         }
 
         public override void SetComponent(Component component)

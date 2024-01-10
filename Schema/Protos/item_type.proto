@@ -2,9 +2,14 @@ syntax = "proto3";
 
 package core;
 
+message NullableItemType
+{
+    ItemType item_type = 1;
+}
+
 enum ItemType
 {
-    Invalid = 0;
+    InvalidItemType = 0;
     Limestone = 1;
     LimestoneBrick = 2;
     LimestoneDoubleBrick = 3;

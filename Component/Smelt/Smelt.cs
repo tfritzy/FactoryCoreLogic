@@ -183,9 +183,16 @@ namespace Core
             CombustionEfficiency = combustionEfficiency;
         }
 
-        public override Schema.Component ToSchema()
+        public override Schema.OneofComponent ToSchema()
         {
-            return new Schema.Smelt() { };
+            var schema = new Schema.OneofComponent
+            {
+                Smelt = new Schema.Smelt()
+                {
+                    Component = BuildSchemaComponent(),
+                }
+            };
+            return schema;
         }
 
         public static Func<Item, Inventory?> GetItemDirectionFunction(Building owner)

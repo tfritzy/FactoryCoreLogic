@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package core;
+
+enum ProjectileType {
+    InvalidProjectileType = 0;
+    Arrow = 1;
+}

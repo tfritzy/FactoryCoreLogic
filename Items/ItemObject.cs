@@ -17,9 +17,9 @@ namespace Core
             this.Rotation = rotation;
         }
 
-        public SchemaItemObject ToSchema()
+        public Schema.ItemObject ToSchema()
         {
-            return new SchemaItemObject()
+            return new Schema.ItemObject()
             {
                 Item = Item.ToSchema(),
                 Position = Position.ToSchema(),
@@ -27,7 +27,7 @@ namespace Core
             };
         }
 
-        public static ItemObject FromSchema(SchemaItemObject schema)
+        public static ItemObject FromSchema(Schema.ItemObject schema)
         {
             return new ItemObject(
                 Item.FromSchema(schema.Item),

@@ -9,9 +9,15 @@ namespace Core
         private static readonly string name = "Keep";
         public override string Name => name;
 
-        public override Schema.Entity BuildSchemaObject()
+        public new Schema.OneofCharacter ToSchema()
         {
-            return new Schema.Keep();
+            return new Schema.OneofCharacter
+            {
+                Keep = new Schema.Keep()
+                {
+                    Building = base.ToSchema(),
+                }
+            };
         }
 
         public Keep(Context context, int alliance) : base(context, alliance)

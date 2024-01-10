@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package core;
+
+enum ComponentType {
+    InvalidComponent = 0;
+    ConveyorComponent = 1;
+    Inventory = 2;
+    Life = 3;
+    WornItems = 4;
+    ActiveItems = 5;
+    Attack = 6;
+    TowerTargeting = 7;
+    Mine = 8;
+    ItemPort = 9;
+    Smelt = 10;
+    Command = 11;
+}

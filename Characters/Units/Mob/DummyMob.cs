@@ -6,9 +6,15 @@ namespace Core
         private static readonly string name = "Dummy Mob";
         public override string Name => name;
 
-        public override Schema.Entity BuildSchemaObject()
+        public new Schema.OneofCharacter ToSchema()
         {
-            return new Schema.DummyMob();
+            return new Schema.OneofCharacter
+            {
+                DummyMob = new Schema.DummyMob()
+                {
+                    Character = base.ToSchema(),
+                }
+            };
         }
 
         public DummyMob(Context context, int alliance) : base(context, alliance)

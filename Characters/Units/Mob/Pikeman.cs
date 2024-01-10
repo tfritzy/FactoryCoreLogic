@@ -6,9 +6,15 @@ namespace Core
         private static readonly string name = "Pikeman";
         public override string Name => name;
 
-        public override Schema.Entity BuildSchemaObject()
+        public new Schema.OneofCharacter ToSchema()
         {
-            return new Schema.Pikeman();
+            return new Schema.OneofCharacter
+            {
+                Pikeman = new Schema.Pikeman()
+                {
+                    Character = base.ToSchema(),
+                }
+            };
         }
 
         public Pikeman(Context context, int alliance) : base(context, alliance)

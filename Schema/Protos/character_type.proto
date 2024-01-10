@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package core;
+
+enum CharacterType
+{
+    INVALID = 0;
+    CONVEYOR = 1;
+    DUMMY = 2;
+    DUMMY_BUILDING = 3;
+    PLAYER = 4;
+    GUARD_TOWER = 5;
+    PIKEMAN = 6;
+    DUMMY_MOB = 7;
+    KEEP = 8;
+    MINE_SHAFT = 9;
+    DEPOT = 10;
+    SORTER = 11;
+    CLAY_FURNACE = 12;
+}

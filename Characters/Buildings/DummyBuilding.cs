@@ -12,9 +12,15 @@ namespace Core
 
         protected override void InitComponents() { }
 
-        public override Schema.Entity BuildSchemaObject()
+        public new Schema.OneofCharacter ToSchema()
         {
-            return new Schema.DummyBuilding();
+            return new Schema.OneofCharacter
+            {
+                DummyBuilding = new Schema.DummyBuilding()
+                {
+                    Building = base.ToSchema(),
+                }
+            };
         }
 
         public DummyBuilding(Context context, int alliance) : base(context, alliance) { }

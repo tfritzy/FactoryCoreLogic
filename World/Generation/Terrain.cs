@@ -18,7 +18,7 @@ namespace Core
 
         private Context context;
 
-        public Terrain(SchemaTerrain schema, Context context) : this(ParseTerrainData(schema), ParseTerrainObjects(schema), context)
+        public Terrain(Schema.Terrain schema, Context context) : this(ParseTerrainData(schema), ParseTerrainObjects(schema), context)
         {
         }
 
@@ -248,7 +248,7 @@ namespace Core
         }
 
 
-        private static Triangle?[]?[,,] ParseTerrainData(SchemaTerrain schema)
+        private static Triangle?[]?[,,] ParseTerrainData(Schema.Terrain schema)
         {
             Triangle?[]?[,,] data = new Triangle?[]?[schema.XLength, schema.YLength, schema.ZLength];
             for (int x = 0; x < schema.XLength; x++)
@@ -276,22 +276,22 @@ namespace Core
             return data;
         }
 
-        private static TerrainObject?[,] ParseTerrainObjects(SchemaTerrain schema)
+        private static TerrainObject?[,] ParseTerrainObjects(Schema.Terrain schema)
         {
             TerrainObject?[,] data = new TerrainObject?[schema.XLength, schema.YLength];
             for (int x = 0; x < schema.XObjectLength; x++)
             {
                 for (int y = 0; y < schema.YObjectLength; y++)
                 {
-                    NullableSchemaTerrainObject obj = schema.Objects[x * schema.YObjectLength + y];
+                    NullableTerrainObject obj = schema.Objects[x * schema.YObjectLength + y];
                     switch (obj.ValueCase)
                     {
-                        case NullableSchemaTerrainObject.ValueOneofCase.Object:
+                        case NullableTerrainObject.ValueOneofCase.Object:
                             data[x, y] = TerrainObject.FromSchema(obj.Object);
                             break;
-                        case NullableSchemaTerrainObject.ValueOneofCase.NullValue:
+                        case NullableTerrainObject.ValueOneofCase.NullValue:
                             break;
-                        case NullableSchemaTerrainObject.ValueOneofCase.None:
+                        case NullableTerrainObject.ValueOneofCase.None:
                             break;
                     }
                 }
@@ -332,9 +332,9 @@ namespace Core
             return data;
         }
 
-        private static Schema.NullableSchemaTerrainObject[] FlattenTerrainObjects(TerrainObject?[,] terrainObjects)
+        private static Schema.NullableTerrainObject[] FlattenTerrainObjects(TerrainObject?[,] terrainObjects)
         {
-            Schema.NullableSchemaTerrainObject[] data = new Schema.NullableSchemaTerrainObject[
+            Schema.NullableTerrainObject[] data = new Schema.NullableTerrainObject[
                 terrainObjects.GetLength(0) * terrainObjects.GetLength(1)];
             for (int x = 0; x < terrainObjects.GetLength(0); x++)
             {
@@ -343,12 +343,12 @@ namespace Core
                     if (terrainObjects[x, y] == null)
                     {
                         data[x * terrainObjects.GetLength(1) + y] =
-                            new Schema.NullableSchemaTerrainObject { NullValue = new() };
+                            new Schema.NullableTerrainObject { NullValue = new() };
                     }
                     else
                     {
                         data[x * terrainObjects.GetLength(1) + y] =
-                            new Schema.NullableSchemaTerrainObject
+                            new Schema.NullableTerrainObject
                             {
                                 Object = terrainObjects[x, y]!.ToSchema()
                             };
@@ -359,9 +359,9 @@ namespace Core
             return data;
         }
 
-        public SchemaTerrain ToSchema()
+        public Schema.Terrain ToSchema()
         {
-            return new SchemaTerrain()
+            return new Schema.Terrain()
             {
                 FlatTerrainData = { FlattenTerrainData(TerrainData) },
                 XLength = MaxX,
@@ -374,7 +374,7 @@ namespace Core
             };
         }
 
-        public static Terrain FromSchema(SchemaTerrain schema, params object[] context)
+        public static Terrain FromSchema(Schema.Terrain schema, params object[] context)
         {
             return new Terrain(schema, (Context)context[0]);
         }

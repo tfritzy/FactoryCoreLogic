@@ -105,6 +105,16 @@ namespace Core
         public readonly Point3Int WalkSouthWest => GridHelpers.GetNeighbor(this, HexSide.SouthWest);
         public readonly Point3Int WalkWest => GridHelpers.GetNeighbor(this, HexSide.West);
         public readonly Point3Int WalkNorthWest => GridHelpers.GetNeighbor(this, HexSide.NorthWest);
+
+        public Schema.Point3Int ToSchema()
+        {
+            return new Schema.Point3Int
+            {
+                X = x,
+                Y = y,
+                Z = z,
+            };
+        }
     }
 
     public class Point3IntConverter : JsonConverter<Point3Int>

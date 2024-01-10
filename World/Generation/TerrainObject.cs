@@ -11,15 +11,15 @@ namespace Core
             Type = type;
         }
 
-        public SchemaTerrainObject ToSchema()
+        public Schema.TerrainObject ToSchema()
         {
-            return new SchemaTerrainObject
+            return new Schema.TerrainObject
             {
                 Type = Type,
             };
         }
 
-        public static TerrainObject FromSchema(SchemaTerrainObject schema)
+        public static TerrainObject FromSchema(Schema.TerrainObject schema)
         {
             return new TerrainObject(schema.Type);
         }

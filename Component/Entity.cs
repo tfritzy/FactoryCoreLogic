@@ -72,16 +72,15 @@ namespace Core
         // Sets component properties. Useful for setting up post-serialization.
         public virtual void ConfigureComponents() { }
 
-        public abstract Schema.Entity BuildSchemaObject();
-        public virtual Schema.Entity ToSchema()
+        public Schema.Entity ToSchema()
         {
-            var schema = BuildSchemaObject();
-            schema.Id = this.Id;
-            schema.Components =
-                Components.Count > 0
-                    ? Components.Values.Select(c => c.ToSchema()).ToList()
-                    : null;
-            return schema;
+            var entity = new Schema.Entity();
+            entity.Id = this.Id;
+
+            if (Components.Count > 0)
+                entity.Components.AddRange(Components.Values.Select(c => c.ToSchema()));
+
+            return entity;
         }
 
         public abstract void Destroy();

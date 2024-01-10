@@ -14,9 +14,12 @@ namespace Core
         {
         }
 
-        public override Schema.Component ToSchema()
+        public override Schema.OneofComponent ToSchema()
         {
-            return new Schema.CommandComponent();
+            return new Schema.OneofComponent
+            {
+                Command = new Schema.Command()
+            };
         }
 
         public void ReplaceCommands(Command command)

@@ -138,7 +138,7 @@ namespace Core
                     _itemProperties = new Dictionary<ItemType, Item>();
                     foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
                     {
-                        if (type == ItemType.Invalid)
+                        if (type == ItemType.InvalidItemType)
                         {
                             continue;
                         }
@@ -151,9 +151,9 @@ namespace Core
             }
         }
 
-        public SchemaItem ToSchema()
+        public Schema.Item ToSchema()
         {
-            return new SchemaItem()
+            return new Schema.Item()
             {
                 Type = Type,
                 Quantity = Quantity,
@@ -161,7 +161,7 @@ namespace Core
             };
         }
 
-        public static Item FromSchema(SchemaItem schemaItem)
+        public static Item FromSchema(Schema.Item schemaItem)
         {
             Item item = Create(schemaItem.Type, schemaItem.Quantity);
             item.Id = schemaItem.Id;

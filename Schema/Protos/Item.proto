@@ -1,18 +1,18 @@
 syntax = "proto3";
 
-import "Units.proto";
-import "ItemType.proto";
+import "units.proto";
+import "item_type.proto";
 
 package schema;
 
-message SchemaItem {
+message Item {
     core.ItemType type = 1;
     uint64 quantity = 2;
     uint64 id = 3;
 }
 
-message SchemaItemObject {
-    SchemaItem item = 1;
-    SchemaPoint3Float position = 2;
-    SchemaPoint3Float rotation = 3;
+message ItemObject {
+    Item item = 1;
+    Point3Float position = 2;
+    Point3Float rotation = 3;
 }

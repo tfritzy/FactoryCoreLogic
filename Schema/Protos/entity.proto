@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+import "component.proto";
+
+package schema;
+
+message Entity {
+    repeated OneofComponent components = 1;
+    uint64 id = 2;
+}
+

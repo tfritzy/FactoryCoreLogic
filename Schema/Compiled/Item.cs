@@ -24,18 +24,17 @@ namespace Schema {
     static ItemReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgpJdGVtLnByb3RvEgZzY2hlbWEaC1VuaXRzLnByb3RvGg5JdGVtVHlwZS5w",
-            "cm90byJICgpTY2hlbWFJdGVtEhwKBHR5cGUYASABKA4yDi5jb3JlLkl0ZW1U",
-            "eXBlEhAKCHF1YW50aXR5GAIgASgEEgoKAmlkGAMgASgEIo4BChBTY2hlbWFJ",
-            "dGVtT2JqZWN0EiAKBGl0ZW0YASABKAsyEi5zY2hlbWEuU2NoZW1hSXRlbRIr",
-            "Cghwb3NpdGlvbhgCIAEoCzIZLnNjaGVtYS5TY2hlbWFQb2ludDNGbG9hdBIr",
-            "Cghyb3RhdGlvbhgDIAEoCzIZLnNjaGVtYS5TY2hlbWFQb2ludDNGbG9hdGIG",
-            "cHJvdG8z"));
+            "CgpJdGVtLnByb3RvEgZzY2hlbWEaC3VuaXRzLnByb3RvGg9pdGVtX3R5cGUu",
+            "cHJvdG8iQgoESXRlbRIcCgR0eXBlGAEgASgOMg4uY29yZS5JdGVtVHlwZRIQ",
+            "CghxdWFudGl0eRgCIAEoBBIKCgJpZBgDIAEoBCJ2CgpJdGVtT2JqZWN0EhoK",
+            "BGl0ZW0YASABKAsyDC5zY2hlbWEuSXRlbRIlCghwb3NpdGlvbhgCIAEoCzIT",
+            "LnNjaGVtYS5Qb2ludDNGbG9hdBIlCghyb3RhdGlvbhgDIAEoCzITLnNjaGVt",
+            "YS5Qb2ludDNGbG9hdGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Schema.UnitsReflection.Descriptor, global::Core.ItemTypeReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.SchemaItem), global::Schema.SchemaItem.Parser, new[]{ "Type", "Quantity", "Id" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.SchemaItemObject), global::Schema.SchemaItemObject.Parser, new[]{ "Item", "Position", "Rotation" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Item), global::Schema.Item.Parser, new[]{ "Type", "Quantity", "Id" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.ItemObject), global::Schema.ItemObject.Parser, new[]{ "Item", "Position", "Rotation" }, null, null, null, null)
           }));
     }
     #endregion
@@ -43,16 +42,16 @@ namespace Schema {
   }
   #region Messages
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class SchemaItem : pb::IMessage<SchemaItem>
+  public sealed partial class Item : pb::IMessage<Item>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<SchemaItem> _parser = new pb::MessageParser<SchemaItem>(() => new SchemaItem());
+    private static readonly pb::MessageParser<Item> _parser = new pb::MessageParser<Item>(() => new Item());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<SchemaItem> Parser { get { return _parser; } }
+    public static pb::MessageParser<Item> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -68,7 +67,7 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SchemaItem() {
+    public Item() {
       OnConstruction();
     }
 
@@ -76,7 +75,7 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SchemaItem(SchemaItem other) : this() {
+    public Item(Item other) : this() {
       type_ = other.type_;
       quantity_ = other.quantity_;
       id_ = other.id_;
@@ -85,13 +84,13 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SchemaItem Clone() {
-      return new SchemaItem(this);
+    public Item Clone() {
+      return new Item(this);
     }
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::Core.ItemType type_ = global::Core.ItemType.Invalid;
+    private global::Core.ItemType type_ = global::Core.ItemType.InvalidItemType;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::Core.ItemType Type {
@@ -128,12 +127,12 @@ namespace Schema {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as SchemaItem);
+      return Equals(other as Item);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(SchemaItem other) {
+    public bool Equals(Item other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -150,7 +149,7 @@ namespace Schema {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::Core.ItemType.Invalid) hash ^= Type.GetHashCode();
+      if (Type != global::Core.ItemType.InvalidItemType) hash ^= Type.GetHashCode();
       if (Quantity != 0UL) hash ^= Quantity.GetHashCode();
       if (Id != 0UL) hash ^= Id.GetHashCode();
       if (_unknownFields != null) {
@@ -171,7 +170,7 @@ namespace Schema {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::Core.ItemType.Invalid) {
+      if (Type != global::Core.ItemType.InvalidItemType) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -193,7 +192,7 @@ namespace Schema {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::Core.ItemType.Invalid) {
+      if (Type != global::Core.ItemType.InvalidItemType) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -215,7 +214,7 @@ namespace Schema {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::Core.ItemType.Invalid) {
+      if (Type != global::Core.ItemType.InvalidItemType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (Quantity != 0UL) {
@@ -232,11 +231,11 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(SchemaItem other) {
+    public void MergeFrom(Item other) {
       if (other == null) {
         return;
       }
-      if (other.Type != global::Core.ItemType.Invalid) {
+      if (other.Type != global::Core.ItemType.InvalidItemType) {
         Type = other.Type;
       }
       if (other.Quantity != 0UL) {
@@ -307,16 +306,16 @@ namespace Schema {
   }
 
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class SchemaItemObject : pb::IMessage<SchemaItemObject>
+  public sealed partial class ItemObject : pb::IMessage<ItemObject>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<SchemaItemObject> _parser = new pb::MessageParser<SchemaItemObject>(() => new SchemaItemObject());
+    private static readonly pb::MessageParser<ItemObject> _parser = new pb::MessageParser<ItemObject>(() => new ItemObject());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<SchemaItemObject> Parser { get { return _parser; } }
+    public static pb::MessageParser<ItemObject> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -332,7 +331,7 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SchemaItemObject() {
+    public ItemObject() {
       OnConstruction();
     }
 
@@ -340,7 +339,7 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SchemaItemObject(SchemaItemObject other) : this() {
+    public ItemObject(ItemObject other) : this() {
       item_ = other.item_ != null ? other.item_.Clone() : null;
       position_ = other.position_ != null ? other.position_.Clone() : null;
       rotation_ = other.rotation_ != null ? other.rotation_.Clone() : null;
@@ -349,16 +348,16 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SchemaItemObject Clone() {
-      return new SchemaItemObject(this);
+    public ItemObject Clone() {
+      return new ItemObject(this);
     }
 
     /// <summary>Field number for the "item" field.</summary>
     public const int ItemFieldNumber = 1;
-    private global::Schema.SchemaItem item_;
+    private global::Schema.Item item_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Schema.SchemaItem Item {
+    public global::Schema.Item Item {
       get { return item_; }
       set {
         item_ = value;
@@ -367,10 +366,10 @@ namespace Schema {
 
     /// <summary>Field number for the "position" field.</summary>
     public const int PositionFieldNumber = 2;
-    private global::Schema.SchemaPoint3Float position_;
+    private global::Schema.Point3Float position_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Schema.SchemaPoint3Float Position {
+    public global::Schema.Point3Float Position {
       get { return position_; }
       set {
         position_ = value;
@@ -379,10 +378,10 @@ namespace Schema {
 
     /// <summary>Field number for the "rotation" field.</summary>
     public const int RotationFieldNumber = 3;
-    private global::Schema.SchemaPoint3Float rotation_;
+    private global::Schema.Point3Float rotation_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Schema.SchemaPoint3Float Rotation {
+    public global::Schema.Point3Float Rotation {
       get { return rotation_; }
       set {
         rotation_ = value;
@@ -392,12 +391,12 @@ namespace Schema {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as SchemaItemObject);
+      return Equals(other as ItemObject);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(SchemaItemObject other) {
+    public bool Equals(ItemObject other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -496,25 +495,25 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(SchemaItemObject other) {
+    public void MergeFrom(ItemObject other) {
       if (other == null) {
         return;
       }
       if (other.item_ != null) {
         if (item_ == null) {
-          Item = new global::Schema.SchemaItem();
+          Item = new global::Schema.Item();
         }
         Item.MergeFrom(other.Item);
       }
       if (other.position_ != null) {
         if (position_ == null) {
-          Position = new global::Schema.SchemaPoint3Float();
+          Position = new global::Schema.Point3Float();
         }
         Position.MergeFrom(other.Position);
       }
       if (other.rotation_ != null) {
         if (rotation_ == null) {
-          Rotation = new global::Schema.SchemaPoint3Float();
+          Rotation = new global::Schema.Point3Float();
         }
         Rotation.MergeFrom(other.Rotation);
       }
@@ -535,21 +534,21 @@ namespace Schema {
             break;
           case 10: {
             if (item_ == null) {
-              Item = new global::Schema.SchemaItem();
+              Item = new global::Schema.Item();
             }
             input.ReadMessage(Item);
             break;
           }
           case 18: {
             if (position_ == null) {
-              Position = new global::Schema.SchemaPoint3Float();
+              Position = new global::Schema.Point3Float();
             }
             input.ReadMessage(Position);
             break;
           }
           case 26: {
             if (rotation_ == null) {
-              Rotation = new global::Schema.SchemaPoint3Float();
+              Rotation = new global::Schema.Point3Float();
             }
             input.ReadMessage(Rotation);
             break;
@@ -571,21 +570,21 @@ namespace Schema {
             break;
           case 10: {
             if (item_ == null) {
-              Item = new global::Schema.SchemaItem();
+              Item = new global::Schema.Item();
             }
             input.ReadMessage(Item);
             break;
           }
           case 18: {
             if (position_ == null) {
-              Position = new global::Schema.SchemaPoint3Float();
+              Position = new global::Schema.Point3Float();
             }
             input.ReadMessage(Position);
             break;
           }
           case 26: {
             if (rotation_ == null) {
-              Rotation = new global::Schema.SchemaPoint3Float();
+              Rotation = new global::Schema.Point3Float();
             }
             input.ReadMessage(Rotation);
             break;

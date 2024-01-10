@@ -9,9 +9,15 @@ namespace Core
         private static readonly string name = "Guard tower";
         public override string Name => name;
 
-        public override Schema.Entity BuildSchemaObject()
+        public new Schema.OneofCharacter ToSchema()
         {
-            return new Schema.GuardTower();
+            return new Schema.OneofCharacter
+            {
+                GuardTower = new Schema.GuardTower()
+                {
+                    Building = base.ToSchema(),
+                }
+            };
         }
 
         public GuardTower(Context context, int alliance) : base(context, alliance)

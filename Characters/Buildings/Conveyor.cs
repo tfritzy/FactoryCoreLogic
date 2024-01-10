@@ -22,9 +22,15 @@ namespace Core
             SetComponent(new ConveyorComponent(this));
         }
 
-        public override Schema.Entity BuildSchemaObject()
+        public new Schema.OneofCharacter ToSchema()
         {
-            return new Schema.Conveyor();
+            return new Schema.OneofCharacter
+            {
+                Conveyor = new Schema.Conveyor()
+                {
+                    Building = base.ToSchema(),
+                }
+            };
         }
     }
 }

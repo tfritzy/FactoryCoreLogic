@@ -11,7 +11,7 @@ namespace Core
     {
         public new Building Owner => (Building)base.Owner;
         public LinkedList<ItemOnBelt> Items;
-        public override ComponentType Type => ComponentType.Conveyor;
+        public override ComponentType Type => ComponentType.ConveyorComponent;
         public HexSide? NextSide;
         public HexSide? PrevSide;
         public int Version { get; private set; }
@@ -466,14 +466,19 @@ namespace Core
             }
         }
 
-        public override Schema.Component ToSchema()
+        public override Schema.OneofComponent ToSchema()
         {
-            return new Schema.ConveyorComponent()
+            var schema = new Schema.OneofComponent
             {
-                Items = new LinkedList<Schema.ItemOnBelt>(Items.Select(x => x.ToSchema())),
-                NextSide = NextSide,
-                PrevSide = PrevSide,
+                Conveyor = new Schema.ConveyorComponent()
+                {
+                    Component = base.BuildSchemaComponent(),
+                    NextSide = NextSide != null ? new Schema.NullableHexSide { Value = NextSide.Value } : null,
+                    PrevSide = PrevSide != null ? new Schema.NullableHexSide { Value = PrevSide.Value } : null,
+                }
             };
+            schema.Conveyor.Items.AddRange(Items.Select(x => x.ToSchema()));
+            return schema;
         }
 
         public void RemoveItem(LinkedListNode<ItemOnBelt> item)

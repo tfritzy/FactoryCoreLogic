@@ -45,11 +45,15 @@ namespace Core
             Filter = _filter; // Refreshes the ItemPort's filters;
         }
 
-        public override Schema.Entity BuildSchemaObject()
+        public new Schema.OneofCharacter ToSchema()
         {
-            return new Schema.Sorter()
+            return new Schema.OneofCharacter
             {
-                Filter = Filter
+                Sorter = new Schema.Sorter()
+                {
+                    Building = base.ToSchema(),
+                    Filter = Filter != null ? new NullableItemType { ItemType = Filter.Value } : null,
+                }
             };
         }
     }

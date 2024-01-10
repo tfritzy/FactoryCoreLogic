@@ -112,9 +112,9 @@ namespace Core
             return $"({x}, {y}, {z})";
         }
 
-        public SchemaPoint3Float ToSchema()
+        public Schema.Point3Float ToSchema()
         {
-            return new SchemaPoint3Float()
+            return new Schema.Point3Float()
             {
                 X = x,
                 Y = y,
@@ -122,7 +122,7 @@ namespace Core
             };
         }
 
-        public static Point3Float FromSchema(SchemaPoint3Float schema)
+        public static Point3Float FromSchema(Schema.Point3Float schema)
         {
             return new Point3Float(schema.X, schema.Y, schema.Z);
         }

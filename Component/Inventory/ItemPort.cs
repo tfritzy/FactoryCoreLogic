@@ -27,9 +27,12 @@ namespace Core
             GetDestinationForItem = (item) => Owner.Inventory;
         }
 
-        public override Schema.Component ToSchema()
+        public override Schema.OneofComponent ToSchema()
         {
-            return new Schema.ItemOutput() { };
+            return new Schema.OneofComponent
+            {
+                ItemPort = new Schema.ItemPort(),
+            };
         }
 
         public override void OnAddToGrid()

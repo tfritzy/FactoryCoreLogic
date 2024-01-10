@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package core;
+
+enum TowerTargetingMode {
+    InvalidTowerTargetingMode = 0;
+    Closest = 1;
+    Strongest = 2;
+    Weakest = 3;
+    Random = 4;
+}

@@ -13,10 +13,10 @@ namespace Schema
         public Dictionary<Point2Int, ulong>? Buildings;
 
         [JsonProperty("characters")]
-        public Dictionary<ulong, Character>? Characters;
+        public byte[]? Characters;
 
         [JsonProperty("items")]
-        public SchemaItemObject[]? ItemObjects;
+        public ItemObject[]? ItemObjects;
 
         public Core.World FromSchema(params object[] context)
         {
@@ -25,11 +25,13 @@ namespace Schema
 
             Core.World world = new Core.World();
             Context worldContext = new Context(world);
-            SchemaTerrain terrain = SchemaTerrain.Parser.ParseFrom(Terrain);
+            Schema.Terrain terrain = Schema.Terrain.Parser.ParseFrom(Terrain);
             world.SetTerrain(new Core.Terrain(terrain, worldContext));
 
             if (Characters != null)
             {
+                Schema.CharacterArray characters = Schema.CharacterArray.Parser.ParseFrom(Characters);
+
                 foreach (ulong characterId in Characters.Keys)
                 {
                     Core.Character character = Characters[characterId].FromSchema(worldContext);
@@ -55,9 +57,9 @@ namespace Schema
 
             if (ItemObjects != null)
             {
-                foreach (SchemaItemObject schemaItemObject in ItemObjects)
+                foreach (ItemObject schemaItemObject in ItemObjects)
                 {
-                    Core.ItemObject itemObject = ItemObject.FromSchema(schemaItemObject);
+                    Core.ItemObject itemObject = Core.ItemObject.FromSchema(schemaItemObject);
                     world.AddItemObject(itemObject.Item, itemObject.Position, itemObject.Rotation);
                 }
             }

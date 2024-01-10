@@ -6,7 +6,7 @@ namespace Core
     {
         public override ItemType Type => ItemType.Mineshaft;
         public override ulong MaxStack => 1;
-        public override CharacterType? Builds => CharacterType.Mineshaft;
+        public override CharacterType? Builds => CharacterType.MineShaft;
         private const string name = "Mine";
         public override string Name => name;
         public override string? ChemicalFormula => null;

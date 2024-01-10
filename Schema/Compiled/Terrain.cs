@@ -24,32 +24,31 @@ namespace Schema {
     static TerrainReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg1UZXJyYWluLnByb3RvEgZzY2hlbWEaE1RyaWFuZ2xlVHlwZXMucHJvdG8i",
-            "PAoTU2NoZW1hVGVycmFpbk9iamVjdBIlCgR0eXBlGAEgASgOMhcuY29yZS5U",
-            "ZXJyYWluT2JqZWN0VHlwZSJ+ChtOdWxsYWJsZVNjaGVtYVRlcnJhaW5PYmpl",
-            "Y3QSLQoGb2JqZWN0GAEgASgLMhsuc2NoZW1hLlNjaGVtYVRlcnJhaW5PYmpl",
-            "Y3RIABInCgpudWxsX3ZhbHVlGAIgASgLMhEuc2NoZW1hLk51bGxWYWx1ZUgA",
-            "QgcKBXZhbHVlIlQKCFRyaWFuZ2xlEiAKBHR5cGUYASABKA4yEi5jb3JlLlRy",
-            "aWFuZ2xlVHlwZRImCgdTdWJUeXBlGAIgASgOMhUuY29yZS5UcmlhbmdsZVN1",
-            "YlR5cGUiJQoDSGV4Eh4KBHRyaXMYASADKAsyEC5zY2hlbWEuVHJpYW5nbGUi",
-            "CwoJTnVsbFZhbHVlIlsKC051bGxhYmxlSGV4EhoKA2hleBgBIAEoCzILLnNj",
-            "aGVtYS5IZXhIABInCgpudWxsX3ZhbHVlGAIgASgLMhEuc2NoZW1hLk51bGxW",
-            "YWx1ZUgAQgcKBXZhbHVlItYBCg1TY2hlbWFUZXJyYWluEi4KEWZsYXRfdGVy",
-            "cmFpbl9kYXRhGAEgAygLMhMuc2NoZW1hLk51bGxhYmxlSGV4Eg8KB3hMZW5n",
-            "dGgYAiABKAUSDwoHeUxlbmd0aBgDIAEoBRIPCgd6TGVuZ3RoGAQgASgFEjQK",
-            "B29iamVjdHMYBSADKAsyIy5zY2hlbWEuTnVsbGFibGVTY2hlbWFUZXJyYWlu",
-            "T2JqZWN0EhUKDXhPYmplY3RMZW5ndGgYBiABKAUSFQoNeU9iamVjdExlbmd0",
-            "aBgHIAEoBWIGcHJvdG8z"));
+            "Cg1UZXJyYWluLnByb3RvEgZzY2hlbWEaFHRyaWFuZ2xlX3R5cGVzLnByb3Rv",
+            "IjYKDVRlcnJhaW5PYmplY3QSJQoEdHlwZRgBIAEoDjIXLmNvcmUuVGVycmFp",
+            "bk9iamVjdFR5cGUicgoVTnVsbGFibGVUZXJyYWluT2JqZWN0EicKBm9iamVj",
+            "dBgBIAEoCzIVLnNjaGVtYS5UZXJyYWluT2JqZWN0SAASJwoKbnVsbF92YWx1",
+            "ZRgCIAEoCzIRLnNjaGVtYS5OdWxsVmFsdWVIAEIHCgV2YWx1ZSJUCghUcmlh",
+            "bmdsZRIgCgR0eXBlGAEgASgOMhIuY29yZS5UcmlhbmdsZVR5cGUSJgoHU3Vi",
+            "VHlwZRgCIAEoDjIVLmNvcmUuVHJpYW5nbGVTdWJUeXBlIiUKA0hleBIeCgR0",
+            "cmlzGAEgAygLMhAuc2NoZW1hLlRyaWFuZ2xlIgsKCU51bGxWYWx1ZSJbCgtO",
+            "dWxsYWJsZUhleBIaCgNoZXgYASABKAsyCy5zY2hlbWEuSGV4SAASJwoKbnVs",
+            "bF92YWx1ZRgCIAEoCzIRLnNjaGVtYS5OdWxsVmFsdWVIAEIHCgV2YWx1ZSLK",
+            "AQoHVGVycmFpbhIuChFmbGF0X3RlcnJhaW5fZGF0YRgBIAMoCzITLnNjaGVt",
+            "YS5OdWxsYWJsZUhleBIPCgd4TGVuZ3RoGAIgASgFEg8KB3lMZW5ndGgYAyAB",
+            "KAUSDwoHekxlbmd0aBgEIAEoBRIuCgdvYmplY3RzGAUgAygLMh0uc2NoZW1h",
+            "Lk51bGxhYmxlVGVycmFpbk9iamVjdBIVCg14T2JqZWN0TGVuZ3RoGAYgASgF",
+            "EhUKDXlPYmplY3RMZW5ndGgYByABKAViBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Core.TriangleTypesReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.SchemaTerrainObject), global::Schema.SchemaTerrainObject.Parser, new[]{ "Type" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.NullableSchemaTerrainObject), global::Schema.NullableSchemaTerrainObject.Parser, new[]{ "Object", "NullValue" }, new[]{ "Value" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.TerrainObject), global::Schema.TerrainObject.Parser, new[]{ "Type" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.NullableTerrainObject), global::Schema.NullableTerrainObject.Parser, new[]{ "Object", "NullValue" }, new[]{ "Value" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Triangle), global::Schema.Triangle.Parser, new[]{ "Type", "SubType" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Hex), global::Schema.Hex.Parser, new[]{ "Tris" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.NullValue), global::Schema.NullValue.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.NullableHex), global::Schema.NullableHex.Parser, new[]{ "Hex", "NullValue" }, new[]{ "Value" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.SchemaTerrain), global::Schema.SchemaTerrain.Parser, new[]{ "FlatTerrainData", "XLength", "YLength", "ZLength", "Objects", "XObjectLength", "YObjectLength" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Terrain), global::Schema.Terrain.Parser, new[]{ "FlatTerrainData", "XLength", "YLength", "ZLength", "Objects", "XObjectLength", "YObjectLength" }, null, null, null, null)
           }));
     }
     #endregion
@@ -57,16 +56,16 @@ namespace Schema {
   }
   #region Messages
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class SchemaTerrainObject : pb::IMessage<SchemaTerrainObject>
+  public sealed partial class TerrainObject : pb::IMessage<TerrainObject>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<SchemaTerrainObject> _parser = new pb::MessageParser<SchemaTerrainObject>(() => new SchemaTerrainObject());
+    private static readonly pb::MessageParser<TerrainObject> _parser = new pb::MessageParser<TerrainObject>(() => new TerrainObject());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<SchemaTerrainObject> Parser { get { return _parser; } }
+    public static pb::MessageParser<TerrainObject> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -82,7 +81,7 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SchemaTerrainObject() {
+    public TerrainObject() {
       OnConstruction();
     }
 
@@ -90,15 +89,15 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SchemaTerrainObject(SchemaTerrainObject other) : this() {
+    public TerrainObject(TerrainObject other) : this() {
       type_ = other.type_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SchemaTerrainObject Clone() {
-      return new SchemaTerrainObject(this);
+    public TerrainObject Clone() {
+      return new TerrainObject(this);
     }
 
     /// <summary>Field number for the "type" field.</summary>
@@ -116,12 +115,12 @@ namespace Schema {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as SchemaTerrainObject);
+      return Equals(other as TerrainObject);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(SchemaTerrainObject other) {
+    public bool Equals(TerrainObject other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -194,7 +193,7 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(SchemaTerrainObject other) {
+    public void MergeFrom(TerrainObject other) {
       if (other == null) {
         return;
       }
@@ -247,16 +246,16 @@ namespace Schema {
   }
 
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class NullableSchemaTerrainObject : pb::IMessage<NullableSchemaTerrainObject>
+  public sealed partial class NullableTerrainObject : pb::IMessage<NullableTerrainObject>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<NullableSchemaTerrainObject> _parser = new pb::MessageParser<NullableSchemaTerrainObject>(() => new NullableSchemaTerrainObject());
+    private static readonly pb::MessageParser<NullableTerrainObject> _parser = new pb::MessageParser<NullableTerrainObject>(() => new NullableTerrainObject());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<NullableSchemaTerrainObject> Parser { get { return _parser; } }
+    public static pb::MessageParser<NullableTerrainObject> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -272,7 +271,7 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public NullableSchemaTerrainObject() {
+    public NullableTerrainObject() {
       OnConstruction();
     }
 
@@ -280,7 +279,7 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public NullableSchemaTerrainObject(NullableSchemaTerrainObject other) : this() {
+    public NullableTerrainObject(NullableTerrainObject other) : this() {
       switch (other.ValueCase) {
         case ValueOneofCase.Object:
           Object = other.Object.Clone();
@@ -295,16 +294,16 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public NullableSchemaTerrainObject Clone() {
-      return new NullableSchemaTerrainObject(this);
+    public NullableTerrainObject Clone() {
+      return new NullableTerrainObject(this);
     }
 
     /// <summary>Field number for the "object" field.</summary>
     public const int ObjectFieldNumber = 1;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Schema.SchemaTerrainObject Object {
-      get { return valueCase_ == ValueOneofCase.Object ? (global::Schema.SchemaTerrainObject) value_ : null; }
+    public global::Schema.TerrainObject Object {
+      get { return valueCase_ == ValueOneofCase.Object ? (global::Schema.TerrainObject) value_ : null; }
       set {
         value_ = value;
         valueCase_ = value == null ? ValueOneofCase.None : ValueOneofCase.Object;
@@ -347,12 +346,12 @@ namespace Schema {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as NullableSchemaTerrainObject);
+      return Equals(other as NullableTerrainObject);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(NullableSchemaTerrainObject other) {
+    public bool Equals(NullableTerrainObject other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -440,14 +439,14 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(NullableSchemaTerrainObject other) {
+    public void MergeFrom(NullableTerrainObject other) {
       if (other == null) {
         return;
       }
       switch (other.ValueCase) {
         case ValueOneofCase.Object:
           if (Object == null) {
-            Object = new global::Schema.SchemaTerrainObject();
+            Object = new global::Schema.TerrainObject();
           }
           Object.MergeFrom(other.Object);
           break;
@@ -475,7 +474,7 @@ namespace Schema {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            global::Schema.SchemaTerrainObject subBuilder = new global::Schema.SchemaTerrainObject();
+            global::Schema.TerrainObject subBuilder = new global::Schema.TerrainObject();
             if (valueCase_ == ValueOneofCase.Object) {
               subBuilder.MergeFrom(Object);
             }
@@ -508,7 +507,7 @@ namespace Schema {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            global::Schema.SchemaTerrainObject subBuilder = new global::Schema.SchemaTerrainObject();
+            global::Schema.TerrainObject subBuilder = new global::Schema.TerrainObject();
             if (valueCase_ == ValueOneofCase.Object) {
               subBuilder.MergeFrom(Object);
             }
@@ -1378,16 +1377,16 @@ namespace Schema {
   }
 
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class SchemaTerrain : pb::IMessage<SchemaTerrain>
+  public sealed partial class Terrain : pb::IMessage<Terrain>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<SchemaTerrain> _parser = new pb::MessageParser<SchemaTerrain>(() => new SchemaTerrain());
+    private static readonly pb::MessageParser<Terrain> _parser = new pb::MessageParser<Terrain>(() => new Terrain());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<SchemaTerrain> Parser { get { return _parser; } }
+    public static pb::MessageParser<Terrain> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1403,7 +1402,7 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SchemaTerrain() {
+    public Terrain() {
       OnConstruction();
     }
 
@@ -1411,7 +1410,7 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SchemaTerrain(SchemaTerrain other) : this() {
+    public Terrain(Terrain other) : this() {
       flatTerrainData_ = other.flatTerrainData_.Clone();
       xLength_ = other.xLength_;
       yLength_ = other.yLength_;
@@ -1424,8 +1423,8 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public SchemaTerrain Clone() {
-      return new SchemaTerrain(this);
+    public Terrain Clone() {
+      return new Terrain(this);
     }
 
     /// <summary>Field number for the "flat_terrain_data" field.</summary>
@@ -1477,12 +1476,12 @@ namespace Schema {
 
     /// <summary>Field number for the "objects" field.</summary>
     public const int ObjectsFieldNumber = 5;
-    private static readonly pb::FieldCodec<global::Schema.NullableSchemaTerrainObject> _repeated_objects_codec
-        = pb::FieldCodec.ForMessage(42, global::Schema.NullableSchemaTerrainObject.Parser);
-    private readonly pbc::RepeatedField<global::Schema.NullableSchemaTerrainObject> objects_ = new pbc::RepeatedField<global::Schema.NullableSchemaTerrainObject>();
+    private static readonly pb::FieldCodec<global::Schema.NullableTerrainObject> _repeated_objects_codec
+        = pb::FieldCodec.ForMessage(42, global::Schema.NullableTerrainObject.Parser);
+    private readonly pbc::RepeatedField<global::Schema.NullableTerrainObject> objects_ = new pbc::RepeatedField<global::Schema.NullableTerrainObject>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Schema.NullableSchemaTerrainObject> Objects {
+    public pbc::RepeatedField<global::Schema.NullableTerrainObject> Objects {
       get { return objects_; }
     }
 
@@ -1513,12 +1512,12 @@ namespace Schema {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as SchemaTerrain);
+      return Equals(other as Terrain);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(SchemaTerrain other) {
+    public bool Equals(Terrain other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1653,7 +1652,7 @@ namespace Schema {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(SchemaTerrain other) {
+    public void MergeFrom(Terrain other) {
       if (other == null) {
         return;
       }

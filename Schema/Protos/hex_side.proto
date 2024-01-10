@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package core;
+
+enum HexSide {
+    NorthEast = 0;
+    East = 1;
+    SouthEast = 2;
+    SouthWest = 3;
+    West = 4;
+    NorthWest = 5;
+    Up = 6;
+    Down = 7;
+}

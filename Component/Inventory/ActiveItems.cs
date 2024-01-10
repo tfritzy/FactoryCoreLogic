@@ -12,19 +12,16 @@ namespace Core
         {
         }
 
-        public override Schema.Component ToSchema()
+        public override Schema.OneofComponent ToSchema()
         {
-            Schema.Inventory? inventory = base.ToSchema() as Schema.Inventory;
-
-            if (inventory == null)
-                throw new System.Exception("Parent's toSchema was unexpectedly not an InventoryComponent");
-
-            return new Schema.ActiveItems
+            var schema = new Schema.OneofComponent
             {
-                Items = inventory.Items,
-                Width = inventory.Width,
-                Height = inventory.Height,
+                ActiveItems = new Schema.ActiveItems()
+                {
+                    Inventory = base.ToSchema().Inventory,
+                }
             };
+            return schema;
         }
     }
 }

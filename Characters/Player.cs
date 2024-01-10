@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Schema;
 
 namespace Core
 {
@@ -17,9 +15,15 @@ namespace Core
 
         }
 
-        public override Schema.Entity BuildSchemaObject()
+        public new Schema.OneofCharacter ToSchema()
         {
-            return new Schema.Player();
+            return new Schema.OneofCharacter
+            {
+                Player = new Schema.Player()
+                {
+                    Character = base.ToSchema(),
+                }
+            };
         }
 
         protected override void InitComponents()
@@ -93,7 +97,7 @@ namespace Core
             if (item == null)
                 return;
 
-            Triangle? existingTri = Context.World.Terrain.GetTri(location, subIndex);
+            Schema.Triangle? existingTri = Context.World.Terrain.GetTri(location, subIndex);
             if (existingTri != null)
                 return;
 

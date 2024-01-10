@@ -1,14 +1,10 @@
 using System.Collections.Generic;
-using Core;
-using Newtonsoft.Json;
-using System;
-using System.Linq;
 
 namespace Core
 {
     public class Mineshaft : Building
     {
-        public override CharacterType Type => CharacterType.Mineshaft;
+        public override CharacterType Type => CharacterType.MineShaft;
         public override int Height => 3;
         private static readonly string name = "Mine";
         public override string Name => name;
@@ -28,9 +24,15 @@ namespace Core
             ItemPort!.OutputSideOffsets = new List<int> { 0 };
         }
 
-        public override Schema.Entity BuildSchemaObject()
+        public new Schema.OneofCharacter ToSchema()
         {
-            return new Schema.Mineshaft();
+            return new Schema.OneofCharacter
+            {
+                Mineshaft = new Schema.Mineshaft()
+                {
+                    Building = base.ToSchema(),
+                }
+            };
         }
     }
 }

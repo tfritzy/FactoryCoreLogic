@@ -13,11 +13,14 @@ namespace Core
         public const float TARGET_CHECK_COOLDOWN = 1f;
         protected new Character Owner => (Character)base.Owner;
 
-        public override Schema.Component ToSchema()
+        public override Schema.OneofComponent ToSchema()
         {
-            return new Schema.TowerTargeting
+            return new Schema.OneofComponent
             {
-                Mode = Mode,
+                TowerTargeting = new Schema.TowerTargeting()
+                {
+                    Mode = Mode,
+                }
             };
         }
 

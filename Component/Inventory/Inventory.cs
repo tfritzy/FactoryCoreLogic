@@ -419,22 +419,17 @@ namespace Core
             }
         }
 
-        public override Schema.Component ToSchema()
+        public override OneofComponent ToSchema()
         {
-            Schema.Inventory schema = new Schema.Inventory
+            var schema = new OneofComponent
             {
-                Height = this.Height,
-                Width = this.Width,
-                Items = this.items.Select(item => item?.ToSchema()).ToArray(),
+                Inventory = new Schema.Inventory()
+                {
+                    Height = this.Height,
+                    Width = this.Width,
+                }
             };
-
-            for (int i = 0; i < items.Length; i++)
-            {
-                Item? item = items[i];
-                if (item != null)
-                    schema.Items[i] = item.ToSchema();
-            }
-
+            schema.Inventory.Items.AddRange(this.items.Select(item => item?.ToSchema()));
             return schema;
         }
 
