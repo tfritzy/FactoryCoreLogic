@@ -11,7 +11,7 @@ namespace Core
         private static readonly string name = "Traveler";
         public override string Name => name;
 
-        public Player(Context context, Schema.Player player) : base(player.Character, context)
+        public Player(Context context, Schema.Player player) : base(player.Unit, context)
         {
         }
 
@@ -26,7 +26,7 @@ namespace Core
             {
                 Player = new Schema.Player()
                 {
-                    Character = base.ToSchema(),
+                    Unit = base.ToSchema(),
                 }
             };
         }

@@ -69,7 +69,7 @@ namespace Core
             }
         }
 
-        public static Character FromSchema(Context context, OneofCharacter character)
+        public static Character FromSchema(OneofCharacter character, Context context)
         {
             if (character.Conveyor != null)
                 return new Conveyor(context, character.Conveyor);

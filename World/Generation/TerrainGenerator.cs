@@ -20,7 +20,7 @@ namespace Core
                 {
                     for (int y = 0; y < Hexes.GetLength(1); y++)
                     {
-                        Hexes[x, y, z] = TriangleType.Stone;
+                        Hexes[x, y, z] = TriangleType.StoneTri;
                     }
                 }
             }
@@ -29,7 +29,7 @@ namespace Core
             {
                 for (int y = 0; y < Hexes.GetLength(1); y++)
                 {
-                    Hexes[x, y, Hexes.GetLength(2) / 2] = TriangleType.Dirt;
+                    Hexes[x, y, Hexes.GetLength(2) / 2] = TriangleType.DirtTri;
                 }
             }
 
@@ -48,7 +48,7 @@ namespace Core
                     int height = (int)(noiseVal * 10);
                     for (int z = 0; z < height; z++)
                     {
-                        Hexes[x, y, z] = TriangleType.Stone;
+                        Hexes[x, y, z] = TriangleType.StoneTri;
                     }
                 }
             }

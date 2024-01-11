@@ -17,10 +17,22 @@ namespace Core
         }
         public CommandComponent? Command => GetComponent<CommandComponent>();
 
-        public Unit(Schema.Character character, Context context) : base(character, context) { }
+        public Unit(Schema.Unit unit, Context context) : base(unit.Character, context)
+        {
+            _location = Point3Float.FromSchema(unit.Location);
+        }
 
         public Unit(Context context, int alliance) : base(context, alliance)
         {
+        }
+
+        public new Schema.Unit ToSchema()
+        {
+            return new Schema.Unit()
+            {
+                Character = base.ToSchema(),
+                Location = Location.ToSchema(),
+            };
         }
 
         public void SetLocation(Point3Float location)

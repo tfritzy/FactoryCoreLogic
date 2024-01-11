@@ -20,6 +20,11 @@ message Building {
     core.HexSide rotation = 2;
 }
 
+message Unit {
+    Character character = 1;
+    Point3Float location = 2;
+}
+
 message OneofCharacter {
     oneof character {
         Conveyor conveyor = 1;
@@ -47,7 +52,7 @@ message Conveyor {
 }
 
 message Dummy {
-    Character character = 1;
+    Unit unit = 1;
 }
 
 message DummyBuilding {
@@ -55,7 +60,7 @@ message DummyBuilding {
 }
 
 message Player {
-    Character character = 1;
+    Unit unit = 1;
 }
 
 message GuardTower {
@@ -63,11 +68,11 @@ message GuardTower {
 }
 
 message Pikeman {
-    Character character = 1;
+    Unit unit = 1;
 }
 
 message DummyMob {
-    Character character = 1;
+    Unit unit = 1;
 }
 
 message Keep {

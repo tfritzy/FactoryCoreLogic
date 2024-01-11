@@ -12,12 +12,12 @@ namespace Core
             {
                 DummyMob = new Schema.DummyMob()
                 {
-                    Character = base.ToSchema(),
+                    Unit = base.ToSchema(),
                 }
             };
         }
 
-        public DummyMob(Context context, Schema.DummyMob dummy) : base(dummy.Character, context)
+        public DummyMob(Context context, Schema.DummyMob dummy) : base(dummy.Unit, context)
         {
         }
 

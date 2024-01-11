@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-
 namespace Core
 {
     // A building with no preset components. Used for testing.

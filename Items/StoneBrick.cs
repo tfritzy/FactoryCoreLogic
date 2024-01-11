@@ -16,7 +16,7 @@ namespace Core
         {
             new Item.PlacedTriangleMetadata
             {
-                Triangle = new Triangle{Type = TriangleType.Stone, SubType = TriangleSubType.FullBrick},
+                Triangle = new Triangle{Type = TriangleType.StoneTri, SubType = TriangleSubType.FullBrick},
                 PositionOffset = new HexSide[] {},
                 RotationOffset = HexSide.NorthEast,
             }

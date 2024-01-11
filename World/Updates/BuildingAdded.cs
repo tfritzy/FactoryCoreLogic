@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-
 namespace Core
 {
     public class BuildingAdded : Update

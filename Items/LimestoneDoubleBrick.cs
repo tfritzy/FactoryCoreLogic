@@ -17,13 +17,13 @@ namespace Core
         {
             new Item.PlacedTriangleMetadata
             {
-                Triangle = new Triangle{Type=TriangleType.Stone, SubType=TriangleSubType.BrickHalf},
+                Triangle = new Triangle{Type=TriangleType.StoneTri, SubType=TriangleSubType.BrickHalf},
                 PositionOffset = new HexSide[] {},
                 RotationOffset = HexSide.NorthEast,
             },
             new Item.PlacedTriangleMetadata
             {
-                Triangle = new Triangle{Type=TriangleType.Stone, SubType=TriangleSubType.BrickHalf},
+                Triangle = new Triangle{Type=TriangleType.StoneTri, SubType=TriangleSubType.BrickHalf},
                 PositionOffset = new HexSide[] { HexSide.NorthEast},
                 RotationOffset = HexSide.SouthWest,
             }

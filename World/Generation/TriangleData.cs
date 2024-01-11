@@ -17,8 +17,8 @@ public class TriangleData
         {
             Types=new TriangleType[]
             {
-                TriangleType.Dirt,
-                TriangleType.Stone,
+                TriangleType.DirtTri,
+                TriangleType.StoneTri,
             },
             SubTypes=new TriangleSubType[]
             {
@@ -33,7 +33,7 @@ public class TriangleData
         {
             Types=new TriangleType[]
             {
-                TriangleType.StoneBrick,
+                TriangleType.StoneBrickTri,
             },
             SubTypes=new TriangleSubType[]
             {

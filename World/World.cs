@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Google.Protobuf;
-using Newtonsoft.Json;
-using Schema;
 
 namespace Core
 {
@@ -21,8 +19,29 @@ namespace Core
         public int MaxY => Terrain.MaxY;
         public int MaxHeight => Terrain.MaxZ;
 
-        [Obsolete("Only to be used during deserialization")]
-        public World() : this(new Terrain(new TriangleType?[0, 0, 0], null!)) { }
+        public World(Schema.World world, Context context)
+        {
+            this.Characters = new Dictionary<ulong, Character>();
+            this.Buildings = new Dictionary<Point2Int, ulong>();
+            this.Projectiles = new Dictionary<ulong, Projectile>();
+            this.Terrain = new Terrain(world.Terrain, context);
+            foreach (Schema.OneofCharacter schemaCharacter in world.Characters)
+            {
+                Character character = Character.FromSchema(schemaCharacter, new Context(this));
+                this.Characters[character.Id] = character;
+
+                if (character is Building building)
+                {
+                    this.Buildings[(Point2Int)building.GridPosition] = building.Id;
+                }
+            }
+
+            foreach (Schema.ItemObject schemaItemObject in world.ItemObjects)
+            {
+                ItemObject itemObject = ItemObject.FromSchema(schemaItemObject);
+                this.ItemObjects[itemObject.Item.Id] = itemObject;
+            }
+        }
 
         public World(Terrain terrain)
         {
@@ -128,44 +147,24 @@ namespace Core
             }
         }
 
-        public string Serialize()
+        public byte[] Serialize()
         {
-            return JsonConvert.SerializeObject(this.ToSchema(), new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                TypeNameHandling = TypeNameHandling.None,
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-            });
+            return ToSchema().ToByteArray();
         }
 
         public Schema.World ToSchema()
         {
-            CharacterArray characters = new CharacterArray();
-            characters.Characters.AddRange(Characters.Values.Select(c => c.Serialize()));
-
-            return new Schema.World
+            var characters = Characters.Values
+                .Where(c => !c.IsPreview)
+                .Select(c => c.Serialize()).ToArray();
+            var items = ItemObjects.Values.Select(io => io.ToSchema()).ToArray();
+            var world = new Schema.World
             {
-                Terrain = Terrain.ToSchema().ToByteArray(),
-                Buildings = Buildings
-                    .Where(kvp => !Characters[kvp.Value].IsPreview)
-                    .ToDictionary(
-                        kvp => new Point2Int(kvp.Key.x, kvp.Key.y),
-                        kvp => kvp.Value),
-                Characters = characters.ToByteArray(),
-                ItemObjects = ItemObjects.Values.Select(io => io.ToSchema()).ToArray(),
+                Terrain = Terrain.ToSchema(),
             };
-        }
-
-        public static World Deserialize(string text)
-        {
-            Schema.World? schemaWorld = JsonConvert.DeserializeObject<Schema.World>(text);
-
-            if (schemaWorld == null)
-            {
-                throw new InvalidOperationException("Failed to deserialize world");
-            }
-
-            return schemaWorld.FromSchema();
+            world.Characters.AddRange(characters);
+            world.ItemObjects.AddRange(items);
+            return world;
         }
 
         public Character? FindCharacter(Func<Character, bool> predicate)

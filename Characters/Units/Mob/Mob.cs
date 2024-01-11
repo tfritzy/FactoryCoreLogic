@@ -4,7 +4,7 @@ namespace Core
 {
     public abstract class Mob : Unit
     {
-        public Mob(Schema.Character character, Context context) : base(character, context)
+        public Mob(Schema.Unit unit, Context context) : base(unit, context)
         {
         }
 

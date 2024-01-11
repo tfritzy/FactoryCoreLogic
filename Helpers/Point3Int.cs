@@ -1,10 +1,7 @@
 using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Core
 {
-    [JsonConverter(typeof(Point3IntConverter))]
     public struct Point3Int
     {
         public int x;
@@ -124,26 +121,6 @@ namespace Core
                 y = schema.Y,
                 z = schema.Z,
             };
-        }
-    }
-
-    public class Point3IntConverter : JsonConverter<Point3Int>
-    {
-        public override Point3Int ReadJson(JsonReader reader, Type objectType, Point3Int existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            if (reader.Value == null)
-                return new Point3Int(int.MinValue, int.MinValue, int.MinValue);
-
-            string[] values = ((string)reader.Value).Split(',');
-            int x = int.Parse(values[0]);
-            int y = int.Parse(values[1]);
-            int z = values.Length > 2 ? int.Parse(values[2]) : 0;
-            return new Point3Int(x, y, z);
-        }
-
-        public override void WriteJson(JsonWriter writer, Point3Int value, JsonSerializer serializer)
-        {
-            JToken.FromObject($"{value.x},{value.y},{value.z}").WriteTo(writer);
         }
     }
 }

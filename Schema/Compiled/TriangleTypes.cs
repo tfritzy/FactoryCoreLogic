@@ -9,47 +9,53 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace Core {
+namespace Core
+{
 
   /// <summary>Holder for reflection information generated from triangle_types.proto</summary>
-  public static partial class TriangleTypesReflection {
+  public static partial class TriangleTypesReflection
+  {
 
     #region Descriptor
     /// <summary>File descriptor for triangle_types.proto</summary>
-    public static pbr::FileDescriptor Descriptor {
+    public static pbr::FileDescriptor Descriptor
+    {
       get { return descriptor; }
     }
     private static pbr::FileDescriptor descriptor;
 
-    static TriangleTypesReflection() {
+    static TriangleTypesReflection()
+    {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChR0cmlhbmdsZV90eXBlcy5wcm90bxIEY29yZSpPCgxUcmlhbmdsZVR5cGUS",
-            "DwoLVHlwZUludmFsaWQQABIICgREaXJ0EAESCQoFU3RvbmUQAhIOCgpTdG9u",
-            "ZUJyaWNrEAMSCQoFV2F0ZXIQBCq0AQoPVHJpYW5nbGVTdWJUeXBlEg4KClN1",
-            "YkludmFsaWQQABIUChBMYW5kQWN0dWFsbHlGdWxsEAESDAoITGFuZEZ1bGwQ",
-            "AhIQCgxMYW5kSW5ueUxlZnQQAxIRCg1MYW5kSW5ueVJpZ2h0EAQSEAoMTGFu",
-            "ZElubnlCb3RoEAUSDAoITGFuZE91dHkQBhINCglCcmlja0hhbGYQBxINCglG",
-            "dWxsQnJpY2sQCBIKCgZMaXF1aWQQCSpaChFUZXJyYWluT2JqZWN0VHlwZRIN",
-            "CglCaXJjaFRyZWUQABIMCghQaW5lVHJlZRABEhAKDFN0cmlwcGVkQnVzaBAC",
-            "EggKBEJ1c2gQAxIMCghNdXNocm9vbRAEYgZwcm90bzM="));
+            "ChR0cmlhbmdsZV90eXBlcy5wcm90bxIEY29yZSpYCgxUcmlhbmdsZVR5cGUS",
+            "DwoLVHlwZUludmFsaWQQABILCgdEaXJ0VHJpEAESDAoIU3RvbmVUcmkQAhIR",
+            "Cg1TdG9uZUJyaWNrVHJpEAMSCQoFV2F0ZXIQBCq0AQoPVHJpYW5nbGVTdWJU",
+            "eXBlEg4KClN1YkludmFsaWQQABIUChBMYW5kQWN0dWFsbHlGdWxsEAESDAoI",
+            "TGFuZEZ1bGwQAhIQCgxMYW5kSW5ueUxlZnQQAxIRCg1MYW5kSW5ueVJpZ2h0",
+            "EAQSEAoMTGFuZElubnlCb3RoEAUSDAoITGFuZE91dHkQBhINCglCcmlja0hh",
+            "bGYQBxINCglGdWxsQnJpY2sQCBIKCgZMaXF1aWQQCSpaChFUZXJyYWluT2Jq",
+            "ZWN0VHlwZRINCglCaXJjaFRyZWUQABIMCghQaW5lVHJlZRABEhAKDFN0cmlw",
+            "cGVkQnVzaBACEggKBEJ1c2gQAxIMCghNdXNocm9vbRAEYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Core.TriangleType), typeof(global::Core.TriangleSubType), typeof(global::Core.TerrainObjectType), }, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] { typeof(global::Core.TriangleType), typeof(global::Core.TriangleSubType), typeof(global::Core.TerrainObjectType), }, null, null));
     }
     #endregion
 
   }
   #region Enums
-  public enum TriangleType {
+  public enum TriangleType
+  {
     [pbr::OriginalName("TypeInvalid")] TypeInvalid = 0,
-    [pbr::OriginalName("Dirt")] Dirt = 1,
-    [pbr::OriginalName("Stone")] Stone = 2,
-    [pbr::OriginalName("StoneBrick")] StoneBrick = 3,
+    [pbr::OriginalName("DirtTri")] DirtTri = 1,
+    [pbr::OriginalName("StoneTri")] StoneTri = 2,
+    [pbr::OriginalName("StoneBrickTri")] StoneBrickTri = 3,
     [pbr::OriginalName("Water")] Water = 4,
   }
 
-  public enum TriangleSubType {
+  public enum TriangleSubType
+  {
     [pbr::OriginalName("SubInvalid")] SubInvalid = 0,
     /// <summary>
     /// Optimization to combine 6 full triangles into 1. Doesn't actually live in the datastructure
@@ -65,7 +71,8 @@ namespace Core {
     [pbr::OriginalName("Liquid")] Liquid = 9,
   }
 
-  public enum TerrainObjectType {
+  public enum TerrainObjectType
+  {
     [pbr::OriginalName("BirchTree")] BirchTree = 0,
     [pbr::OriginalName("PineTree")] PineTree = 1,
     [pbr::OriginalName("StrippedBush")] StrippedBush = 2,

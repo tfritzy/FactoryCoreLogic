@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import "character.proto";
+import "terrain.proto";
+import "item.proto";
+
+package schema;
+
+message World {
+    Terrain terrain = 1;
+    repeated OneofCharacter characters = 3;
+    repeated ItemObject itemObjects = 4;
+}

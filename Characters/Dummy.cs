@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-
 namespace Core
 {
     public class Dummy : Unit
@@ -16,12 +14,12 @@ namespace Core
             {
                 Dummy = new Schema.Dummy()
                 {
-                    Character = base.ToSchema(),
+                    Unit = base.ToSchema(),
                 }
             };
         }
 
-        public Dummy(Context context, Schema.Dummy dummy) : base(dummy.Character, context)
+        public Dummy(Context context, Schema.Dummy dummy) : base(dummy.Unit, context)
         {
         }
 

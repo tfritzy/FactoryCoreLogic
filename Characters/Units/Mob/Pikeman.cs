@@ -12,13 +12,13 @@ namespace Core
             {
                 Pikeman = new Schema.Pikeman()
                 {
-                    Character = base.ToSchema(),
+                    Unit = base.ToSchema(),
                 }
             };
         }
 
 
-        public Pikeman(Context context, Schema.Pikeman pikeman) : base(pikeman.Character, context)
+        public Pikeman(Context context, Schema.Pikeman pikeman) : base(pikeman.Unit, context)
         {
         }
 
