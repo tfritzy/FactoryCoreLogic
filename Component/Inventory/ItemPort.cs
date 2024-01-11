@@ -18,6 +18,8 @@ namespace Core
         public Func<Item, Inventory?> GetDestinationForItem;
         private Building BuildingOwner => (Building)Owner;
 
+        public ItemPort(Schema.ItemPort schema, Entity owner) : this(owner) { }
+
         public ItemPort(Entity owner) : base(owner)
         {
             OutputSideOffsets = new List<int>();

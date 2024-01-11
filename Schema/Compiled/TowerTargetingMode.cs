@@ -9,23 +9,19 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace Core
-{
+namespace Core {
 
   /// <summary>Holder for reflection information generated from tower_targeting_mode.proto</summary>
-  public static partial class TowerTargetingModeReflection
-  {
+  public static partial class TowerTargetingModeReflection {
 
     #region Descriptor
     /// <summary>File descriptor for tower_targeting_mode.proto</summary>
-    public static pbr::FileDescriptor Descriptor
-    {
+    public static pbr::FileDescriptor Descriptor {
       get { return descriptor; }
     }
     private static pbr::FileDescriptor descriptor;
 
-    static TowerTargetingModeReflection()
-    {
+    static TowerTargetingModeReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Chp0b3dlcl90YXJnZXRpbmdfbW9kZS5wcm90bxIEY29yZSpoChJUb3dlclRh",
@@ -34,14 +30,13 @@ namespace Core
             "ZG9tEARiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] { typeof(global::Core.TowerTargetingMode), }, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Core.TowerTargetingMode), }, null, null));
     }
     #endregion
 
   }
   #region Enums
-  public enum TowerTargetingMode
-  {
+  public enum TowerTargetingMode {
     [pbr::OriginalName("InvalidTowerTargetingMode")] InvalidTowerTargetingMode = 0,
     [pbr::OriginalName("Closest")] Closest = 1,
     [pbr::OriginalName("Strongest")] Strongest = 2,

@@ -6,7 +6,7 @@ namespace Core
         private static readonly string name = "Pikeman";
         public override string Name => name;
 
-        public new Schema.OneofCharacter ToSchema()
+        public override Schema.OneofCharacter Serialize()
         {
             return new Schema.OneofCharacter
             {
@@ -15,6 +15,11 @@ namespace Core
                     Character = base.ToSchema(),
                 }
             };
+        }
+
+
+        public Pikeman(Context context, Schema.Pikeman pikeman) : base(pikeman.Character, context)
+        {
         }
 
         public Pikeman(Context context, int alliance) : base(context, alliance)

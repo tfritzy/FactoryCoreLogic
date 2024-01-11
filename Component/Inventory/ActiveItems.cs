@@ -4,6 +4,10 @@ namespace Core
     {
         public override ComponentType Type => ComponentType.ActiveItems;
 
+        public ActiveItems(Schema.ActiveItems schema, Entity owner) : base(schema.Inventory, owner)
+        {
+        }
+
         public ActiveItems(Entity owner, Item?[] items, int width, int height) : base(owner, items, width, height)
         {
         }

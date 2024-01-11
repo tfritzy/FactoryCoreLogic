@@ -13,6 +13,10 @@ namespace Core
         private static readonly string name = "Conveyor";
         public override string Name => name;
 
+        public Conveyor(Context context, Schema.Conveyor conveyor) : base(conveyor.Building, context)
+        {
+        }
+
         public Conveyor(Context context, int alliance) : base(context, alliance)
         {
         }
@@ -22,7 +26,7 @@ namespace Core
             SetComponent(new ConveyorComponent(this));
         }
 
-        public new Schema.OneofCharacter ToSchema()
+        public override Schema.OneofCharacter Serialize()
         {
             return new Schema.OneofCharacter
             {

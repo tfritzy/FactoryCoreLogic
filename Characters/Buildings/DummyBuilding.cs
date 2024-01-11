@@ -12,7 +12,7 @@ namespace Core
 
         protected override void InitComponents() { }
 
-        public new Schema.OneofCharacter ToSchema()
+        public override Schema.OneofCharacter Serialize()
         {
             return new Schema.OneofCharacter
             {
@@ -23,6 +23,7 @@ namespace Core
             };
         }
 
+        public DummyBuilding(Context context, Schema.DummyBuilding dummy) : base(dummy.Building, context) { }
         public DummyBuilding(Context context, int alliance) : base(context, alliance) { }
     }
 }

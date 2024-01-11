@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Schema;
 
 namespace Core
 {
@@ -10,14 +11,18 @@ namespace Core
         private static readonly string name = "Traveler";
         public override string Name => name;
 
+        public Player(Context context, Schema.Player player) : base(player.Character, context)
+        {
+        }
+
         public Player(Context context, int alliance) : base(context, alliance)
         {
 
         }
 
-        public new Schema.OneofCharacter ToSchema()
+        public override OneofCharacter Serialize()
         {
-            return new Schema.OneofCharacter
+            return new OneofCharacter
             {
                 Player = new Schema.Player()
                 {

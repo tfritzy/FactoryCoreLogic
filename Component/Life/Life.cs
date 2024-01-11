@@ -21,6 +21,10 @@ namespace Core
             return schema;
         }
 
+        public Life(Schema.Life schema, Entity owner) : this(owner, schema.MaxHealth, schema.Health)
+        {
+        }
+
         public Life(Entity owner, int health) : base(owner)
         {
             BaseHealth = health;

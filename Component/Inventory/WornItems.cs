@@ -4,6 +4,10 @@ namespace Core
     {
         public override ComponentType Type => ComponentType.WornItems;
 
+        public WornItems(Schema.WornItems schema, Entity owner) : base(schema.Inventory, owner)
+        {
+        }
+
         public WornItems(Entity owner, Item?[] items, int width, int height) : base(owner, items, width, height)
         {
         }
@@ -16,7 +20,7 @@ namespace Core
         {
             var schema = new Schema.OneofComponent
             {
-                ActiveItems = new Schema.ActiveItems()
+                WornItems = new Schema.WornItems()
                 {
                     Inventory = base.ToSchema().Inventory,
                 }

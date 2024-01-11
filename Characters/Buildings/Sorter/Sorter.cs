@@ -27,6 +27,10 @@ namespace Core
             }
         }
 
+        public Sorter(Context context, Schema.Sorter sorter) : base(sorter.Building, context)
+        {
+            Filter = sorter.Filter?.ItemType;
+        }
         public Sorter(Context context, int alliance) : base(context, alliance)
         {
         }
@@ -45,7 +49,7 @@ namespace Core
             Filter = _filter; // Refreshes the ItemPort's filters;
         }
 
-        public new Schema.OneofCharacter ToSchema()
+        public override Schema.OneofCharacter Serialize()
         {
             return new Schema.OneofCharacter
             {

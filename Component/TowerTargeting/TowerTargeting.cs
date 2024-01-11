@@ -24,6 +24,11 @@ namespace Core
             };
         }
 
+        public TowerTargeting(Schema.TowerTargeting schema, Entity owner) : this(owner)
+        {
+            Mode = schema.Mode;
+        }
+
         public TowerTargeting(Entity owner) : base(owner)
         {
         }

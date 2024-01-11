@@ -6,7 +6,7 @@ namespace Core
         private static readonly string name = "Dummy Mob";
         public override string Name => name;
 
-        public new Schema.OneofCharacter ToSchema()
+        public override Schema.OneofCharacter Serialize()
         {
             return new Schema.OneofCharacter
             {
@@ -15,6 +15,10 @@ namespace Core
                     Character = base.ToSchema(),
                 }
             };
+        }
+
+        public DummyMob(Context context, Schema.DummyMob dummy) : base(dummy.Character, context)
+        {
         }
 
         public DummyMob(Context context, int alliance) : base(context, alliance)

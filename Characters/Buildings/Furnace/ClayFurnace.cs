@@ -9,9 +9,8 @@ namespace Core
         public override CharacterType Type => CharacterType.ClayFurnace;
         public override string Name => "Clay Furnace";
 
-        public ClayFurnace(Context context, int alliance) : base(context, alliance)
-        {
-        }
+        public ClayFurnace(Context context, Schema.ClayFurnace clayFurnace) : base(clayFurnace.Building, context) { }
+        public ClayFurnace(Context context, int alliance) : base(context, alliance) { }
 
         protected override void InitComponents()
         {
@@ -34,7 +33,7 @@ namespace Core
             ItemPort!.GetDestinationForItem = Smelt.GetItemDirectionFunction(this);
         }
 
-        public new Schema.OneofCharacter ToSchema()
+        public override Schema.OneofCharacter Serialize()
         {
             return new Schema.OneofCharacter
             {

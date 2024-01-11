@@ -115,6 +115,16 @@ namespace Core
                 Z = z,
             };
         }
+
+        public static Point3Int FromSchema(Schema.Point3Int schema)
+        {
+            return new Point3Int
+            {
+                x = schema.X,
+                y = schema.Y,
+                z = schema.Z,
+            };
+        }
     }
 
     public class Point3IntConverter : JsonConverter<Point3Int>

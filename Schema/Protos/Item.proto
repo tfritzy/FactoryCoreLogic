@@ -5,6 +5,11 @@ import "item_type.proto";
 
 package schema;
 
+message MaybeNullItem {
+    Item item = 1;
+    bool is_null = 2;
+}
+
 message Item {
     core.ItemType type = 1;
     uint64 quantity = 2;

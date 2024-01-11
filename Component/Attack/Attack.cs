@@ -27,8 +27,17 @@ namespace Core
             };
         }
 
+        public Attack(Schema.Attack schema, Entity owner) : this(
+            owner,
+            schema.BaseCooldown,
+            schema.BaseDamage,
+            schema.BaseRange,
+            schema.ProjectileType)
+        {
+        }
+
         public Attack(
-            Character owner,
+            Entity owner,
             float cooldown,
             int damage,
             float range,

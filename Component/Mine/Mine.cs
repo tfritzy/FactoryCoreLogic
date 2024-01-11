@@ -14,6 +14,8 @@ namespace Core
         private float collectionTimeRemaining;
         public readonly Dictionary<ItemType, float> ResourceWeights;
 
+        public Mine(Schema.Mine schema, Entity owner) : this(owner) { }
+
         public Mine(Entity owner) : base(owner)
         {
             collectionTimeRemaining = CollectionTime;

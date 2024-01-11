@@ -15,6 +15,12 @@ namespace Core
             ProgressMeters = progressMeters;
         }
 
+        public ItemOnBelt(Schema.ItemOnBelt schema)
+        {
+            Item = Item.FromSchema(schema.Item);
+            ProgressMeters = schema.ProgressMeters;
+        }
+
         public Schema.ItemOnBelt ToSchema()
         {
             return new Schema.ItemOnBelt()

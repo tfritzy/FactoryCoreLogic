@@ -9,6 +9,8 @@ namespace Core
         private static readonly string name = "Mine";
         public override string Name => name;
 
+        public Mineshaft(Context context, Schema.Mineshaft mineshaft) : base(mineshaft.Building, context) { }
+
         public Mineshaft(Context context, int alliance) : base(context, alliance) { }
 
         protected override void InitComponents()
@@ -24,7 +26,7 @@ namespace Core
             ItemPort!.OutputSideOffsets = new List<int> { 0 };
         }
 
-        public new Schema.OneofCharacter ToSchema()
+        public override Schema.OneofCharacter Serialize()
         {
             return new Schema.OneofCharacter
             {

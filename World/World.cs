@@ -140,6 +140,9 @@ namespace Core
 
         public Schema.World ToSchema()
         {
+            CharacterArray characters = new CharacterArray();
+            characters.Characters.AddRange(Characters.Values.Select(c => c.Serialize()));
+
             return new Schema.World
             {
                 Terrain = Terrain.ToSchema().ToByteArray(),
@@ -148,11 +151,7 @@ namespace Core
                     .ToDictionary(
                         kvp => new Point2Int(kvp.Key.x, kvp.Key.y),
                         kvp => kvp.Value),
-                Characters = Characters
-                    .Where(kvp => !kvp.Value.IsPreview)
-                    .ToDictionary(
-                        kvp => kvp.Key,
-                        kvp => (Schema.Character)kvp.Value.ToSchema()),
+                Characters = characters.ToByteArray(),
                 ItemObjects = ItemObjects.Values.Select(io => io.ToSchema()).ToArray(),
             };
         }

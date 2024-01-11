@@ -20,6 +20,22 @@ namespace Core
         public ActiveItems? ActiveItems => this.GetComponent<ActiveItems>();
         public ConveyorComponent? Conveyor => GetComponent<ConveyorComponent>();
 
+        public Entity(Schema.Entity entity, Context context)
+        {
+            this.Context = context;
+            this.Components = new Dictionary<Type, Component>();
+            this.Id = entity.Id;
+
+            foreach (var schemaComponent in entity.Components)
+            {
+                Component component = Component.FromSchema(schemaComponent, this);
+                SetComponent(component);
+            }
+
+            ConfigureComponents();
+
+        }
+
         public Entity(Context context)
         {
             this.Context = context;
@@ -32,6 +48,16 @@ namespace Core
         public bool HasComponent<T>() where T : Component
         {
             return Components.ContainsKey(typeof(T));
+        }
+
+        public bool HasComponent(ComponentType type)
+        {
+            return Components.Values.Any(c => c.Type == type);
+        }
+
+        public Component? GetComponent(ComponentType type)
+        {
+            return Components.Values.FirstOrDefault(c => c.Type == type);
         }
 
         public T GetComponent<T>() where T : Component

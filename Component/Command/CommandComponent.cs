@@ -10,6 +10,8 @@ namespace Core
         public override ComponentType Type => ComponentType.Command;
         public Queue<Command> Commands = new();
 
+        public CommandComponent(Schema.Command schema, Entity owner) : this(owner) { }
+
         public CommandComponent(Entity owner) : base(owner)
         {
         }

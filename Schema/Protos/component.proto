@@ -46,7 +46,7 @@ message ConveyorComponent {
 
 message Inventory {
     Component component = 1;
-    repeated Item items = 2;
+    repeated MaybeNullItem items = 2;
     int32 width = 3;
     int32 height = 4;
 }
@@ -69,8 +69,8 @@ message Attack {
 
 message Life {
     Component component = 1;
-    float max_health = 2;
-    float health = 3;
+    int32 max_health = 2;
+    int32 health = 3;
 }
 
 message TowerTargeting {

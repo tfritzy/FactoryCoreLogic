@@ -15,6 +15,16 @@ namespace Core
 
         public override ComponentType Type => ComponentType.Inventory;
 
+        public Inventory(Schema.Inventory schema, Entity owner) : base(owner)
+        {
+            this.Width = schema.Width;
+            this.Height = schema.Height;
+            this.items = schema.Items.Select(
+                item => item.IsNull ?
+                    null :
+                    Item.FromSchema(item.Item)).ToArray();
+        }
+
         public Inventory(Entity owner, Item?[] items, int width, int height) : base(owner)
         {
             this.Width = width;
@@ -425,11 +435,15 @@ namespace Core
             {
                 Inventory = new Schema.Inventory()
                 {
-                    Height = this.Height,
-                    Width = this.Width,
+                    Height = Height,
+                    Width = Width,
                 }
             };
-            schema.Inventory.Items.AddRange(this.items.Select(item => item?.ToSchema()));
+            schema.Inventory.Items.AddRange(
+                items.Select(
+                    item => item != null ?
+                        new MaybeNullItem { Item = item?.ToSchema() } :
+                        new MaybeNullItem { IsNull = true }));
             return schema;
         }
 

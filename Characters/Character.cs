@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Schema;
 
 namespace Core
 {
@@ -12,6 +13,12 @@ namespace Core
         public int Alliance { get; private set; }
         private static Point3Float defaultProjectileOffset = new Point3Float();
         public virtual Point3Float ProjectileSpawnOffset => defaultProjectileOffset;
+
+        public Character(Schema.Character character, Context context) : base(character.Entity, context)
+        {
+            this.Alliance = character.Alliance;
+            this.GridPosition = Point3Int.FromSchema(character.Pos);
+        }
 
         public Character(Context context, int alliance) : base(context)
         {
@@ -61,6 +68,39 @@ namespace Core
                     throw new ArgumentException("Invalid character type " + character);
             }
         }
+
+        public static Character FromSchema(Context context, OneofCharacter character)
+        {
+            if (character.Conveyor != null)
+                return new Conveyor(context, character.Conveyor);
+            else if (character.Dummy != null)
+                return new Dummy(context, character.Dummy);
+            else if (character.DummyBuilding != null)
+                return new DummyBuilding(context, character.DummyBuilding);
+            else if (character.Player != null)
+                return new Player(context, character.Player);
+            else if (character.GuardTower != null)
+                return new GuardTower(context, character.GuardTower);
+            else if (character.Pikeman != null)
+                return new Pikeman(context, character.Pikeman);
+            else if (character.DummyMob != null)
+                return new DummyMob(context, character.DummyMob);
+            else if (character.Keep != null)
+                return new Keep(context, character.Keep);
+            else if (character.Mineshaft != null)
+                return new Mineshaft(context, character.Mineshaft);
+            else if (character.Depot != null)
+                return new Depot(context, character.Depot);
+            else if (character.Sorter != null)
+                return new Sorter(context, character.Sorter);
+            else if (character.ClayFurnace != null)
+                return new ClayFurnace(context, character.ClayFurnace);
+            else
+                throw new ArgumentException("Invalid character type " + character);
+
+        }
+
+        public abstract OneofCharacter Serialize();
 
         public new Schema.Character ToSchema()
         {

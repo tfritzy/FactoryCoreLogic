@@ -10,7 +10,7 @@ namespace Core
 
         protected override void InitComponents() { }
 
-        public new Schema.OneofCharacter ToSchema()
+        public override Schema.OneofCharacter Serialize()
         {
             return new Schema.OneofCharacter
             {
@@ -19,6 +19,10 @@ namespace Core
                     Character = base.ToSchema(),
                 }
             };
+        }
+
+        public Dummy(Context context, Schema.Dummy dummy) : base(dummy.Character, context)
+        {
         }
 
         public Dummy(Context context, int alliance) : base(context, alliance) { }

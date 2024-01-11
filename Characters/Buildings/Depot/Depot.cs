@@ -13,6 +13,7 @@ namespace Core
         private static readonly string name = "Depot";
         public override string Name => name;
 
+        public Depot(Context context, Schema.Depot depot) : base(depot.Building, context) { }
         public Depot(Context context, int alliance) : base(context, alliance) { }
 
         protected override void InitComponents()
@@ -28,7 +29,7 @@ namespace Core
             ItemPort!.OutputSideOffsets = new List<int> { 0 };
         }
 
-        public new Schema.OneofCharacter ToSchema()
+        public override Schema.OneofCharacter Serialize()
         {
             return new Schema.OneofCharacter
             {

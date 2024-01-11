@@ -17,6 +17,7 @@ namespace Core
         }
         public CommandComponent? Command => GetComponent<CommandComponent>();
 
+        public Unit(Schema.Character character, Context context) : base(character, context) { }
 
         public Unit(Context context, int alliance) : base(context, alliance)
         {

@@ -38,6 +38,10 @@ namespace Core
         public SmeltingRecipe? RecipeBeingSmelted;
         Queue<Item> smeltedItems = new Queue<Item>();
 
+        public Smelt(Schema.Smelt schema, Entity owner) : this(owner)
+        {
+        }
+
         public Smelt(Entity owner) : base(owner)
         {
             SmeltingItemTemperature_C = Owner.Context.World.OutsideAirTemperature_C;

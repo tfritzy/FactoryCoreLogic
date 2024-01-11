@@ -27,6 +27,11 @@ namespace Core
 
         private Point3Int gridPosition;
 
+        public Building(Schema.Building building, Context context) : base(building.Character, context)
+        {
+            this.Rotation = building.Rotation;
+        }
+
         protected Building(Context context, int alliance) : base(context, alliance)
         {
         }

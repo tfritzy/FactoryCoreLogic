@@ -9,7 +9,7 @@ namespace Core
         private static readonly string name = "Keep";
         public override string Name => name;
 
-        public new Schema.OneofCharacter ToSchema()
+        public override Schema.OneofCharacter Serialize()
         {
             return new Schema.OneofCharacter
             {
@@ -19,6 +19,8 @@ namespace Core
                 }
             };
         }
+
+        public Keep(Context context, Schema.Keep keep) : base(keep.Building, context) { }
 
         public Keep(Context context, int alliance) : base(context, alliance)
         {

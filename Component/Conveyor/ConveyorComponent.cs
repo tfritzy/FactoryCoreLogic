@@ -32,7 +32,14 @@ namespace Core
         public const float STRAIGHT_DISTANCE = Constants.HEX_APOTHEM * 2;
         public const float CURVE_DISTANCE = STRAIGHT_DISTANCE;
 
-        public ConveyorComponent(Character owner) : base(owner)
+        public ConveyorComponent(Schema.ConveyorComponent schema, Entity owner) : this(owner)
+        {
+            NextSide = schema.NextSide?.Value;
+            PrevSide = schema.PrevSide?.Value;
+            Items = new LinkedList<ItemOnBelt>(schema.Items.Select(x => new ItemOnBelt(x)));
+        }
+
+        public ConveyorComponent(Entity owner) : base(owner)
         {
             Items = new LinkedList<ItemOnBelt>();
         }

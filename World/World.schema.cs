@@ -30,12 +30,10 @@ namespace Schema
 
             if (Characters != null)
             {
-                Schema.CharacterArray characters = Schema.CharacterArray.Parser.ParseFrom(Characters);
-
-                foreach (ulong characterId in Characters.Keys)
+                CharacterArray characters = Schema.CharacterArray.Parser.ParseFrom(Characters);
+                foreach (OneofCharacter schemaCharacter in characters.Characters)
                 {
-                    Core.Character character = Characters[characterId].FromSchema(worldContext);
-
+                    Core.Character character = Core.Character.FromSchema(worldContext, schemaCharacter);
                     world.AddCharacter(character);
                 }
             }

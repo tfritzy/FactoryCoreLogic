@@ -9,23 +9,19 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace Core
-{
+namespace Core {
 
   /// <summary>Holder for reflection information generated from projectile_type.proto</summary>
-  public static partial class ProjectileTypeReflection
-  {
+  public static partial class ProjectileTypeReflection {
 
     #region Descriptor
     /// <summary>File descriptor for projectile_type.proto</summary>
-    public static pbr::FileDescriptor Descriptor
-    {
+    public static pbr::FileDescriptor Descriptor {
       get { return descriptor; }
     }
     private static pbr::FileDescriptor descriptor;
 
-    static ProjectileTypeReflection()
-    {
+    static ProjectileTypeReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChVwcm9qZWN0aWxlX3R5cGUucHJvdG8SBGNvcmUqNgoOUHJvamVjdGlsZVR5",
@@ -33,14 +29,13 @@ namespace Core
             "dG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] { typeof(global::Core.ProjectileType), }, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Core.ProjectileType), }, null, null));
     }
     #endregion
 
   }
   #region Enums
-  public enum ProjectileType
-  {
+  public enum ProjectileType {
     [pbr::OriginalName("InvalidProjectileType")] InvalidProjectileType = 0,
     [pbr::OriginalName("Arrow")] Arrow = 1,
   }

@@ -9,7 +9,7 @@ namespace Core
         private static readonly string name = "Guard tower";
         public override string Name => name;
 
-        public new Schema.OneofCharacter ToSchema()
+        public override Schema.OneofCharacter Serialize()
         {
             return new Schema.OneofCharacter
             {
@@ -18,6 +18,10 @@ namespace Core
                     Building = base.ToSchema(),
                 }
             };
+        }
+
+        public GuardTower(Context context, Schema.GuardTower guardTower) : base(guardTower.Building, context)
+        {
         }
 
         public GuardTower(Context context, int alliance) : base(context, alliance)
