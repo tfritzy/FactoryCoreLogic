@@ -6,25 +6,36 @@ namespace Core
     {
         private World? world;
         public World World => world ?? throw new System.InvalidOperationException("World is not set");
-        public LocalClient Api;
+        public Connection Connection { get; set; } = null!;
+        public ContextType Type { get; private set; }
 
-        public Context()
+        public enum ContextType
+        {
+            Client,
+            Host,
+        }
+
+        public Context(ContextType type = ContextType.Host, IClient? client = null)
         {
             // Needed for some flows. It's invalid to stay in this state, and is remedied by SetWorld().
             world = null;
-            Api = new LocalClient(null!);
-        }
+            Type = type;
 
-        public Context(World? world)
-        {
-            this.world = world;
-            Api = new LocalClient(World);
+            client ??= new Client();
+
+            if (type == ContextType.Client)
+            {
+                Connection = new ClientConnection(this, client);
+            }
+            else
+            {
+                Connection = new HostConnection(this, client);
+            }
         }
 
         public void SetWorld(World world)
         {
             this.world = world;
-            Api = new LocalClient(world);
         }
     }
 }

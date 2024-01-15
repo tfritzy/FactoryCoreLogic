@@ -27,7 +27,7 @@ namespace Core
             this.Terrain = new Terrain(world.Terrain, context);
             foreach (Schema.OneofCharacter schemaCharacter in world.Characters)
             {
-                Character character = Character.FromSchema(schemaCharacter, new Context(this));
+                Character character = Character.FromSchema(schemaCharacter, context);
                 this.Characters[character.Id] = character;
 
                 if (character is Building building)
@@ -41,6 +41,8 @@ namespace Core
                 ItemObject itemObject = ItemObject.FromSchema(schemaItemObject);
                 this.ItemObjects[itemObject.Item.Id] = itemObject;
             }
+
+            context.SetWorld(this);
         }
 
         public World(Terrain terrain)
@@ -362,6 +364,22 @@ namespace Core
             foreach (ulong id in toRemove)
             {
                 RemoveItemObject(id);
+            }
+        }
+
+        public void SetUnitLocation(ulong unitId, Point3Float pos, Point3Float velocity)
+        {
+            if (!Characters.ContainsKey(unitId))
+            {
+                return;
+            }
+
+            Character character = Characters[unitId];
+
+            if (character is Unit unit)
+            {
+                unit.SetLocation(pos);
+                // unit.SetVelocity(velocity);
             }
         }
     }

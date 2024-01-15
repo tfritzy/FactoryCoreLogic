@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "units.proto";
+
+package schema;
+
+message OneofUpdate {
+    oneof update {
+        ItemMoved itemMoved = 1;
+    }
+}
+
+message ItemMoved {
+    uint64 item_id = 1;
+    Point3Float updatedPosition = 2;
+    Point3Float rotation = 3;
+}

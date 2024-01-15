@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+import "units.proto";
+
+package schema;
+
+message OneofRequest {
+    oneof request {
+        UpdateOwnLocation updateOwnLocation = 1;
+    }
+}
+
+enum RequestType {
+    UPDATE_OWN_LOCATION = 0;
+}
+
+message UpdateOwnLocation {
+    RequestType type = 1;
+    uint64 player_id = 2;
+    Point3Float position = 3;
+    Point3Float velocity = 4;
+}
