@@ -1,10 +1,14 @@
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Google.Protobuf;
 
 namespace Core
 {
     public class HostConnection : Connection
     {
+        private List<PlayerDetails> connectedPlayers = new();
+
         public HostConnection(Context context, IClient client) : base(context, client)
         {
         }
@@ -20,19 +24,28 @@ namespace Core
             // Start whenever I'm ready
         }
 
+        private void SendMessageToAllPlayers(byte[] message)
+        {
+            foreach (PlayerDetails player in connectedPlayers)
+            {
+                client.Send(message, message.Length, player.EndPoint);
+            }
+        }
+
         public override void HandleMessage(IPEndPoint endpoint, byte[] message)
         {
-            // Deserialize and forward to context.Api
+            Schema.OneofRequest request = Schema.OneofRequest.Parser.ParseFrom(message);
+            context.World.Requests.Enqueue(request);
         }
 
-        public override void UpdateOwnPosition(ulong unitId, Point3Float pos, Point3Float velocity)
+        public override void SendPendingMessages()
         {
-            context.World.SetUnitLocation(unitId, pos, velocity);
-        }
-
-        public override void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float rotation)
-        {
-            context.World.SetItemObjectPos(itemId, pos, rotation);
+            while (context.World.Updates.Count > 0)
+            {
+                Schema.OneofUpdate update = context.World.Updates.Dequeue();
+                byte[] message = update.ToByteArray();
+                SendMessageToAllPlayers(message);
+            }
         }
     }
 }

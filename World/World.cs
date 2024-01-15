@@ -11,9 +11,11 @@ namespace Core
         private Dictionary<Point2Int, ulong> Buildings;
         private Dictionary<ulong, Character> Characters;
         public Dictionary<ulong, Projectile> Projectiles { get; private set; }
-        public LinkedList<Update> UnseenUpdates = new LinkedList<Update>();
+        public LinkedList<Update> UnseenUpdates = new LinkedList<Update>(); // Ship of theseus migration to Updates
         public float OutsideAirTemperature_C = 20f;
         public Dictionary<ulong, ItemObject> ItemObjects = new();
+        public Queue<Schema.OneofUpdate> Updates = new Queue<Schema.OneofUpdate>();
+        public Queue<Schema.OneofRequest> Requests = new Queue<Schema.OneofRequest>();
 
         public int MaxX => Terrain.MaxX;
         public int MaxY => Terrain.MaxY;
@@ -381,6 +383,12 @@ namespace Core
                 unit.SetLocation(pos);
                 // unit.SetVelocity(velocity);
             }
+        }
+
+        public void HandleUpdate(Schema.OneofUpdate update)
+        {
+            // A client world receives updates from the server.
+            throw new System.NotImplementedException();
         }
     }
 }

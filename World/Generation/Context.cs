@@ -7,7 +7,6 @@ namespace Core
         private World? world;
         public World World => world ?? throw new System.InvalidOperationException("World is not set");
         public Connection Connection { get; set; } = null!;
-        public ContextType Type { get; private set; }
 
         public enum ContextType
         {
@@ -19,10 +18,7 @@ namespace Core
         {
             // Needed for some flows. It's invalid to stay in this state, and is remedied by SetWorld().
             world = null;
-            Type = type;
-
             client ??= new Client();
-
             if (type == ContextType.Client)
             {
                 Connection = new ClientConnection(this, client);

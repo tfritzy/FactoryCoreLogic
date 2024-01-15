@@ -80,33 +80,16 @@ namespace Core
 
         public override void HandleMessage(IPEndPoint endpoint, byte[] message)
         {
-            if (endpoint == MatchmakingServerEndPoint)
+            Schema.OneofUpdate update = Schema.OneofUpdate.Parser.ParseFrom(message);
+            context.World.Updates.Enqueue(update);
+        }
+
+        public override void SendPendingMessages()
+        {
+            while (context.World.Requests.Count > 0)
             {
-                string strMessage = Encoding.UTF8.GetString(message);
-                return;
+                SendMessage(context.World.Requests.Dequeue());
             }
-
-            // Deserialize and forward to context.Api
-        }
-
-        public override void UpdateOwnPosition(ulong unitId, Point3Float pos, Point3Float velocity)
-        {
-            var update = new Schema.OneofRequest
-            {
-                UpdateOwnLocation = new Schema.UpdateOwnLocation
-                {
-                    PlayerId = unitId,
-                    Position = pos.ToSchema(),
-                    Velocity = velocity.ToSchema(),
-                    Type = Schema.RequestType.UpdateOwnLocation,
-                }
-            };
-            SendMessage(update);
-        }
-
-        public override void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float rotation)
-        {
-            context.World.SetItemObjectPos(itemId, pos, rotation);
         }
     }
 }

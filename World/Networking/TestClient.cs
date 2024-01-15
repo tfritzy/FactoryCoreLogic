@@ -11,7 +11,7 @@ namespace Core
     public class TestClient : IClient
     {
         public Dictionary<IPEndPoint, List<byte[]>> SentMessages = new();
-        private readonly Queue<UdpReceiveResult> _receivedMessages = new();
+        public readonly Queue<UdpReceiveResult> ReceivedMessages = new();
         private readonly SemaphoreSlim _messageAvailable = new(0);
 
         public TestClient() : base()
@@ -23,9 +23,9 @@ namespace Core
             // Wait until a message is available
             await _messageAvailable.WaitAsync(token);
 
-            lock (_receivedMessages)
+            lock (ReceivedMessages)
             {
-                if (_receivedMessages.TryDequeue(out var result))
+                if (ReceivedMessages.TryDequeue(out var result))
                 {
                     return result;
                 }
@@ -36,9 +36,9 @@ namespace Core
 
         public void EnqueueReceivedMessage(UdpReceiveResult message)
         {
-            lock (_receivedMessages)
+            lock (ReceivedMessages)
             {
-                _receivedMessages.Enqueue(message);
+                ReceivedMessages.Enqueue(message);
                 _messageAvailable.Release();
             }
         }
