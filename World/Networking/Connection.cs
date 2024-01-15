@@ -14,20 +14,21 @@ namespace Core
 
     public abstract class Connection
     {
-        private Context context;
+        protected Context context;
         protected IClient client;
         public ConnectionState State { get; protected set; } = ConnectionState.Disconnected;
-        public Api Api { get; private set; }
         public const int DefaultTimeout_ms = 10_000;
+
+        public abstract void UpdateOwnPosition(ulong unitId, Point3Float location, Point3Float velocity);
+        public abstract void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float rotation);
 
         public readonly static IPEndPoint MatchmakingServerEndPoint =
             new(IPAddress.Parse("20.29.48.111"), 64132);
 
-        public Connection(Context context, IClient client, Api api)
+        public Connection(Context context, IClient client)
         {
             this.context = context;
             this.client = client;
-            Api = api;
         }
 
         public abstract Task Connect(int timeout = DefaultTimeout_ms);

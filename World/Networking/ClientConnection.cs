@@ -15,7 +15,7 @@ namespace Core
         private IPEndPoint? hostEndPoint;
 
         public ClientConnection(Context context, IClient client)
-            : base(context, client, new ClientApi(context))
+            : base(context, client)
         {
         }
 
@@ -87,6 +87,26 @@ namespace Core
             }
 
             // Deserialize and forward to context.Api
+        }
+
+        public override void UpdateOwnPosition(ulong unitId, Point3Float pos, Point3Float velocity)
+        {
+            var update = new Schema.OneofRequest
+            {
+                UpdateOwnLocation = new Schema.UpdateOwnLocation
+                {
+                    PlayerId = unitId,
+                    Position = pos.ToSchema(),
+                    Velocity = velocity.ToSchema(),
+                    Type = Schema.RequestType.UpdateOwnLocation,
+                }
+            };
+            SendMessage(update);
+        }
+
+        public override void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float rotation)
+        {
+            context.World.SetItemObjectPos(itemId, pos, rotation);
         }
     }
 }

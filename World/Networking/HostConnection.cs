@@ -5,8 +5,7 @@ namespace Core
 {
     public class HostConnection : Connection
     {
-        public HostConnection(Context context, IClient client)
-            : base(context, client, new HostApi(context))
+        public HostConnection(Context context, IClient client) : base(context, client)
         {
         }
 
@@ -24,6 +23,16 @@ namespace Core
         public override void HandleMessage(IPEndPoint endpoint, byte[] message)
         {
             // Deserialize and forward to context.Api
+        }
+
+        public override void UpdateOwnPosition(ulong unitId, Point3Float pos, Point3Float velocity)
+        {
+            context.World.SetUnitLocation(unitId, pos, velocity);
+        }
+
+        public override void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float rotation)
+        {
+            context.World.SetItemObjectPos(itemId, pos, rotation);
         }
     }
 }
