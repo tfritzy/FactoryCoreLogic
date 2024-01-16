@@ -13,6 +13,7 @@ namespace Core
     {
         public const string ClientLookingForHost = "ClientLookingForHost";
         private IPEndPoint? hostEndPoint;
+        private NatPunchthroughModule? punchthrough;
 
         public ClientConnection(Context context, IClient client)
             : base(context, client)
@@ -68,8 +69,7 @@ namespace Core
                 return;
             }
 
-            bool success = await NatPunchthrough.Punchthrough(client, hostEndPoint, timeout_ms: timeout_ms);
-            State = success ? ConnectionState.Connected : ConnectionState.Disconnected;
+            punchthrough = new NatPunchthroughModule(client, hostEndPoint);
         }
 
         public void SendMessage(Schema.OneofRequest request)
@@ -80,8 +80,19 @@ namespace Core
 
         public override void HandleMessage(IPEndPoint endpoint, byte[] message)
         {
-            Schema.OneofUpdate update = Schema.OneofUpdate.Parser.ParseFrom(message);
-            context.World.Updates.Enqueue(update);
+            if (punchthrough?.IsMessageForNatPunchthrough(message) ?? false)
+            {
+                punchthrough.HandleMessageFromPeer(message);
+                if (punchthrough.ConnectionEstablished)
+                {
+                    State = ConnectionState.Connected;
+                }
+            }
+            else
+            {
+                Schema.OneofUpdate update = Schema.OneofUpdate.Parser.ParseFrom(message);
+                context.World.Updates.Enqueue(update);
+            }
         }
 
         public override void SendPendingMessages()
@@ -90,6 +101,8 @@ namespace Core
             {
                 SendMessage(context.World.Requests.Dequeue());
             }
+
+            punchthrough?.Update();
         }
     }
 }

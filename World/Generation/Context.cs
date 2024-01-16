@@ -10,6 +10,7 @@ namespace Core
 
         public enum ContextType
         {
+            Local,
             Client,
             Host,
         }
