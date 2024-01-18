@@ -23,7 +23,6 @@ namespace Core
             // Tell matchmaking server to find me a host.
             byte[] introduction = Encoding.UTF8.GetBytes(ClientLookingForHost);
             Client.Send(introduction, introduction.Length, MatchmakingServerEndPoint);
-            UnityEngine.Debug.Log($"Sent introduction to {MatchmakingServerEndPoint}");
 
             // Wait for response from matchmaking server.
             CancellationTokenSource cts = new();
@@ -34,13 +33,10 @@ namespace Core
                 try
                 {
                     result = await Client.ReceiveAsync(cts.Token);
-                    UnityEngine.Debug.Log($"Received message from {result.RemoteEndPoint}");
-                    UnityEngine.Debug.Log($"Message: {Encoding.UTF8.GetString(result.Buffer)}");
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    UnityEngine.Debug.Log(e);
                     continue;
                 }
 
@@ -52,7 +48,6 @@ namespace Core
                         string ip = strMessage.Split(':')[0];
                         int port = int.Parse(strMessage.Split(':')[1]);
                         hostEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
-                        UnityEngine.Debug.Log($"Found host at {hostEndPoint}");
                     }
                     catch (Exception e)
                     {

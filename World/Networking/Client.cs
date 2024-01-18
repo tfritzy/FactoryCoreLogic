@@ -11,9 +11,16 @@ namespace Core
     {
         private readonly UdpClient client;
 
-        public Client() : base()
+        public Client(IPEndPoint? iPEndPoint = null) : base()
         {
-            client = new UdpClient();
+            if (iPEndPoint != null)
+            {
+                client = new UdpClient(iPEndPoint);
+            }
+            else
+            {
+                client = new UdpClient();
+            }
         }
 
         public Task<UdpReceiveResult> ReceiveAsync(CancellationToken cancellationToken)
