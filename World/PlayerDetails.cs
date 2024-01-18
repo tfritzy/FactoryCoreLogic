@@ -1,5 +1,5 @@
 using System.Net;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Core
 {

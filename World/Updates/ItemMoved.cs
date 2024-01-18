@@ -1,20 +1,20 @@
 using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Core
 {
     public class ItemMoved : Update
     {
-        [JsonPropertyName("type")]
+        [JsonProperty("type")]
         public override UpdateType Type => UpdateType.ItemMoved;
 
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public ulong Id;
 
-        [JsonPropertyName("pos")]
+        [JsonProperty("pos")]
         public Point3Float Pos;
 
-        [JsonPropertyName("rotation")]
+        [JsonProperty("rotation")]
         public Point3Float Rotation;
 
         public ItemMoved(ulong id, Point3Float pos, Point3Float rotation)

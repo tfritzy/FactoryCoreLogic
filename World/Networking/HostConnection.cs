@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf;
@@ -85,7 +85,7 @@ namespace Core
 
             try
             {
-                playerDetails = JsonSerializer.Deserialize<PlayerDetails>(strMessage);
+                playerDetails = JsonConvert.DeserializeObject<PlayerDetails>(strMessage);
             }
             catch (Exception e)
             {
