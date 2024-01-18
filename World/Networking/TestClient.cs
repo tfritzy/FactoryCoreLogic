@@ -59,5 +59,11 @@ namespace Core
 
             return bytes;
         }
+
+        public Task<int> SendAsync(byte[] message, IPEndPoint hostEndPoint)
+        {
+            Send(message, message.Length, hostEndPoint);
+            return Task.FromResult(message.Length);
+        }
     }
 }

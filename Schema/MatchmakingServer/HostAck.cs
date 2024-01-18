@@ -1,9 +1,9 @@
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 public class HostAck
 {
     public const string MessageType = "HostAck";
 
-    [JsonPropertyName("type")]
+    [JsonProperty("type")]
     public string Type = MessageType;
 }

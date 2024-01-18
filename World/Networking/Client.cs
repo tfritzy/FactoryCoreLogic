@@ -16,19 +16,47 @@ namespace Core
             client = new UdpClient();
         }
 
-        public Task<UdpReceiveResult> ReceiveAsync()
-        {
-            return client.ReceiveAsync();
-        }
-
         public Task<UdpReceiveResult> ReceiveAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var tcs = new TaskCompletionSource<UdpReceiveResult>();
+
+            cancellationToken.Register(() =>
+            {
+                tcs.TrySetCanceled();
+                client.Close();
+            });
+
+            client.BeginReceive(ar =>
+            {
+                try
+                {
+                    if (!tcs.Task.IsCanceled)
+                    {
+                        IPEndPoint? remoteEP = null;
+                        byte[] receivedBytes = client.EndReceive(ar, ref remoteEP);
+                        tcs.TrySetResult(new UdpReceiveResult(receivedBytes, remoteEP));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (!tcs.Task.IsCanceled)
+                    {
+                        tcs.TrySetException(ex);
+                    }
+                }
+            }, null);
+
+            return tcs.Task;
         }
 
         public int Send(byte[] dgram, int bytes, IPEndPoint? endPoint)
         {
             return client.Send(dgram, bytes, endPoint);
+        }
+
+        public Task<int> SendAsync(byte[] message, IPEndPoint hostEndPoint)
+        {
+            return client.SendAsync(message, message.Length, hostEndPoint);
         }
     }
 }

@@ -20,9 +20,9 @@ namespace Core
             this.Client = client;
         }
 
-        public abstract Task Connect(int timeout = DefaultTimeout_ms);
+        public abstract Task Connect(Action onConnected, int timeout = DefaultTimeout_ms);
         public abstract void HandleMessage(IPEndPoint endpoint, byte[] message);
-        public abstract void SendPendingMessages();
+        public abstract Task SendPendingMessages();
 
         public void Update()
         {

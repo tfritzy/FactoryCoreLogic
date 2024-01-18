@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
@@ -17,11 +18,12 @@ namespace Core
 
         public ClientConnection(IClient client) : base(client) { }
 
-        public override async Task Connect(int timeout_ms = DefaultTimeout_ms)
+        public override async Task Connect(Action onConnected, int timeout_ms = DefaultTimeout_ms)
         {
             // Tell matchmaking server to find me a host.
             byte[] introduction = Encoding.UTF8.GetBytes(ClientLookingForHost);
             Client.Send(introduction, introduction.Length, MatchmakingServerEndPoint);
+            UnityEngine.Debug.Log($"Sent introduction to {MatchmakingServerEndPoint}");
 
             // Wait for response from matchmaking server.
             CancellationTokenSource cts = new();
@@ -32,10 +34,13 @@ namespace Core
                 try
                 {
                     result = await Client.ReceiveAsync(cts.Token);
+                    UnityEngine.Debug.Log($"Received message from {result.RemoteEndPoint}");
+                    UnityEngine.Debug.Log($"Message: {Encoding.UTF8.GetString(result.Buffer)}");
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
+                    UnityEngine.Debug.Log(e);
                     continue;
                 }
 
@@ -47,6 +52,7 @@ namespace Core
                         string ip = strMessage.Split(':')[0];
                         int port = int.Parse(strMessage.Split(':')[1]);
                         hostEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+                        UnityEngine.Debug.Log($"Found host at {hostEndPoint}");
                     }
                     catch (Exception e)
                     {
@@ -63,13 +69,18 @@ namespace Core
                 return;
             }
 
-            punchthrough = new NatPunchthroughModule(Client, hostEndPoint);
+            punchthrough = new NatPunchthroughModule(Client, hostEndPoint, onConnected);
         }
 
-        public void SendMessage(Schema.OneofRequest request)
+        public async Task SendMessage(Schema.OneofRequest request)
         {
+            if (hostEndPoint == null)
+            {
+                throw new Exception("Cannot send message to host, hostEndPoint is null.");
+            }
+
             byte[] message = request.ToByteArray();
-            Client.Send(message, message.Length, hostEndPoint);
+            await Client.SendAsync(message, hostEndPoint);
         }
 
         public override void HandleMessage(IPEndPoint endpoint, byte[] message)
@@ -85,13 +96,13 @@ namespace Core
             }
         }
 
-        public override void SendPendingMessages()
+        public override async Task SendPendingMessages()
         {
             foreach (World world in InterestedWorlds)
             {
                 while (world.Requests.Count > 0)
                 {
-                    SendMessage(world.Requests.Dequeue());
+                    await SendMessage(world.Requests.Dequeue());
                 }
             }
 

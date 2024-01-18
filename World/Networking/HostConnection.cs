@@ -27,7 +27,7 @@ namespace Core
         {
         }
 
-        public override async Task Connect(int timeout_ms = DefaultTimeout_ms)
+        public override async Task Connect(Action onConnected, int timeout_ms = DefaultTimeout_ms)
         {
             // Tell matchmaking server to find me a host.
             byte[] introduction = Encoding.UTF8.GetBytes(HostCreatingGame);
@@ -54,6 +54,7 @@ namespace Core
                     string strMessage = Encoding.UTF8.GetString(result.Buffer);
                     if (strMessage == HostAck)
                     {
+                        onConnected();
                         cts.Cancel();
                         return;
                     }
@@ -61,11 +62,11 @@ namespace Core
             }
         }
 
-        private void SendMessageToAllPlayers(byte[] message)
+        private async Task SendMessageToAllPlayers(byte[] message)
         {
             foreach (PlayerDetails player in ConnectedPlayers)
             {
-                Client.Send(message, message.Length, player.EndPoint);
+                await Client.SendAsync(message, player.EndPoint);
             }
         }
 
@@ -126,7 +127,7 @@ namespace Core
             }
         }
 
-        public override void SendPendingMessages()
+        public override async Task SendPendingMessages()
         {
             foreach (World world in InterestedWorlds)
             {
@@ -134,7 +135,7 @@ namespace Core
                 {
                     Schema.OneofUpdate update = world.Updates.Dequeue();
                     byte[] message = update.ToByteArray();
-                    SendMessageToAllPlayers(message);
+                    await SendMessageToAllPlayers(message);
                 }
             }
 

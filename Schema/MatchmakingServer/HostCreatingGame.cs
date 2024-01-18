@@ -1,9 +1,9 @@
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 public class HostCreatingGame
 {
     public const string MessageType = "HostCreatingGame";
 
-    [JsonPropertyName("type")]
+    [JsonProperty("type")]
     public string Type = MessageType;
 }

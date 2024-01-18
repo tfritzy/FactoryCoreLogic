@@ -10,16 +10,18 @@ namespace Core
         public IPEndPoint Peer { get; private set; }
         private IClient client;
         private DateTime lastSendTime = DateTime.Now - TimeSpan.FromSeconds(10);
+        private Action? onConnectionEstablished;
 
         public const float TimeBetweenSends = .2f;
         public const string IntroductionMessage = "P2PIntroduction";
         public const string AckMessage = "AckIntroduction";
         public const string HandshakeComplete = "HandshakeComplete";
 
-        public NatPunchthroughModule(IClient client, IPEndPoint peer)
+        public NatPunchthroughModule(IClient client, IPEndPoint peer, Action? onConnectionEstablished = null)
         {
             this.client = client;
             Peer = peer;
+            this.onConnectionEstablished = onConnectionEstablished;
         }
 
         public void Update()
@@ -59,13 +61,17 @@ namespace Core
             else if (strMessage == AckMessage)
             {
                 ConnectionEstablished = true;
-
                 byte[] handshakeComplete = Encoding.UTF8.GetBytes(HandshakeComplete);
                 client.Send(handshakeComplete, handshakeComplete.Length, Peer);
+                onConnectionEstablished?.Invoke();
             }
             else if (strMessage == HandshakeComplete)
             {
-                ConnectionEstablished = true;
+                if (!ConnectionEstablished)
+                {
+                    ConnectionEstablished = true;
+                    onConnectionEstablished?.Invoke();
+                }
             }
         }
 
