@@ -15,18 +15,13 @@ namespace Core
         private IPEndPoint? hostEndPoint;
         private NatPunchthroughModule? punchthrough;
 
-        public ClientConnection(Context context, IClient client)
-            : base(context, client)
-        {
-        }
+        public ClientConnection(IClient client) : base(client) { }
 
         public override async Task Connect(int timeout_ms = DefaultTimeout_ms)
         {
-            State = ConnectionState.Connecting;
-
             // Tell matchmaking server to find me a host.
             byte[] introduction = Encoding.UTF8.GetBytes(ClientLookingForHost);
-            client.Send(introduction, introduction.Length, MatchmakingServerEndPoint);
+            Client.Send(introduction, introduction.Length, MatchmakingServerEndPoint);
 
             // Wait for response from matchmaking server.
             CancellationTokenSource cts = new();
@@ -36,7 +31,7 @@ namespace Core
                 UdpReceiveResult result;
                 try
                 {
-                    result = await client.ReceiveAsync(cts.Token);
+                    result = await Client.ReceiveAsync(cts.Token);
                 }
                 catch (Exception e)
                 {
@@ -65,17 +60,16 @@ namespace Core
 
             if (hostEndPoint == null)
             {
-                State = ConnectionState.Disconnected;
                 return;
             }
 
-            punchthrough = new NatPunchthroughModule(client, hostEndPoint);
+            punchthrough = new NatPunchthroughModule(Client, hostEndPoint);
         }
 
         public void SendMessage(Schema.OneofRequest request)
         {
             byte[] message = request.ToByteArray();
-            client.Send(message, message.Length, hostEndPoint);
+            Client.Send(message, message.Length, hostEndPoint);
         }
 
         public override void HandleMessage(IPEndPoint endpoint, byte[] message)
@@ -83,23 +77,22 @@ namespace Core
             if (punchthrough?.IsMessageForNatPunchthrough(message) ?? false)
             {
                 punchthrough.HandleMessageFromPeer(message);
-                if (punchthrough.ConnectionEstablished)
-                {
-                    State = ConnectionState.Connected;
-                }
             }
-            else
+            else if (InterestedWorlds.Count > 0)
             {
                 Schema.OneofUpdate update = Schema.OneofUpdate.Parser.ParseFrom(message);
-                context.World.Updates.Enqueue(update);
+                InterestedWorlds[0].Updates.Enqueue(update);
             }
         }
 
         public override void SendPendingMessages()
         {
-            while (context.World.Requests.Count > 0)
+            foreach (World world in InterestedWorlds)
             {
-                SendMessage(context.World.Requests.Dequeue());
+                while (world.Requests.Count > 0)
+                {
+                    SendMessage(world.Requests.Dequeue());
+                }
             }
 
             punchthrough?.Update();

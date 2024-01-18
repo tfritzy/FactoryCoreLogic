@@ -23,21 +23,15 @@ namespace Core
             public NatPunchthroughModule Module;
         }
 
-        public HostConnection(Context context, IClient client) : base(context, client)
+        public HostConnection(IClient client) : base(client)
         {
         }
 
         public override async Task Connect(int timeout_ms = DefaultTimeout_ms)
         {
-            if (State != ConnectionState.Disconnected)
-                return;
-
-            // Tell matchmaking server I am a host
-            State = ConnectionState.Connecting;
-
             // Tell matchmaking server to find me a host.
             byte[] introduction = Encoding.UTF8.GetBytes(HostCreatingGame);
-            client.Send(introduction, introduction.Length, MatchmakingServerEndPoint);
+            Client.Send(introduction, introduction.Length, MatchmakingServerEndPoint);
 
             // Wait for response from matchmaking server.
             CancellationTokenSource cts = new();
@@ -47,7 +41,7 @@ namespace Core
                 UdpReceiveResult result;
                 try
                 {
-                    result = await client.ReceiveAsync(cts.Token);
+                    result = await Client.ReceiveAsync(cts.Token);
                 }
                 catch (Exception e)
                 {
@@ -60,21 +54,18 @@ namespace Core
                     string strMessage = Encoding.UTF8.GetString(result.Buffer);
                     if (strMessage == HostAck)
                     {
-                        State = ConnectionState.Connected;
                         cts.Cancel();
                         return;
                     }
                 }
             }
-
-            State = ConnectionState.Disconnected;
         }
 
         private void SendMessageToAllPlayers(byte[] message)
         {
             foreach (PlayerDetails player in ConnectedPlayers)
             {
-                client.Send(message, message.Length, player.EndPoint);
+                Client.Send(message, message.Length, player.EndPoint);
             }
         }
 
@@ -99,7 +90,7 @@ namespace Core
             var connectingClient = new ConnectingClient
             {
                 Player = playerDetails,
-                Module = new NatPunchthroughModule(client, playerDetails.EndPoint)
+                Module = new NatPunchthroughModule(Client, playerDetails.EndPoint)
             };
             connectingClients.Add(playerDetails.EndPoint, connectingClient);
         }
@@ -120,12 +111,12 @@ namespace Core
                     connectingClients.Remove(endpoint);
                 }
             }
-            else
+            else if (InterestedWorlds.Count > 0)
             {
                 try
                 {
                     Schema.OneofRequest request = Schema.OneofRequest.Parser.ParseFrom(message);
-                    context.World.Requests.Enqueue(request);
+                    InterestedWorlds[0].Requests.Enqueue(request);
                 }
                 catch (Exception e)
                 {
@@ -137,11 +128,14 @@ namespace Core
 
         public override void SendPendingMessages()
         {
-            while (context.World.Updates.Count > 0)
+            foreach (World world in InterestedWorlds)
             {
-                Schema.OneofUpdate update = context.World.Updates.Dequeue();
-                byte[] message = update.ToByteArray();
-                SendMessageToAllPlayers(message);
+                while (world.Updates.Count > 0)
+                {
+                    Schema.OneofUpdate update = world.Updates.Dequeue();
+                    byte[] message = update.ToByteArray();
+                    SendMessageToAllPlayers(message);
+                }
             }
 
             foreach (ConnectingClient module in connectingClients.Values)
