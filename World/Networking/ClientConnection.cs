@@ -7,12 +7,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf;
+using Newtonsoft.Json;
 
 namespace Core
 {
     public class ClientConnection : Connection
     {
-        public const string ClientLookingForHost = "ClientLookingForHost";
         private IPEndPoint? hostEndPoint;
         private NatPunchthroughModule? punchthrough;
 
@@ -21,7 +21,8 @@ namespace Core
         public override async Task Connect(Action onConnected, int timeout_ms = DefaultTimeout_ms)
         {
             // Tell matchmaking server to find me a host.
-            byte[] introduction = Encoding.UTF8.GetBytes(ClientLookingForHost);
+            byte[] introduction = Encoding.UTF8.GetBytes(
+                JsonConvert.SerializeObject(new ClientLookingForHost()));
             Client.Send(introduction, introduction.Length, MatchmakingServerEndPoint);
 
             // Wait for response from matchmaking server.

@@ -7,13 +7,12 @@ using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf;
+using Newtonsoft.Json.Linq;
 
 namespace Core
 {
     public class HostConnection : Connection
     {
-        public const string HostCreatingGame = "HostCreatingGame";
-        public const string HostAck = "AckHost";
         public List<PlayerDetails> ConnectedPlayers = new();
         private Dictionary<IPEndPoint, ConnectingClient> connectingClients = new();
 
@@ -30,7 +29,8 @@ namespace Core
         public override async Task Connect(Action onConnected, int timeout_ms = DefaultTimeout_ms)
         {
             // Tell matchmaking server to find me a host.
-            byte[] introduction = Encoding.UTF8.GetBytes(HostCreatingGame);
+            byte[] introduction = Encoding.UTF8.GetBytes(
+                JsonConvert.SerializeObject(new HostCreatingGame()));
             Client.Send(introduction, introduction.Length, MatchmakingServerEndPoint);
 
             // Wait for response from matchmaking server.
@@ -52,7 +52,8 @@ namespace Core
                 if (result.RemoteEndPoint.Equals(MatchmakingServerEndPoint))
                 {
                     string strMessage = Encoding.UTF8.GetString(result.Buffer);
-                    if (strMessage == HostAck)
+                    JObject json = JObject.Parse(strMessage);
+                    if (json["Type"]?.ToString() == HostAck.MessageType)
                     {
                         onConnected();
                         cts.Cancel();
