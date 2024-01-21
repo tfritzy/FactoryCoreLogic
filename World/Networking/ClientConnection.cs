@@ -8,12 +8,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Core
 {
     public class ClientConnection : Connection
     {
-        private IPEndPoint? hostEndPoint;
+        public IPEndPoint? HostEndPoint { get; private set; }
         private NatPunchthroughModule? punchthrough;
 
         public ClientConnection(IClient client) : base(client) { }
@@ -28,7 +29,7 @@ namespace Core
             // Wait for response from matchmaking server.
             CancellationTokenSource cts = new();
             cts.CancelAfter(timeout_ms);
-            while (hostEndPoint == null && !cts.IsCancellationRequested)
+            while (HostEndPoint == null && !cts.IsCancellationRequested)
             {
                 UdpReceiveResult result;
                 try
@@ -46,49 +47,70 @@ namespace Core
                     string strMessage = Encoding.UTF8.GetString(result.Buffer);
                     try
                     {
-                        string ip = strMessage.Split(':')[0];
-                        int port = int.Parse(strMessage.Split(':')[1]);
-                        hostEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+                        JObject json = JObject.Parse(strMessage);
+                        if (json["Type"]?.ToString() == ClientAck.MessageType)
+                        {
+                            cts.Cancel();
+                            break;
+                        }
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
                     }
-
-                    cts.Cancel();
-                    break;
                 }
             }
-
-            if (hostEndPoint == null)
-            {
-                return;
-            }
-
-            punchthrough = new NatPunchthroughModule(Client, hostEndPoint, onConnected);
         }
 
         public async Task SendMessage(Schema.OneofRequest request)
         {
-            if (hostEndPoint == null)
+            if (HostEndPoint == null)
             {
                 throw new Exception("Cannot send message to host, hostEndPoint is null.");
             }
 
             byte[] message = request.ToByteArray();
-            await Client.SendAsync(message, hostEndPoint);
+            await Client.SendAsync(message, HostEndPoint);
+        }
+
+        private void HandleMessageFromMatchmakingServer(byte[] message)
+        {
+            string strMessage = Encoding.UTF8.GetString(message);
+            InformOfPeer? informOfPeer;
+
+            try
+            {
+                informOfPeer = JsonConvert.DeserializeObject<InformOfPeer>(strMessage);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return;
+            }
+
+            if (informOfPeer == null)
+            {
+                return;
+            }
+
+            HostEndPoint = new IPEndPoint(IPAddress.Parse(informOfPeer.IpAddress), informOfPeer.Port);
+            punchthrough = new NatPunchthroughModule(Client, HostEndPoint, () => { });
         }
 
         public override void HandleMessage(IPEndPoint endpoint, byte[] message)
         {
-            if (punchthrough?.IsMessageForNatPunchthrough(message) ?? false)
+            if (endpoint == MatchmakingServerEndPoint)
+            {
+                HandleMessageFromMatchmakingServer(message);
+            }
+            else if (punchthrough?.IsMessageForNatPunchthrough(message) ?? false)
             {
                 punchthrough.HandleMessageFromPeer(message);
             }
             else if (InterestedWorlds.Count > 0)
             {
-                Schema.OneofUpdate update = Schema.OneofUpdate.Parser.ParseFrom(message);
-                InterestedWorlds[0].Updates.Enqueue(update);
+                Schema.UpdatePacket update = Schema.UpdatePacket.Parser.ParseFrom(message);
+                InterestedWorlds[0].AddUpdatePacketsToQueue(update);
             }
         }
 

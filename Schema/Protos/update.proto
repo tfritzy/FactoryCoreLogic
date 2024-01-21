@@ -1,12 +1,37 @@
 syntax = "proto3";
 
 import "units.proto";
+import "triangle_types.proto";
+import "hex_side.proto";
+import "item.proto";
+import "character.proto";
 
 package schema;
+
+message Chunk {
+    int32 index = 2;
+    int32 maxIndex = 3;
+    bytes data = 4;
+}
+
+message UpdatePacket {
+    repeated Chunk chunks = 1;
+}
 
 message OneofUpdate {
     oneof update {
         ItemMoved itemMoved = 1;
+        ProjectileAdded projectileAdded = 2;
+        ProjectileRemoved projectileRemoved = 3;
+        BuildingAdded buildingAdded = 4;
+        BuildingRemoved buildingRemoved = 5;
+        TriUncoveredOrAdded triUncoveredOrAdded = 6;
+        TriHiddenOrDestroyed triHiddenOrDestroyed = 7;
+        TerrainObjectChange terrainObjectChange = 8;
+        ItemObjectAdded itemObjectAdded = 9;
+        ItemObjectRemoved itemObjectRemoved = 10;
+        CharacterAdded characterAdded = 11;
+        CharacterRemoved characterRemoved = 12;
     }
 }
 
@@ -15,3 +40,56 @@ message ItemMoved {
     Point3Float updatedPosition = 2;
     Point3Float rotation = 3;
 }
+
+message TerrainObjectChange {
+    Point2Int gridPosition = 1;
+    core.TerrainObjectType newType = 2;
+}
+
+message TriUncoveredOrAdded {
+    Point2Int gridPosition = 1;
+    core.HexSide side = 2;
+}
+
+message TriHiddenOrDestroyed {
+    Point2Int gridPosition = 1;
+    core.HexSide side = 2;
+}
+
+message ProjectileRemoved
+{
+    uint64 projectile_id = 1;
+}
+
+message ProjectileAdded {
+    uint64 projectile_id = 1;
+}
+
+message ItemObjectRemoved {
+    uint64 item_id = 1;
+}
+
+message ItemObjectAdded {
+    ItemObject item = 1;
+}
+
+message BuildingRemoved {
+    uint64 building_id = 1;
+    Point3Int gridPosition = 2;
+}
+
+message BuildingAdded {
+    Point2Int gridPosition = 1;
+    OneofCharacter building = 2;
+}
+
+message CharacterAdded {
+    OneofCharacter character = 1;
+}
+
+message CharacterRemoved {
+    uint64 character_id = 1;
+}
+
+
+

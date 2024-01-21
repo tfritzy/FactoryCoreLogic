@@ -1,3 +1,6 @@
+using System.Text;
+using Newtonsoft.Json;
+
 public class InformOfPeer
 {
     public string IpAddress;
@@ -10,5 +13,10 @@ public class InformOfPeer
     {
         IpAddress = ipAddress;
         Port = port;
+    }
+
+    public byte[] ToBytes()
+    {
+        return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(this));
     }
 }

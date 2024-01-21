@@ -7,7 +7,7 @@ namespace Core
     {
         public ulong Id { get; }
         public string Name { get; }
-        public string Ip { get; set; }
+        public string IpAddress { get; set; }
         public int Port { get; set; }
 
         [JsonIgnore]
@@ -17,7 +17,7 @@ namespace Core
         {
             Id = id;
             Name = name;
-            Ip = ip;
+            IpAddress = ip;
             Port = port;
             EndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
         }

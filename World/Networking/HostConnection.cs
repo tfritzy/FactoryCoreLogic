@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf;
 using Newtonsoft.Json.Linq;
+using System.Formats.Tar;
 
 namespace Core
 {
@@ -74,11 +75,11 @@ namespace Core
         private void HandleMessageFromMatchmakingServer(byte[] message)
         {
             string strMessage = Encoding.UTF8.GetString(message);
-            PlayerDetails? playerDetails;
+            InformOfPeer? informOfPeer;
 
             try
             {
-                playerDetails = JsonConvert.DeserializeObject<PlayerDetails>(strMessage);
+                informOfPeer = JsonConvert.DeserializeObject<InformOfPeer>(strMessage);
             }
             catch (Exception e)
             {
@@ -86,15 +87,27 @@ namespace Core
                 return;
             }
 
-            if (playerDetails == null)
+            if (informOfPeer == null)
                 return;
 
+            ulong id = IdGenerator.GenerateId();
+            var player = new PlayerDetails(
+                id: id,
+                name: "player_" + id.ToString().Substring(0, 6),
+                ip: informOfPeer.IpAddress,
+                port: informOfPeer.Port
+            );
             var connectingClient = new ConnectingClient
             {
-                Player = playerDetails,
-                Module = new NatPunchthroughModule(Client, playerDetails.EndPoint)
+                Player = new PlayerDetails(
+                    id: id,
+                    name: "player_" + id.ToString().Substring(0, 6),
+                    ip: informOfPeer.IpAddress,
+                    port: informOfPeer.Port
+                ),
+                Module = new NatPunchthroughModule(Client, player.EndPoint)
             };
-            connectingClients.Add(playerDetails.EndPoint, connectingClient);
+            connectingClients.Add(player.EndPoint, connectingClient);
         }
 
         public override void HandleMessage(IPEndPoint endpoint, byte[] message)
@@ -130,15 +143,18 @@ namespace Core
 
         public override async Task SendPendingMessages()
         {
-            foreach (World world in InterestedWorlds)
-            {
-                while (world.Updates.Count > 0)
-                {
-                    Schema.OneofUpdate update = world.Updates.Dequeue();
-                    byte[] message = update.ToByteArray();
-                    await SendMessageToAllPlayers(message);
-                }
-            }
+            // This needs to be aware of what version each client is on, and send 
+            // out the new updates greater than their version.
+
+            // foreach (World world in InterestedWorlds)
+            // {
+            //     while (world.UpdatePackets.Count > 0)
+            //     {
+            //         Schema.UpdatePacket update = world.UpdatePackets.Dequeue();
+            //         byte[] message = update.ToByteArray();
+            //         await SendMessageToAllPlayers(message);
+            //     }
+            // }
 
             foreach (ConnectingClient module in connectingClients.Values)
             {

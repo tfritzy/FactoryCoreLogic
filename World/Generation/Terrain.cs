@@ -408,14 +408,14 @@ namespace Core
             }
             TerrainData[location.x, location.y, location.z]![(int)side] = triangle;
 
-            if (triangle != null)
-            {
-                context.World.UnseenUpdates.AddLast(new TriUncoveredOrAdded(location, side));
-            }
-            else
-            {
-                context.World.UnseenUpdates.AddLast(new TriHiddenOrDestroyed(location, side));
-            }
+            // if (triangle != null)
+            // {
+            //     context.World.UnseenUpdates.AddLast(new TriUncoveredOrAdded(location, side));
+            // }
+            // else
+            // {
+            //     context.World.UnseenUpdates.AddLast(new TriHiddenOrDestroyed(location, side));
+            // }
         }
 
         public Point3Int GetTopHex(Point2Int location, HexSide? side = null)

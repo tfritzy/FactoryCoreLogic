@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Google.Protobuf;
+using Schema;
 
 namespace Core
 {
@@ -11,11 +12,12 @@ namespace Core
         private Dictionary<Point2Int, ulong> Buildings;
         private Dictionary<ulong, Character> Characters;
         public Dictionary<ulong, Projectile> Projectiles { get; private set; }
-        public LinkedList<Update> UnseenUpdates = new LinkedList<Update>(); // Ship of theseus migration to Updates
+        public LinkedList<Schema.OneofUpdate> UnseenUpdates = new();
         public float OutsideAirTemperature_C = 20f;
         public Dictionary<ulong, ItemObject> ItemObjects = new();
-        public Queue<Schema.OneofUpdate> Updates = new Queue<Schema.OneofUpdate>();
-        public Queue<Schema.OneofRequest> Requests = new Queue<Schema.OneofRequest>();
+        public Queue<Schema.OneofRequest> Requests = new();
+        private Queue<Schema.UpdatePacket> UpdatePackets = new();
+        private Queue<Schema.OneofUpdate> UpdatesOfFrame = new();
 
         public int MaxX => Terrain.MaxX;
         public int MaxY => Terrain.MaxY;
@@ -74,12 +76,21 @@ namespace Core
             }
 
             CleanupOutOfBoundsItems();
+            ChunkUpdatesOfFrame();
         }
 
         public void AddCharacter(Character character)
         {
             this.Characters[character.Id] = character;
-            this.UnseenUpdates.AddLast(new CharacterUpdate(character.Id));
+            // this.UnseenUpdates.AddLast(
+            //     new OneofUpdate
+            //     {
+            //         CharacterAdded = new CharacterAdded
+            //         {
+            //             Character = character.Serialize(),
+            //         },
+            //     }
+            // );
         }
 
         public void RemoveCharacter(ulong id)
@@ -90,7 +101,15 @@ namespace Core
             }
 
             this.Characters.Remove(id);
-            this.UnseenUpdates.AddLast(new CharacterUpdate(id));
+            // this.UnseenUpdates.AddLast(
+            //     new OneofUpdate
+            //     {
+            //         CharacterRemoved = new CharacterRemoved
+            //         {
+            //             CharacterId = id,
+            //         },
+            //     }
+            // );
         }
 
         public void AddBuilding(Building building, Point2Int location)
@@ -114,7 +133,7 @@ namespace Core
             this.Buildings.Add((Point2Int)location, building.Id);
             building.OnAddToGrid(location);
 
-            this.UnseenUpdates.AddLast(new BuildingAdded((Point2Int)location));
+            // this.UnseenUpdates.AddLast(new BuildingAdded((Point2Int)location));
         }
 
         public void RemoveBuilding(Point2Int location)
@@ -124,7 +143,7 @@ namespace Core
             this.Buildings.Remove(location);
             building.OnRemoveFromGrid();
 
-            this.UnseenUpdates.AddLast(new BuildingRemoved(buildingId, building.GridPosition));
+            // this.UnseenUpdates.AddLast(new BuildingRemoved(buildingId, building.GridPosition));
         }
 
         public void RemoveBuilding(ulong id)
@@ -209,13 +228,13 @@ namespace Core
         public void AddProjectile(Projectile projectile)
         {
             this.Projectiles.Add(projectile.Id, projectile);
-            this.UnseenUpdates.AddLast(new ProjectileAdded(projectile.Id));
+            // this.UnseenUpdates.AddLast(new Schema.ProjectileAdded { ProjectileId = projectile.Id });
         }
 
         public void RemoveProjectile(ulong id)
         {
             this.Projectiles.Remove(id);
-            this.UnseenUpdates.AddLast(new ProjectileRemoved(id));
+            // this.UnseenUpdates.AddLast(new ProjectileRemoved(id));
         }
 
         public void AckUpdate()
@@ -281,7 +300,7 @@ namespace Core
                 AddItemObject(leaves, bushPos + Point3Float.Up * .5f, Point3Float.Zero);
             }
 
-            UnseenUpdates.AddLast(new TerrainObjectChange(pos, TerrainObjectType.StrippedBush));
+            // UnseenUpdates.AddLast(new TerrainObjectChange(pos, TerrainObjectType.StrippedBush));
             return true;
         }
 
@@ -289,13 +308,13 @@ namespace Core
         {
             ItemObject objectForm = new ItemObject(item, point, rotation);
             ItemObjects.Add(item.Id, objectForm);
-            UnseenUpdates.AddLast(new ItemObjectAdded(objectForm.ToSchema()));
+            // UnseenUpdates.AddLast(new ItemObjectAdded(objectForm.ToSchema()));
         }
 
         public void RemoveItemObject(ulong itemId)
         {
             ItemObjects.Remove(itemId);
-            UnseenUpdates.AddLast(new ItemObjectRemoved(itemId));
+            // UnseenUpdates.AddLast(new ItemObjectRemoved(itemId));
         }
 
         public void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float rotation)
@@ -308,7 +327,7 @@ namespace Core
 
             itemObj.Position = pos;
             itemObj.Rotation = rotation;
-            UnseenUpdates.AddLast(new ItemMoved(itemId, pos, rotation));
+            // UnseenUpdates.AddLast(new ItemMoved(itemId, pos, rotation));
         }
 
         public void PickupItem(ulong pickerUperId, ulong itemId)
@@ -385,10 +404,38 @@ namespace Core
             }
         }
 
-        public void HandleUpdate(Schema.OneofUpdate update)
+        private void ChunkUpdatesOfFrame()
         {
-            // A client world receives updates from the server.
-            throw new System.NotImplementedException();
+            if (UpdatesOfFrame.Count == 0)
+            {
+                return;
+            }
+
+            byte[][] updates = UpdatesOfFrame
+                .Select(u => u.ToByteArray())
+                .ToArray();
+
+            var packets = MessageChunker.Chunk(updates);
+            foreach (var packet in packets)
+            {
+                UpdatePackets.Enqueue(packet);
+            }
+        }
+
+        public void AddUpdate(Schema.OneofUpdate update)
+        {
+            UpdatesOfFrame.Enqueue(update);
+        }
+
+        public void AddUpdatePacketsToQueue(Schema.UpdatePacket packet)
+        {
+            UpdatePackets.Enqueue(packet);
+        }
+
+        private void HandleUpdates()
+        {
+            // Unchunk update packets and apply whole updates to the world.
+            // Place each update on the unseen updates queue for the frontend.
         }
     }
 }
