@@ -12,12 +12,11 @@ namespace Core
         private Dictionary<Point2Int, ulong> Buildings;
         private Dictionary<ulong, Character> Characters;
         public Dictionary<ulong, Projectile> Projectiles { get; private set; }
-        public LinkedList<Schema.OneofUpdate> UnseenUpdates = new();
+        public LinkedList<OneofUpdate> UnseenUpdates = new();
+        public Queue<OneofUpdate> UpdatesOfFrame = new();
         public float OutsideAirTemperature_C = 20f;
         public Dictionary<ulong, ItemObject> ItemObjects = new();
-        public Queue<Schema.OneofRequest> Requests = new();
-        private Queue<Schema.UpdatePacket> UpdatePackets = new();
-        private Queue<Schema.OneofUpdate> UpdatesOfFrame = new();
+        public Queue<OneofRequest> Requests = new();
 
         public int MaxX => Terrain.MaxX;
         public int MaxY => Terrain.MaxY;
@@ -76,7 +75,6 @@ namespace Core
             }
 
             CleanupOutOfBoundsItems();
-            ChunkUpdatesOfFrame();
         }
 
         public void AddCharacter(Character character)
@@ -404,38 +402,15 @@ namespace Core
             }
         }
 
-        private void ChunkUpdatesOfFrame()
-        {
-            if (UpdatesOfFrame.Count == 0)
-            {
-                return;
-            }
-
-            byte[][] updates = UpdatesOfFrame
-                .Select(u => u.ToByteArray())
-                .ToArray();
-
-            var packets = MessageChunker.Chunk(updates);
-            foreach (var packet in packets)
-            {
-                UpdatePackets.Enqueue(packet);
-            }
-        }
-
-        public void AddUpdate(Schema.OneofUpdate update)
+        public void AddUpdateForFrame(Schema.OneofUpdate update)
         {
             UpdatesOfFrame.Enqueue(update);
+            HandleUpdate(update);
         }
 
-        public void AddUpdatePacketsToQueue(Schema.UpdatePacket packet)
+        public void HandleUpdate(Schema.OneofUpdate update)
         {
-            UpdatePackets.Enqueue(packet);
-        }
-
-        private void HandleUpdates()
-        {
-            // Unchunk update packets and apply whole updates to the world.
-            // Place each update on the unseen updates queue for the frontend.
+            throw new System.NotImplementedException();
         }
     }
 }

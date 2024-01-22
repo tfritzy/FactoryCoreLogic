@@ -9,13 +9,16 @@ using System.Threading.Tasks;
 using Google.Protobuf;
 using Newtonsoft.Json.Linq;
 using System.Formats.Tar;
+using System.Linq;
 
 namespace Core
 {
     public class HostConnection : Connection
     {
-        public List<PlayerDetails> ConnectedPlayers = new();
+        public List<ConnectedPlayer> ConnectedPlayers = new();
         private Dictionary<IPEndPoint, ConnectingClient> connectingClients = new();
+        private Dictionary<int, Schema.UpdatePacket> UpdatePackets = new();
+        private int CurrentVersion = 0;
 
         struct ConnectingClient
         {
@@ -66,7 +69,7 @@ namespace Core
 
         private async Task SendMessageToAllPlayers(byte[] message)
         {
-            foreach (PlayerDetails player in ConnectedPlayers)
+            foreach (ConnectedPlayer player in ConnectedPlayers)
             {
                 await Client.SendAsync(message, player.EndPoint);
             }
@@ -122,16 +125,19 @@ namespace Core
                 module.HandleMessageFromPeer(message);
                 if (module.ConnectionEstablished)
                 {
-                    ConnectedPlayers.Add(connectingClients[endpoint].Player);
+                    ConnectedPlayers.Add(
+                        new ConnectedPlayer(
+                            connectingClients[endpoint].Player.Id,
+                            connectingClients[endpoint].Player.EndPoint));
                     connectingClients.Remove(endpoint);
                 }
             }
-            else if (InterestedWorlds.Count > 0)
+            else if (ConnectedWorld != null)
             {
                 try
                 {
                     Schema.OneofRequest request = Schema.OneofRequest.Parser.ParseFrom(message);
-                    InterestedWorlds[0].Requests.Enqueue(request);
+                    ConnectedWorld.Requests.Enqueue(request);
                 }
                 catch (Exception e)
                 {
@@ -143,22 +149,38 @@ namespace Core
 
         public override async Task SendPendingMessages()
         {
-            // This needs to be aware of what version each client is on, and send 
-            // out the new updates greater than their version.
-
-            // foreach (World world in InterestedWorlds)
-            // {
-            //     while (world.UpdatePackets.Count > 0)
-            //     {
-            //         Schema.UpdatePacket update = world.UpdatePackets.Dequeue();
-            //         byte[] message = update.ToByteArray();
-            //         await SendMessageToAllPlayers(message);
-            //     }
-            // }
-
             foreach (ConnectingClient module in connectingClients.Values)
             {
                 module.Module.Update();
+            }
+
+            if (ConnectedWorld == null)
+                return;
+
+            foreach (var connectedPlayer in ConnectedPlayers)
+            {
+                while (UpdatePackets.ContainsKey(connectedPlayer.AssumedVersion))
+                {
+                    Schema.UpdatePacket? packet = UpdatePackets[connectedPlayer.AssumedVersion];
+                    byte[] message = packet.ToByteArray();
+                    await Client.SendAsync(message, connectedPlayer.EndPoint);
+                    connectedPlayer.AssumedVersion++;
+                }
+            }
+        }
+
+        public void DrainUpdatesOfFrame(World world)
+        {
+            List<Schema.OneofUpdate> updates = new(world.UpdatesOfFrame.Count);
+            while (world.UpdatesOfFrame.Count > 0)
+                updates.Add(world.UpdatesOfFrame.Dequeue());
+
+            List<Schema.UpdatePacket> packets =
+                MessageChunker.Chunk(updates.Select(u => u.ToByteArray()).ToList());
+            foreach (Schema.UpdatePacket packet in packets)
+            {
+                UpdatePackets.Add(CurrentVersion, packet);
+                CurrentVersion++;
             }
         }
     }

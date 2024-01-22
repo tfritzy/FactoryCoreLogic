@@ -9,7 +9,7 @@ namespace Core
         public const int ChunkSize = 512;
         private static byte[] buffer = new byte[ChunkSize];
 
-        public static List<Schema.UpdatePacket> Chunk(byte[][] updates)
+        public static List<Schema.UpdatePacket> Chunk(List<byte[]> updates)
         {
             List<Schema.UpdatePacket> packets = new List<Schema.UpdatePacket>();
             Schema.UpdatePacket currentPacket = new Schema.UpdatePacket();

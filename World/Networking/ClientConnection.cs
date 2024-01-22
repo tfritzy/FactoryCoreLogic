@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 using Google.Protobuf;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Schema;
 
 namespace Core
 {
@@ -16,6 +18,7 @@ namespace Core
     {
         public IPEndPoint? HostEndPoint { get; private set; }
         private NatPunchthroughModule? punchthrough;
+        private List<UpdatePacket> receivedPackets = new();
 
         public ClientConnection(IClient client) : base(client) { }
 
@@ -107,21 +110,27 @@ namespace Core
             {
                 punchthrough.HandleMessageFromPeer(message);
             }
-            else if (InterestedWorlds.Count > 0)
+            else if (ConnectedWorld != null)
             {
-                Schema.UpdatePacket update = Schema.UpdatePacket.Parser.ParseFrom(message);
-                InterestedWorlds[0].AddUpdatePacketsToQueue(update);
+                UpdatePacket update = UpdatePacket.Parser.ParseFrom(message);
+                receivedPackets.Add(update);
+                while (MessageChunker.ExtractFullUpdate(ref receivedPackets) is byte[] fullUpdate)
+                {
+                    ConnectedWorld.HandleUpdate(OneofUpdate.Parser.ParseFrom(fullUpdate));
+                }
             }
         }
 
         public override async Task SendPendingMessages()
         {
-            foreach (World world in InterestedWorlds)
+            if (ConnectedWorld == null)
             {
-                while (world.Requests.Count > 0)
-                {
-                    await SendMessage(world.Requests.Dequeue());
-                }
+                return;
+            }
+
+            while (ConnectedWorld.Requests.Count > 0)
+            {
+                await SendMessage(ConnectedWorld.Requests.Dequeue());
             }
 
             punchthrough?.Update();

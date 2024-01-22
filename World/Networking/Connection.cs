@@ -11,7 +11,7 @@ namespace Core
     {
         public IClient Client { get; private set; }
         public const int DefaultTimeout_ms = 10_000;
-        public List<World> InterestedWorlds = new();
+        public World? ConnectedWorld;
         public readonly static IPEndPoint MatchmakingServerEndPoint =
             new(IPAddress.Parse("20.29.48.111"), 64132);
 
