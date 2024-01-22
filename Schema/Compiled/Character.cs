@@ -26,43 +26,43 @@ namespace Schema {
           string.Concat(
             "Cg9jaGFyYWN0ZXIucHJvdG8SBnNjaGVtYRoLdW5pdHMucHJvdG8aFGNoYXJh",
             "Y3Rlcl90eXBlLnByb3RvGg9pdGVtX3R5cGUucHJvdG8aDmhleF9zaWRlLnBy",
-            "b3RvGgxlbnRpdHkucHJvdG8igAEKCUNoYXJhY3RlchIhCgR0eXBlGAEgASgO",
+            "b3RvGgxlbnRpdHkucHJvdG8ilAEKCUNoYXJhY3RlchIhCgR0eXBlGAEgASgO",
             "MhMuY29yZS5DaGFyYWN0ZXJUeXBlEh4KBmVudGl0eRgCIAEoCzIOLnNjaGVt",
             "YS5FbnRpdHkSEAoIYWxsaWFuY2UYAyABKAUSHgoDcG9zGAQgASgLMhEuc2No",
-            "ZW1hLlBvaW50M0ludCJRCghCdWlsZGluZxIkCgljaGFyYWN0ZXIYASABKAsy",
-            "ES5zY2hlbWEuQ2hhcmFjdGVyEh8KCHJvdGF0aW9uGAIgASgOMg0uY29yZS5I",
-            "ZXhTaWRlIlMKBFVuaXQSJAoJY2hhcmFjdGVyGAEgASgLMhEuc2NoZW1hLkNo",
-            "YXJhY3RlchIlCghsb2NhdGlvbhgCIAEoCzITLnNjaGVtYS5Qb2ludDNGbG9h",
-            "dCLhAwoOT25lb2ZDaGFyYWN0ZXISJAoIY29udmV5b3IYASABKAsyEC5zY2hl",
-            "bWEuQ29udmV5b3JIABIeCgVkdW1teRgCIAEoCzINLnNjaGVtYS5EdW1teUgA",
-            "Ei8KDmR1bW15X2J1aWxkaW5nGAMgASgLMhUuc2NoZW1hLkR1bW15QnVpbGRp",
-            "bmdIABIgCgZwbGF5ZXIYBCABKAsyDi5zY2hlbWEuUGxheWVySAASKQoLZ3Vh",
-            "cmRfdG93ZXIYBSABKAsyEi5zY2hlbWEuR3VhcmRUb3dlckgAEiIKB3Bpa2Vt",
-            "YW4YBiABKAsyDy5zY2hlbWEuUGlrZW1hbkgAEiUKCWR1bW15X21vYhgHIAEo",
-            "CzIQLnNjaGVtYS5EdW1teU1vYkgAEhwKBGtlZXAYCCABKAsyDC5zY2hlbWEu",
-            "S2VlcEgAEiYKCW1pbmVzaGFmdBgJIAEoCzIRLnNjaGVtYS5NaW5lc2hhZnRI",
-            "ABIeCgVkZXBvdBgKIAEoCzINLnNjaGVtYS5EZXBvdEgAEiAKBnNvcnRlchgL",
-            "IAEoCzIOLnNjaGVtYS5Tb3J0ZXJIABIrCgxjbGF5X2Z1cm5hY2UYDCABKAsy",
-            "Ey5zY2hlbWEuQ2xheUZ1cm5hY2VIAEILCgljaGFyYWN0ZXIiPAoOQ2hhcmFj",
-            "dGVyQXJyYXkSKgoKY2hhcmFjdGVycxgBIAMoCzIWLnNjaGVtYS5PbmVvZkNo",
-            "YXJhY3RlciIuCghDb252ZXlvchIiCghidWlsZGluZxgBIAEoCzIQLnNjaGVt",
-            "YS5CdWlsZGluZyIjCgVEdW1teRIaCgR1bml0GAEgASgLMgwuc2NoZW1hLlVu",
-            "aXQiMwoNRHVtbXlCdWlsZGluZxIiCghidWlsZGluZxgBIAEoCzIQLnNjaGVt",
-            "YS5CdWlsZGluZyIkCgZQbGF5ZXISGgoEdW5pdBgBIAEoCzIMLnNjaGVtYS5V",
-            "bml0IjAKCkd1YXJkVG93ZXISIgoIYnVpbGRpbmcYASABKAsyEC5zY2hlbWEu",
-            "QnVpbGRpbmciJQoHUGlrZW1hbhIaCgR1bml0GAEgASgLMgwuc2NoZW1hLlVu",
-            "aXQiJgoIRHVtbXlNb2ISGgoEdW5pdBgBIAEoCzIMLnNjaGVtYS5Vbml0IioK",
-            "BEtlZXASIgoIYnVpbGRpbmcYASABKAsyEC5zY2hlbWEuQnVpbGRpbmciLwoJ",
-            "TWluZXNoYWZ0EiIKCGJ1aWxkaW5nGAEgASgLMhAuc2NoZW1hLkJ1aWxkaW5n",
-            "IisKBURlcG90EiIKCGJ1aWxkaW5nGAEgASgLMhAuc2NoZW1hLkJ1aWxkaW5n",
-            "IlQKBlNvcnRlchIiCghidWlsZGluZxgBIAEoCzIQLnNjaGVtYS5CdWlsZGlu",
-            "ZxImCgZmaWx0ZXIYAiABKAsyFi5jb3JlLk51bGxhYmxlSXRlbVR5cGUiMQoL",
-            "Q2xheUZ1cm5hY2USIgoIYnVpbGRpbmcYASABKAsyEC5zY2hlbWEuQnVpbGRp",
-            "bmdiBnByb3RvMw=="));
+            "ZW1hLlBvaW50M0ludBISCgppc19wcmV2aWV3GAUgASgIIlEKCEJ1aWxkaW5n",
+            "EiQKCWNoYXJhY3RlchgBIAEoCzIRLnNjaGVtYS5DaGFyYWN0ZXISHwoIcm90",
+            "YXRpb24YAiABKA4yDS5jb3JlLkhleFNpZGUiUwoEVW5pdBIkCgljaGFyYWN0",
+            "ZXIYASABKAsyES5zY2hlbWEuQ2hhcmFjdGVyEiUKCGxvY2F0aW9uGAIgASgL",
+            "MhMuc2NoZW1hLlBvaW50M0Zsb2F0IuEDCg5PbmVvZkNoYXJhY3RlchIkCghj",
+            "b252ZXlvchgBIAEoCzIQLnNjaGVtYS5Db252ZXlvckgAEh4KBWR1bW15GAIg",
+            "ASgLMg0uc2NoZW1hLkR1bW15SAASLwoOZHVtbXlfYnVpbGRpbmcYAyABKAsy",
+            "FS5zY2hlbWEuRHVtbXlCdWlsZGluZ0gAEiAKBnBsYXllchgEIAEoCzIOLnNj",
+            "aGVtYS5QbGF5ZXJIABIpCgtndWFyZF90b3dlchgFIAEoCzISLnNjaGVtYS5H",
+            "dWFyZFRvd2VySAASIgoHcGlrZW1hbhgGIAEoCzIPLnNjaGVtYS5QaWtlbWFu",
+            "SAASJQoJZHVtbXlfbW9iGAcgASgLMhAuc2NoZW1hLkR1bW15TW9iSAASHAoE",
+            "a2VlcBgIIAEoCzIMLnNjaGVtYS5LZWVwSAASJgoJbWluZXNoYWZ0GAkgASgL",
+            "MhEuc2NoZW1hLk1pbmVzaGFmdEgAEh4KBWRlcG90GAogASgLMg0uc2NoZW1h",
+            "LkRlcG90SAASIAoGc29ydGVyGAsgASgLMg4uc2NoZW1hLlNvcnRlckgAEisK",
+            "DGNsYXlfZnVybmFjZRgMIAEoCzITLnNjaGVtYS5DbGF5RnVybmFjZUgAQgsK",
+            "CWNoYXJhY3RlciI8Cg5DaGFyYWN0ZXJBcnJheRIqCgpjaGFyYWN0ZXJzGAEg",
+            "AygLMhYuc2NoZW1hLk9uZW9mQ2hhcmFjdGVyIi4KCENvbnZleW9yEiIKCGJ1",
+            "aWxkaW5nGAEgASgLMhAuc2NoZW1hLkJ1aWxkaW5nIiMKBUR1bW15EhoKBHVu",
+            "aXQYASABKAsyDC5zY2hlbWEuVW5pdCIzCg1EdW1teUJ1aWxkaW5nEiIKCGJ1",
+            "aWxkaW5nGAEgASgLMhAuc2NoZW1hLkJ1aWxkaW5nIiQKBlBsYXllchIaCgR1",
+            "bml0GAEgASgLMgwuc2NoZW1hLlVuaXQiMAoKR3VhcmRUb3dlchIiCghidWls",
+            "ZGluZxgBIAEoCzIQLnNjaGVtYS5CdWlsZGluZyIlCgdQaWtlbWFuEhoKBHVu",
+            "aXQYASABKAsyDC5zY2hlbWEuVW5pdCImCghEdW1teU1vYhIaCgR1bml0GAEg",
+            "ASgLMgwuc2NoZW1hLlVuaXQiKgoES2VlcBIiCghidWlsZGluZxgBIAEoCzIQ",
+            "LnNjaGVtYS5CdWlsZGluZyIvCglNaW5lc2hhZnQSIgoIYnVpbGRpbmcYASAB",
+            "KAsyEC5zY2hlbWEuQnVpbGRpbmciKwoFRGVwb3QSIgoIYnVpbGRpbmcYASAB",
+            "KAsyEC5zY2hlbWEuQnVpbGRpbmciVAoGU29ydGVyEiIKCGJ1aWxkaW5nGAEg",
+            "ASgLMhAuc2NoZW1hLkJ1aWxkaW5nEiYKBmZpbHRlchgCIAEoCzIWLmNvcmUu",
+            "TnVsbGFibGVJdGVtVHlwZSIxCgtDbGF5RnVybmFjZRIiCghidWlsZGluZxgB",
+            "IAEoCzIQLnNjaGVtYS5CdWlsZGluZ2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Schema.UnitsReflection.Descriptor, global::Core.CharacterTypeReflection.Descriptor, global::Core.ItemTypeReflection.Descriptor, global::Core.HexSideReflection.Descriptor, global::Schema.EntityReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Character), global::Schema.Character.Parser, new[]{ "Type", "Entity", "Alliance", "Pos" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Character), global::Schema.Character.Parser, new[]{ "Type", "Entity", "Alliance", "Pos", "IsPreview" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Building), global::Schema.Building.Parser, new[]{ "Character", "Rotation" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Unit), global::Schema.Unit.Parser, new[]{ "Character", "Location" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.OneofCharacter), global::Schema.OneofCharacter.Parser, new[]{ "Conveyor", "Dummy", "DummyBuilding", "Player", "GuardTower", "Pikeman", "DummyMob", "Keep", "Mineshaft", "Depot", "Sorter", "ClayFurnace" }, new[]{ "Character" }, null, null, null),
@@ -124,6 +124,7 @@ namespace Schema {
       entity_ = other.entity_ != null ? other.entity_.Clone() : null;
       alliance_ = other.alliance_;
       pos_ = other.pos_ != null ? other.pos_.Clone() : null;
+      isPreview_ = other.isPreview_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -181,6 +182,18 @@ namespace Schema {
       }
     }
 
+    /// <summary>Field number for the "is_preview" field.</summary>
+    public const int IsPreviewFieldNumber = 5;
+    private bool isPreview_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsPreview {
+      get { return isPreview_; }
+      set {
+        isPreview_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -200,6 +213,7 @@ namespace Schema {
       if (!object.Equals(Entity, other.Entity)) return false;
       if (Alliance != other.Alliance) return false;
       if (!object.Equals(Pos, other.Pos)) return false;
+      if (IsPreview != other.IsPreview) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -211,6 +225,7 @@ namespace Schema {
       if (entity_ != null) hash ^= Entity.GetHashCode();
       if (Alliance != 0) hash ^= Alliance.GetHashCode();
       if (pos_ != null) hash ^= Pos.GetHashCode();
+      if (IsPreview != false) hash ^= IsPreview.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -245,6 +260,10 @@ namespace Schema {
         output.WriteRawTag(34);
         output.WriteMessage(Pos);
       }
+      if (IsPreview != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(IsPreview);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -271,6 +290,10 @@ namespace Schema {
         output.WriteRawTag(34);
         output.WriteMessage(Pos);
       }
+      if (IsPreview != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(IsPreview);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -292,6 +315,9 @@ namespace Schema {
       }
       if (pos_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Pos);
+      }
+      if (IsPreview != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -322,6 +348,9 @@ namespace Schema {
           Pos = new global::Schema.Point3Int();
         }
         Pos.MergeFrom(other.Pos);
+      }
+      if (other.IsPreview != false) {
+        IsPreview = other.IsPreview;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -360,6 +389,10 @@ namespace Schema {
             input.ReadMessage(Pos);
             break;
           }
+          case 40: {
+            IsPreview = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -395,6 +428,10 @@ namespace Schema {
               Pos = new global::Schema.Point3Int();
             }
             input.ReadMessage(Pos);
+            break;
+          }
+          case 40: {
+            IsPreview = input.ReadBool();
             break;
           }
         }

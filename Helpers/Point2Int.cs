@@ -80,8 +80,17 @@ namespace Core
             return $"{x},{y}";
         }
 
-        public static Point2Int Zero => new(0, 0);
+        public Schema.Point2Int ToSchema()
+        {
+            return new Schema.Point2Int { X = x, Y = y };
+        }
 
+        public static Point2Int FromSchema(Schema.Point2Int p)
+        {
+            return new Point2Int(p.X, p.Y);
+        }
+
+        public static Point2Int Zero => new(0, 0);
         public readonly Point2Int WalkNorthEast => GridHelpers.GetNeighbor(this, HexSide.NorthEast);
         public readonly Point2Int WalkEast => GridHelpers.GetNeighbor(this, HexSide.East);
         public readonly Point2Int WalkSouthEast => GridHelpers.GetNeighbor(this, HexSide.SouthEast);

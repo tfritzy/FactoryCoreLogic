@@ -171,9 +171,9 @@ namespace Core
 
         public void DrainUpdatesOfFrame(World world)
         {
-            List<Schema.OneofUpdate> updates = new(world.UpdatesOfFrame.Count);
-            while (world.UpdatesOfFrame.Count > 0)
-                updates.Add(world.UpdatesOfFrame.Dequeue());
+            List<Schema.OneofUpdate> updates = new(world._updatesOfFrame.Count);
+            while (world._updatesOfFrame.Count > 0)
+                updates.Add(world._updatesOfFrame.Dequeue());
 
             List<Schema.UpdatePacket> packets =
                 MessageChunker.Chunk(updates.Select(u => u.ToByteArray()).ToList());

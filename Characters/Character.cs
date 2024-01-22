@@ -18,6 +18,7 @@ namespace Core
         {
             this.Alliance = character.Alliance;
             this.GridPosition = Point3Int.FromSchema(character.Pos);
+            this.IsPreview = character.IsPreview;
         }
 
         public Character(Context context, int alliance) : base(context)
@@ -110,6 +111,7 @@ namespace Core
                 Pos = this.GridPosition.ToSchema(),
                 Type = this.Type,
                 Entity = base.ToSchema(),
+                IsPreview = this.IsPreview,
             };
         }
 

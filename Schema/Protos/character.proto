@@ -13,6 +13,7 @@ message Character {
     Entity entity = 2;
     int32 alliance = 3;
     Point3Int pos = 4;
+    bool is_preview = 5;
 }
 
 message Building {

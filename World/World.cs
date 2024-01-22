@@ -13,7 +13,7 @@ namespace Core
         private Dictionary<ulong, Character> Characters;
         public Dictionary<ulong, Projectile> Projectiles { get; private set; }
         public LinkedList<OneofUpdate> UnseenUpdates = new();
-        public Queue<OneofUpdate> UpdatesOfFrame = new();
+        public Queue<OneofUpdate> _updatesOfFrame = new();
         public float OutsideAirTemperature_C = 20f;
         public Dictionary<ulong, ItemObject> ItemObjects = new();
         public Queue<OneofRequest> Requests = new();
@@ -21,6 +21,8 @@ namespace Core
         public int MaxX => Terrain.MaxX;
         public int MaxY => Terrain.MaxY;
         public int MaxHeight => Terrain.MaxZ;
+
+        private Context Context;
 
         public World(Schema.World world, Context context)
         {
@@ -46,14 +48,17 @@ namespace Core
             }
 
             context.SetWorld(this);
+            Context = context;
         }
 
-        public World(Terrain terrain)
+        public World(Terrain terrain, Context context)
         {
             this.Characters = new Dictionary<ulong, Character>();
             this.Buildings = new Dictionary<Point2Int, ulong>();
             this.Projectiles = new Dictionary<ulong, Projectile>();
             this.Terrain = terrain;
+            Context = context;
+            context.SetWorld(this);
         }
 
         public void SetTerrain(Terrain terrain)
@@ -127,11 +132,15 @@ namespace Core
                 throw new InvalidOperationException("Must place building on solid ground");
             }
 
-            this.Characters[building.Id] = building;
-            this.Buildings.Add((Point2Int)location, building.Id);
-            building.OnAddToGrid(location);
-
-            // this.UnseenUpdates.AddLast(new BuildingAdded((Point2Int)location));
+            AddUpdateForFrame(
+                new OneofUpdate
+                {
+                    BuildingAdded = new BuildingAdded
+                    {
+                        Building = building.Serialize(),
+                        GridPosition = location.ToSchema(),
+                    },
+                });
         }
 
         public void RemoveBuilding(Point2Int location)
@@ -152,7 +161,15 @@ namespace Core
             }
 
             var building = this.Characters[id];
-            RemoveBuilding((Point2Int)building.GridPosition);
+            AddUpdateForFrame(
+                new OneofUpdate
+                {
+                    BuildingRemoved = new BuildingRemoved
+                    {
+                        BuildingId = id,
+                        GridPosition = building.GridPosition.ToSchema(),
+                    },
+                });
         }
 
         public Building? GetBuildingAt(int x, int y) => GetBuildingAt(new Point2Int(x, y));
@@ -225,8 +242,14 @@ namespace Core
 
         public void AddProjectile(Projectile projectile)
         {
-            this.Projectiles.Add(projectile.Id, projectile);
-            // this.UnseenUpdates.AddLast(new Schema.ProjectileAdded { ProjectileId = projectile.Id });
+            AddUpdateForFrame(
+                new OneofUpdate
+                {
+                    ProjectileAdded = new ProjectileAdded
+                    {
+                        ProjectileId = projectile.Id,
+                    },
+                });
         }
 
         public void RemoveProjectile(ulong id)
@@ -237,6 +260,11 @@ namespace Core
 
         public void AckUpdate()
         {
+            if (this.UnseenUpdates.Count == 0)
+            {
+                return;
+            }
+
             this.UnseenUpdates.RemoveFirst();
         }
 
@@ -280,8 +308,6 @@ namespace Core
                 return false;
             }
 
-            Terrain.TerrainObjects[pos.x, pos.y] = new TerrainObject(TerrainObjectType.StrippedBush);
-
             var stick = new Stick(1);
             var leaves = new Leaves(1);
 
@@ -298,7 +324,15 @@ namespace Core
                 AddItemObject(leaves, bushPos + Point3Float.Up * .5f, Point3Float.Zero);
             }
 
-            // UnseenUpdates.AddLast(new TerrainObjectChange(pos, TerrainObjectType.StrippedBush));
+            AddUpdateForFrame(
+                new OneofUpdate
+                {
+                    TerrainObjectChange = new TerrainObjectChange
+                    {
+                        GridPosition = pos.ToSchema(),
+                        NewType = TerrainObjectType.StrippedBush,
+                    },
+                });
             return true;
         }
 
@@ -311,8 +345,12 @@ namespace Core
 
         public void RemoveItemObject(ulong itemId)
         {
-            ItemObjects.Remove(itemId);
-            // UnseenUpdates.AddLast(new ItemObjectRemoved(itemId));
+            AddUpdateForFrame(
+                new OneofUpdate
+                {
+                    ItemObjectRemoved =
+                        new ItemObjectRemoved { ItemId = itemId }
+                });
         }
 
         public void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float rotation)
@@ -404,13 +442,39 @@ namespace Core
 
         public void AddUpdateForFrame(Schema.OneofUpdate update)
         {
-            UpdatesOfFrame.Enqueue(update);
+            _updatesOfFrame.Enqueue(update);
             HandleUpdate(update);
         }
 
         public void HandleUpdate(Schema.OneofUpdate update)
         {
-            throw new System.NotImplementedException();
+            UnseenUpdates.AddLast(update);
+
+            if (update.ItemObjectRemoved != null)
+            {
+                ItemObjects.Remove(update.ItemObjectRemoved.ItemId);
+            }
+            else if (update.TerrainObjectChange != null)
+            {
+                var gridPos = Point2Int.FromSchema(update.TerrainObjectChange.GridPosition);
+                Terrain.TerrainObjects[gridPos.x, gridPos.y] = new TerrainObject(update.TerrainObjectChange.NewType);
+            }
+            else if (update.ProjectileAdded != null)
+            {
+                throw new System.NotImplementedException("TODO: Handle projectiles");
+            }
+            else if (update.BuildingRemoved != null)
+            {
+                RemoveBuilding((Point2Int)Point3Int.FromSchema(update.BuildingRemoved.GridPosition));
+            }
+            else if (update.BuildingAdded != null)
+            {
+                Building building = (Building)Building.FromSchema(update.BuildingAdded.Building, Context);
+                Point2Int location = Point2Int.FromSchema(update.BuildingAdded.GridPosition);
+                this.Characters[building.Id] = building;
+                this.Buildings.Add(location, building.Id);
+                building.OnAddToGrid(location);
+            }
         }
     }
 }
