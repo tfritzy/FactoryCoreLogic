@@ -15,4 +15,5 @@ enum ComponentType {
     ItemPort = 9;
     Smelt = 10;
     Command = 11;
+    FuelInventory = 12;
 }

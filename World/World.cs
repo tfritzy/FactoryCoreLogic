@@ -115,7 +115,7 @@ namespace Core
             // );
         }
 
-        public void AddBuilding(Building building, Point2Int location)
+        public Building AddBuilding(Building building, Point2Int location)
         {
             if (Buildings.ContainsKey((Point2Int)location))
             {
@@ -141,6 +141,7 @@ namespace Core
                         GridPosition = location.ToSchema(),
                     },
                 });
+            return Context.World.GetBuildingAt(location)!;
         }
 
         public void RemoveBuilding(Point2Int location)
@@ -474,6 +475,28 @@ namespace Core
                 this.Characters[building.Id] = building;
                 this.Buildings.Add(location, building.Id);
                 building.OnAddToGrid(location);
+            }
+            else if (update.TriUncoveredOrAdded != null)
+            {
+                var triAdded = update.TriUncoveredOrAdded;
+                Point3Int p = Point3Int.FromSchema(triAdded.GridPosition);
+                HexSide side = (HexSide)triAdded.Side;
+                if (Terrain.TerrainData[p.x, p.y, p.z] == null)
+                {
+                    Terrain.TerrainData[p.x, p.y, p.z] = new Triangle[6];
+                }
+                Terrain.TerrainData[p.x, p.y, p.z]![(int)side] = triAdded.Tri;
+            }
+            else if (update.TriHiddenOrDestroyed != null)
+            {
+                var triDestroyed = update.TriHiddenOrDestroyed;
+                Point3Int p = Point3Int.FromSchema(triDestroyed.GridPosition);
+                HexSide side = (HexSide)triDestroyed.Side;
+                if (Terrain.TerrainData[p.x, p.y, p.z] == null)
+                {
+                    Terrain.TerrainData[p.x, p.y, p.z] = new Triangle[6];
+                }
+                Terrain.TerrainData[p.x, p.y, p.z]![(int)side] = null;
             }
         }
     }

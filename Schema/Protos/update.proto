@@ -5,6 +5,7 @@ import "triangle_types.proto";
 import "hex_side.proto";
 import "item.proto";
 import "character.proto";
+import "terrain.proto";
 
 package schema;
 
@@ -47,12 +48,13 @@ message TerrainObjectChange {
 }
 
 message TriUncoveredOrAdded {
-    Point2Int gridPosition = 1;
+    Point3Int gridPosition = 1;
     core.HexSide side = 2;
+    Triangle tri = 4;
 }
 
 message TriHiddenOrDestroyed {
-    Point2Int gridPosition = 1;
+    Point3Int gridPosition = 1;
     core.HexSide side = 2;
 }
 
@@ -90,6 +92,3 @@ message CharacterAdded {
 message CharacterRemoved {
     uint64 character_id = 1;
 }
-
-
-

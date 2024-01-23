@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 import "item.proto";
-import "component_type.proto";
 import "hex_side.proto";
 import "projectile_type.proto";
 import "tower_targeting_mode.proto";
@@ -21,11 +20,9 @@ message OneofComponent {
         ItemPort item_port = 9;
         Smelt smelt = 10;
         Command command = 11;
+        FuelInventory fuel_inventory = 12;
+        OreInventory ore_inventory = 13;
     }
-}
-
-message Component {
-    core.ComponentType type = 1;
 }
 
 message ItemOnBelt {
@@ -38,17 +35,23 @@ message NullableHexSide {
 }
 
 message ConveyorComponent {
-    Component component = 1;
     repeated ItemOnBelt items = 2;
     NullableHexSide nextSide = 3;
     NullableHexSide prevSide = 4;
 }
 
 message Inventory {
-    Component component = 1;
     repeated MaybeNullItem items = 2;
     int32 width = 3;
     int32 height = 4;
+}
+
+message FuelInventory {
+    Inventory inventory = 2;
+}
+
+message OreInventory {
+    Inventory inventory = 2;
 }
 
 message WornItems {
@@ -60,7 +63,6 @@ message ActiveItems {
 }
 
 message Attack {
-    Component component = 1;
     int32 base_damage = 2;
     float base_cooldown = 3;
     float base_range = 4;
@@ -68,28 +70,23 @@ message Attack {
 }
 
 message Life {
-    Component component = 1;
     int32 max_health = 2;
     int32 health = 3;
 }
 
 message TowerTargeting {
-    Component component = 1;
     core.TowerTargetingMode mode = 2;
 }
 
 message Mine {
-    Component component = 1;
 }
 
 message ItemPort {
-    Component component = 1;
 }
 
 message Smelt {
-    Component component = 1;
 }
 
 message Command {
-    Component component = 1;
 }
+

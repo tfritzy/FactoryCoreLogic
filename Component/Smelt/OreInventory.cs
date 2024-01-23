@@ -2,6 +2,11 @@ namespace Core
 {
     public class OreInventory : Inventory
     {
+        public OreInventory(Schema.OreInventory schema, Entity owner)
+            : base(schema.Inventory, owner)
+        {
+        }
+
         public OreInventory(Entity owner, int width, int height) : base(owner, width, height)
         {
         }
@@ -34,6 +39,17 @@ namespace Core
             }
 
             return base.AddItem(item, index);
+        }
+
+        public override Schema.OneofComponent ToSchema()
+        {
+            return new Schema.OneofComponent
+            {
+                OreInventory = new Schema.OreInventory
+                {
+                    Inventory = base.ToSchema().Inventory,
+                },
+            };
         }
     }
 }

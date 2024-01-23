@@ -24,12 +24,12 @@ namespace Core {
     static ComponentTypeReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChRjb21wb25lbnRfdHlwZS5wcm90bxIEY29yZSrFAQoNQ29tcG9uZW50VHlw",
+            "ChRjb21wb25lbnRfdHlwZS5wcm90bxIEY29yZSrYAQoNQ29tcG9uZW50VHlw",
             "ZRIUChBJbnZhbGlkQ29tcG9uZW50EAASFQoRQ29udmV5b3JDb21wb25lbnQQ",
             "ARINCglJbnZlbnRvcnkQAhIICgRMaWZlEAMSDQoJV29ybkl0ZW1zEAQSDwoL",
             "QWN0aXZlSXRlbXMQBRIKCgZBdHRhY2sQBhISCg5Ub3dlclRhcmdldGluZxAH",
             "EggKBE1pbmUQCBIMCghJdGVtUG9ydBAJEgkKBVNtZWx0EAoSCwoHQ29tbWFu",
-            "ZBALYgZwcm90bzM="));
+            "ZBALEhEKDUZ1ZWxJbnZlbnRvcnkQDGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Core.ComponentType), }, null, null));
@@ -51,6 +51,7 @@ namespace Core {
     [pbr::OriginalName("ItemPort")] ItemPort = 9,
     [pbr::OriginalName("Smelt")] Smelt = 10,
     [pbr::OriginalName("Command")] Command = 11,
+    [pbr::OriginalName("FuelInventory")] FuelInventory = 12,
   }
 
   #endregion

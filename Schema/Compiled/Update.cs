@@ -26,52 +26,53 @@ namespace Schema {
           string.Concat(
             "Cgx1cGRhdGUucHJvdG8SBnNjaGVtYRoLdW5pdHMucHJvdG8aFHRyaWFuZ2xl",
             "X3R5cGVzLnByb3RvGg5oZXhfc2lkZS5wcm90bxoKaXRlbS5wcm90bxoPY2hh",
-            "cmFjdGVyLnByb3RvIjYKBUNodW5rEg0KBWluZGV4GAIgASgFEhAKCG1heElu",
-            "ZGV4GAMgASgFEgwKBGRhdGEYBCABKAwiLQoMVXBkYXRlUGFja2V0Eh0KBmNo",
-            "dW5rcxgBIAMoCzINLnNjaGVtYS5DaHVuayKZBQoLT25lb2ZVcGRhdGUSJgoJ",
-            "aXRlbU1vdmVkGAEgASgLMhEuc2NoZW1hLkl0ZW1Nb3ZlZEgAEjIKD3Byb2pl",
-            "Y3RpbGVBZGRlZBgCIAEoCzIXLnNjaGVtYS5Qcm9qZWN0aWxlQWRkZWRIABI2",
-            "ChFwcm9qZWN0aWxlUmVtb3ZlZBgDIAEoCzIZLnNjaGVtYS5Qcm9qZWN0aWxl",
-            "UmVtb3ZlZEgAEi4KDWJ1aWxkaW5nQWRkZWQYBCABKAsyFS5zY2hlbWEuQnVp",
-            "bGRpbmdBZGRlZEgAEjIKD2J1aWxkaW5nUmVtb3ZlZBgFIAEoCzIXLnNjaGVt",
-            "YS5CdWlsZGluZ1JlbW92ZWRIABI6ChN0cmlVbmNvdmVyZWRPckFkZGVkGAYg",
-            "ASgLMhsuc2NoZW1hLlRyaVVuY292ZXJlZE9yQWRkZWRIABI8ChR0cmlIaWRk",
-            "ZW5PckRlc3Ryb3llZBgHIAEoCzIcLnNjaGVtYS5UcmlIaWRkZW5PckRlc3Ry",
-            "b3llZEgAEjoKE3RlcnJhaW5PYmplY3RDaGFuZ2UYCCABKAsyGy5zY2hlbWEu",
-            "VGVycmFpbk9iamVjdENoYW5nZUgAEjIKD2l0ZW1PYmplY3RBZGRlZBgJIAEo",
-            "CzIXLnNjaGVtYS5JdGVtT2JqZWN0QWRkZWRIABI2ChFpdGVtT2JqZWN0UmVt",
-            "b3ZlZBgKIAEoCzIZLnNjaGVtYS5JdGVtT2JqZWN0UmVtb3ZlZEgAEjAKDmNo",
-            "YXJhY3RlckFkZGVkGAsgASgLMhYuc2NoZW1hLkNoYXJhY3RlckFkZGVkSAAS",
-            "NAoQY2hhcmFjdGVyUmVtb3ZlZBgMIAEoCzIYLnNjaGVtYS5DaGFyYWN0ZXJS",
-            "ZW1vdmVkSABCCAoGdXBkYXRlInEKCUl0ZW1Nb3ZlZBIPCgdpdGVtX2lkGAEg",
-            "ASgEEiwKD3VwZGF0ZWRQb3NpdGlvbhgCIAEoCzITLnNjaGVtYS5Qb2ludDNG",
-            "bG9hdBIlCghyb3RhdGlvbhgDIAEoCzITLnNjaGVtYS5Qb2ludDNGbG9hdCJo",
-            "ChNUZXJyYWluT2JqZWN0Q2hhbmdlEicKDGdyaWRQb3NpdGlvbhgBIAEoCzIR",
-            "LnNjaGVtYS5Qb2ludDJJbnQSKAoHbmV3VHlwZRgCIAEoDjIXLmNvcmUuVGVy",
-            "cmFpbk9iamVjdFR5cGUiWwoTVHJpVW5jb3ZlcmVkT3JBZGRlZBInCgxncmlk",
-            "UG9zaXRpb24YASABKAsyES5zY2hlbWEuUG9pbnQySW50EhsKBHNpZGUYAiAB",
-            "KA4yDS5jb3JlLkhleFNpZGUiXAoUVHJpSGlkZGVuT3JEZXN0cm95ZWQSJwoM",
-            "Z3JpZFBvc2l0aW9uGAEgASgLMhEuc2NoZW1hLlBvaW50MkludBIbCgRzaWRl",
-            "GAIgASgOMg0uY29yZS5IZXhTaWRlIioKEVByb2plY3RpbGVSZW1vdmVkEhUK",
-            "DXByb2plY3RpbGVfaWQYASABKAQiKAoPUHJvamVjdGlsZUFkZGVkEhUKDXBy",
-            "b2plY3RpbGVfaWQYASABKAQiJAoRSXRlbU9iamVjdFJlbW92ZWQSDwoHaXRl",
-            "bV9pZBgBIAEoBCIzCg9JdGVtT2JqZWN0QWRkZWQSIAoEaXRlbRgBIAEoCzIS",
-            "LnNjaGVtYS5JdGVtT2JqZWN0Ik8KD0J1aWxkaW5nUmVtb3ZlZBITCgtidWls",
-            "ZGluZ19pZBgBIAEoBBInCgxncmlkUG9zaXRpb24YAiABKAsyES5zY2hlbWEu",
-            "UG9pbnQzSW50ImIKDUJ1aWxkaW5nQWRkZWQSJwoMZ3JpZFBvc2l0aW9uGAEg",
-            "ASgLMhEuc2NoZW1hLlBvaW50MkludBIoCghidWlsZGluZxgCIAEoCzIWLnNj",
-            "aGVtYS5PbmVvZkNoYXJhY3RlciI7Cg5DaGFyYWN0ZXJBZGRlZBIpCgljaGFy",
-            "YWN0ZXIYASABKAsyFi5zY2hlbWEuT25lb2ZDaGFyYWN0ZXIiKAoQQ2hhcmFj",
-            "dGVyUmVtb3ZlZBIUCgxjaGFyYWN0ZXJfaWQYASABKARiBnByb3RvMw=="));
+            "cmFjdGVyLnByb3RvGg10ZXJyYWluLnByb3RvIjYKBUNodW5rEg0KBWluZGV4",
+            "GAIgASgFEhAKCG1heEluZGV4GAMgASgFEgwKBGRhdGEYBCABKAwiLQoMVXBk",
+            "YXRlUGFja2V0Eh0KBmNodW5rcxgBIAMoCzINLnNjaGVtYS5DaHVuayKZBQoL",
+            "T25lb2ZVcGRhdGUSJgoJaXRlbU1vdmVkGAEgASgLMhEuc2NoZW1hLkl0ZW1N",
+            "b3ZlZEgAEjIKD3Byb2plY3RpbGVBZGRlZBgCIAEoCzIXLnNjaGVtYS5Qcm9q",
+            "ZWN0aWxlQWRkZWRIABI2ChFwcm9qZWN0aWxlUmVtb3ZlZBgDIAEoCzIZLnNj",
+            "aGVtYS5Qcm9qZWN0aWxlUmVtb3ZlZEgAEi4KDWJ1aWxkaW5nQWRkZWQYBCAB",
+            "KAsyFS5zY2hlbWEuQnVpbGRpbmdBZGRlZEgAEjIKD2J1aWxkaW5nUmVtb3Zl",
+            "ZBgFIAEoCzIXLnNjaGVtYS5CdWlsZGluZ1JlbW92ZWRIABI6ChN0cmlVbmNv",
+            "dmVyZWRPckFkZGVkGAYgASgLMhsuc2NoZW1hLlRyaVVuY292ZXJlZE9yQWRk",
+            "ZWRIABI8ChR0cmlIaWRkZW5PckRlc3Ryb3llZBgHIAEoCzIcLnNjaGVtYS5U",
+            "cmlIaWRkZW5PckRlc3Ryb3llZEgAEjoKE3RlcnJhaW5PYmplY3RDaGFuZ2UY",
+            "CCABKAsyGy5zY2hlbWEuVGVycmFpbk9iamVjdENoYW5nZUgAEjIKD2l0ZW1P",
+            "YmplY3RBZGRlZBgJIAEoCzIXLnNjaGVtYS5JdGVtT2JqZWN0QWRkZWRIABI2",
+            "ChFpdGVtT2JqZWN0UmVtb3ZlZBgKIAEoCzIZLnNjaGVtYS5JdGVtT2JqZWN0",
+            "UmVtb3ZlZEgAEjAKDmNoYXJhY3RlckFkZGVkGAsgASgLMhYuc2NoZW1hLkNo",
+            "YXJhY3RlckFkZGVkSAASNAoQY2hhcmFjdGVyUmVtb3ZlZBgMIAEoCzIYLnNj",
+            "aGVtYS5DaGFyYWN0ZXJSZW1vdmVkSABCCAoGdXBkYXRlInEKCUl0ZW1Nb3Zl",
+            "ZBIPCgdpdGVtX2lkGAEgASgEEiwKD3VwZGF0ZWRQb3NpdGlvbhgCIAEoCzIT",
+            "LnNjaGVtYS5Qb2ludDNGbG9hdBIlCghyb3RhdGlvbhgDIAEoCzITLnNjaGVt",
+            "YS5Qb2ludDNGbG9hdCJoChNUZXJyYWluT2JqZWN0Q2hhbmdlEicKDGdyaWRQ",
+            "b3NpdGlvbhgBIAEoCzIRLnNjaGVtYS5Qb2ludDJJbnQSKAoHbmV3VHlwZRgC",
+            "IAEoDjIXLmNvcmUuVGVycmFpbk9iamVjdFR5cGUiegoTVHJpVW5jb3ZlcmVk",
+            "T3JBZGRlZBInCgxncmlkUG9zaXRpb24YASABKAsyES5zY2hlbWEuUG9pbnQz",
+            "SW50EhsKBHNpZGUYAiABKA4yDS5jb3JlLkhleFNpZGUSHQoDdHJpGAQgASgL",
+            "MhAuc2NoZW1hLlRyaWFuZ2xlIlwKFFRyaUhpZGRlbk9yRGVzdHJveWVkEicK",
+            "DGdyaWRQb3NpdGlvbhgBIAEoCzIRLnNjaGVtYS5Qb2ludDNJbnQSGwoEc2lk",
+            "ZRgCIAEoDjINLmNvcmUuSGV4U2lkZSIqChFQcm9qZWN0aWxlUmVtb3ZlZBIV",
+            "Cg1wcm9qZWN0aWxlX2lkGAEgASgEIigKD1Byb2plY3RpbGVBZGRlZBIVCg1w",
+            "cm9qZWN0aWxlX2lkGAEgASgEIiQKEUl0ZW1PYmplY3RSZW1vdmVkEg8KB2l0",
+            "ZW1faWQYASABKAQiMwoPSXRlbU9iamVjdEFkZGVkEiAKBGl0ZW0YASABKAsy",
+            "Ei5zY2hlbWEuSXRlbU9iamVjdCJPCg9CdWlsZGluZ1JlbW92ZWQSEwoLYnVp",
+            "bGRpbmdfaWQYASABKAQSJwoMZ3JpZFBvc2l0aW9uGAIgASgLMhEuc2NoZW1h",
+            "LlBvaW50M0ludCJiCg1CdWlsZGluZ0FkZGVkEicKDGdyaWRQb3NpdGlvbhgB",
+            "IAEoCzIRLnNjaGVtYS5Qb2ludDJJbnQSKAoIYnVpbGRpbmcYAiABKAsyFi5z",
+            "Y2hlbWEuT25lb2ZDaGFyYWN0ZXIiOwoOQ2hhcmFjdGVyQWRkZWQSKQoJY2hh",
+            "cmFjdGVyGAEgASgLMhYuc2NoZW1hLk9uZW9mQ2hhcmFjdGVyIigKEENoYXJh",
+            "Y3RlclJlbW92ZWQSFAoMY2hhcmFjdGVyX2lkGAEgASgEYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Schema.UnitsReflection.Descriptor, global::Core.TriangleTypesReflection.Descriptor, global::Core.HexSideReflection.Descriptor, global::Schema.ItemReflection.Descriptor, global::Schema.CharacterReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Schema.UnitsReflection.Descriptor, global::Core.TriangleTypesReflection.Descriptor, global::Core.HexSideReflection.Descriptor, global::Schema.ItemReflection.Descriptor, global::Schema.CharacterReflection.Descriptor, global::Schema.TerrainReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Chunk), global::Schema.Chunk.Parser, new[]{ "Index", "MaxIndex", "Data" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.UpdatePacket), global::Schema.UpdatePacket.Parser, new[]{ "Chunks" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.OneofUpdate), global::Schema.OneofUpdate.Parser, new[]{ "ItemMoved", "ProjectileAdded", "ProjectileRemoved", "BuildingAdded", "BuildingRemoved", "TriUncoveredOrAdded", "TriHiddenOrDestroyed", "TerrainObjectChange", "ItemObjectAdded", "ItemObjectRemoved", "CharacterAdded", "CharacterRemoved" }, new[]{ "Update" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.ItemMoved), global::Schema.ItemMoved.Parser, new[]{ "ItemId", "UpdatedPosition", "Rotation" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.TerrainObjectChange), global::Schema.TerrainObjectChange.Parser, new[]{ "GridPosition", "NewType" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.TriUncoveredOrAdded), global::Schema.TriUncoveredOrAdded.Parser, new[]{ "GridPosition", "Side" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.TriUncoveredOrAdded), global::Schema.TriUncoveredOrAdded.Parser, new[]{ "GridPosition", "Side", "Tri" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.TriHiddenOrDestroyed), global::Schema.TriHiddenOrDestroyed.Parser, new[]{ "GridPosition", "Side" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.ProjectileRemoved), global::Schema.ProjectileRemoved.Parser, new[]{ "ProjectileId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.ProjectileAdded), global::Schema.ProjectileAdded.Parser, new[]{ "ProjectileId" }, null, null, null, null),
@@ -1901,6 +1902,7 @@ namespace Schema {
     public TriUncoveredOrAdded(TriUncoveredOrAdded other) : this() {
       gridPosition_ = other.gridPosition_ != null ? other.gridPosition_.Clone() : null;
       side_ = other.side_;
+      tri_ = other.tri_ != null ? other.tri_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1912,10 +1914,10 @@ namespace Schema {
 
     /// <summary>Field number for the "gridPosition" field.</summary>
     public const int GridPositionFieldNumber = 1;
-    private global::Schema.Point2Int gridPosition_;
+    private global::Schema.Point3Int gridPosition_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Schema.Point2Int GridPosition {
+    public global::Schema.Point3Int GridPosition {
       get { return gridPosition_; }
       set {
         gridPosition_ = value;
@@ -1931,6 +1933,18 @@ namespace Schema {
       get { return side_; }
       set {
         side_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "tri" field.</summary>
+    public const int TriFieldNumber = 4;
+    private global::Schema.Triangle tri_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Schema.Triangle Tri {
+      get { return tri_; }
+      set {
+        tri_ = value;
       }
     }
 
@@ -1951,6 +1965,7 @@ namespace Schema {
       }
       if (!object.Equals(GridPosition, other.GridPosition)) return false;
       if (Side != other.Side) return false;
+      if (!object.Equals(Tri, other.Tri)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1960,6 +1975,7 @@ namespace Schema {
       int hash = 1;
       if (gridPosition_ != null) hash ^= GridPosition.GetHashCode();
       if (Side != global::Core.HexSide.NorthEast) hash ^= Side.GetHashCode();
+      if (tri_ != null) hash ^= Tri.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1986,6 +2002,10 @@ namespace Schema {
         output.WriteRawTag(16);
         output.WriteEnum((int) Side);
       }
+      if (tri_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(Tri);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2004,6 +2024,10 @@ namespace Schema {
         output.WriteRawTag(16);
         output.WriteEnum((int) Side);
       }
+      if (tri_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(Tri);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2020,6 +2044,9 @@ namespace Schema {
       if (Side != global::Core.HexSide.NorthEast) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Side);
       }
+      if (tri_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Tri);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -2034,12 +2061,18 @@ namespace Schema {
       }
       if (other.gridPosition_ != null) {
         if (gridPosition_ == null) {
-          GridPosition = new global::Schema.Point2Int();
+          GridPosition = new global::Schema.Point3Int();
         }
         GridPosition.MergeFrom(other.GridPosition);
       }
       if (other.Side != global::Core.HexSide.NorthEast) {
         Side = other.Side;
+      }
+      if (other.tri_ != null) {
+        if (tri_ == null) {
+          Tri = new global::Schema.Triangle();
+        }
+        Tri.MergeFrom(other.Tri);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2058,13 +2091,20 @@ namespace Schema {
             break;
           case 10: {
             if (gridPosition_ == null) {
-              GridPosition = new global::Schema.Point2Int();
+              GridPosition = new global::Schema.Point3Int();
             }
             input.ReadMessage(GridPosition);
             break;
           }
           case 16: {
             Side = (global::Core.HexSide) input.ReadEnum();
+            break;
+          }
+          case 34: {
+            if (tri_ == null) {
+              Tri = new global::Schema.Triangle();
+            }
+            input.ReadMessage(Tri);
             break;
           }
         }
@@ -2084,13 +2124,20 @@ namespace Schema {
             break;
           case 10: {
             if (gridPosition_ == null) {
-              GridPosition = new global::Schema.Point2Int();
+              GridPosition = new global::Schema.Point3Int();
             }
             input.ReadMessage(GridPosition);
             break;
           }
           case 16: {
             Side = (global::Core.HexSide) input.ReadEnum();
+            break;
+          }
+          case 34: {
+            if (tri_ == null) {
+              Tri = new global::Schema.Triangle();
+            }
+            input.ReadMessage(Tri);
             break;
           }
         }
@@ -2148,10 +2195,10 @@ namespace Schema {
 
     /// <summary>Field number for the "gridPosition" field.</summary>
     public const int GridPositionFieldNumber = 1;
-    private global::Schema.Point2Int gridPosition_;
+    private global::Schema.Point3Int gridPosition_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Schema.Point2Int GridPosition {
+    public global::Schema.Point3Int GridPosition {
       get { return gridPosition_; }
       set {
         gridPosition_ = value;
@@ -2270,7 +2317,7 @@ namespace Schema {
       }
       if (other.gridPosition_ != null) {
         if (gridPosition_ == null) {
-          GridPosition = new global::Schema.Point2Int();
+          GridPosition = new global::Schema.Point3Int();
         }
         GridPosition.MergeFrom(other.GridPosition);
       }
@@ -2294,7 +2341,7 @@ namespace Schema {
             break;
           case 10: {
             if (gridPosition_ == null) {
-              GridPosition = new global::Schema.Point2Int();
+              GridPosition = new global::Schema.Point3Int();
             }
             input.ReadMessage(GridPosition);
             break;
@@ -2320,7 +2367,7 @@ namespace Schema {
             break;
           case 10: {
             if (gridPosition_ == null) {
-              GridPosition = new global::Schema.Point2Int();
+              GridPosition = new global::Schema.Point3Int();
             }
             input.ReadMessage(GridPosition);
             break;

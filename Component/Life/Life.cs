@@ -13,7 +13,6 @@ namespace Core
             {
                 Life = new Schema.Life()
                 {
-                    Component = new Schema.Component { Type = Type },
                     MaxHealth = BaseHealth,
                     Health = Health,
                 }

@@ -30,7 +30,6 @@ namespace Core
             }
 
             ConfigureComponents();
-
         }
 
         public Entity(Context context)

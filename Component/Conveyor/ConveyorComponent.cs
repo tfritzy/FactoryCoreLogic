@@ -476,7 +476,6 @@ namespace Core
             {
                 Conveyor = new Schema.ConveyorComponent()
                 {
-                    Component = base.BuildSchemaComponent(),
                     NextSide = NextSide != null ? new Schema.NullableHexSide { Value = NextSide.Value } : null,
                     PrevSide = PrevSide != null ? new Schema.NullableHexSide { Value = PrevSide.Value } : null,
                 }

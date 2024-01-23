@@ -61,7 +61,7 @@ namespace Core
             Building newBuilding = (Building)Character.Create(building.Value, this.Context);
             newBuilding.MarkPreview();
             this.Context.World.AddBuilding(newBuilding, location);
-            return newBuilding;
+            return this.Context.World.GetBuildingAt(location);
         }
 
         public void MakePreviewBuildingRealFromItem(int itemIndex, Building building)

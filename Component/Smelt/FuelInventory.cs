@@ -2,6 +2,13 @@ namespace Core
 {
     public class FuelInventory : Inventory
     {
+        public override ComponentType Type => ComponentType.FuelInventory;
+
+        public FuelInventory(Schema.FuelInventory schema, Entity owner)
+            : base(schema.Inventory, owner)
+        {
+        }
+
         public FuelInventory(Entity owner, int width, int height) : base(owner, width, height)
         {
         }
@@ -34,6 +41,17 @@ namespace Core
             }
 
             return base.AddItem(item, index);
+        }
+
+        public override Schema.OneofComponent ToSchema()
+        {
+            return new Schema.OneofComponent
+            {
+                FuelInventory = new Schema.FuelInventory
+                {
+                    Inventory = base.ToSchema().Inventory,
+                },
+            };
         }
     }
 }

@@ -193,7 +193,6 @@ namespace Core
             {
                 Smelt = new Schema.Smelt()
                 {
-                    Component = BuildSchemaComponent(),
                 }
             };
             return schema;

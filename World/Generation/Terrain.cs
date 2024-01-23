@@ -402,20 +402,31 @@ namespace Core
 
         public void SetTriangle(Point3Int location, Triangle? triangle, HexSide side)
         {
-            if (TerrainData[location.x, location.y, location.z] == null)
+            if (triangle != null)
             {
-                TerrainData[location.x, location.y, location.z] = new Triangle[6];
+                context.World.AddUpdateForFrame(
+                    new OneofUpdate
+                    {
+                        TriUncoveredOrAdded = new TriUncoveredOrAdded
+                        {
+                            GridPosition = location.ToSchema(),
+                            Side = side,
+                            Tri = triangle,
+                        }
+                    });
             }
-            TerrainData[location.x, location.y, location.z]![(int)side] = triangle;
-
-            // if (triangle != null)
-            // {
-            //     context.World.UnseenUpdates.AddLast(new TriUncoveredOrAdded(location, side));
-            // }
-            // else
-            // {
-            //     context.World.UnseenUpdates.AddLast(new TriHiddenOrDestroyed(location, side));
-            // }
+            else
+            {
+                context.World.AddUpdateForFrame(
+                    new OneofUpdate
+                    {
+                        TriHiddenOrDestroyed = new TriHiddenOrDestroyed
+                        {
+                            GridPosition = location.ToSchema(),
+                            Side = side,
+                        }
+                    });
+            }
         }
 
         public Point3Int GetTopHex(Point2Int location, HexSide? side = null)

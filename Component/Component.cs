@@ -21,20 +21,16 @@ namespace Core
             this.Owner = owner;
         }
 
-        public Schema.Component BuildSchemaComponent()
-        {
-            return new Schema.Component
-            {
-                Type = Type,
-            };
-        }
-
         public static Component FromSchema(Schema.OneofComponent component, Entity owner)
         {
             if (component.Conveyor != null)
                 return new ConveyorComponent(component.Conveyor, owner);
             else if (component.Inventory != null)
                 return new Inventory(component.Inventory, owner);
+            else if (component.FuelInventory != null)
+                return new FuelInventory(component.FuelInventory, owner);
+            else if (component.OreInventory != null)
+                return new OreInventory(component.OreInventory, owner);
             else if (component.Life != null)
                 return new Life(component.Life, owner);
             else if (component.WornItems != null)
