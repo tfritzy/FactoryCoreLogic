@@ -1,3 +1,11 @@
 syntax = "proto3";
 
-message Projectile
+import "projectile_type.proto";
+
+package schema;
+
+message Projectile {
+    core.ProjectileType type = 1;
+    Point3Float position = 2;
+    Point3Float velocity = 3;
+}

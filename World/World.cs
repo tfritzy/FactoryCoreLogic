@@ -82,18 +82,17 @@ namespace Core
             CleanupOutOfBoundsItems();
         }
 
-        public void AddCharacter(Character character)
+        public Character AddCharacter(Character character)
         {
-            this.Characters[character.Id] = character;
-            // this.UnseenUpdates.AddLast(
-            //     new OneofUpdate
-            //     {
-            //         CharacterAdded = new CharacterAdded
-            //         {
-            //             Character = character.Serialize(),
-            //         },
-            //     }
-            // );
+            AddUpdateForFrame(
+                new OneofUpdate
+                {
+                    CharacterAdded = new CharacterAdded
+                    {
+                        Character = character.Serialize(),
+                    },
+                });
+            return character;
         }
 
         public void RemoveCharacter(ulong id)
@@ -497,6 +496,15 @@ namespace Core
                     Terrain.TerrainData[p.x, p.y, p.z] = new Triangle[6];
                 }
                 Terrain.TerrainData[p.x, p.y, p.z]![(int)side] = null;
+            }
+            else if (update.CharacterAdded != null)
+            {
+                Character character = Character.FromSchema(update.CharacterAdded.Character, Context);
+                this.Characters[character.Id] = character;
+            }
+            else
+            {
+                throw new System.NotImplementedException("Unhandled update: " + update);
             }
         }
     }
