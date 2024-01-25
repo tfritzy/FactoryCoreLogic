@@ -92,7 +92,7 @@ namespace Core
                         Character = character.Serialize(),
                     },
                 });
-            return character;
+            return GetCharacter(character.Id)!;
         }
 
         public void RemoveCharacter(ulong id)
@@ -102,16 +102,14 @@ namespace Core
                 return;
             }
 
-            this.Characters.Remove(id);
-            // this.UnseenUpdates.AddLast(
-            //     new OneofUpdate
-            //     {
-            //         CharacterRemoved = new CharacterRemoved
-            //         {
-            //             CharacterId = id,
-            //         },
-            //     }
-            // );
+            AddUpdateForFrame(
+                new OneofUpdate
+                {
+                    CharacterRemoved = new CharacterRemoved
+                    {
+                        CharacterId = id,
+                    },
+                });
         }
 
         public Building AddBuilding(Building building, Point2Int location)
@@ -131,6 +129,7 @@ namespace Core
                 throw new InvalidOperationException("Must place building on solid ground");
             }
 
+            building.GridPosition = GetTopHex(location);
             AddUpdateForFrame(
                 new OneofUpdate
                 {
@@ -147,10 +146,19 @@ namespace Core
         {
             ulong buildingId = this.Buildings[location];
             Building building = (Building)this.Characters[buildingId];
-            this.Buildings.Remove(location);
+
+            // This should happen only on the host, so not handled inside HandleMessage();
             building.OnRemoveFromGrid();
 
-            // this.UnseenUpdates.AddLast(new BuildingRemoved(buildingId, building.GridPosition));
+            AddUpdateForFrame(
+                new OneofUpdate
+                {
+                    BuildingRemoved = new BuildingRemoved
+                    {
+                        BuildingId = buildingId,
+                        GridPosition = building.GridPosition.ToSchema(),
+                    },
+                });
         }
 
         public void RemoveBuilding(ulong id)
@@ -242,20 +250,24 @@ namespace Core
 
         public void AddProjectile(Projectile projectile)
         {
-            AddUpdateForFrame(
+            // TODO: Handle this correctly once projectiles have a serialization plan.
+            this.Projectiles.Add(projectile.Id, projectile);
+            this.UnseenUpdates.AddLast(
                 new OneofUpdate
                 {
-                    ProjectileAdded = new ProjectileAdded
-                    {
-                        ProjectileId = projectile.Id,
-                    },
+                    ProjectileAdded = new ProjectileAdded() { ProjectileId = projectile.Id }
                 });
         }
 
         public void RemoveProjectile(ulong id)
         {
+            // TODO: Handle this correctly once projectiles have a serialization plan.
             this.Projectiles.Remove(id);
-            // this.UnseenUpdates.AddLast(new ProjectileRemoved(id));
+            this.UnseenUpdates.AddLast(
+                new OneofUpdate
+                {
+                    ProjectileRemoved = new ProjectileRemoved() { ProjectileId = id }
+                });
         }
 
         public void AckUpdate()
@@ -339,8 +351,16 @@ namespace Core
         public void AddItemObject(Item item, Point3Float point, Point3Float rotation)
         {
             ItemObject objectForm = new ItemObject(item, point, rotation);
-            ItemObjects.Add(item.Id, objectForm);
-            // UnseenUpdates.AddLast(new ItemObjectAdded(objectForm.ToSchema()));
+            objectForm.Position = point;
+            objectForm.Rotation = rotation;
+            AddUpdateForFrame(
+                new OneofUpdate
+                {
+                    ItemObjectAdded = new ItemObjectAdded
+                    {
+                        Item = objectForm.ToSchema(),
+                    },
+                });
         }
 
         public void RemoveItemObject(ulong itemId)
@@ -450,11 +470,7 @@ namespace Core
         {
             UnseenUpdates.AddLast(update);
 
-            if (update.ItemObjectRemoved != null)
-            {
-                ItemObjects.Remove(update.ItemObjectRemoved.ItemId);
-            }
-            else if (update.TerrainObjectChange != null)
+            if (update.TerrainObjectChange != null)
             {
                 var gridPos = Point2Int.FromSchema(update.TerrainObjectChange.GridPosition);
                 Terrain.TerrainObjects[gridPos.x, gridPos.y] = new TerrainObject(update.TerrainObjectChange.NewType);
@@ -462,10 +478,6 @@ namespace Core
             else if (update.ProjectileAdded != null)
             {
                 throw new System.NotImplementedException("TODO: Handle projectiles");
-            }
-            else if (update.BuildingRemoved != null)
-            {
-                RemoveBuilding((Point2Int)Point3Int.FromSchema(update.BuildingRemoved.GridPosition));
             }
             else if (update.BuildingAdded != null)
             {
@@ -501,6 +513,26 @@ namespace Core
             {
                 Character character = Character.FromSchema(update.CharacterAdded.Character, Context);
                 this.Characters[character.Id] = character;
+            }
+            else if (update.CharacterRemoved != null)
+            {
+                this.Characters.Remove(update.CharacterRemoved.CharacterId);
+            }
+            else if (update.BuildingRemoved != null)
+            {
+                var removedUpdate = update.BuildingRemoved;
+                Building building = (Building)this.Characters[removedUpdate.BuildingId];
+                this.Buildings.Remove((Point2Int)Point3Int.FromSchema(removedUpdate.GridPosition));
+                this.Characters.Remove(removedUpdate.BuildingId);
+            }
+            else if (update.ItemObjectAdded != null)
+            {
+                var itemObject = ItemObject.FromSchema(update.ItemObjectAdded.Item);
+                ItemObjects.Add(itemObject.Item.Id, itemObject);
+            }
+            else if (update.ItemObjectRemoved != null)
+            {
+                ItemObjects.Remove(update.ItemObjectRemoved.ItemId);
             }
             else
             {

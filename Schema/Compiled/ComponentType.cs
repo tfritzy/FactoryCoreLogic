@@ -9,36 +9,42 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace Core {
+namespace Core
+{
 
   /// <summary>Holder for reflection information generated from component_type.proto</summary>
-  public static partial class ComponentTypeReflection {
+  public static partial class ComponentTypeReflection
+  {
 
     #region Descriptor
     /// <summary>File descriptor for component_type.proto</summary>
-    public static pbr::FileDescriptor Descriptor {
+    public static pbr::FileDescriptor Descriptor
+    {
       get { return descriptor; }
     }
     private static pbr::FileDescriptor descriptor;
 
-    static ComponentTypeReflection() {
+    static ComponentTypeReflection()
+    {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChRjb21wb25lbnRfdHlwZS5wcm90bxIEY29yZSrYAQoNQ29tcG9uZW50VHlw",
+            "ChRjb21wb25lbnRfdHlwZS5wcm90bxIEY29yZSrqAQoNQ29tcG9uZW50VHlw",
             "ZRIUChBJbnZhbGlkQ29tcG9uZW50EAASFQoRQ29udmV5b3JDb21wb25lbnQQ",
             "ARINCglJbnZlbnRvcnkQAhIICgRMaWZlEAMSDQoJV29ybkl0ZW1zEAQSDwoL",
             "QWN0aXZlSXRlbXMQBRIKCgZBdHRhY2sQBhISCg5Ub3dlclRhcmdldGluZxAH",
             "EggKBE1pbmUQCBIMCghJdGVtUG9ydBAJEgkKBVNtZWx0EAoSCwoHQ29tbWFu",
-            "ZBALEhEKDUZ1ZWxJbnZlbnRvcnkQDGIGcHJvdG8z"));
+            "ZBALEhEKDUZ1ZWxJbnZlbnRvcnkQDBIQCgxPcmVJbnZlbnRvcnkQDWIGcHJv",
+            "dG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Core.ComponentType), }, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] { typeof(global::Core.ComponentType), }, null, null));
     }
     #endregion
 
   }
   #region Enums
-  public enum ComponentType {
+  public enum ComponentType
+  {
     [pbr::OriginalName("InvalidComponent")] InvalidComponent = 0,
     [pbr::OriginalName("ConveyorComponent")] ConveyorComponent = 1,
     [pbr::OriginalName("Inventory")] Inventory = 2,
@@ -52,6 +58,7 @@ namespace Core {
     [pbr::OriginalName("Smelt")] Smelt = 10,
     [pbr::OriginalName("Command")] Command = 11,
     [pbr::OriginalName("FuelInventory")] FuelInventory = 12,
+    [pbr::OriginalName("OreInventory")] OreInventory = 13,
   }
 
   #endregion

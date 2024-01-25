@@ -2,6 +2,8 @@ namespace Core
 {
     public class OreInventory : Inventory
     {
+        public override ComponentType Type => ComponentType.OreInventory;
+
         public OreInventory(Schema.OreInventory schema, Entity owner)
             : base(schema.Inventory, owner)
         {

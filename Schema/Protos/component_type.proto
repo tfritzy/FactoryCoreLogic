@@ -16,4 +16,5 @@ enum ComponentType {
     Smelt = 10;
     Command = 11;
     FuelInventory = 12;
+    OreInventory = 13;
 }
