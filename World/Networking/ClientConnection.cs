@@ -123,14 +123,12 @@ namespace Core
 
         public override async Task SendPendingMessages()
         {
-            if (ConnectedWorld == null)
+            if (ConnectedWorld != null)
             {
-                return;
-            }
-
-            while (ConnectedWorld.Requests.Count > 0)
-            {
-                await SendMessage(ConnectedWorld.Requests.Dequeue());
+                while (ConnectedWorld.Requests.Count > 0)
+                {
+                    await SendMessage(ConnectedWorld.Requests.Dequeue());
+                }
             }
 
             punchthrough?.Update();

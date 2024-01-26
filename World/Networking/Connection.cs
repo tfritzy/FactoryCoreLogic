@@ -14,6 +14,7 @@ namespace Core
         public World? ConnectedWorld;
         public readonly static IPEndPoint MatchmakingServerEndPoint =
             new(IPAddress.Parse("20.29.48.111"), 64132);
+        private CancellationTokenSource cts = new();
 
         public Connection(IClient client)
         {
@@ -29,10 +30,16 @@ namespace Core
             SendPendingMessages();
         }
 
-        public async Task ReadIncomingMessage()
+        public async Task ReadIncomingMessage(float timeout_ms = -1)
         {
-            UdpReceiveResult result = await Client.ReceiveAsync(CancellationToken.None);
+            if (timeout_ms > 0)
+            {
+                cts = new();
+                cts.CancelAfter((int)timeout_ms);
+            }
+            CancellationToken cancellationToken = cts.Token;
 
+            UdpReceiveResult result = await Client.ReceiveAsync(cancellationToken);
             HandleMessage(result.RemoteEndPoint, result.Buffer);
         }
     }
