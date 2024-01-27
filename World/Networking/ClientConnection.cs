@@ -18,7 +18,7 @@ namespace Core
     {
         public IPEndPoint? HostEndPoint { get; private set; }
         private NatPunchthroughModule? punchthrough;
-        private List<UpdatePacket> receivedPackets = new();
+        private List<Packet> receivedPackets = new();
 
         public ClientConnection(IClient client) : base(client) { }
 
@@ -110,13 +110,25 @@ namespace Core
             {
                 punchthrough.HandleMessageFromPeer(message);
             }
-            else if (ConnectedWorld != null)
+            else if (endpoint.Equals(HostEndPoint))
             {
-                UpdatePacket update = UpdatePacket.Parser.ParseFrom(message);
+                Packet update = Packet.Parser.ParseFrom(message);
                 receivedPackets.Add(update);
-                while (MessageChunker.ExtractFullUpdate(ref receivedPackets) is byte[] fullUpdate)
+                if (ConnectedWorld != null)
                 {
-                    ConnectedWorld.HandleUpdate(OneofUpdate.Parser.ParseFrom(fullUpdate));
+                    while (MessageChunker.ExtractFullUpdate(ref receivedPackets) is Schema.OneofUpdate fullUpdate)
+                    {
+                        ConnectedWorld.HandleUpdate(fullUpdate);
+                    }
+                }
+                else
+                {
+                    Schema.OneofUpdate? maybeWorldState = MessageChunker.ExtractFullUpdate(ref receivedPackets);
+                    if (maybeWorldState?.WorldState != null)
+                    {
+                        World world = new World(maybeWorldState.WorldState.World, new Context());
+                        SetWorld(world);
+                    }
                 }
             }
         }

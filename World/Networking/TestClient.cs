@@ -65,5 +65,10 @@ namespace Core
             Send(message, message.Length, hostEndPoint);
             return Task.FromResult(message.Length);
         }
+
+        public void ClearSentMessages()
+        {
+            SentMessages.Clear();
+        }
     }
 }

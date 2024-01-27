@@ -11,7 +11,7 @@ namespace Core
     {
         public IClient Client { get; private set; }
         public const int DefaultTimeout_ms = 10_000;
-        public World? ConnectedWorld;
+        public World? ConnectedWorld { get; private set; }
         public readonly static IPEndPoint MatchmakingServerEndPoint =
             new(IPAddress.Parse("20.29.48.111"), 64132);
         private CancellationTokenSource cts = new();
@@ -41,6 +41,11 @@ namespace Core
 
             UdpReceiveResult result = await Client.ReceiveAsync(cancellationToken);
             HandleMessage(result.RemoteEndPoint, result.Buffer);
+        }
+
+        public virtual void SetWorld(World world)
+        {
+            ConnectedWorld = world;
         }
     }
 }

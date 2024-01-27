@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Google.Protobuf;
 
 namespace Core
 {
@@ -9,20 +10,21 @@ namespace Core
         public const int ChunkSize = 512;
         private static byte[] buffer = new byte[ChunkSize];
 
-        public static List<Schema.UpdatePacket> Chunk(List<byte[]> updates)
+        public static List<Schema.Packet> Chunk(List<Schema.OneofUpdate> updates)
         {
-            List<Schema.UpdatePacket> packets = new List<Schema.UpdatePacket>();
-            Schema.UpdatePacket currentPacket = new Schema.UpdatePacket();
+            List<Schema.Packet> packets = new List<Schema.Packet>();
+            Schema.Packet currentPacket = new Schema.Packet();
             int currentPacketSize = 0;
 
-            foreach (byte[] update in updates)
+            foreach (Schema.OneofUpdate update in updates)
             {
-                int totalChunks = (int)Math.Ceiling((double)update.Length / ChunkSize);
+                byte[] bytes = update.ToByteArray();
+                int totalChunks = (int)Math.Ceiling((double)bytes.Length / ChunkSize);
                 for (int i = 0; i < totalChunks; i++)
                 {
-                    int chunkSize = Math.Min(ChunkSize, update.Length - i * ChunkSize);
+                    int chunkSize = Math.Min(ChunkSize, bytes.Length - i * ChunkSize);
 
-                    Buffer.BlockCopy(update, i * ChunkSize, buffer, 0, chunkSize);
+                    Buffer.BlockCopy(bytes, i * ChunkSize, buffer, 0, chunkSize);
 
                     var chunk = new Schema.Chunk
                     {
@@ -34,7 +36,7 @@ namespace Core
                     if (currentPacketSize + chunkSize > ChunkSize)
                     {
                         packets.Add(currentPacket);
-                        currentPacket = new Schema.UpdatePacket();
+                        currentPacket = new Schema.Packet();
                         currentPacketSize = 0;
                     }
 
@@ -51,7 +53,7 @@ namespace Core
             return packets;
         }
 
-        public static byte[]? ExtractFullUpdate(ref List<Schema.UpdatePacket> packets)
+        public static Schema.OneofUpdate? ExtractFullUpdate(ref List<Schema.Packet> packets)
         {
             int? updateEndPacketIndex = null;
             int? updateEndChunkIndex = null;
@@ -98,13 +100,14 @@ namespace Core
                     }
                 }
             }
+
             int numPacketsToRemove =
                 (int)updateEndPacketIndex +
                 (packets[updateEndPacketIndex.Value].Chunks.Count == 0 ? 1 : 0);
             packets.RemoveRange(0, numPacketsToRemove);
 
             byte[] data = ReassembleUpdateData(chunks);
-            return data;
+            return Schema.OneofUpdate.Parser.ParseFrom(data);
         }
 
         private static byte[] ReassembleUpdateData(List<Schema.Chunk> chunks)

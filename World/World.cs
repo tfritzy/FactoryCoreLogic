@@ -455,8 +455,16 @@ namespace Core
 
             if (character is Unit unit)
             {
-                unit.SetLocation(pos);
-                // unit.SetVelocity(velocity);
+                AddUpdateForFrame(
+                    new OneofUpdate
+                    {
+                        UnitMoved = new UnitMoved
+                        {
+                            UnitId = unitId,
+                            Position = pos.ToSchema(),
+                            Velocity = velocity.ToSchema(),
+                        },
+                    });
             }
         }
 
@@ -533,6 +541,18 @@ namespace Core
             else if (update.ItemObjectRemoved != null)
             {
                 ItemObjects.Remove(update.ItemObjectRemoved.ItemId);
+            }
+            else if (update.UnitMoved != null)
+            {
+                var moved = update.UnitMoved;
+                if (Characters.TryGetValue(moved.UnitId, out Character? character))
+                {
+                    if (character is Unit unit)
+                    {
+                        unit.SetLocation(Point3Float.FromSchema(moved.Position));
+                        unit.SetVelocity(Point3Float.FromSchema(moved.Velocity));
+                    }
+                }
             }
             else
             {

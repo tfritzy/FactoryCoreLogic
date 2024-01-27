@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package schema;
+
+message Chunk {
+    int32 index = 2;
+    int32 maxIndex = 3;
+    bytes data = 4;
+}
+
+message Packet {
+    repeated Chunk chunks = 1;
+}

@@ -17,7 +17,7 @@ namespace Core
     {
         public List<ConnectedPlayer> ConnectedPlayers = new();
         private Dictionary<IPEndPoint, ConnectingClient> connectingClients = new();
-        private Dictionary<int, Schema.UpdatePacket> UpdatePackets = new();
+        private Dictionary<int, Schema.Packet> Packets = new();
         private int CurrentVersion = 0;
 
         struct ConnectingClient
@@ -157,11 +157,13 @@ namespace Core
             if (ConnectedWorld == null)
                 return;
 
+            DrainUpdatesOfFrame();
+
             foreach (var connectedPlayer in ConnectedPlayers)
             {
-                while (UpdatePackets.ContainsKey(connectedPlayer.AssumedVersion))
+                while (Packets.ContainsKey(connectedPlayer.AssumedVersion))
                 {
-                    Schema.UpdatePacket? packet = UpdatePackets[connectedPlayer.AssumedVersion];
+                    Schema.Packet? packet = Packets[connectedPlayer.AssumedVersion];
                     byte[] message = packet.ToByteArray();
                     await Client.SendAsync(message, connectedPlayer.EndPoint);
                     connectedPlayer.AssumedVersion++;
@@ -169,17 +171,39 @@ namespace Core
             }
         }
 
-        public void DrainUpdatesOfFrame(World world)
+        public void DrainUpdatesOfFrame()
         {
-            List<Schema.OneofUpdate> updates = new(world._updatesOfFrame.Count);
-            while (world._updatesOfFrame.Count > 0)
-                updates.Add(world._updatesOfFrame.Dequeue());
+            if (ConnectedWorld == null)
+                return;
 
-            List<Schema.UpdatePacket> packets =
-                MessageChunker.Chunk(updates.Select(u => u.ToByteArray()).ToList());
-            foreach (Schema.UpdatePacket packet in packets)
+            List<Schema.OneofUpdate> updates = new(ConnectedWorld._updatesOfFrame.Count);
+            while (ConnectedWorld._updatesOfFrame.Count > 0)
+                updates.Add(ConnectedWorld._updatesOfFrame.Dequeue());
+
+            List<Schema.Packet> packets = MessageChunker.Chunk(updates);
+            foreach (Schema.Packet packet in packets)
             {
-                UpdatePackets.Add(CurrentVersion, packet);
+                Packets.Add(CurrentVersion, packet);
+                CurrentVersion++;
+            }
+        }
+
+        public override void SetWorld(World world)
+        {
+            base.SetWorld(world);
+            var worldUpdate = new Schema.OneofUpdate
+            {
+                WorldState = new Schema.WorldState
+                {
+                    World = world.ToSchema()
+                }
+            };
+            var packets = MessageChunker.Chunk(new List<Schema.OneofUpdate> { worldUpdate });
+
+            CurrentVersion = 0;
+            foreach (var packet in packets)
+            {
+                Packets.Add(CurrentVersion, packet);
                 CurrentVersion++;
             }
         }

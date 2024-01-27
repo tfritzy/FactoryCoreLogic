@@ -6,18 +6,9 @@ import "hex_side.proto";
 import "item.proto";
 import "character.proto";
 import "terrain.proto";
+import "world.proto";
 
 package schema;
-
-message Chunk {
-    int32 index = 2;
-    int32 maxIndex = 3;
-    bytes data = 4;
-}
-
-message UpdatePacket {
-    repeated Chunk chunks = 1;
-}
 
 message OneofUpdate {
     oneof update {
@@ -33,6 +24,8 @@ message OneofUpdate {
         ItemObjectRemoved itemObjectRemoved = 10;
         CharacterAdded characterAdded = 11;
         CharacterRemoved characterRemoved = 12;
+        UnitMoved unitMoved = 13;
+        WorldState worldState = 14;
     }
 }
 
@@ -91,4 +84,14 @@ message CharacterAdded {
 
 message CharacterRemoved {
     uint64 character_id = 1;
+}
+
+message UnitMoved {
+    uint64 unit_id = 1;
+    Point3Float position = 2;
+    Point3Float velocity = 3;
+}
+
+message WorldState {
+    World World = 1;
 }
