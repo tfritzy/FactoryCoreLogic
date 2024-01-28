@@ -7,6 +7,8 @@ namespace Core
         private World? world;
         public World World => world ?? throw new System.InvalidOperationException("World is not set");
 
+        public bool HasWorld => world != null;
+
         public enum ContextType
         {
             Local,

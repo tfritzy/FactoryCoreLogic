@@ -19,10 +19,14 @@ namespace Core
         public IPEndPoint? HostEndPoint { get; private set; }
         private NatPunchthroughModule? punchthrough;
         private List<Packet> receivedPackets = new();
+        private Action? onConnected;
 
-        public ClientConnection(IClient client) : base(client) { }
+        public ClientConnection(IClient client, Action? onConnected) : base(client)
+        {
+            this.onConnected = onConnected;
+        }
 
-        public override async Task Connect(Action onConnected, int timeout_ms = DefaultTimeout_ms)
+        public override async Task Connect(int timeout_ms = DefaultTimeout_ms)
         {
             // Tell matchmaking server to find me a host.
             byte[] introduction = Encoding.UTF8.GetBytes(
@@ -97,7 +101,7 @@ namespace Core
             }
 
             HostEndPoint = new IPEndPoint(IPAddress.Parse(informOfPeer.IpAddress), informOfPeer.Port);
-            punchthrough = new NatPunchthroughModule(Client, HostEndPoint, () => { });
+            punchthrough = new NatPunchthroughModule(Client, HostEndPoint, this.onConnected);
         }
 
         public override void HandleMessage(IPEndPoint endpoint, byte[] message)

@@ -8,8 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf;
 using Newtonsoft.Json.Linq;
-using System.Formats.Tar;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Core
 {
@@ -19,6 +19,7 @@ namespace Core
         private Dictionary<IPEndPoint, ConnectingClient> connectingClients = new();
         private Dictionary<int, Schema.Packet> Packets = new();
         private int CurrentVersion = 0;
+        private Action? onConnected;
 
         struct ConnectingClient
         {
@@ -26,45 +27,17 @@ namespace Core
             public NatPunchthroughModule Module;
         }
 
-        public HostConnection(IClient client) : base(client)
+        public HostConnection(IClient client, Action? onConnected = null) : base(client)
         {
+            this.onConnected = onConnected;
         }
 
-        public override async Task Connect(Action onConnected, int timeout_ms = DefaultTimeout_ms)
+        public override async Task Connect(int timeout_ms = DefaultTimeout_ms)
         {
             // Tell matchmaking server to find me a host.
             byte[] introduction = Encoding.UTF8.GetBytes(
                 JsonConvert.SerializeObject(new HostCreatingGame()));
-            Client.Send(introduction, introduction.Length, MatchmakingServerEndPoint);
-
-            // Wait for response from matchmaking server.
-            CancellationTokenSource cts = new();
-            cts.CancelAfter(timeout_ms);
-            while (!cts.IsCancellationRequested)
-            {
-                UdpReceiveResult result;
-                try
-                {
-                    result = await Client.ReceiveAsync(cts.Token);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    continue;
-                }
-
-                if (result.RemoteEndPoint.Equals(MatchmakingServerEndPoint))
-                {
-                    string strMessage = Encoding.UTF8.GetString(result.Buffer);
-                    JObject json = JObject.Parse(strMessage);
-                    if (json["Type"]?.ToString() == HostAck.MessageType)
-                    {
-                        onConnected();
-                        cts.Cancel();
-                        return;
-                    }
-                }
-            }
+            await Client.SendAsync(introduction, MatchmakingServerEndPoint);
         }
 
         private async Task SendMessageToAllPlayers(byte[] message)
@@ -78,44 +51,56 @@ namespace Core
         private void HandleMessageFromMatchmakingServer(byte[] message)
         {
             string strMessage = Encoding.UTF8.GetString(message);
-            InformOfPeer? informOfPeer;
+            JObject json = JObject.Parse(strMessage);
+            UnityEngine.Debug.Log("Host received message from matchmaking server: " + json["Type"]);
 
-            try
+            if (json["Type"]?.ToString() == HostAck.MessageType)
             {
-                informOfPeer = JsonConvert.DeserializeObject<InformOfPeer>(strMessage);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
+                UnityEngine.Debug.Log("Host received HostAck from matchmaking server. OnConnected");
+                onConnected?.Invoke();
                 return;
             }
-
-            if (informOfPeer == null)
-                return;
-
-            ulong id = IdGenerator.GenerateId();
-            var player = new PlayerDetails(
-                id: id,
-                name: "player_" + id.ToString().Substring(0, 6),
-                ip: informOfPeer.IpAddress,
-                port: informOfPeer.Port
-            );
-            var connectingClient = new ConnectingClient
+            else if (json["Type"]?.ToString() == InformOfPeer.MessageType)
             {
-                Player = new PlayerDetails(
+                InformOfPeer? informOfPeer;
+                UnityEngine.Debug.Log("Have been informed of peer.");
+                try
+                {
+                    informOfPeer = JsonConvert.DeserializeObject<InformOfPeer>(strMessage);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return;
+                }
+
+                if (informOfPeer == null)
+                    return;
+
+                ulong id = IdGenerator.GenerateId();
+                var player = new PlayerDetails(
                     id: id,
                     name: "player_" + id.ToString().Substring(0, 6),
                     ip: informOfPeer.IpAddress,
                     port: informOfPeer.Port
-                ),
-                Module = new NatPunchthroughModule(Client, player.EndPoint)
-            };
-            connectingClients.Add(player.EndPoint, connectingClient);
+                );
+                var connectingClient = new ConnectingClient
+                {
+                    Player = new PlayerDetails(
+                        id: id,
+                        name: "player_" + id.ToString().Substring(0, 6),
+                        ip: informOfPeer.IpAddress,
+                        port: informOfPeer.Port
+                    ),
+                    Module = new NatPunchthroughModule(Client, player.EndPoint)
+                };
+                connectingClients.Add(player.EndPoint, connectingClient);
+            }
         }
 
         public override void HandleMessage(IPEndPoint endpoint, byte[] message)
         {
-            if (endpoint == MatchmakingServerEndPoint)
+            if (endpoint.Equals(MatchmakingServerEndPoint))
             {
                 HandleMessageFromMatchmakingServer(message);
             }
