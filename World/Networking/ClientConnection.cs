@@ -32,41 +32,6 @@ namespace Core
             byte[] introduction = Encoding.UTF8.GetBytes(
                 JsonConvert.SerializeObject(new ClientLookingForHost()));
             Client.Send(introduction, introduction.Length, MatchmakingServerEndPoint);
-
-            // Wait for response from matchmaking server.
-            CancellationTokenSource cts = new();
-            cts.CancelAfter(timeout_ms);
-            while (HostEndPoint == null && !cts.IsCancellationRequested)
-            {
-                UdpReceiveResult result;
-                try
-                {
-                    result = await Client.ReceiveAsync(cts.Token);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    continue;
-                }
-
-                if (result.RemoteEndPoint.Equals(MatchmakingServerEndPoint))
-                {
-                    string strMessage = Encoding.UTF8.GetString(result.Buffer);
-                    try
-                    {
-                        JObject json = JObject.Parse(strMessage);
-                        if (json["Type"]?.ToString() == ClientAck.MessageType)
-                        {
-                            cts.Cancel();
-                            break;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                    }
-                }
-            }
         }
 
         public async Task SendMessage(Schema.OneofRequest request)
@@ -83,30 +48,39 @@ namespace Core
         private void HandleMessageFromMatchmakingServer(byte[] message)
         {
             string strMessage = Encoding.UTF8.GetString(message);
+            JObject json = JObject.Parse(strMessage);
             InformOfPeer? informOfPeer;
 
-            try
+            if (json["Type"]?.ToString() == ClientAck.MessageType)
             {
-                informOfPeer = JsonConvert.DeserializeObject<InformOfPeer>(strMessage);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
+                onConnected?.Invoke();
                 return;
             }
-
-            if (informOfPeer == null)
+            else if (json["Type"]?.ToString() == InformOfPeer.MessageType)
             {
-                return;
-            }
+                try
+                {
+                    informOfPeer = JsonConvert.DeserializeObject<InformOfPeer>(strMessage);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return;
+                }
 
-            HostEndPoint = new IPEndPoint(IPAddress.Parse(informOfPeer.IpAddress), informOfPeer.Port);
-            punchthrough = new NatPunchthroughModule(Client, HostEndPoint, this.onConnected);
+                if (informOfPeer == null)
+                {
+                    return;
+                }
+
+                HostEndPoint = new IPEndPoint(IPAddress.Parse(informOfPeer.IpAddress), informOfPeer.Port);
+                punchthrough = new NatPunchthroughModule(Client, HostEndPoint, this.onConnected);
+            }
         }
 
         public override void HandleMessage(IPEndPoint endpoint, byte[] message)
         {
-            if (endpoint == MatchmakingServerEndPoint)
+            if (endpoint.Equals(MatchmakingServerEndPoint))
             {
                 HandleMessageFromMatchmakingServer(message);
             }

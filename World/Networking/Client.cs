@@ -10,8 +10,10 @@ namespace Core
     public class Client : IClient
     {
         private readonly UdpClient client;
+        public Action<IPEndPoint, byte[]>? OnMessageReceived;
+        public Action<IPEndPoint, byte[]>? OnMessageSent;
 
-        public Client(IPEndPoint? iPEndPoint = null) : base()
+        public Client(IPEndPoint? iPEndPoint = null)
         {
             if (iPEndPoint != null)
             {
@@ -42,6 +44,7 @@ namespace Core
                         IPEndPoint? remoteEP = null;
                         byte[] receivedBytes = client.EndReceive(ar, ref remoteEP);
                         tcs.TrySetResult(new UdpReceiveResult(receivedBytes, remoteEP));
+                        OnMessageReceived?.Invoke(remoteEP, receivedBytes);
                     }
                 }
                 catch (Exception ex)
@@ -56,13 +59,15 @@ namespace Core
             return tcs.Task;
         }
 
-        public int Send(byte[] dgram, int bytes, IPEndPoint? endPoint)
+        public int Send(byte[] dgram, int bytes, IPEndPoint endPoint)
         {
+            OnMessageSent?.Invoke(endPoint, dgram);
             return client.Send(dgram, bytes, endPoint);
         }
 
         public Task<int> SendAsync(byte[] message, IPEndPoint hostEndPoint)
         {
+            OnMessageSent?.Invoke(hostEndPoint, message);
             return client.SendAsync(message, message.Length, hostEndPoint);
         }
     }

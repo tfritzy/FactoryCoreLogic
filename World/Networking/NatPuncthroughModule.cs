@@ -26,6 +26,11 @@ namespace Core
 
         public void Update()
         {
+            if (ConnectionEstablished)
+            {
+                return;
+            }
+
             if (DateTime.Now - lastSendTime < TimeSpan.FromSeconds(TimeBetweenSends))
             {
                 return;
