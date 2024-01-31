@@ -21,7 +21,7 @@ namespace Core
         private List<Packet> receivedPackets = new();
         private Action? onConnected;
 
-        public ClientConnection(IClient client, Action? onConnected) : base(client)
+        public ClientConnection(IClient client, Action? onConnected = null) : base(client)
         {
             this.onConnected = onConnected;
         }

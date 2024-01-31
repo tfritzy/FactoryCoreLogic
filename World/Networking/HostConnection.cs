@@ -52,18 +52,15 @@ namespace Core
         {
             string strMessage = Encoding.UTF8.GetString(message);
             JObject json = JObject.Parse(strMessage);
-            UnityEngine.Debug.Log("Host received message from matchmaking server: " + json["Type"]);
 
             if (json["Type"]?.ToString() == HostAck.MessageType)
             {
-                UnityEngine.Debug.Log("Host received HostAck from matchmaking server. OnConnected");
                 onConnected?.Invoke();
                 return;
             }
             else if (json["Type"]?.ToString() == InformOfPeer.MessageType)
             {
                 InformOfPeer? informOfPeer;
-                UnityEngine.Debug.Log("Have been informed of peer.");
                 try
                 {
                     informOfPeer = JsonConvert.DeserializeObject<InformOfPeer>(strMessage);
