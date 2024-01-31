@@ -10,4 +10,5 @@ message Chunk {
 
 message Packet {
     repeated Chunk chunks = 1;
+    uint64 id = 2;
 }

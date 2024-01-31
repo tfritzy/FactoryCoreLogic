@@ -20,6 +20,7 @@ namespace Core
         private NatPunchthroughModule? punchthrough;
         private List<Packet> receivedPackets = new();
         private Action? onConnected;
+        private ulong currentPacketId;
 
         public ClientConnection(IClient client, Action? onConnected = null) : base(client)
         {
@@ -78,7 +79,7 @@ namespace Core
             }
         }
 
-        public override void HandleMessage(IPEndPoint endpoint, byte[] message)
+        public override async Task HandleMessage(IPEndPoint endpoint, byte[] message)
         {
             if (endpoint.Equals(MatchmakingServerEndPoint))
             {
@@ -90,8 +91,23 @@ namespace Core
             }
             else if (endpoint.Equals(HostEndPoint))
             {
-                Packet update = Packet.Parser.ParseFrom(message);
-                receivedPackets.Add(update);
+                Packet packet = Packet.Parser.ParseFrom(message);
+
+                if (packet.Id > currentPacketId + 1)
+                {
+                    OneofRequest requestCorrectVersion = new OneofRequest
+                    {
+                        MissedPacket = new MissedPacket
+                        {
+                            NeededVersion = currentPacketId + 1
+                        }
+                    };
+                    await SendMessage(requestCorrectVersion);
+                    return;
+                }
+
+                receivedPackets.Add(packet);
+                currentPacketId = packet.Id;
                 if (ConnectedWorld != null)
                 {
                     while (MessageChunker.ExtractFullUpdate(ref receivedPackets) is Schema.OneofUpdate fullUpdate)

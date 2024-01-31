@@ -7,6 +7,7 @@ package schema;
 message OneofRequest {
     oneof request {
         UpdateOwnLocation updateOwnLocation = 1;
+        MissedPacket missedPacket = 2;    
     }
 }
 
@@ -19,4 +20,8 @@ message UpdateOwnLocation {
     uint64 player_id = 2;
     Point3Float position = 3;
     Point3Float velocity = 4;
+}
+
+message MissedPacket {
+    uint64 needed_version = 1;
 }

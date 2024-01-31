@@ -25,13 +25,14 @@ namespace Schema {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChBuZXR3b3JraW5nLnByb3RvEgZzY2hlbWEiNgoFQ2h1bmsSDQoFaW5kZXgY",
-            "AiABKAUSEAoIbWF4SW5kZXgYAyABKAUSDAoEZGF0YRgEIAEoDCInCgZQYWNr",
-            "ZXQSHQoGY2h1bmtzGAEgAygLMg0uc2NoZW1hLkNodW5rYgZwcm90bzM="));
+            "AiABKAUSEAoIbWF4SW5kZXgYAyABKAUSDAoEZGF0YRgEIAEoDCIzCgZQYWNr",
+            "ZXQSHQoGY2h1bmtzGAEgAygLMg0uc2NoZW1hLkNodW5rEgoKAmlkGAIgASgE",
+            "YgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Chunk), global::Schema.Chunk.Parser, new[]{ "Index", "MaxIndex", "Data" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Packet), global::Schema.Packet.Parser, new[]{ "Chunks" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Packet), global::Schema.Packet.Parser, new[]{ "Chunks", "Id" }, null, null, null, null)
           }));
     }
     #endregion
@@ -338,6 +339,7 @@ namespace Schema {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Packet(Packet other) : this() {
       chunks_ = other.chunks_.Clone();
+      id_ = other.id_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -358,6 +360,18 @@ namespace Schema {
       get { return chunks_; }
     }
 
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 2;
+    private ulong id_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong Id {
+      get { return id_; }
+      set {
+        id_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -374,6 +388,7 @@ namespace Schema {
         return true;
       }
       if(!chunks_.Equals(other.chunks_)) return false;
+      if (Id != other.Id) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -382,6 +397,7 @@ namespace Schema {
     public override int GetHashCode() {
       int hash = 1;
       hash ^= chunks_.GetHashCode();
+      if (Id != 0UL) hash ^= Id.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -401,6 +417,10 @@ namespace Schema {
       output.WriteRawMessage(this);
     #else
       chunks_.WriteTo(output, _repeated_chunks_codec);
+      if (Id != 0UL) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(Id);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -412,6 +432,10 @@ namespace Schema {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
       chunks_.WriteTo(ref output, _repeated_chunks_codec);
+      if (Id != 0UL) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(Id);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -423,6 +447,9 @@ namespace Schema {
     public int CalculateSize() {
       int size = 0;
       size += chunks_.CalculateSize(_repeated_chunks_codec);
+      if (Id != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -436,6 +463,9 @@ namespace Schema {
         return;
       }
       chunks_.Add(other.chunks_);
+      if (other.Id != 0UL) {
+        Id = other.Id;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -455,6 +485,10 @@ namespace Schema {
             chunks_.AddEntriesFrom(input, _repeated_chunks_codec);
             break;
           }
+          case 16: {
+            Id = input.ReadUInt64();
+            break;
+          }
         }
       }
     #endif
@@ -472,6 +506,10 @@ namespace Schema {
             break;
           case 10: {
             chunks_.AddEntriesFrom(ref input, _repeated_chunks_codec);
+            break;
+          }
+          case 16: {
+            Id = input.ReadUInt64();
             break;
           }
         }

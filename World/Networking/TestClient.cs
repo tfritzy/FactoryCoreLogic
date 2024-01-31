@@ -68,7 +68,10 @@ namespace Core
 
         public void ClearSentMessages()
         {
-            SentMessages.Clear();
+            foreach (var key in SentMessages.Keys)
+            {
+                SentMessages[key].Clear();
+            }
         }
     }
 }

@@ -17,8 +17,8 @@ namespace Core
     {
         public List<ConnectedPlayer> ConnectedPlayers = new();
         private Dictionary<IPEndPoint, ConnectingClient> connectingClients = new();
-        private Dictionary<int, Schema.Packet> Packets = new();
-        private int CurrentVersion = 0;
+        private Dictionary<ulong, Schema.Packet> Packets = new();
+        private ulong CurrentVersion = 0;
         private Action? onConnected;
 
         struct ConnectingClient
@@ -95,7 +95,7 @@ namespace Core
             }
         }
 
-        public override void HandleMessage(IPEndPoint endpoint, byte[] message)
+        public override async Task HandleMessage(IPEndPoint endpoint, byte[] message)
         {
             if (endpoint.Equals(MatchmakingServerEndPoint))
             {
@@ -162,7 +162,7 @@ namespace Core
             while (ConnectedWorld._updatesOfFrame.Count > 0)
                 updates.Add(ConnectedWorld._updatesOfFrame.Dequeue());
 
-            List<Schema.Packet> packets = MessageChunker.Chunk(updates);
+            List<Schema.Packet> packets = MessageChunker.Chunk(updates, CurrentVersion);
             foreach (Schema.Packet packet in packets)
             {
                 Packets.Add(CurrentVersion, packet);
@@ -180,9 +180,11 @@ namespace Core
                     World = world.ToSchema()
                 }
             };
-            var packets = MessageChunker.Chunk(new List<Schema.OneofUpdate> { worldUpdate });
-
             CurrentVersion = 0;
+            var packets = MessageChunker.Chunk(
+                new List<Schema.OneofUpdate> { worldUpdate },
+                CurrentVersion);
+
             foreach (var packet in packets)
             {
                 Packets.Add(CurrentVersion, packet);

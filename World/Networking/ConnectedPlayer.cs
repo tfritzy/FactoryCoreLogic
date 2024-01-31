@@ -7,7 +7,7 @@ namespace Core
         public ulong Id { get; private set; }
         public IPEndPoint EndPoint { get; private set; }
         public int HighestConfirmedVersion { get; set; }
-        public int AssumedVersion { get; set; }
+        public ulong AssumedVersion { get; set; }
 
         public ConnectedPlayer(ulong id, IPEndPoint endPoint)
         {

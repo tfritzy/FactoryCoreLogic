@@ -21,7 +21,7 @@ namespace Core
         }
 
         public abstract Task Connect(int timeout = DefaultTimeout_ms);
-        public abstract void HandleMessage(IPEndPoint endpoint, byte[] message);
+        public abstract Task HandleMessage(IPEndPoint endpoint, byte[] message);
         public abstract Task SendPendingMessages();
 
         public void Update()

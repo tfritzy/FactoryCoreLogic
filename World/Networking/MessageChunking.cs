@@ -10,7 +10,7 @@ namespace Core
         public const int ChunkSize = 512;
         private static byte[] buffer = new byte[ChunkSize];
 
-        public static List<Schema.Packet> Chunk(List<Schema.OneofUpdate> updates)
+        public static List<Schema.Packet> Chunk(List<Schema.OneofUpdate> updates, ulong currentVersion)
         {
             List<Schema.Packet> packets = new List<Schema.Packet>();
             Schema.Packet currentPacket = new Schema.Packet();
@@ -48,6 +48,12 @@ namespace Core
             if (currentPacket.Chunks.Count > 0)
             {
                 packets.Add(currentPacket);
+            }
+
+            foreach (var packet in packets)
+            {
+                packet.Id = currentVersion;
+                currentVersion++;
             }
 
             return packets;
