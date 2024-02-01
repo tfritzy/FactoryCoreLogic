@@ -59,7 +59,7 @@ namespace Core
             return packets;
         }
 
-        public static Schema.OneofUpdate? ExtractFullUpdate(ref List<Schema.Packet> packets)
+        public static Schema.OneofUpdate? ExtractFullUpdate(ref List<Schema.Packet?> packets)
         {
             int? updateEndPacketIndex = null;
             int? updateEndChunkIndex = null;

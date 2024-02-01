@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
@@ -18,9 +19,11 @@ namespace Core
     {
         public IPEndPoint? HostEndPoint { get; private set; }
         private NatPunchthroughModule? punchthrough;
-        private List<Packet> receivedPackets = new();
+        private List<Packet?> receivedPackets = new();
         private Action? onConnected;
-        private ulong currentPacketId;
+        private HashSet<ulong> missedPacketIds = new();
+        private ulong highestReceivedPacket = 0;
+        private ulong highestHandledPacket = 0;
 
         public ClientConnection(IClient client, Action? onConnected = null) : base(client)
         {
@@ -93,26 +96,46 @@ namespace Core
             {
                 Packet packet = Packet.Parser.ParseFrom(message);
 
-                if (packet.Id > currentPacketId + 1)
+                if (packet.Id == highestReceivedPacket + 1)
                 {
-                    OneofRequest requestCorrectVersion = new OneofRequest
+                    receivedPackets.Add(packet);
+                    highestReceivedPacket = packet.Id;
+                }
+                else if (packet.Id > highestReceivedPacket + 1)
+                {
+                    for (ulong i = highestReceivedPacket + 1; i < packet.Id; i++)
                     {
-                        MissedPacket = new MissedPacket
-                        {
-                            NeededVersion = currentPacketId + 1
-                        }
-                    };
-                    await SendMessage(requestCorrectVersion);
-                    return;
+                        missedPacketIds.Add(i);
+                    }
+
+                    receivedPackets.Add(packet);
+                    highestReceivedPacket = packet.Id;
+                }
+                else if (missedPacketIds.Contains(packet.Id))
+                {
+                    missedPacketIds.Remove(packet.Id);
+                    receivedPackets[(int)(packet.Id - highestHandledPacket)] = packet;
                 }
 
-                receivedPackets.Add(packet);
-                currentPacketId = packet.Id;
+                if (missedPacketIds.Count > 0)
+                {
+                    var missedPackets = new MissedPackets();
+                    missedPackets.Ids.AddRange(missedPacketIds);
+
+                    await SendMessage(new OneofRequest
+                    {
+                        MissedPackets = missedPackets
+                    });
+                }
+
                 if (ConnectedWorld != null)
                 {
+                    int previousLength = receivedPackets.Count;
                     while (MessageChunker.ExtractFullUpdate(ref receivedPackets) is Schema.OneofUpdate fullUpdate)
                     {
                         ConnectedWorld.HandleUpdate(fullUpdate);
+                        int numPacketsRemoved = previousLength - receivedPackets.Count;
+                        highestHandledPacket += (ulong)numPacketsRemoved;
                     }
                 }
                 else

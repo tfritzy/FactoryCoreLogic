@@ -119,7 +119,26 @@ namespace Core
                 try
                 {
                     Schema.OneofRequest request = Schema.OneofRequest.Parser.ParseFrom(message);
-                    ConnectedWorld.Requests.Enqueue(request);
+
+                    if (request.MissedPackets != null)
+                    {
+                        var neededIds = request.MissedPackets.Ids;
+                        var player = ConnectedPlayers.Find(player => player.EndPoint.Equals(endpoint));
+                        if (player != null)
+                        {
+                            for (int i = 0; i < neededIds.Count; i++)
+                            {
+                                if (Packets.ContainsKey(neededIds[i]))
+                                {
+                                    await Client.SendAsync(Packets[neededIds[i]].ToByteArray(), endpoint);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ConnectedWorld.Requests.Enqueue(request);
+                    }
                 }
                 catch (Exception e)
                 {

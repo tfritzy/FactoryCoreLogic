@@ -6,13 +6,9 @@ package schema;
 
 message OneofRequest {
     oneof request {
-        UpdateOwnLocation updateOwnLocation = 1;
-        MissedPacket missedPacket = 2;    
+        UpdateOwnLocation update_own_location = 1;
+        MissedPackets missed_packets = 2;    
     }
-}
-
-enum RequestType {
-    UPDATE_OWN_LOCATION = 0;
 }
 
 message UpdateOwnLocation {
@@ -22,6 +18,6 @@ message UpdateOwnLocation {
     Point3Float velocity = 4;
 }
 
-message MissedPacket {
-    uint64 needed_version = 1;
+message MissedPackets {
+    repeated uint64 ids = 1;
 }
