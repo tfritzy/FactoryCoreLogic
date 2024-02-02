@@ -131,11 +131,14 @@ namespace Core
 
                 if (ConnectedWorld == null)
                 {
+                    int previousLength = receivedPackets.Count;
                     Schema.OneofUpdate? maybeWorldState = MessageChunker.ExtractFullUpdate(ref receivedPackets);
                     if (maybeWorldState?.WorldState != null)
                     {
                         World world = new World(maybeWorldState.WorldState.World, new Context());
                         SetWorld(world);
+                        int numPacketsRemoved = previousLength - receivedPackets.Count;
+                        highestHandledPacket += (ulong)numPacketsRemoved;
                     }
                 }
 
