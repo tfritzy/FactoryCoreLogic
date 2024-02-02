@@ -67,9 +67,15 @@ namespace Core
             bool shouldBail = false;
             for (int i = 0; i < packets.Count; i++)
             {
-                for (int c = 0; c < packets[i].Chunks.Count; c++)
+                var packet = packets[i];
+                if (packet == null)
                 {
-                    if (packets[i].Chunks[c].Index == packets[i].Chunks[c].MaxIndex)
+                    break;
+                }
+
+                for (int c = 0; c < packet.Chunks.Count; c++)
+                {
+                    if (packet.Chunks[c].Index == packet.Chunks[c].MaxIndex)
                     {
                         updateEndPacketIndex = i;
                         updateEndChunkIndex = c;
@@ -94,22 +100,22 @@ namespace Core
             {
                 if (i < updateEndPacketIndex)
                 {
-                    chunks.AddRange(packets[i].Chunks);
+                    chunks.AddRange(packets[i]!.Chunks);
                 }
                 else if (i == updateEndPacketIndex)
                 {
-                    chunks.AddRange(packets[i].Chunks.Take((int)updateEndChunkIndex + 1));
+                    chunks.AddRange(packets[i]!.Chunks.Take((int)updateEndChunkIndex + 1));
 
                     for (int j = 0; j <= updateEndChunkIndex; j++)
                     {
-                        packets[i].Chunks.RemoveAt(0);
+                        packets[i]!.Chunks.RemoveAt(0);
                     }
                 }
             }
 
             int numPacketsToRemove =
                 (int)updateEndPacketIndex +
-                (packets[updateEndPacketIndex.Value].Chunks.Count == 0 ? 1 : 0);
+                (packets[updateEndPacketIndex.Value]!.Chunks.Count == 0 ? 1 : 0);
             packets.RemoveRange(0, numPacketsToRemove);
 
             byte[] data = ReassembleUpdateData(chunks);

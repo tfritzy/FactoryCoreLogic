@@ -22,7 +22,7 @@ namespace Core
         private List<Packet?> receivedPackets = new();
         private Action? onConnected;
         private HashSet<ulong> missedPacketIds = new();
-        private ulong highestReceivedPacket = 0;
+        private ulong nextNeededPacket = 0;
         private ulong highestHandledPacket = 0;
 
         public ClientConnection(IClient client, Action? onConnected = null) : base(client)
@@ -96,20 +96,21 @@ namespace Core
             {
                 Packet packet = Packet.Parser.ParseFrom(message);
 
-                if (packet.Id == highestReceivedPacket + 1)
+                if (packet.Id == nextNeededPacket)
                 {
                     receivedPackets.Add(packet);
-                    highestReceivedPacket = packet.Id;
+                    nextNeededPacket = packet.Id + 1;
                 }
-                else if (packet.Id > highestReceivedPacket + 1)
+                else if (packet.Id > nextNeededPacket)
                 {
-                    for (ulong i = highestReceivedPacket + 1; i < packet.Id; i++)
+                    for (ulong i = nextNeededPacket; i < packet.Id; i++)
                     {
+                        receivedPackets.Add(null);
                         missedPacketIds.Add(i);
                     }
 
                     receivedPackets.Add(packet);
-                    highestReceivedPacket = packet.Id;
+                    nextNeededPacket = packet.Id + 1;
                 }
                 else if (missedPacketIds.Contains(packet.Id))
                 {
@@ -128,6 +129,16 @@ namespace Core
                     });
                 }
 
+                if (ConnectedWorld == null)
+                {
+                    Schema.OneofUpdate? maybeWorldState = MessageChunker.ExtractFullUpdate(ref receivedPackets);
+                    if (maybeWorldState?.WorldState != null)
+                    {
+                        World world = new World(maybeWorldState.WorldState.World, new Context());
+                        SetWorld(world);
+                    }
+                }
+
                 if (ConnectedWorld != null)
                 {
                     int previousLength = receivedPackets.Count;
@@ -136,15 +147,6 @@ namespace Core
                         ConnectedWorld.HandleUpdate(fullUpdate);
                         int numPacketsRemoved = previousLength - receivedPackets.Count;
                         highestHandledPacket += (ulong)numPacketsRemoved;
-                    }
-                }
-                else
-                {
-                    Schema.OneofUpdate? maybeWorldState = MessageChunker.ExtractFullUpdate(ref receivedPackets);
-                    if (maybeWorldState?.WorldState != null)
-                    {
-                        World world = new World(maybeWorldState.WorldState.World, new Context());
-                        SetWorld(world);
                     }
                 }
             }
