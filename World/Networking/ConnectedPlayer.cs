@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 
 namespace Core
@@ -8,6 +9,12 @@ namespace Core
         public IPEndPoint EndPoint { get; private set; }
         public int HighestConfirmedVersion { get; set; }
         public ulong AssumedVersion { get; set; }
+        public DateTime LastSentHeartbeat { get; set; }
+        public DateTime LastReceivedHeartbeat { get; set; }
+        public TimeSpan Ping => LastReceivedHeartbeat - LastSentHeartbeat;
+        public int NumSentPackets;
+        public int NumMissedPackets;
+        public float PacketLoss => NumMissedPackets / (float)NumSentPackets;
 
         public ConnectedPlayer(ulong id, IPEndPoint endPoint)
         {
@@ -15,6 +22,10 @@ namespace Core
             EndPoint = endPoint;
             HighestConfirmedVersion = 0;
             AssumedVersion = 0;
+            LastSentHeartbeat = DateTime.Now;
+            LastReceivedHeartbeat = DateTime.Now;
+            NumSentPackets = 0;
+            NumMissedPackets = 0;
         }
     }
 }

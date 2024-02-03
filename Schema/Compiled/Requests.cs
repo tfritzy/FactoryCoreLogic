@@ -28,34 +28,25 @@ namespace Schema
     {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg5yZXF1ZXN0cy5wcm90bxIGc2NoZW1hGgt1bml0cy5wcm90byKEAQoMT25l",
+            "Cg5yZXF1ZXN0cy5wcm90bxIGc2NoZW1hGgt1bml0cy5wcm90byKDAQoMT25l",
             "b2ZSZXF1ZXN0EjgKE3VwZGF0ZV9vd25fbG9jYXRpb24YASABKAsyGS5zY2hl",
-            "bWEuVXBkYXRlT3duTG9jYXRpb25IABIvCg5taXNzZWRfcGFja2V0cxgCIAEo",
-            "CzIVLnNjaGVtYS5NaXNzZWRQYWNrZXRzSABCCQoHcmVxdWVzdCKXAQoRVXBk",
-            "YXRlT3duTG9jYXRpb24SIQoEdHlwZRgBIAEoDjITLnNjaGVtYS5SZXF1ZXN0",
-            "VHlwZRIRCglwbGF5ZXJfaWQYAiABKAQSJQoIcG9zaXRpb24YAyABKAsyEy5z",
-            "Y2hlbWEuUG9pbnQzRmxvYXQSJQoIdmVsb2NpdHkYBCABKAsyEy5zY2hlbWEu",
-            "UG9pbnQzRmxvYXQiHAoNTWlzc2VkUGFja2V0cxILCgNpZHMYASADKAQqJgoL",
-            "UmVxdWVzdFR5cGUSFwoTVVBEQVRFX09XTl9MT0NBVElPThAAYgZwcm90bzM="));
+            "bWEuVXBkYXRlT3duTG9jYXRpb25IABIuCgloZWFydGJlYXQYAiABKAsyGS5z",
+            "Y2hlbWEuSGVhcnRiZWF0UmVzcG9uc2VIAEIJCgdyZXF1ZXN0InQKEVVwZGF0",
+            "ZU93bkxvY2F0aW9uEhEKCXBsYXllcl9pZBgBIAEoBBIlCghwb3NpdGlvbhgC",
+            "IAEoCzITLnNjaGVtYS5Qb2ludDNGbG9hdBIlCgh2ZWxvY2l0eRgDIAEoCzIT",
+            "LnNjaGVtYS5Qb2ludDNGbG9hdCIuChFIZWFydGJlYXRSZXNwb25zZRIZChFt",
+            "aXNzZWRfcGFja2V0X2lkcxgBIAMoBGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Schema.UnitsReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] { typeof(global::Schema.RequestType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.OneofRequest), global::Schema.OneofRequest.Parser, new[]{ "UpdateOwnLocation", "MissedPackets" }, new[]{ "Request" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.UpdateOwnLocation), global::Schema.UpdateOwnLocation.Parser, new[]{ "Type", "PlayerId", "Position", "Velocity" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.MissedPackets), global::Schema.MissedPackets.Parser, new[]{ "Ids" }, null, null, null, null)
+          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.OneofRequest), global::Schema.OneofRequest.Parser, new[]{ "UpdateOwnLocation", "Heartbeat" }, new[]{ "Request" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.UpdateOwnLocation), global::Schema.UpdateOwnLocation.Parser, new[]{ "PlayerId", "Position", "Velocity" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.HeartbeatResponse), global::Schema.HeartbeatResponse.Parser, new[]{ "MissedPacketIds" }, null, null, null, null)
           }));
     }
     #endregion
 
   }
-  #region Enums
-  public enum RequestType
-  {
-    [pbr::OriginalName("UPDATE_OWN_LOCATION")] UpdateOwnLocation = 0,
-  }
-
-  #endregion
-
   #region Messages
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class OneofRequest : pb::IMessage<OneofRequest>
@@ -101,8 +92,8 @@ namespace Schema
         case RequestOneofCase.UpdateOwnLocation:
           UpdateOwnLocation = other.UpdateOwnLocation.Clone();
           break;
-        case RequestOneofCase.MissedPackets:
-          MissedPackets = other.MissedPackets.Clone();
+        case RequestOneofCase.Heartbeat:
+          Heartbeat = other.Heartbeat.Clone();
           break;
       }
 
@@ -130,17 +121,17 @@ namespace Schema
       }
     }
 
-    /// <summary>Field number for the "missed_packets" field.</summary>
-    public const int MissedPacketsFieldNumber = 2;
+    /// <summary>Field number for the "heartbeat" field.</summary>
+    public const int HeartbeatFieldNumber = 2;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Schema.MissedPackets MissedPackets
+    public global::Schema.HeartbeatResponse Heartbeat
     {
-      get { return requestCase_ == RequestOneofCase.MissedPackets ? (global::Schema.MissedPackets)request_ : null; }
+      get { return requestCase_ == RequestOneofCase.Heartbeat ? (global::Schema.HeartbeatResponse)request_ : null; }
       set
       {
         request_ = value;
-        requestCase_ = value == null ? RequestOneofCase.None : RequestOneofCase.MissedPackets;
+        requestCase_ = value == null ? RequestOneofCase.None : RequestOneofCase.Heartbeat;
       }
     }
 
@@ -150,7 +141,7 @@ namespace Schema
     {
       None = 0,
       UpdateOwnLocation = 1,
-      MissedPackets = 2,
+      Heartbeat = 2,
     }
     private RequestOneofCase requestCase_ = RequestOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -188,7 +179,7 @@ namespace Schema
         return true;
       }
       if (!object.Equals(UpdateOwnLocation, other.UpdateOwnLocation)) return false;
-      if (!object.Equals(MissedPackets, other.MissedPackets)) return false;
+      if (!object.Equals(Heartbeat, other.Heartbeat)) return false;
       if (RequestCase != other.RequestCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -199,7 +190,7 @@ namespace Schema
     {
       int hash = 1;
       if (requestCase_ == RequestOneofCase.UpdateOwnLocation) hash ^= UpdateOwnLocation.GetHashCode();
-      if (requestCase_ == RequestOneofCase.MissedPackets) hash ^= MissedPackets.GetHashCode();
+      if (requestCase_ == RequestOneofCase.Heartbeat) hash ^= Heartbeat.GetHashCode();
       hash ^= (int)requestCase_;
       if (_unknownFields != null)
       {
@@ -226,9 +217,9 @@ namespace Schema
         output.WriteRawTag(10);
         output.WriteMessage(UpdateOwnLocation);
       }
-      if (requestCase_ == RequestOneofCase.MissedPackets) {
+      if (requestCase_ == RequestOneofCase.Heartbeat) {
         output.WriteRawTag(18);
-        output.WriteMessage(MissedPackets);
+        output.WriteMessage(Heartbeat);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -246,10 +237,10 @@ namespace Schema
         output.WriteRawTag(10);
         output.WriteMessage(UpdateOwnLocation);
       }
-      if (requestCase_ == RequestOneofCase.MissedPackets)
+      if (requestCase_ == RequestOneofCase.Heartbeat)
       {
         output.WriteRawTag(18);
-        output.WriteMessage(MissedPackets);
+        output.WriteMessage(Heartbeat);
       }
       if (_unknownFields != null)
       {
@@ -267,9 +258,9 @@ namespace Schema
       {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(UpdateOwnLocation);
       }
-      if (requestCase_ == RequestOneofCase.MissedPackets)
+      if (requestCase_ == RequestOneofCase.Heartbeat)
       {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(MissedPackets);
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Heartbeat);
       }
       if (_unknownFields != null)
       {
@@ -295,12 +286,12 @@ namespace Schema
           }
           UpdateOwnLocation.MergeFrom(other.UpdateOwnLocation);
           break;
-        case RequestOneofCase.MissedPackets:
-          if (MissedPackets == null)
+        case RequestOneofCase.Heartbeat:
+          if (Heartbeat == null)
           {
-            MissedPackets = new global::Schema.MissedPackets();
+            Heartbeat = new global::Schema.HeartbeatResponse();
           }
-          MissedPackets.MergeFrom(other.MissedPackets);
+          Heartbeat.MergeFrom(other.Heartbeat);
           break;
       }
 
@@ -330,12 +321,12 @@ namespace Schema
             break;
           }
           case 18: {
-            global::Schema.MissedPackets subBuilder = new global::Schema.MissedPackets();
-            if (requestCase_ == RequestOneofCase.MissedPackets) {
-              subBuilder.MergeFrom(MissedPackets);
+            global::Schema.HeartbeatResponse subBuilder = new global::Schema.HeartbeatResponse();
+            if (requestCase_ == RequestOneofCase.Heartbeat) {
+              subBuilder.MergeFrom(Heartbeat);
             }
             input.ReadMessage(subBuilder);
-            MissedPackets = subBuilder;
+            Heartbeat = subBuilder;
             break;
           }
         }
@@ -369,13 +360,13 @@ namespace Schema
             }
           case 18:
             {
-              global::Schema.MissedPackets subBuilder = new global::Schema.MissedPackets();
-              if (requestCase_ == RequestOneofCase.MissedPackets)
+              global::Schema.HeartbeatResponse subBuilder = new global::Schema.HeartbeatResponse();
+              if (requestCase_ == RequestOneofCase.Heartbeat)
               {
-                subBuilder.MergeFrom(MissedPackets);
+                subBuilder.MergeFrom(Heartbeat);
               }
               input.ReadMessage(subBuilder);
-              MissedPackets = subBuilder;
+              Heartbeat = subBuilder;
               break;
             }
         }
@@ -424,7 +415,6 @@ namespace Schema
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public UpdateOwnLocation(UpdateOwnLocation other) : this()
     {
-      type_ = other.type_;
       playerId_ = other.playerId_;
       position_ = other.position_ != null ? other.position_.Clone() : null;
       velocity_ = other.velocity_ != null ? other.velocity_.Clone() : null;
@@ -438,22 +428,8 @@ namespace Schema
       return new UpdateOwnLocation(this);
     }
 
-    /// <summary>Field number for the "type" field.</summary>
-    public const int TypeFieldNumber = 1;
-    private global::Schema.RequestType type_ = global::Schema.RequestType.UpdateOwnLocation;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Schema.RequestType Type
-    {
-      get { return type_; }
-      set
-      {
-        type_ = value;
-      }
-    }
-
     /// <summary>Field number for the "player_id" field.</summary>
-    public const int PlayerIdFieldNumber = 2;
+    public const int PlayerIdFieldNumber = 1;
     private ulong playerId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -467,7 +443,7 @@ namespace Schema
     }
 
     /// <summary>Field number for the "position" field.</summary>
-    public const int PositionFieldNumber = 3;
+    public const int PositionFieldNumber = 2;
     private global::Schema.Point3Float position_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -481,7 +457,7 @@ namespace Schema
     }
 
     /// <summary>Field number for the "velocity" field.</summary>
-    public const int VelocityFieldNumber = 4;
+    public const int VelocityFieldNumber = 3;
     private global::Schema.Point3Float velocity_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -513,7 +489,6 @@ namespace Schema
       {
         return true;
       }
-      if (Type != other.Type) return false;
       if (PlayerId != other.PlayerId) return false;
       if (!object.Equals(Position, other.Position)) return false;
       if (!object.Equals(Velocity, other.Velocity)) return false;
@@ -525,7 +500,6 @@ namespace Schema
     public override int GetHashCode()
     {
       int hash = 1;
-      if (Type != global::Schema.RequestType.UpdateOwnLocation) hash ^= Type.GetHashCode();
       if (PlayerId != 0UL) hash ^= PlayerId.GetHashCode();
       if (position_ != null) hash ^= Position.GetHashCode();
       if (velocity_ != null) hash ^= Velocity.GetHashCode();
@@ -550,20 +524,16 @@ namespace Schema
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
 #else
-      if (Type != global::Schema.RequestType.UpdateOwnLocation) {
-        output.WriteRawTag(8);
-        output.WriteEnum((int) Type);
-      }
       if (PlayerId != 0UL) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(8);
         output.WriteUInt64(PlayerId);
       }
       if (position_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteMessage(Position);
       }
       if (velocity_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(26);
         output.WriteMessage(Velocity);
       }
       if (_unknownFields != null) {
@@ -577,24 +547,19 @@ namespace Schema
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
     {
-      if (Type != global::Schema.RequestType.UpdateOwnLocation)
-      {
-        output.WriteRawTag(8);
-        output.WriteEnum((int)Type);
-      }
       if (PlayerId != 0UL)
       {
-        output.WriteRawTag(16);
+        output.WriteRawTag(8);
         output.WriteUInt64(PlayerId);
       }
       if (position_ != null)
       {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteMessage(Position);
       }
       if (velocity_ != null)
       {
-        output.WriteRawTag(34);
+        output.WriteRawTag(26);
         output.WriteMessage(Velocity);
       }
       if (_unknownFields != null)
@@ -609,10 +574,6 @@ namespace Schema
     public int CalculateSize()
     {
       int size = 0;
-      if (Type != global::Schema.RequestType.UpdateOwnLocation)
-      {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Type);
-      }
       if (PlayerId != 0UL)
       {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(PlayerId);
@@ -639,10 +600,6 @@ namespace Schema
       if (other == null)
       {
         return;
-      }
-      if (other.Type != global::Schema.RequestType.UpdateOwnLocation)
-      {
-        Type = other.Type;
       }
       if (other.PlayerId != 0UL)
       {
@@ -681,21 +638,17 @@ namespace Schema
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::Schema.RequestType) input.ReadEnum();
-            break;
-          }
-          case 16: {
             PlayerId = input.ReadUInt64();
             break;
           }
-          case 26: {
+          case 18: {
             if (position_ == null) {
               Position = new global::Schema.Point3Float();
             }
             input.ReadMessage(Position);
             break;
           }
-          case 34: {
+          case 26: {
             if (velocity_ == null) {
               Velocity = new global::Schema.Point3Float();
             }
@@ -722,15 +675,10 @@ namespace Schema
             break;
           case 8:
             {
-              Type = (global::Schema.RequestType)input.ReadEnum();
-              break;
-            }
-          case 16:
-            {
               PlayerId = input.ReadUInt64();
               break;
             }
-          case 26:
+          case 18:
             {
               if (position_ == null)
               {
@@ -739,7 +687,7 @@ namespace Schema
               input.ReadMessage(Position);
               break;
             }
-          case 34:
+          case 26:
             {
               if (velocity_ == null)
               {
@@ -756,16 +704,16 @@ namespace Schema
   }
 
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class MissedPackets : pb::IMessage<MissedPackets>
+  public sealed partial class HeartbeatResponse : pb::IMessage<HeartbeatResponse>
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
 #endif
   {
-    private static readonly pb::MessageParser<MissedPackets> _parser = new pb::MessageParser<MissedPackets>(() => new MissedPackets());
+    private static readonly pb::MessageParser<HeartbeatResponse> _parser = new pb::MessageParser<HeartbeatResponse>(() => new HeartbeatResponse());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<MissedPackets> Parser { get { return _parser; } }
+    public static pb::MessageParser<HeartbeatResponse> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -783,7 +731,7 @@ namespace Schema
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public MissedPackets()
+    public HeartbeatResponse()
     {
       OnConstruction();
     }
@@ -792,41 +740,41 @@ namespace Schema
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public MissedPackets(MissedPackets other) : this()
+    public HeartbeatResponse(HeartbeatResponse other) : this()
     {
-      ids_ = other.ids_.Clone();
+      missedPacketIds_ = other.missedPacketIds_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public MissedPackets Clone()
+    public HeartbeatResponse Clone()
     {
-      return new MissedPackets(this);
+      return new HeartbeatResponse(this);
     }
 
-    /// <summary>Field number for the "ids" field.</summary>
-    public const int IdsFieldNumber = 1;
-    private static readonly pb::FieldCodec<ulong> _repeated_ids_codec
+    /// <summary>Field number for the "missed_packet_ids" field.</summary>
+    public const int MissedPacketIdsFieldNumber = 1;
+    private static readonly pb::FieldCodec<ulong> _repeated_missedPacketIds_codec
         = pb::FieldCodec.ForUInt64(10);
-    private readonly pbc::RepeatedField<ulong> ids_ = new pbc::RepeatedField<ulong>();
+    private readonly pbc::RepeatedField<ulong> missedPacketIds_ = new pbc::RepeatedField<ulong>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<ulong> Ids
+    public pbc::RepeatedField<ulong> MissedPacketIds
     {
-      get { return ids_; }
+      get { return missedPacketIds_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other)
     {
-      return Equals(other as MissedPackets);
+      return Equals(other as HeartbeatResponse);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(MissedPackets other)
+    public bool Equals(HeartbeatResponse other)
     {
       if (ReferenceEquals(other, null))
       {
@@ -836,7 +784,7 @@ namespace Schema
       {
         return true;
       }
-      if (!ids_.Equals(other.ids_)) return false;
+      if (!missedPacketIds_.Equals(other.missedPacketIds_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -845,7 +793,7 @@ namespace Schema
     public override int GetHashCode()
     {
       int hash = 1;
-      hash ^= ids_.GetHashCode();
+      hash ^= missedPacketIds_.GetHashCode();
       if (_unknownFields != null)
       {
         hash ^= _unknownFields.GetHashCode();
@@ -867,7 +815,7 @@ namespace Schema
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
 #else
-      ids_.WriteTo(output, _repeated_ids_codec);
+      missedPacketIds_.WriteTo(output, _repeated_missedPacketIds_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -879,7 +827,7 @@ namespace Schema
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
     {
-      ids_.WriteTo(ref output, _repeated_ids_codec);
+      missedPacketIds_.WriteTo(ref output, _repeated_missedPacketIds_codec);
       if (_unknownFields != null)
       {
         _unknownFields.WriteTo(ref output);
@@ -892,7 +840,7 @@ namespace Schema
     public int CalculateSize()
     {
       int size = 0;
-      size += ids_.CalculateSize(_repeated_ids_codec);
+      size += missedPacketIds_.CalculateSize(_repeated_missedPacketIds_codec);
       if (_unknownFields != null)
       {
         size += _unknownFields.CalculateSize();
@@ -902,13 +850,13 @@ namespace Schema
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(MissedPackets other)
+    public void MergeFrom(HeartbeatResponse other)
     {
       if (other == null)
       {
         return;
       }
-      ids_.Add(other.ids_);
+      missedPacketIds_.Add(other.missedPacketIds_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -927,7 +875,7 @@ namespace Schema
             break;
           case 10:
           case 8: {
-            ids_.AddEntriesFrom(input, _repeated_ids_codec);
+            missedPacketIds_.AddEntriesFrom(input, _repeated_missedPacketIds_codec);
             break;
           }
         }
@@ -951,7 +899,7 @@ namespace Schema
           case 10:
           case 8:
             {
-              ids_.AddEntriesFrom(ref input, _repeated_ids_codec);
+              missedPacketIds_.AddEntriesFrom(ref input, _repeated_missedPacketIds_codec);
               break;
             }
         }

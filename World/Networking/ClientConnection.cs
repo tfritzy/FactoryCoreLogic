@@ -118,17 +118,6 @@ namespace Core
                     receivedPackets[(int)(packet.Id - highestHandledPacket)] = packet;
                 }
 
-                if (missedPacketIds.Count > 0)
-                {
-                    var missedPackets = new MissedPackets();
-                    missedPackets.Ids.AddRange(missedPacketIds);
-
-                    await SendMessage(new OneofRequest
-                    {
-                        MissedPackets = missedPackets
-                    });
-                }
-
                 if (ConnectedWorld == null)
                 {
                     int previousLength = receivedPackets.Count;

@@ -7,17 +7,16 @@ package schema;
 message OneofRequest {
     oneof request {
         UpdateOwnLocation update_own_location = 1;
-        MissedPackets missed_packets = 2;    
+        HeartbeatResponse heartbeat = 2;
     }
 }
 
 message UpdateOwnLocation {
-    RequestType type = 1;
-    uint64 player_id = 2;
-    Point3Float position = 3;
-    Point3Float velocity = 4;
+    uint64 player_id = 1;
+    Point3Float position = 2;
+    Point3Float velocity = 3;
 }
 
-message MissedPackets {
-    repeated uint64 ids = 1;
+message HeartbeatResponse {
+    repeated uint64 missed_packet_ids = 1;
 }

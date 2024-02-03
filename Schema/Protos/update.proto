@@ -26,6 +26,7 @@ message OneofUpdate {
         CharacterRemoved characterRemoved = 12;
         UnitMoved unitMoved = 13;
         WorldState worldState = 14;
+        Heartbeat heartbeat = 15;
     }
 }
 
@@ -95,3 +96,5 @@ message UnitMoved {
 message WorldState {
     World World = 1;
 }
+
+message Heartbeat { }

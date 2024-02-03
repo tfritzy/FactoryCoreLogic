@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Sockets;
 using System.Text;
 using Newtonsoft.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf;
 using Newtonsoft.Json.Linq;
 using System.Linq;
-using System.Diagnostics;
 
 namespace Core
 {
@@ -20,6 +17,7 @@ namespace Core
         private Dictionary<ulong, Schema.Packet> Packets = new();
         private ulong CurrentVersion = 0;
         private Action? onConnected;
+        private TimeSpan HeartbeatInterval = TimeSpan.FromSeconds(.1f);
 
         struct ConnectingClient
         {
@@ -120,14 +118,16 @@ namespace Core
                 {
                     Schema.OneofRequest request = Schema.OneofRequest.Parser.ParseFrom(message);
 
-                    if (request.MissedPackets != null)
+                    if (request.Heartbeat != null)
                     {
-                        var neededIds = request.MissedPackets.Ids;
                         var player = ConnectedPlayers.Find(player => player.EndPoint.Equals(endpoint));
                         if (player != null)
                         {
+                            player.LastReceivedHeartbeat = DateTime.Now;
+                            var neededIds = request.Heartbeat.MissedPacketIds;
                             for (int i = 0; i < neededIds.Count; i++)
                             {
+                                player.NumMissedPackets++;
                                 if (Packets.ContainsKey(neededIds[i]))
                                 {
                                     await Client.SendAsync(Packets[neededIds[i]].ToByteArray(), endpoint);
@@ -166,8 +166,17 @@ namespace Core
                 {
                     Schema.Packet? packet = Packets[connectedPlayer.AssumedVersion];
                     byte[] message = packet.ToByteArray();
+                    connectedPlayer.NumSentPackets++;
                     await Client.SendAsync(message, connectedPlayer.EndPoint);
                     connectedPlayer.AssumedVersion++;
+                }
+
+                if (connectedPlayer.LastSentHeartbeat + HeartbeatInterval < DateTime.Now)
+                {
+                    await Client.SendAsync(
+                        new Schema.Heartbeat().ToByteArray(),
+                        connectedPlayer.EndPoint);
+                    connectedPlayer.LastSentHeartbeat = DateTime.Now;
                 }
             }
         }
