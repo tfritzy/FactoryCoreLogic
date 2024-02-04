@@ -73,5 +73,21 @@ namespace Core
                 SentMessages[key].Clear();
             }
         }
+
+        public byte[]? MostRecentTo(IPEndPoint endpoint)
+        {
+            if (!SentMessages.ContainsKey(endpoint))
+            {
+                return null;
+            }
+
+            if (SentMessages[endpoint].Count == 0)
+            {
+                return null;
+            }
+
+            return SentMessages[endpoint][^1];
+        }
+
     }
 }

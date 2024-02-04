@@ -95,50 +95,64 @@ namespace Core
             else if (endpoint.Equals(HostEndPoint))
             {
                 Packet packet = Packet.Parser.ParseFrom(message);
-
-                if (packet.Id == nextNeededPacket)
+                if (packet.Type == PacketType.Heartbeat)
                 {
-                    receivedPackets.Add(packet);
-                    nextNeededPacket = packet.Id + 1;
+                    var response = new HeartbeatResponse();
+                    response.MissedPacketIds.AddRange(missedPacketIds);
+                    await Client.SendAsync(
+                        new OneofRequest()
+                        {
+                            Heartbeat = response
+                        }.ToByteArray(),
+                        HostEndPoint
+                    );
                 }
-                else if (packet.Id > nextNeededPacket)
+                else
                 {
-                    for (ulong i = nextNeededPacket; i < packet.Id; i++)
+                    if (packet.Id == nextNeededPacket)
                     {
-                        receivedPackets.Add(null);
-                        missedPacketIds.Add(i);
+                        receivedPackets.Add(packet);
+                        nextNeededPacket = packet.Id + 1;
+                    }
+                    else if (packet.Id > nextNeededPacket)
+                    {
+                        for (ulong i = nextNeededPacket; i < packet.Id; i++)
+                        {
+                            receivedPackets.Add(null);
+                            missedPacketIds.Add(i);
+                        }
+
+                        receivedPackets.Add(packet);
+                        nextNeededPacket = packet.Id + 1;
+                    }
+                    else if (missedPacketIds.Contains(packet.Id))
+                    {
+                        missedPacketIds.Remove(packet.Id);
+                        receivedPackets[(int)(packet.Id - highestHandledPacket)] = packet;
                     }
 
-                    receivedPackets.Add(packet);
-                    nextNeededPacket = packet.Id + 1;
-                }
-                else if (missedPacketIds.Contains(packet.Id))
-                {
-                    missedPacketIds.Remove(packet.Id);
-                    receivedPackets[(int)(packet.Id - highestHandledPacket)] = packet;
-                }
-
-                if (ConnectedWorld == null)
-                {
-                    int previousLength = receivedPackets.Count;
-                    Schema.OneofUpdate? maybeWorldState = MessageChunker.ExtractFullUpdate(ref receivedPackets);
-                    if (maybeWorldState?.WorldState != null)
+                    if (ConnectedWorld == null)
                     {
-                        World world = new World(maybeWorldState.WorldState.World, new Context());
-                        SetWorld(world);
-                        int numPacketsRemoved = previousLength - receivedPackets.Count;
-                        highestHandledPacket += (ulong)numPacketsRemoved;
+                        int previousLength = receivedPackets.Count;
+                        Schema.OneofUpdate? maybeWorldState = MessageChunker.ExtractFullUpdate(ref receivedPackets);
+                        if (maybeWorldState?.WorldState != null)
+                        {
+                            World world = new World(maybeWorldState.WorldState.World, new Context());
+                            SetWorld(world);
+                            int numPacketsRemoved = previousLength - receivedPackets.Count;
+                            highestHandledPacket += (ulong)numPacketsRemoved;
+                        }
                     }
-                }
 
-                if (ConnectedWorld != null)
-                {
-                    int previousLength = receivedPackets.Count;
-                    while (MessageChunker.ExtractFullUpdate(ref receivedPackets) is Schema.OneofUpdate fullUpdate)
+                    if (ConnectedWorld != null)
                     {
-                        ConnectedWorld.HandleUpdate(fullUpdate);
-                        int numPacketsRemoved = previousLength - receivedPackets.Count;
-                        highestHandledPacket += (ulong)numPacketsRemoved;
+                        int previousLength = receivedPackets.Count;
+                        while (MessageChunker.ExtractFullUpdate(ref receivedPackets) is Schema.OneofUpdate fullUpdate)
+                        {
+                            ConnectedWorld.HandleUpdate(fullUpdate);
+                            int numPacketsRemoved = previousLength - receivedPackets.Count;
+                            highestHandledPacket += (ulong)numPacketsRemoved;
+                        }
                     }
                 }
             }

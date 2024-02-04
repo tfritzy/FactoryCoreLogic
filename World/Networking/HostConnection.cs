@@ -174,7 +174,8 @@ namespace Core
                 if (connectedPlayer.LastSentHeartbeat + HeartbeatInterval < DateTime.Now)
                 {
                     await Client.SendAsync(
-                        new Schema.Heartbeat().ToByteArray(),
+                        new Schema.Packet { Type = Schema.PacketType.Heartbeat }
+                            .ToByteArray(),
                         connectedPlayer.EndPoint);
                     connectedPlayer.LastSentHeartbeat = DateTime.Now;
                 }

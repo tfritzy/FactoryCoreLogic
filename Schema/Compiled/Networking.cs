@@ -25,19 +25,28 @@ namespace Schema {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChBuZXR3b3JraW5nLnByb3RvEgZzY2hlbWEiNgoFQ2h1bmsSDQoFaW5kZXgY",
-            "AiABKAUSEAoIbWF4SW5kZXgYAyABKAUSDAoEZGF0YRgEIAEoDCIzCgZQYWNr",
+            "ASABKAUSEAoIbWF4SW5kZXgYAiABKAUSDAoEZGF0YRgDIAEoDCJVCgZQYWNr",
             "ZXQSHQoGY2h1bmtzGAEgAygLMg0uc2NoZW1hLkNodW5rEgoKAmlkGAIgASgE",
-            "YgZwcm90bzM="));
+            "EiAKBHR5cGUYAyABKA4yEi5zY2hlbWEuUGFja2V0VHlwZSonCgpQYWNrZXRU",
+            "eXBlEgoKBlVQREFURRAAEg0KCUhFQVJUQkVBVBABYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Schema.PacketType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Chunk), global::Schema.Chunk.Parser, new[]{ "Index", "MaxIndex", "Data" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Packet), global::Schema.Packet.Parser, new[]{ "Chunks", "Id" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.Packet), global::Schema.Packet.Parser, new[]{ "Chunks", "Id", "Type" }, null, null, null, null)
           }));
     }
     #endregion
 
   }
+  #region Enums
+  public enum PacketType {
+    [pbr::OriginalName("UPDATE")] Update = 0,
+    [pbr::OriginalName("HEARTBEAT")] Heartbeat = 1,
+  }
+
+  #endregion
+
   #region Messages
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class Chunk : pb::IMessage<Chunk>
@@ -87,7 +96,7 @@ namespace Schema {
     }
 
     /// <summary>Field number for the "index" field.</summary>
-    public const int IndexFieldNumber = 2;
+    public const int IndexFieldNumber = 1;
     private int index_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -99,7 +108,7 @@ namespace Schema {
     }
 
     /// <summary>Field number for the "maxIndex" field.</summary>
-    public const int MaxIndexFieldNumber = 3;
+    public const int MaxIndexFieldNumber = 2;
     private int maxIndex_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -111,7 +120,7 @@ namespace Schema {
     }
 
     /// <summary>Field number for the "data" field.</summary>
-    public const int DataFieldNumber = 4;
+    public const int DataFieldNumber = 3;
     private pb::ByteString data_ = pb::ByteString.Empty;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -169,15 +178,15 @@ namespace Schema {
       output.WriteRawMessage(this);
     #else
       if (Index != 0) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(8);
         output.WriteInt32(Index);
       }
       if (MaxIndex != 0) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(16);
         output.WriteInt32(MaxIndex);
       }
       if (Data.Length != 0) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(26);
         output.WriteBytes(Data);
       }
       if (_unknownFields != null) {
@@ -191,15 +200,15 @@ namespace Schema {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
       if (Index != 0) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(8);
         output.WriteInt32(Index);
       }
       if (MaxIndex != 0) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(16);
         output.WriteInt32(MaxIndex);
       }
       if (Data.Length != 0) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(26);
         output.WriteBytes(Data);
       }
       if (_unknownFields != null) {
@@ -257,15 +266,15 @@ namespace Schema {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 16: {
+          case 8: {
             Index = input.ReadInt32();
             break;
           }
-          case 24: {
+          case 16: {
             MaxIndex = input.ReadInt32();
             break;
           }
-          case 34: {
+          case 26: {
             Data = input.ReadBytes();
             break;
           }
@@ -284,15 +293,15 @@ namespace Schema {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 16: {
+          case 8: {
             Index = input.ReadInt32();
             break;
           }
-          case 24: {
+          case 16: {
             MaxIndex = input.ReadInt32();
             break;
           }
-          case 34: {
+          case 26: {
             Data = input.ReadBytes();
             break;
           }
@@ -340,6 +349,7 @@ namespace Schema {
     public Packet(Packet other) : this() {
       chunks_ = other.chunks_.Clone();
       id_ = other.id_;
+      type_ = other.type_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -372,6 +382,18 @@ namespace Schema {
       }
     }
 
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 3;
+    private global::Schema.PacketType type_ = global::Schema.PacketType.Update;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Schema.PacketType Type {
+      get { return type_; }
+      set {
+        type_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -389,6 +411,7 @@ namespace Schema {
       }
       if(!chunks_.Equals(other.chunks_)) return false;
       if (Id != other.Id) return false;
+      if (Type != other.Type) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -398,6 +421,7 @@ namespace Schema {
       int hash = 1;
       hash ^= chunks_.GetHashCode();
       if (Id != 0UL) hash ^= Id.GetHashCode();
+      if (Type != global::Schema.PacketType.Update) hash ^= Type.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -421,6 +445,10 @@ namespace Schema {
         output.WriteRawTag(16);
         output.WriteUInt64(Id);
       }
+      if (Type != global::Schema.PacketType.Update) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) Type);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -436,6 +464,10 @@ namespace Schema {
         output.WriteRawTag(16);
         output.WriteUInt64(Id);
       }
+      if (Type != global::Schema.PacketType.Update) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) Type);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -449,6 +481,9 @@ namespace Schema {
       size += chunks_.CalculateSize(_repeated_chunks_codec);
       if (Id != 0UL) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
+      }
+      if (Type != global::Schema.PacketType.Update) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -465,6 +500,9 @@ namespace Schema {
       chunks_.Add(other.chunks_);
       if (other.Id != 0UL) {
         Id = other.Id;
+      }
+      if (other.Type != global::Schema.PacketType.Update) {
+        Type = other.Type;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -489,6 +527,10 @@ namespace Schema {
             Id = input.ReadUInt64();
             break;
           }
+          case 24: {
+            Type = (global::Schema.PacketType) input.ReadEnum();
+            break;
+          }
         }
       }
     #endif
@@ -510,6 +552,10 @@ namespace Schema {
           }
           case 16: {
             Id = input.ReadUInt64();
+            break;
+          }
+          case 24: {
+            Type = (global::Schema.PacketType) input.ReadEnum();
             break;
           }
         }
