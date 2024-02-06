@@ -24,6 +24,7 @@ namespace Core
         private HashSet<ulong> missedPacketIds = new();
         private ulong nextNeededPacket = 0;
         private ulong highestHandledPacket = 0;
+        public int NumPacketsReceived;
 
         public ClientConnection(IClient client, Action? onConnected = null) : base(client)
         {
@@ -84,6 +85,8 @@ namespace Core
 
         public override async Task HandleMessage(IPEndPoint endpoint, byte[] message)
         {
+            NumPacketsReceived++;
+
             if (endpoint.Equals(MatchmakingServerEndPoint))
             {
                 HandleMessageFromMatchmakingServer(message);

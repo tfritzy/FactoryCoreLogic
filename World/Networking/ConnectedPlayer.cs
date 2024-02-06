@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Net;
 
 namespace Core
@@ -10,8 +11,8 @@ namespace Core
         public int HighestConfirmedVersion { get; set; }
         public ulong AssumedVersion { get; set; }
         public DateTime LastSentHeartbeat { get; set; }
-        public DateTime LastReceivedHeartbeat { get; set; }
-        public TimeSpan Ping => LastReceivedHeartbeat - LastSentHeartbeat;
+        public DateTime LastReceivedHeartbeat { get; private set; }
+        public TimeSpan Ping { get; private set; }
         public int NumSentPackets;
         public int NumMissedPackets;
         public float PacketLoss => NumMissedPackets / (float)NumSentPackets;
@@ -26,6 +27,12 @@ namespace Core
             LastReceivedHeartbeat = DateTime.Now;
             NumSentPackets = 0;
             NumMissedPackets = 0;
+        }
+
+        public void UpdateHeartbeat()
+        {
+            LastReceivedHeartbeat = DateTime.Now;
+            Ping = LastReceivedHeartbeat - LastSentHeartbeat;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Core
         public const int DefaultTimeout_ms = 10_000;
         public World? ConnectedWorld { get; private set; }
         public readonly static IPEndPoint MatchmakingServerEndPoint =
-            new(IPAddress.Parse("192.168.80.1"), 64132);
+            new(IPAddress.Parse("192.168.1.3"), 64132);
 
         public Connection(IClient client)
         {

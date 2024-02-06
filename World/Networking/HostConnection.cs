@@ -123,7 +123,7 @@ namespace Core
                         var player = ConnectedPlayers.Find(player => player.EndPoint.Equals(endpoint));
                         if (player != null)
                         {
-                            player.LastReceivedHeartbeat = DateTime.Now;
+                            player.UpdateHeartbeat();
                             var neededIds = request.Heartbeat.MissedPacketIds;
                             for (int i = 0; i < neededIds.Count; i++)
                             {

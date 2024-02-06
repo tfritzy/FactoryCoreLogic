@@ -10,7 +10,7 @@ namespace Core
     {
         public Terrain Terrain { get; private set; }
         private Dictionary<Point2Int, ulong> Buildings;
-        private Dictionary<ulong, Character> Characters;
+        public Dictionary<ulong, Character> Characters { get; private set; }
         public Dictionary<ulong, Projectile> Projectiles { get; private set; }
         public LinkedList<OneofUpdate> UnseenUpdates = new();
         public Queue<OneofUpdate> _updatesOfFrame = new();
