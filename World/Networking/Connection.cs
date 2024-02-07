@@ -14,10 +14,12 @@ namespace Core
         public World? ConnectedWorld { get; private set; }
         public readonly static IPEndPoint MatchmakingServerEndPoint =
             new(IPAddress.Parse("192.168.1.3"), 64132);
+        public Guid Id;
 
         public Connection(IClient client)
         {
             this.Client = client;
+            Id = Guid.NewGuid();
         }
 
         public abstract Task Connect(int timeout = DefaultTimeout_ms);

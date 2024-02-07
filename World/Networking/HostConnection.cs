@@ -34,7 +34,7 @@ namespace Core
         {
             // Tell matchmaking server to find me a host.
             byte[] introduction = Encoding.UTF8.GetBytes(
-                JsonConvert.SerializeObject(new HostCreatingGame()));
+                JsonConvert.SerializeObject(new HostCreatingGame(Id)));
             await Client.SendAsync(introduction, MatchmakingServerEndPoint);
         }
 
@@ -72,21 +72,15 @@ namespace Core
                 if (informOfPeer == null)
                     return;
 
-                ulong id = IdGenerator.GenerateId();
                 var player = new PlayerDetails(
-                    id: id,
-                    name: "player_" + id.ToString().Substring(0, 6),
+                    id: informOfPeer.Id,
+                    name: "player_" + Id.ToString("N").Substring(0, 8),
                     ip: informOfPeer.IpAddress,
                     port: informOfPeer.Port
                 );
                 var connectingClient = new ConnectingClient
                 {
-                    Player = new PlayerDetails(
-                        id: id,
-                        name: "player_" + id.ToString().Substring(0, 6),
-                        ip: informOfPeer.IpAddress,
-                        port: informOfPeer.Port
-                    ),
+                    Player = player,
                     Module = new NatPunchthroughModule(Client, player.EndPoint)
                 };
                 connectingClients.Add(player.EndPoint, connectingClient);
@@ -105,11 +99,18 @@ namespace Core
                 module.HandleMessageFromPeer(message);
                 if (module.ConnectionEstablished)
                 {
-                    ConnectedPlayers.Add(
-                        new ConnectedPlayer(
-                            connectingClients[endpoint].Player.Id,
-                            connectingClients[endpoint].Player.EndPoint));
+                    var connectedPlayer = new ConnectedPlayer(
+                        connectingClients[endpoint].Player.Id,
+                        connectingClients[endpoint].Player.EndPoint);
+                    ConnectedPlayers.Add(connectedPlayer);
                     connectingClients.Remove(endpoint);
+
+                    if (ConnectedWorld != null)
+                    {
+                        Player player = new Player(ConnectedWorld.Context, 0, connectedPlayer.Id);
+                        player.Id = connectedPlayer.CharacterId;
+                        ConnectedWorld.AddCharacter(player);
+                    }
                 }
             }
             else if (ConnectedWorld != null)

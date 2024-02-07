@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using Newtonsoft.Json;
 
@@ -5,7 +6,7 @@ namespace Core
 {
     public class PlayerDetails
     {
-        public ulong Id { get; }
+        public Guid Id { get; }
         public string Name { get; }
         public string IpAddress { get; set; }
         public int Port { get; set; }
@@ -13,7 +14,7 @@ namespace Core
         [JsonIgnore]
         public IPEndPoint EndPoint { get; private set; }
 
-        public PlayerDetails(ulong id, string name, string ip, int port)
+        public PlayerDetails(Guid id, string name, string ip, int port)
         {
             Id = id;
             Name = name;

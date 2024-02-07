@@ -6,6 +6,7 @@ namespace Core
 {
     public class Player : Unit
     {
+        public Guid PlayerId { get; private set; }
         public override CharacterType Type => CharacterType.Player;
         public WornItems WornItems => this.GetComponent<WornItems>();
         private static readonly string name = "Traveler";
@@ -13,11 +14,12 @@ namespace Core
 
         public Player(Context context, Schema.Player player) : base(player.Unit, context)
         {
+            PlayerId = Guid.Parse(player.PlayerId);
         }
 
-        public Player(Context context, int alliance) : base(context, alliance)
+        public Player(Context context, int alliance, Guid playerId) : base(context, alliance)
         {
-
+            PlayerId = playerId;
         }
 
         public override OneofCharacter Serialize()
@@ -27,6 +29,7 @@ namespace Core
                 Player = new Schema.Player()
                 {
                     Unit = base.ToSchema(),
+                    PlayerId = PlayerId.ToString()
                 }
             };
         }

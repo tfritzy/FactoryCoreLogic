@@ -35,7 +35,7 @@ namespace Core
         {
             // Tell matchmaking server to find me a host.
             byte[] introduction = Encoding.UTF8.GetBytes(
-                JsonConvert.SerializeObject(new ClientLookingForHost()));
+                JsonConvert.SerializeObject(new ClientLookingForHost(Id)));
             Client.Send(introduction, introduction.Length, MatchmakingServerEndPoint);
         }
 

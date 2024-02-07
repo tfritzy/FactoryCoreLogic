@@ -6,7 +6,8 @@ namespace Core
 {
     public class ConnectedPlayer
     {
-        public ulong Id { get; private set; }
+        public Guid Id { get; private set; }
+        public ulong CharacterId { get; set; }
         public IPEndPoint EndPoint { get; private set; }
         public int HighestConfirmedVersion { get; set; }
         public ulong AssumedVersion { get; set; }
@@ -17,9 +18,10 @@ namespace Core
         public int NumMissedPackets;
         public float PacketLoss => NumMissedPackets / (float)NumSentPackets;
 
-        public ConnectedPlayer(ulong id, IPEndPoint endPoint)
+        public ConnectedPlayer(Guid id, IPEndPoint endPoint)
         {
             Id = id;
+            CharacterId = IdGenerator.GenerateId();
             EndPoint = endPoint;
             HighestConfirmedVersion = 0;
             AssumedVersion = 0;

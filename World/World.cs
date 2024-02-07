@@ -8,6 +8,7 @@ namespace Core
 {
     public class World
     {
+        public Context Context;
         public Terrain Terrain { get; private set; }
         private Dictionary<Point2Int, ulong> Buildings;
         public Dictionary<ulong, Character> Characters { get; private set; }
@@ -22,7 +23,7 @@ namespace Core
         public int MaxY => Terrain.MaxY;
         public int MaxHeight => Terrain.MaxZ;
 
-        private Context Context;
+
 
         public World(Schema.World world, Context context)
         {

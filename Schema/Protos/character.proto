@@ -62,6 +62,7 @@ message DummyBuilding {
 
 message Player {
     Unit unit = 1;
+    string player_id = 2;
 }
 
 message GuardTower {

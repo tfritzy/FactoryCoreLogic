@@ -48,7 +48,7 @@ namespace Core
                 case CharacterType.Conveyor:
                     return new Conveyor(context, alliance);
                 case CharacterType.Player:
-                    return new Player(context, alliance);
+                    return new Player(context, alliance, Guid.NewGuid());
                 case CharacterType.GuardTower:
                     return new GuardTower(context, alliance);
                 case CharacterType.DummyMob:
