@@ -22,8 +22,8 @@ namespace Core
         private List<Packet?> receivedPackets = new();
         private Action? onConnected;
         private HashSet<ulong> missedPacketIds = new();
-        private ulong nextNeededPacket = 0;
-        private ulong highestHandledPacket = 0;
+        public ulong NextNeededPacket { get; private set; } = 0;
+        public ulong HighestHandledPacket { get; private set; } = 0;
         public int NumPacketsReceived;
         public Action<World>? OnSetWorld;
         protected List<Schema.OneofRequest> requestsOfFrame = new();
@@ -114,26 +114,26 @@ namespace Core
                 }
                 else
                 {
-                    if (packet.Id == nextNeededPacket)
+                    if (packet.Id == NextNeededPacket)
                     {
                         receivedPackets.Add(packet);
-                        nextNeededPacket = packet.Id + 1;
+                        NextNeededPacket = packet.Id + 1;
                     }
-                    else if (packet.Id > nextNeededPacket)
+                    else if (packet.Id > NextNeededPacket)
                     {
-                        for (ulong i = nextNeededPacket; i < packet.Id; i++)
+                        for (ulong i = NextNeededPacket; i < packet.Id; i++)
                         {
                             receivedPackets.Add(null);
                             missedPacketIds.Add(i);
                         }
 
                         receivedPackets.Add(packet);
-                        nextNeededPacket = packet.Id + 1;
+                        NextNeededPacket = packet.Id + 1;
                     }
                     else if (missedPacketIds.Contains(packet.Id))
                     {
                         missedPacketIds.Remove(packet.Id);
-                        receivedPackets[(int)(packet.Id - highestHandledPacket)] = packet;
+                        receivedPackets[(int)(packet.Id - HighestHandledPacket)] = packet;
                     }
 
                     if (ConnectedWorld == null)
@@ -145,7 +145,7 @@ namespace Core
                             World world = new World(maybeWorldState.WorldState.World, new Context());
                             SetWorld(world);
                             int numPacketsRemoved = previousLength - receivedPackets.Count;
-                            highestHandledPacket += (ulong)numPacketsRemoved;
+                            HighestHandledPacket += (ulong)numPacketsRemoved;
                             OnSetWorld?.Invoke(world);
                         }
                     }
@@ -157,7 +157,7 @@ namespace Core
                         {
                             ConnectedWorld.HandleUpdate(fullUpdate);
                             int numPacketsRemoved = previousLength - receivedPackets.Count;
-                            highestHandledPacket += (ulong)numPacketsRemoved;
+                            HighestHandledPacket += (ulong)numPacketsRemoved;
                         }
                     }
                 }
