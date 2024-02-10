@@ -157,8 +157,15 @@ namespace Core
                 module.Module.Update();
             }
 
+            await SendWorldMessages();
+        }
+
+        private async Task SendWorldMessages()
+        {
             if (ConnectedWorld == null)
+            {
                 return;
+            }
 
             DrainUpdatesOfFrame();
 

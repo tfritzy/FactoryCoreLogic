@@ -26,6 +26,7 @@ namespace Core
         private ulong highestHandledPacket = 0;
         public int NumPacketsReceived;
         public Action<World>? OnSetWorld;
+        protected List<Schema.OneofRequest> requestsOfFrame = new();
 
         public ClientConnection(IClient client, Action? onConnected = null) : base(client)
         {
@@ -166,11 +167,38 @@ namespace Core
         public override async Task SendPendingMessages()
         {
             punchthrough?.Update();
+
+            if (ConnectedWorld != null)
+            {
+                foreach (var request in requestsOfFrame)
+                {
+                    // TODO: Ensure delivery.
+                    await SendMessage(request);
+                }
+                requestsOfFrame.Clear();
+            }
         }
 
         public override async Task HandleRequest(OneofRequest request)
         {
-            await SendMessage(request);
+            if (request.UpdateOwnLocation != null)
+            {
+                // Only keep the most recent move request for a given player.
+                int existingIndex =
+                    requestsOfFrame.FindIndex(r => r.UpdateOwnLocation?.PlayerId == request.UpdateOwnLocation.PlayerId);
+                if (existingIndex != -1)
+                {
+                    requestsOfFrame[existingIndex] = request;
+                }
+                else
+                {
+                    requestsOfFrame.Add(request);
+                }
+            }
+            else
+            {
+                requestsOfFrame.Add(request);
+            }
         }
     }
 }
