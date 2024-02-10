@@ -25,6 +25,7 @@ namespace Core
         private ulong nextNeededPacket = 0;
         private ulong highestHandledPacket = 0;
         public int NumPacketsReceived;
+        public Action<World>? OnSetWorld;
 
         public ClientConnection(IClient client, Action? onConnected = null) : base(client)
         {
@@ -35,7 +36,7 @@ namespace Core
         {
             // Tell matchmaking server to find me a host.
             byte[] introduction = Encoding.UTF8.GetBytes(
-                JsonConvert.SerializeObject(new ClientLookingForHost(Id)));
+                JsonConvert.SerializeObject(new ClientLookingForHost(PlayerId)));
             Client.Send(introduction, introduction.Length, MatchmakingServerEndPoint);
         }
 
@@ -144,6 +145,7 @@ namespace Core
                             SetWorld(world);
                             int numPacketsRemoved = previousLength - receivedPackets.Count;
                             highestHandledPacket += (ulong)numPacketsRemoved;
+                            OnSetWorld?.Invoke(world);
                         }
                     }
 
@@ -163,15 +165,12 @@ namespace Core
 
         public override async Task SendPendingMessages()
         {
-            if (ConnectedWorld != null)
-            {
-                while (ConnectedWorld.Requests.Count > 0)
-                {
-                    await SendMessage(ConnectedWorld.Requests.Dequeue());
-                }
-            }
-
             punchthrough?.Update();
+        }
+
+        public override async Task HandleRequest(OneofRequest request)
+        {
+            await SendMessage(request);
         }
     }
 }

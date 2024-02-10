@@ -17,7 +17,6 @@ namespace Core
         public Queue<OneofUpdate> _updatesOfFrame = new();
         public float OutsideAirTemperature_C = 20f;
         public Dictionary<ulong, ItemObject> ItemObjects = new();
-        public Queue<OneofRequest> Requests = new();
 
         public int MaxX => Terrain.MaxX;
         public int MaxY => Terrain.MaxY;
@@ -466,6 +465,20 @@ namespace Core
                             Velocity = velocity.ToSchema(),
                         },
                     });
+            }
+        }
+
+        public void HandleRequest(Schema.OneofRequest request)
+        {
+            if (request.UpdateOwnLocation != null)
+            {
+                var unitMoved = new Schema.UnitMoved
+                {
+                    UnitId = request.UpdateOwnLocation.PlayerId,
+                    Position = request.UpdateOwnLocation.Position,
+                    Velocity = request.UpdateOwnLocation.Velocity,
+                };
+                AddUpdateForFrame(new OneofUpdate { UnitMoved = unitMoved });
             }
         }
 

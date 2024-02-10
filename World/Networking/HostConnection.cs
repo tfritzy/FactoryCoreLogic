@@ -34,7 +34,7 @@ namespace Core
         {
             // Tell matchmaking server to find me a host.
             byte[] introduction = Encoding.UTF8.GetBytes(
-                JsonConvert.SerializeObject(new HostCreatingGame(Id)));
+                JsonConvert.SerializeObject(new HostCreatingGame(PlayerId)));
             await Client.SendAsync(introduction, MatchmakingServerEndPoint);
         }
 
@@ -74,7 +74,7 @@ namespace Core
 
                 var player = new PlayerDetails(
                     id: informOfPeer.Id,
-                    name: "player_" + Id.ToString("N").Substring(0, 8),
+                    name: "player_" + PlayerId.ToString("N").Substring(0, 8),
                     ip: informOfPeer.IpAddress,
                     port: informOfPeer.Port
                 );
@@ -109,6 +109,7 @@ namespace Core
                     {
                         Player player = new Player(ConnectedWorld.Context, 0, connectedPlayer.Id);
                         player.Id = connectedPlayer.CharacterId;
+                        player.GridPosition = new Point3Int(5, 5, 3);
                         ConnectedWorld.AddCharacter(player);
                     }
                 }
@@ -138,7 +139,7 @@ namespace Core
                     }
                     else
                     {
-                        ConnectedWorld.Requests.Enqueue(request);
+                        await HandleRequest(request);
                     }
                 }
                 catch (Exception e)
@@ -220,6 +221,14 @@ namespace Core
                 Packets.Add(CurrentVersion, packet);
                 CurrentVersion++;
             }
+        }
+
+        public override async Task HandleRequest(Schema.OneofRequest request)
+        {
+            if (ConnectedWorld == null)
+                return;
+
+            ConnectedWorld.HandleRequest(request);
         }
     }
 }
