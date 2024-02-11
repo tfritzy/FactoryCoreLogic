@@ -468,6 +468,24 @@ namespace Core
             }
         }
 
+        public void SetItemObjectPosition(ulong itemId, Point3Float pos)
+        {
+            if (!ItemObjects.ContainsKey(itemId))
+            {
+                return;
+            }
+
+            AddUpdateForFrame(
+                new OneofUpdate
+                {
+                    ItemMoved = new ItemMoved
+                    {
+                        ItemId = itemId,
+                        UpdatedPosition = pos.ToSchema(),
+                    },
+                });
+        }
+
         public void HandleRequest(Schema.OneofRequest request)
         {
             if (request.UpdateOwnLocation != null)
@@ -479,6 +497,14 @@ namespace Core
                     Velocity = request.UpdateOwnLocation.Velocity,
                 };
                 AddUpdateForFrame(new OneofUpdate { UnitMoved = unitMoved });
+            }
+            else if (request.PickupItem != null)
+            {
+                PickupItem(request.PickupItem.CharacterId, request.PickupItem.ItemId);
+            }
+            else if (request.PluckBush != null)
+            {
+                PluckBush(request.PluckBush.CharacterId, Point2Int.FromSchema(request.PluckBush.GridPosition));
             }
         }
 
@@ -566,6 +592,14 @@ namespace Core
                         unit.SetLocation(Point3Float.FromSchema(moved.Position));
                         unit.SetVelocity(Point3Float.FromSchema(moved.Velocity));
                     }
+                }
+            }
+            else if (update.ItemMoved != null)
+            {
+                var moved = update.ItemMoved;
+                if (ItemObjects.TryGetValue(moved.ItemId, out ItemObject? itemObject))
+                {
+                    itemObject.Position = Point3Float.FromSchema(moved.UpdatedPosition);
                 }
             }
             else

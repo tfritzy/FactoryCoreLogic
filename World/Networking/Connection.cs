@@ -4,7 +4,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using NUnit;
 
 namespace Core
 {
@@ -16,7 +15,7 @@ namespace Core
         public readonly static IPEndPoint MatchmakingServerEndPoint =
             new(IPAddress.Parse("192.168.1.3"), 64132);
         public Guid PlayerId;
-        private int lastTick_ms = 0;
+        private int lastTick_ms = -1000;
 
         private const int TICK_RATE = 30;
         private const int TICK_INTERVAL_MS = 1000 / TICK_RATE;

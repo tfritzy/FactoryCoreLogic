@@ -28,20 +28,27 @@ namespace Schema
     {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg5yZXF1ZXN0cy5wcm90bxIGc2NoZW1hGgt1bml0cy5wcm90byKDAQoMT25l",
+            "Cg5yZXF1ZXN0cy5wcm90bxIGc2NoZW1hGgt1bml0cy5wcm90byLXAQoMT25l",
             "b2ZSZXF1ZXN0EjgKE3VwZGF0ZV9vd25fbG9jYXRpb24YASABKAsyGS5zY2hl",
             "bWEuVXBkYXRlT3duTG9jYXRpb25IABIuCgloZWFydGJlYXQYAiABKAsyGS5z",
-            "Y2hlbWEuSGVhcnRiZWF0UmVzcG9uc2VIAEIJCgdyZXF1ZXN0InQKEVVwZGF0",
-            "ZU93bkxvY2F0aW9uEhEKCXBsYXllcl9pZBgBIAEoBBIlCghwb3NpdGlvbhgC",
-            "IAEoCzITLnNjaGVtYS5Qb2ludDNGbG9hdBIlCgh2ZWxvY2l0eRgDIAEoCzIT",
-            "LnNjaGVtYS5Qb2ludDNGbG9hdCIuChFIZWFydGJlYXRSZXNwb25zZRIZChFt",
-            "aXNzZWRfcGFja2V0X2lkcxgBIAMoBGIGcHJvdG8z"));
+            "Y2hlbWEuSGVhcnRiZWF0UmVzcG9uc2VIABIpCgtwaWNrdXBfaXRlbRgDIAEo",
+            "CzISLnNjaGVtYS5QaWNrdXBJdGVtSAASJwoKcGx1Y2tfYnVzaBgEIAEoCzIR",
+            "LnNjaGVtYS5QbHVja0J1c2hIAEIJCgdyZXF1ZXN0InQKEVVwZGF0ZU93bkxv",
+            "Y2F0aW9uEhEKCXBsYXllcl9pZBgBIAEoBBIlCghwb3NpdGlvbhgCIAEoCzIT",
+            "LnNjaGVtYS5Qb2ludDNGbG9hdBIlCgh2ZWxvY2l0eRgDIAEoCzITLnNjaGVt",
+            "YS5Qb2ludDNGbG9hdCIuChFIZWFydGJlYXRSZXNwb25zZRIZChFtaXNzZWRf",
+            "cGFja2V0X2lkcxgBIAMoBCIzCgpQaWNrdXBJdGVtEhQKDGNoYXJhY3Rlcl9p",
+            "ZBgBIAEoBBIPCgdpdGVtX2lkGAIgASgEIkoKCVBsdWNrQnVzaBIUCgxjaGFy",
+            "YWN0ZXJfaWQYASABKAQSJwoMZ3JpZFBvc2l0aW9uGAIgASgLMhEuc2NoZW1h",
+            "LlBvaW50MkludGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Schema.UnitsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.OneofRequest), global::Schema.OneofRequest.Parser, new[]{ "UpdateOwnLocation", "Heartbeat" }, new[]{ "Request" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.OneofRequest), global::Schema.OneofRequest.Parser, new[]{ "UpdateOwnLocation", "Heartbeat", "PickupItem", "PluckBush" }, new[]{ "Request" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.UpdateOwnLocation), global::Schema.UpdateOwnLocation.Parser, new[]{ "PlayerId", "Position", "Velocity" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.HeartbeatResponse), global::Schema.HeartbeatResponse.Parser, new[]{ "MissedPacketIds" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.HeartbeatResponse), global::Schema.HeartbeatResponse.Parser, new[]{ "MissedPacketIds" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.PickupItem), global::Schema.PickupItem.Parser, new[]{ "CharacterId", "ItemId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.PluckBush), global::Schema.PluckBush.Parser, new[]{ "CharacterId", "GridPosition" }, null, null, null, null)
           }));
     }
     #endregion
@@ -95,6 +102,12 @@ namespace Schema
         case RequestOneofCase.Heartbeat:
           Heartbeat = other.Heartbeat.Clone();
           break;
+        case RequestOneofCase.PickupItem:
+          PickupItem = other.PickupItem.Clone();
+          break;
+        case RequestOneofCase.PluckBush:
+          PluckBush = other.PluckBush.Clone();
+          break;
       }
 
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -135,6 +148,34 @@ namespace Schema
       }
     }
 
+    /// <summary>Field number for the "pickup_item" field.</summary>
+    public const int PickupItemFieldNumber = 3;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Schema.PickupItem PickupItem
+    {
+      get { return requestCase_ == RequestOneofCase.PickupItem ? (global::Schema.PickupItem)request_ : null; }
+      set
+      {
+        request_ = value;
+        requestCase_ = value == null ? RequestOneofCase.None : RequestOneofCase.PickupItem;
+      }
+    }
+
+    /// <summary>Field number for the "pluck_bush" field.</summary>
+    public const int PluckBushFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Schema.PluckBush PluckBush
+    {
+      get { return requestCase_ == RequestOneofCase.PluckBush ? (global::Schema.PluckBush)request_ : null; }
+      set
+      {
+        request_ = value;
+        requestCase_ = value == null ? RequestOneofCase.None : RequestOneofCase.PluckBush;
+      }
+    }
+
     private object request_;
     /// <summary>Enum of possible cases for the "request" oneof.</summary>
     public enum RequestOneofCase
@@ -142,6 +183,8 @@ namespace Schema
       None = 0,
       UpdateOwnLocation = 1,
       Heartbeat = 2,
+      PickupItem = 3,
+      PluckBush = 4,
     }
     private RequestOneofCase requestCase_ = RequestOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -180,6 +223,8 @@ namespace Schema
       }
       if (!object.Equals(UpdateOwnLocation, other.UpdateOwnLocation)) return false;
       if (!object.Equals(Heartbeat, other.Heartbeat)) return false;
+      if (!object.Equals(PickupItem, other.PickupItem)) return false;
+      if (!object.Equals(PluckBush, other.PluckBush)) return false;
       if (RequestCase != other.RequestCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -191,6 +236,8 @@ namespace Schema
       int hash = 1;
       if (requestCase_ == RequestOneofCase.UpdateOwnLocation) hash ^= UpdateOwnLocation.GetHashCode();
       if (requestCase_ == RequestOneofCase.Heartbeat) hash ^= Heartbeat.GetHashCode();
+      if (requestCase_ == RequestOneofCase.PickupItem) hash ^= PickupItem.GetHashCode();
+      if (requestCase_ == RequestOneofCase.PluckBush) hash ^= PluckBush.GetHashCode();
       hash ^= (int)requestCase_;
       if (_unknownFields != null)
       {
@@ -221,6 +268,14 @@ namespace Schema
         output.WriteRawTag(18);
         output.WriteMessage(Heartbeat);
       }
+      if (requestCase_ == RequestOneofCase.PickupItem) {
+        output.WriteRawTag(26);
+        output.WriteMessage(PickupItem);
+      }
+      if (requestCase_ == RequestOneofCase.PluckBush) {
+        output.WriteRawTag(34);
+        output.WriteMessage(PluckBush);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -242,6 +297,16 @@ namespace Schema
         output.WriteRawTag(18);
         output.WriteMessage(Heartbeat);
       }
+      if (requestCase_ == RequestOneofCase.PickupItem)
+      {
+        output.WriteRawTag(26);
+        output.WriteMessage(PickupItem);
+      }
+      if (requestCase_ == RequestOneofCase.PluckBush)
+      {
+        output.WriteRawTag(34);
+        output.WriteMessage(PluckBush);
+      }
       if (_unknownFields != null)
       {
         _unknownFields.WriteTo(ref output);
@@ -261,6 +326,14 @@ namespace Schema
       if (requestCase_ == RequestOneofCase.Heartbeat)
       {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Heartbeat);
+      }
+      if (requestCase_ == RequestOneofCase.PickupItem)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PickupItem);
+      }
+      if (requestCase_ == RequestOneofCase.PluckBush)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PluckBush);
       }
       if (_unknownFields != null)
       {
@@ -292,6 +365,20 @@ namespace Schema
             Heartbeat = new global::Schema.HeartbeatResponse();
           }
           Heartbeat.MergeFrom(other.Heartbeat);
+          break;
+        case RequestOneofCase.PickupItem:
+          if (PickupItem == null)
+          {
+            PickupItem = new global::Schema.PickupItem();
+          }
+          PickupItem.MergeFrom(other.PickupItem);
+          break;
+        case RequestOneofCase.PluckBush:
+          if (PluckBush == null)
+          {
+            PluckBush = new global::Schema.PluckBush();
+          }
+          PluckBush.MergeFrom(other.PluckBush);
           break;
       }
 
@@ -327,6 +414,24 @@ namespace Schema
             }
             input.ReadMessage(subBuilder);
             Heartbeat = subBuilder;
+            break;
+          }
+          case 26: {
+            global::Schema.PickupItem subBuilder = new global::Schema.PickupItem();
+            if (requestCase_ == RequestOneofCase.PickupItem) {
+              subBuilder.MergeFrom(PickupItem);
+            }
+            input.ReadMessage(subBuilder);
+            PickupItem = subBuilder;
+            break;
+          }
+          case 34: {
+            global::Schema.PluckBush subBuilder = new global::Schema.PluckBush();
+            if (requestCase_ == RequestOneofCase.PluckBush) {
+              subBuilder.MergeFrom(PluckBush);
+            }
+            input.ReadMessage(subBuilder);
+            PluckBush = subBuilder;
             break;
           }
         }
@@ -367,6 +472,28 @@ namespace Schema
               }
               input.ReadMessage(subBuilder);
               Heartbeat = subBuilder;
+              break;
+            }
+          case 26:
+            {
+              global::Schema.PickupItem subBuilder = new global::Schema.PickupItem();
+              if (requestCase_ == RequestOneofCase.PickupItem)
+              {
+                subBuilder.MergeFrom(PickupItem);
+              }
+              input.ReadMessage(subBuilder);
+              PickupItem = subBuilder;
+              break;
+            }
+          case 34:
+            {
+              global::Schema.PluckBush subBuilder = new global::Schema.PluckBush();
+              if (requestCase_ == RequestOneofCase.PluckBush)
+              {
+                subBuilder.MergeFrom(PluckBush);
+              }
+              input.ReadMessage(subBuilder);
+              PluckBush = subBuilder;
               break;
             }
         }
@@ -900,6 +1027,541 @@ namespace Schema
           case 8:
             {
               missedPacketIds_.AddEntriesFrom(ref input, _repeated_missedPacketIds_codec);
+              break;
+            }
+        }
+      }
+    }
+#endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class PickupItem : pb::IMessage<PickupItem>
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+#endif
+  {
+    private static readonly pb::MessageParser<PickupItem> _parser = new pb::MessageParser<PickupItem>(() => new PickupItem());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<PickupItem> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor
+    {
+      get { return global::Schema.RequestsReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PickupItem()
+    {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PickupItem(PickupItem other) : this()
+    {
+      characterId_ = other.characterId_;
+      itemId_ = other.itemId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PickupItem Clone()
+    {
+      return new PickupItem(this);
+    }
+
+    /// <summary>Field number for the "character_id" field.</summary>
+    public const int CharacterIdFieldNumber = 1;
+    private ulong characterId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong CharacterId
+    {
+      get { return characterId_; }
+      set
+      {
+        characterId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "item_id" field.</summary>
+    public const int ItemIdFieldNumber = 2;
+    private ulong itemId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong ItemId
+    {
+      get { return itemId_; }
+      set
+      {
+        itemId_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other)
+    {
+      return Equals(other as PickupItem);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(PickupItem other)
+    {
+      if (ReferenceEquals(other, null))
+      {
+        return false;
+      }
+      if (ReferenceEquals(other, this))
+      {
+        return true;
+      }
+      if (CharacterId != other.CharacterId) return false;
+      if (ItemId != other.ItemId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode()
+    {
+      int hash = 1;
+      if (CharacterId != 0UL) hash ^= CharacterId.GetHashCode();
+      if (ItemId != 0UL) hash ^= ItemId.GetHashCode();
+      if (_unknownFields != null)
+      {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString()
+    {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+#else
+      if (CharacterId != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(CharacterId);
+      }
+      if (ItemId != 0UL) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(ItemId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+#endif
+    }
+
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
+      if (CharacterId != 0UL)
+      {
+        output.WriteRawTag(8);
+        output.WriteUInt64(CharacterId);
+      }
+      if (ItemId != 0UL)
+      {
+        output.WriteRawTag(16);
+        output.WriteUInt64(ItemId);
+      }
+      if (_unknownFields != null)
+      {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+#endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize()
+    {
+      int size = 0;
+      if (CharacterId != 0UL)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(CharacterId);
+      }
+      if (ItemId != 0UL)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(ItemId);
+      }
+      if (_unknownFields != null)
+      {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(PickupItem other)
+    {
+      if (other == null)
+      {
+        return;
+      }
+      if (other.CharacterId != 0UL)
+      {
+        CharacterId = other.CharacterId;
+      }
+      if (other.ItemId != 0UL)
+      {
+        ItemId = other.ItemId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+#else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            CharacterId = input.ReadUInt64();
+            break;
+          }
+          case 16: {
+            ItemId = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+#endif
+    }
+
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8:
+            {
+              CharacterId = input.ReadUInt64();
+              break;
+            }
+          case 16:
+            {
+              ItemId = input.ReadUInt64();
+              break;
+            }
+        }
+      }
+    }
+#endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class PluckBush : pb::IMessage<PluckBush>
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+#endif
+  {
+    private static readonly pb::MessageParser<PluckBush> _parser = new pb::MessageParser<PluckBush>(() => new PluckBush());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<PluckBush> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor
+    {
+      get { return global::Schema.RequestsReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PluckBush()
+    {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PluckBush(PluckBush other) : this()
+    {
+      characterId_ = other.characterId_;
+      gridPosition_ = other.gridPosition_ != null ? other.gridPosition_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PluckBush Clone()
+    {
+      return new PluckBush(this);
+    }
+
+    /// <summary>Field number for the "character_id" field.</summary>
+    public const int CharacterIdFieldNumber = 1;
+    private ulong characterId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong CharacterId
+    {
+      get { return characterId_; }
+      set
+      {
+        characterId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "gridPosition" field.</summary>
+    public const int GridPositionFieldNumber = 2;
+    private global::Schema.Point2Int gridPosition_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Schema.Point2Int GridPosition
+    {
+      get { return gridPosition_; }
+      set
+      {
+        gridPosition_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other)
+    {
+      return Equals(other as PluckBush);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(PluckBush other)
+    {
+      if (ReferenceEquals(other, null))
+      {
+        return false;
+      }
+      if (ReferenceEquals(other, this))
+      {
+        return true;
+      }
+      if (CharacterId != other.CharacterId) return false;
+      if (!object.Equals(GridPosition, other.GridPosition)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode()
+    {
+      int hash = 1;
+      if (CharacterId != 0UL) hash ^= CharacterId.GetHashCode();
+      if (gridPosition_ != null) hash ^= GridPosition.GetHashCode();
+      if (_unknownFields != null)
+      {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString()
+    {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+#else
+      if (CharacterId != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(CharacterId);
+      }
+      if (gridPosition_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(GridPosition);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+#endif
+    }
+
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
+      if (CharacterId != 0UL)
+      {
+        output.WriteRawTag(8);
+        output.WriteUInt64(CharacterId);
+      }
+      if (gridPosition_ != null)
+      {
+        output.WriteRawTag(18);
+        output.WriteMessage(GridPosition);
+      }
+      if (_unknownFields != null)
+      {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+#endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize()
+    {
+      int size = 0;
+      if (CharacterId != 0UL)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(CharacterId);
+      }
+      if (gridPosition_ != null)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(GridPosition);
+      }
+      if (_unknownFields != null)
+      {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(PluckBush other)
+    {
+      if (other == null)
+      {
+        return;
+      }
+      if (other.CharacterId != 0UL)
+      {
+        CharacterId = other.CharacterId;
+      }
+      if (other.gridPosition_ != null)
+      {
+        if (gridPosition_ == null)
+        {
+          GridPosition = new global::Schema.Point2Int();
+        }
+        GridPosition.MergeFrom(other.GridPosition);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+#else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            CharacterId = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            if (gridPosition_ == null) {
+              GridPosition = new global::Schema.Point2Int();
+            }
+            input.ReadMessage(GridPosition);
+            break;
+          }
+        }
+      }
+#endif
+    }
+
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8:
+            {
+              CharacterId = input.ReadUInt64();
+              break;
+            }
+          case 18:
+            {
+              if (gridPosition_ == null)
+              {
+                GridPosition = new global::Schema.Point2Int();
+              }
+              input.ReadMessage(GridPosition);
               break;
             }
         }

@@ -8,6 +8,8 @@ message OneofRequest {
     oneof request {
         UpdateOwnLocation update_own_location = 1;
         HeartbeatResponse heartbeat = 2;
+        PickupItem pickup_item = 3;
+        PluckBush pluck_bush = 4;
     }
 }
 
@@ -19,4 +21,14 @@ message UpdateOwnLocation {
 
 message HeartbeatResponse {
     repeated uint64 missed_packet_ids = 1;
+}
+
+message PickupItem {
+    uint64 character_id = 1;
+    uint64 item_id = 2;
+}
+
+message PluckBush {
+    uint64 character_id = 1;
+    Point2Int gridPosition = 2;
 }
