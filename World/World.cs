@@ -444,7 +444,7 @@ namespace Core
             }
         }
 
-        public void SetUnitLocation(ulong unitId, Point3Float pos, Point3Float velocity)
+        public void SetUnitLocation(ulong unitId, Point3Float pos, Point3Float velocity, Point3Float rotation)
         {
             if (!Characters.ContainsKey(unitId))
             {
@@ -463,6 +463,7 @@ namespace Core
                             UnitId = unitId,
                             Position = pos.ToSchema(),
                             Velocity = velocity.ToSchema(),
+                            Rotation = rotation.ToSchema(),
                         },
                     });
             }
@@ -495,6 +496,7 @@ namespace Core
                     UnitId = request.UpdateOwnLocation.PlayerId,
                     Position = request.UpdateOwnLocation.Position,
                     Velocity = request.UpdateOwnLocation.Velocity,
+                    Rotation = request.UpdateOwnLocation.Rotation,
                 };
                 AddUpdateForFrame(new OneofUpdate { UnitMoved = unitMoved });
             }
@@ -590,7 +592,8 @@ namespace Core
                     if (character is Unit unit)
                     {
                         unit.SetLocation(Point3Float.FromSchema(moved.Position));
-                        unit.SetVelocity(Point3Float.FromSchema(moved.Velocity));
+                        unit.Velocity = Point3Float.FromSchema(moved.Velocity);
+                        unit.Rotation = Point3Float.FromSchema(moved.Rotation);
                     }
                 }
             }

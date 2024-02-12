@@ -67,11 +67,11 @@ namespace Schema
             "Y2hlbWEuUG9pbnQySW50EigKCGJ1aWxkaW5nGAIgASgLMhYuc2NoZW1hLk9u",
             "ZW9mQ2hhcmFjdGVyIjsKDkNoYXJhY3RlckFkZGVkEikKCWNoYXJhY3RlchgB",
             "IAEoCzIWLnNjaGVtYS5PbmVvZkNoYXJhY3RlciIoChBDaGFyYWN0ZXJSZW1v",
-            "dmVkEhQKDGNoYXJhY3Rlcl9pZBgBIAEoBCJqCglVbml0TW92ZWQSDwoHdW5p",
-            "dF9pZBgBIAEoBBIlCghwb3NpdGlvbhgCIAEoCzITLnNjaGVtYS5Qb2ludDNG",
-            "bG9hdBIlCgh2ZWxvY2l0eRgDIAEoCzITLnNjaGVtYS5Qb2ludDNGbG9hdCIq",
-            "CgpXb3JsZFN0YXRlEhwKBVdvcmxkGAEgASgLMg0uc2NoZW1hLldvcmxkYgZw",
-            "cm90bzM="));
+            "dmVkEhQKDGNoYXJhY3Rlcl9pZBgBIAEoBCKRAQoJVW5pdE1vdmVkEg8KB3Vu",
+            "aXRfaWQYASABKAQSJQoIcG9zaXRpb24YAiABKAsyEy5zY2hlbWEuUG9pbnQz",
+            "RmxvYXQSJQoIdmVsb2NpdHkYAyABKAsyEy5zY2hlbWEuUG9pbnQzRmxvYXQS",
+            "JQoIcm90YXRpb24YBCABKAsyEy5zY2hlbWEuUG9pbnQzRmxvYXQiKgoKV29y",
+            "bGRTdGF0ZRIcCgVXb3JsZBgBIAEoCzINLnNjaGVtYS5Xb3JsZGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Schema.UnitsReflection.Descriptor, global::Core.TriangleTypesReflection.Descriptor, global::Core.HexSideReflection.Descriptor, global::Schema.ItemReflection.Descriptor, global::Schema.CharacterReflection.Descriptor, global::Schema.TerrainReflection.Descriptor, global::Schema.WorldReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -88,7 +88,7 @@ namespace Schema
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.BuildingAdded), global::Schema.BuildingAdded.Parser, new[]{ "GridPosition", "Building" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.CharacterAdded), global::Schema.CharacterAdded.Parser, new[]{ "Character" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.CharacterRemoved), global::Schema.CharacterRemoved.Parser, new[]{ "CharacterId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.UnitMoved), global::Schema.UnitMoved.Parser, new[]{ "UnitId", "Position", "Velocity" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.UnitMoved), global::Schema.UnitMoved.Parser, new[]{ "UnitId", "Position", "Velocity", "Rotation" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.WorldState), global::Schema.WorldState.Parser, new[]{ "World" }, null, null, null, null)
           }));
     }
@@ -4279,6 +4279,7 @@ namespace Schema
       unitId_ = other.unitId_;
       position_ = other.position_ != null ? other.position_.Clone() : null;
       velocity_ = other.velocity_ != null ? other.velocity_.Clone() : null;
+      rotation_ = other.rotation_ != null ? other.rotation_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4331,6 +4332,20 @@ namespace Schema
       }
     }
 
+    /// <summary>Field number for the "rotation" field.</summary>
+    public const int RotationFieldNumber = 4;
+    private global::Schema.Point3Float rotation_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Schema.Point3Float Rotation
+    {
+      get { return rotation_; }
+      set
+      {
+        rotation_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other)
@@ -4353,6 +4368,7 @@ namespace Schema
       if (UnitId != other.UnitId) return false;
       if (!object.Equals(Position, other.Position)) return false;
       if (!object.Equals(Velocity, other.Velocity)) return false;
+      if (!object.Equals(Rotation, other.Rotation)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -4364,6 +4380,7 @@ namespace Schema
       if (UnitId != 0UL) hash ^= UnitId.GetHashCode();
       if (position_ != null) hash ^= Position.GetHashCode();
       if (velocity_ != null) hash ^= Velocity.GetHashCode();
+      if (rotation_ != null) hash ^= Rotation.GetHashCode();
       if (_unknownFields != null)
       {
         hash ^= _unknownFields.GetHashCode();
@@ -4397,6 +4414,10 @@ namespace Schema
         output.WriteRawTag(26);
         output.WriteMessage(Velocity);
       }
+      if (rotation_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(Rotation);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -4423,6 +4444,11 @@ namespace Schema
         output.WriteRawTag(26);
         output.WriteMessage(Velocity);
       }
+      if (rotation_ != null)
+      {
+        output.WriteRawTag(34);
+        output.WriteMessage(Rotation);
+      }
       if (_unknownFields != null)
       {
         _unknownFields.WriteTo(ref output);
@@ -4446,6 +4472,10 @@ namespace Schema
       if (velocity_ != null)
       {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Velocity);
+      }
+      if (rotation_ != null)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Rotation);
       }
       if (_unknownFields != null)
       {
@@ -4482,6 +4512,14 @@ namespace Schema
         }
         Velocity.MergeFrom(other.Velocity);
       }
+      if (other.rotation_ != null)
+      {
+        if (rotation_ == null)
+        {
+          Rotation = new global::Schema.Point3Float();
+        }
+        Rotation.MergeFrom(other.Rotation);
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -4514,6 +4552,13 @@ namespace Schema
               Velocity = new global::Schema.Point3Float();
             }
             input.ReadMessage(Velocity);
+            break;
+          }
+          case 34: {
+            if (rotation_ == null) {
+              Rotation = new global::Schema.Point3Float();
+            }
+            input.ReadMessage(Rotation);
             break;
           }
         }
@@ -4555,6 +4600,15 @@ namespace Schema
                 Velocity = new global::Schema.Point3Float();
               }
               input.ReadMessage(Velocity);
+              break;
+            }
+          case 34:
+            {
+              if (rotation_ == null)
+              {
+                Rotation = new global::Schema.Point3Float();
+              }
+              input.ReadMessage(Rotation);
               break;
             }
         }

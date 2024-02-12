@@ -17,6 +17,7 @@ message UpdateOwnLocation {
     uint64 player_id = 1;
     Point3Float position = 2;
     Point3Float velocity = 3;
+    Point3Float rotation = 4;
 }
 
 message HeartbeatResponse {

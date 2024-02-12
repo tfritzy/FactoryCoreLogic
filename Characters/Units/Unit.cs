@@ -4,7 +4,8 @@ namespace Core
     {
         private Point3Float _location;
         public override Point3Float Location => _location;
-        public Point3Float Velocity { get; private set; }
+        public Point3Float Velocity { get; set; }
+        public Point3Float Rotation { get; set; }
         public override Point3Int GridPosition
         {
             get
@@ -39,11 +40,6 @@ namespace Core
         public void SetLocation(Point3Float location)
         {
             _location = location;
-        }
-
-        public void SetVelocity(Point3Float velocity)
-        {
-            Velocity = velocity;
         }
     }
 }
