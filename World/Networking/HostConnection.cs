@@ -17,7 +17,9 @@ namespace Core
         private Dictionary<ulong, Schema.Packet> Packets = new();
         private ulong CurrentVersion = 0;
         private Action? onConnected;
-        private TimeSpan HeartbeatInterval = TimeSpan.FromSeconds(.1f);
+
+        public const int HeartbeatInterval_ms = 500;
+        public const int ResendThreshold_ms = 200;
 
         struct ConnectingClient
         {
@@ -125,13 +127,14 @@ namespace Core
                         var player = ConnectedPlayers.Find(player => player.EndPoint.Equals(endpoint));
                         if (player != null)
                         {
-                            player.UpdateHeartbeat();
+                            player.UpdateHeartbeat(GetTick());
                             var neededIds = request.Heartbeat.MissedPacketIds;
                             for (int i = 0; i < neededIds.Count; i++)
                             {
-                                player.NumMissedPackets++;
-                                if (Packets.ContainsKey(neededIds[i]))
+                                if (Packets.ContainsKey(neededIds[i]) &&
+                                    Packets[neededIds[i]].SentMs + ResendThreshold_ms <= GetTick())
                                 {
+                                    player.NumMissedPackets++;
                                     await Client.SendAsync(Packets[neededIds[i]].ToByteArray(), endpoint);
                                 }
                             }
@@ -162,31 +165,32 @@ namespace Core
 
         private async Task SendWorldMessages()
         {
-            if (ConnectedWorld == null)
-            {
-                return;
-            }
-
-            DrainUpdatesOfFrame();
-
             foreach (var connectedPlayer in ConnectedPlayers)
             {
-                while (Packets.ContainsKey(connectedPlayer.AssumedVersion))
-                {
-                    Schema.Packet? packet = Packets[connectedPlayer.AssumedVersion];
-                    byte[] message = packet.ToByteArray();
-                    connectedPlayer.NumSentPackets++;
-                    await Client.SendAsync(message, connectedPlayer.EndPoint);
-                    connectedPlayer.AssumedVersion++;
-                }
-
-                if (connectedPlayer.LastSentHeartbeat + HeartbeatInterval < DateTime.Now)
+                if (connectedPlayer.LastSentHeartbeat_ms + HeartbeatInterval_ms <= GetTick())
                 {
                     await Client.SendAsync(
                         new Schema.Packet { Type = Schema.PacketType.Heartbeat }
                             .ToByteArray(),
                         connectedPlayer.EndPoint);
-                    connectedPlayer.LastSentHeartbeat = DateTime.Now;
+                    connectedPlayer.LastSentHeartbeat_ms = GetTick();
+                }
+            }
+
+            if (ConnectedWorld != null)
+            {
+                DrainUpdatesOfFrame();
+
+                foreach (var connectedPlayer in ConnectedPlayers)
+                {
+                    while (Packets.ContainsKey(connectedPlayer.AssumedVersion))
+                    {
+                        Schema.Packet? packet = Packets[connectedPlayer.AssumedVersion];
+                        byte[] message = packet.ToByteArray();
+                        connectedPlayer.NumSentPackets++;
+                        await Client.SendAsync(message, connectedPlayer.EndPoint);
+                        connectedPlayer.AssumedVersion++;
+                    }
                 }
             }
         }
@@ -203,6 +207,7 @@ namespace Core
             List<Schema.Packet> packets = MessageChunker.Chunk(updates, CurrentVersion);
             foreach (Schema.Packet packet in packets)
             {
+                packet.SentMs = GetTick();
                 Packets.Add(CurrentVersion, packet);
                 CurrentVersion++;
             }
@@ -225,6 +230,7 @@ namespace Core
 
             foreach (var packet in packets)
             {
+                packet.SentMs = GetTick();
                 Packets.Add(CurrentVersion, packet);
                 CurrentVersion++;
             }

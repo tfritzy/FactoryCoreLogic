@@ -17,4 +17,5 @@ message Packet {
     repeated Chunk chunks = 1;
     uint64 id = 2;
     PacketType type = 3;
+    int32 sent_ms = 4;
 }

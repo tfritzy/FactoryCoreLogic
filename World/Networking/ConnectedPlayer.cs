@@ -11,9 +11,9 @@ namespace Core
         public IPEndPoint EndPoint { get; private set; }
         public int HighestConfirmedVersion { get; set; }
         public ulong AssumedVersion { get; set; }
-        public DateTime LastSentHeartbeat { get; set; }
-        public DateTime LastReceivedHeartbeat { get; private set; }
-        public TimeSpan Ping { get; private set; }
+        public int LastSentHeartbeat_ms { get; set; }
+        public int LastReceivedHeartbeat_ms { get; private set; }
+        public int Ping { get; private set; }
         public int NumSentPackets;
         public int NumMissedPackets;
         public float PacketLoss => NumMissedPackets / (float)NumSentPackets;
@@ -25,16 +25,16 @@ namespace Core
             EndPoint = endPoint;
             HighestConfirmedVersion = 0;
             AssumedVersion = 0;
-            LastSentHeartbeat = DateTime.Now;
-            LastReceivedHeartbeat = DateTime.Now;
+            LastSentHeartbeat_ms = 0;
+            LastReceivedHeartbeat_ms = 0;
             NumSentPackets = 0;
             NumMissedPackets = 0;
         }
 
-        public void UpdateHeartbeat()
+        public void UpdateHeartbeat(int currentTick)
         {
-            LastReceivedHeartbeat = DateTime.Now;
-            Ping = LastReceivedHeartbeat - LastSentHeartbeat;
+            LastReceivedHeartbeat_ms = currentTick;
+            Ping = LastReceivedHeartbeat_ms - LastSentHeartbeat_ms;
         }
     }
 }
