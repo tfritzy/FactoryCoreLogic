@@ -181,11 +181,11 @@ namespace Core
 
         public override async Task HandleRequest(OneofRequest request)
         {
-            if (request.UpdateOwnLocation != null)
+            if (request.VelocityChange != null)
             {
                 // Only keep the most recent move request for a given player.
                 int existingIndex =
-                    requestsOfFrame.FindIndex(r => r.UpdateOwnLocation?.PlayerId == request.UpdateOwnLocation.PlayerId);
+                    requestsOfFrame.FindIndex(r => r.VelocityChange?.PlayerId == request.VelocityChange.PlayerId);
                 if (existingIndex != -1)
                 {
                     requestsOfFrame[existingIndex] = request;

@@ -1,5 +1,3 @@
-using Schema;
-
 namespace Core
 {
     // An object living in the world as an object. rolls around with physics
@@ -8,13 +6,13 @@ namespace Core
     {
         public Item Item;
         public Point3Float Position;
-        public Point3Float Rotation;
+        public Point3Float Velocity { get; set; }
 
-        public ItemObject(Item item, Point3Float position, Point3Float rotation)
+        public ItemObject(Item item, Point3Float position, Point3Float velocity)
         {
             this.Item = item;
             this.Position = position;
-            this.Rotation = rotation;
+            this.Velocity = velocity;
         }
 
         public Schema.ItemObject ToSchema()
@@ -23,7 +21,7 @@ namespace Core
             {
                 Item = Item.ToSchema(),
                 Position = Position.ToSchema(),
-                Rotation = Rotation.ToSchema(),
+                Velocity = Velocity.ToSchema(),
             };
         }
 
@@ -32,8 +30,13 @@ namespace Core
             return new ItemObject(
                 Item.FromSchema(schema.Item),
                 Point3Float.FromSchema(schema.Position),
-                Point3Float.FromSchema(schema.Rotation)
+                Point3Float.FromSchema(schema.Velocity)
             );
+        }
+
+        public void ClientTick(float deltaTime)
+        {
+            Position += Velocity * deltaTime;
         }
     }
 }

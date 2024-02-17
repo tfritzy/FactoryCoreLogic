@@ -19,5 +19,5 @@ message Item {
 message ItemObject {
     Item item = 1;
     Point3Float position = 2;
-    Point3Float rotation = 3;
+    Point3Float velocity = 3;
 }

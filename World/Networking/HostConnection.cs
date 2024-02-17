@@ -13,6 +13,7 @@ namespace Core
     public class HostConnection : Connection
     {
         public List<ConnectedPlayer> ConnectedPlayers = new();
+        public bool HeartbeatsDisabled; // Used for testing.
         private Dictionary<IPEndPoint, ConnectingClient> connectingClients = new();
         private Dictionary<ulong, Schema.Packet> Packets = new();
         private ulong CurrentVersion = 0;
@@ -165,15 +166,18 @@ namespace Core
 
         private async Task SendWorldMessages()
         {
-            foreach (var connectedPlayer in ConnectedPlayers)
+            if (!HeartbeatsDisabled)
             {
-                if (connectedPlayer.LastSentHeartbeat_ms + HeartbeatInterval_ms <= GetTick())
+                foreach (var connectedPlayer in ConnectedPlayers)
                 {
-                    await Client.SendAsync(
-                        new Schema.Packet { Type = Schema.PacketType.Heartbeat }
-                            .ToByteArray(),
-                        connectedPlayer.EndPoint);
-                    connectedPlayer.LastSentHeartbeat_ms = GetTick();
+                    if (connectedPlayer.LastSentHeartbeat_ms + HeartbeatInterval_ms <= GetTick())
+                    {
+                        await Client.SendAsync(
+                            new Schema.Packet { Type = Schema.PacketType.Heartbeat }
+                                .ToByteArray(),
+                            connectedPlayer.EndPoint);
+                        connectedPlayer.LastSentHeartbeat_ms = GetTick();
+                    }
                 }
             }
 
@@ -216,6 +220,11 @@ namespace Core
         public override void SetWorld(World world)
         {
             base.SetWorld(world);
+
+            Player player = new Player(world.Context, 0, PlayerId);
+            player.GridPosition = new Point3Int(6, 6, 3);
+            world.AddCharacter(player);
+
             var worldUpdate = new Schema.OneofUpdate
             {
                 WorldState = new Schema.WorldState

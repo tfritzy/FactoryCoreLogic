@@ -120,6 +120,11 @@ namespace Core
 
         public static Point3Float FromSchema(Schema.Point3Float schema)
         {
+            if (schema == null)
+            {
+                return Zero;
+            }
+
             return new Point3Float(schema.X, schema.Y, schema.Z);
         }
     }

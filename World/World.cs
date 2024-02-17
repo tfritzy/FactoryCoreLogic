@@ -66,8 +66,29 @@ namespace Core
             this.Terrain = terrain;
         }
 
+        // Tick logic that should happen always, even for clients
+        // that don't tick to update world state. Stuff like moving objects
+        // based on their velocity.
+        public void ClientTick(float deltaTime)
+        {
+            foreach (ItemObject obj in ItemObjects.Values)
+            {
+                obj.ClientTick(deltaTime);
+            }
+
+            foreach (Character c in Characters.Values)
+            {
+                if (c is Unit unit)
+                {
+                    unit.ClientTick(deltaTime);
+                }
+            }
+        }
+
         public void Tick(float deltaTime)
         {
+            ClientTick(deltaTime);
+
             for (int i = 0; i < this.Characters.Count; i++)
             {
                 ulong characterId = this.Characters.Keys.ElementAt(i);
@@ -352,7 +373,7 @@ namespace Core
         {
             ItemObject objectForm = new ItemObject(item, point, rotation);
             objectForm.Position = point;
-            objectForm.Rotation = rotation;
+            objectForm.Velocity = rotation;
             AddUpdateForFrame(
                 new OneofUpdate
                 {
@@ -382,7 +403,7 @@ namespace Core
             }
 
             itemObj.Position = pos;
-            itemObj.Rotation = rotation;
+            itemObj.Velocity = rotation;
             // UnseenUpdates.AddLast(new ItemMoved(itemId, pos, rotation));
         }
 
@@ -414,7 +435,7 @@ namespace Core
             bool fullyGiven = picker.GiveItem(itemObject.Item);
             if (!fullyGiven)
             {
-                SetItemObjectPos(itemId, itemObject.Position + Point3Float.Up * .5f, itemObject.Rotation);
+                SetItemObjectPos(itemId, itemObject.Position + Point3Float.Up * .5f, itemObject.Velocity);
             }
             else
             {
@@ -444,31 +465,6 @@ namespace Core
             }
         }
 
-        public void SetUnitLocation(ulong unitId, Point3Float pos, Point3Float velocity, Point3Float rotation)
-        {
-            if (!Characters.ContainsKey(unitId))
-            {
-                return;
-            }
-
-            Character character = Characters[unitId];
-
-            if (character is Unit unit)
-            {
-                AddUpdateForFrame(
-                    new OneofUpdate
-                    {
-                        UnitMoved = new UnitMoved
-                        {
-                            UnitId = unitId,
-                            Position = pos.ToSchema(),
-                            Velocity = velocity.ToSchema(),
-                            Rotation = rotation.ToSchema(),
-                        },
-                    });
-            }
-        }
-
         public void SetItemObjectPosition(ulong itemId, Point3Float pos)
         {
             if (!ItemObjects.ContainsKey(itemId))
@@ -487,27 +483,33 @@ namespace Core
                 });
         }
 
+        private void HandleVelocityChange(VelocityChange update)
+        {
+            Unit? u = (Unit?)GetCharacter(update.PlayerId);
+
+            if (u != null)
+            {
+                if (u.Velocity != Point3Float.FromSchema(update.Velocity))
+                {
+                    var velocityChanged = new UnitVelocityChanged
+                    {
+                        Id = update.PlayerId,
+                        Position = update.Position,
+                        Velocity = update.Velocity,
+                    };
+                    AddUpdateForFrame(new OneofUpdate { UnitVelocityChanged = velocityChanged });
+                }
+            }
+        }
+
         public void HandleRequest(Schema.OneofRequest request)
         {
-            if (request.UpdateOwnLocation != null)
-            {
-                var unitMoved = new Schema.UnitMoved
-                {
-                    UnitId = request.UpdateOwnLocation.PlayerId,
-                    Position = request.UpdateOwnLocation.Position,
-                    Velocity = request.UpdateOwnLocation.Velocity,
-                    Rotation = request.UpdateOwnLocation.Rotation,
-                };
-                AddUpdateForFrame(new OneofUpdate { UnitMoved = unitMoved });
-            }
+            if (request.VelocityChange != null)
+                HandleVelocityChange(request.VelocityChange);
             else if (request.PickupItem != null)
-            {
                 PickupItem(request.PickupItem.CharacterId, request.PickupItem.ItemId);
-            }
             else if (request.PluckBush != null)
-            {
                 PluckBush(request.PluckBush.CharacterId, Point2Int.FromSchema(request.PluckBush.GridPosition));
-            }
         }
 
         public void AddUpdateForFrame(Schema.OneofUpdate update)
@@ -584,17 +586,25 @@ namespace Core
             {
                 ItemObjects.Remove(update.ItemObjectRemoved.ItemId);
             }
-            else if (update.UnitMoved != null)
+            else if (update.UnitVelocityChanged != null)
             {
-                var moved = update.UnitMoved;
-                if (Characters.TryGetValue(moved.UnitId, out Character? character))
+                var moved = update.UnitVelocityChanged;
+                if (Characters.TryGetValue(moved.Id, out Character? character))
                 {
                     if (character is Unit unit)
                     {
                         unit.SetLocation(Point3Float.FromSchema(moved.Position));
                         unit.Velocity = Point3Float.FromSchema(moved.Velocity);
-                        unit.Rotation = Point3Float.FromSchema(moved.Rotation);
                     }
+                }
+            }
+            else if (update.ItemVelocityChanged != null)
+            {
+                var moved = update.ItemVelocityChanged;
+                if (ItemObjects.TryGetValue(moved.Id, out ItemObject? itemObj))
+                {
+                    itemObj.Position = Point3Float.FromSchema(moved.Position);
+                    itemObj.Velocity = Point3Float.FromSchema(moved.Velocity);
                 }
             }
             else if (update.ItemMoved != null)

@@ -24,8 +24,9 @@ message OneofUpdate {
         ItemObjectRemoved itemObjectRemoved = 10;
         CharacterAdded characterAdded = 11;
         CharacterRemoved characterRemoved = 12;
-        UnitMoved unitMoved = 13;
-        WorldState worldState = 14;
+        UnitVelocityChanged unitVelocityChanged = 13;
+        ItemVelocityChanged itemVelocityChanged = 14;
+        WorldState worldState = 15;
     }
 }
 
@@ -86,11 +87,16 @@ message CharacterRemoved {
     uint64 character_id = 1;
 }
 
-message UnitMoved {
-    uint64 unit_id = 1;
+message UnitVelocityChanged {
+    uint64 id = 1;
     Point3Float position = 2;
     Point3Float velocity = 3;
-    Point3Float rotation = 4;
+}
+
+message ItemVelocityChanged {
+    uint64 id = 1;
+    Point3Float position = 2;
+    Point3Float velocity = 3;
 }
 
 message WorldState {

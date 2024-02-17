@@ -6,18 +6,17 @@ package schema;
 
 message OneofRequest {
     oneof request {
-        UpdateOwnLocation update_own_location = 1;
+        VelocityChange velocity_change = 1;
         HeartbeatResponse heartbeat = 2;
         PickupItem pickup_item = 3;
         PluckBush pluck_bush = 4;
     }
 }
 
-message UpdateOwnLocation {
+message VelocityChange {
     uint64 player_id = 1;
     Point3Float position = 2;
     Point3Float velocity = 3;
-    Point3Float rotation = 4;
 }
 
 message HeartbeatResponse {
