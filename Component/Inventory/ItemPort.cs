@@ -162,7 +162,8 @@ namespace Core
                         ulong quantity = checkDepositItem.Units == Item.UnitType.Milligram ? 10_000_000u : 1u;
                         quantity = Math.Min(checkDepositItem.Quantity, quantity);
                         singleQuantity.SetQuantity(quantity);
-                        next.AddItem(singleQuantity, DepositPoint);
+                        Owner.Context.World.AddItemObject(singleQuantity, Point3Float.Zero, Point3Float.Zero);
+                        next.AddItem(singleQuantity.Id, DepositPoint);
                         if (itemFromInventory)
                             Owner.Inventory?.RemoveCount(checkDepositItem.Type, quantity);
                         return true;

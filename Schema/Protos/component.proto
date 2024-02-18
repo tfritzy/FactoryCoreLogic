@@ -26,7 +26,7 @@ message OneofComponent {
 }
 
 message ItemOnBelt {
-    Item item = 1;
+    uint64 item_id = 1;
     float progressMeters = 2;
 }
 

@@ -33,7 +33,7 @@ namespace Core
         {
             NextSide = schema.NextSide?.Value;
             PrevSide = schema.PrevSide?.Value;
-            Items = new LinkedList<ItemOnBelt>(schema.Items.Select(x => new ItemOnBelt(x)));
+            Items = new LinkedList<ItemOnBelt>(schema.Items.Select(x => new ItemOnBelt(owner.Context, x)));
         }
 
         public ConveyorComponent(Entity owner) : base(owner)
@@ -102,7 +102,7 @@ namespace Core
 
                             if (Next.Conveyor.CanAcceptItem(item.Item, insertDist))
                             {
-                                Next.Conveyor.AddItem(item.Item, insertDist);
+                                Next.Conveyor.AddItem(item.Item.Id, insertDist);
                                 Items.Remove(current);
                                 Version++;
                                 current = current.Previous;
@@ -218,8 +218,12 @@ namespace Core
             return insertionIndex;
         }
 
-        public void AddItem(Item item, float atPoint = 0f)
+        public void AddItem(ulong itemId, float atPoint = 0f)
         {
+            Item? item = Owner.Context.World.GetItem(itemId)?.Item;
+            if (item == null)
+                return;
+
             int insertionIndex = GetInsertionIndex(item, atPoint);
             if (insertionIndex == -1)
             {
@@ -234,11 +238,12 @@ namespace Core
                 {
                     iter = iter?.Next;
                 }
-                Items.AddAfter(iter!, new ItemOnBelt(item, atPoint));
+
+                Items.AddAfter(iter!, new ItemOnBelt(Owner.Context, item.Id, atPoint));
             }
             else
             {
-                Items.AddFirst(new ItemOnBelt(item, atPoint));
+                Items.AddFirst(new ItemOnBelt(Owner.Context, item.Id, atPoint));
             }
 
         }

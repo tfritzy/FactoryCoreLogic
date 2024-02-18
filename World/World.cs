@@ -369,11 +369,13 @@ namespace Core
             return true;
         }
 
-        public void AddItemObject(Item item, Point3Float point, Point3Float rotation)
+        public void AddItemObject(Item item, Point3Float point, Point3Float velocity)
         {
-            ItemObject objectForm = new ItemObject(item, point, rotation);
-            objectForm.Position = point;
-            objectForm.Velocity = rotation;
+            ItemObject objectForm = new ItemObject(item, point, velocity)
+            {
+                Position = point,
+                Velocity = velocity
+            };
             AddUpdateForFrame(
                 new OneofUpdate
                 {
@@ -441,6 +443,16 @@ namespace Core
             {
                 RemoveItemObject(itemId);
             }
+        }
+
+        public ItemObject? GetItem(ulong id)
+        {
+            if (ItemObjects.TryGetValue(id, out ItemObject? itemObject))
+            {
+                return itemObject;
+            }
+
+            return null;
         }
 
         private void CleanupOutOfBoundsItems()
