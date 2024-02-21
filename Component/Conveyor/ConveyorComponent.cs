@@ -27,7 +27,7 @@ namespace Core
                 ) : null;
         public const float MOVEMENT_SPEED_M_S = .5f;
         public const float STRAIGHT_DISTANCE = Constants.HEX_APOTHEM * 2;
-        public const float CURVE_DISTANCE = STRAIGHT_DISTANCE;
+        public const float CURVE_DISTANCE = (2 * 3.1415629f * 2 * Constants.HEX_APOTHEM) / 6f;
 
         public ConveyorComponent(Schema.ConveyorComponent schema, Entity owner) : this(owner)
         {
@@ -324,7 +324,6 @@ namespace Core
             }
 
             return false;
-
         }
 
         public bool CanBePrev(Building building)
@@ -495,9 +494,29 @@ namespace Core
             Version++;
         }
 
-        public int GetRotation()
+        private static readonly float PortXPos = MathF.Cos(60f * Constants.RAD_TO_DEG) / Constants.HEX_APOTHEM;
+        private static readonly float PortYPos = MathF.Sin(60f * Constants.RAD_TO_DEG) / Constants.HEX_APOTHEM;
+        public static readonly Point2Float[] PortPositions = new Point2Float[]
         {
-            return 0;
+            new (PortXPos, PortYPos),
+            new (Constants.HEX_RADIUS, 0),
+            new (PortXPos, -PortYPos),
+            new (-PortXPos, -PortYPos),
+            new (-Constants.HEX_RADIUS, 0),
+            new (-PortXPos, PortYPos),
+        };
+        public static Point2Float GetItemPosOffset(float progress, HexSide rotation, bool isStraight)
+        {
+            if (isStraight)
+            {
+                Point2Float startPos = PortPositions[(int)rotation];
+                Point2Float endPos = PortPositions[((int)rotation + 3) % 6];
+                return startPos + (endPos - startPos) * progress;
+            }
+            else
+            {
+                return new Point2Float(0, 0);
+            }
         }
     }
 }

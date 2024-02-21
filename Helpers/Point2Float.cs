@@ -36,6 +36,11 @@ namespace Core
             return new Point2Float(p1.x - p2.x, p1.y - p2.y);
         }
 
+        public static Point2Float operator *(Point2Float p1, float p2)
+        {
+            return new Point2Float(p1.x * p2, p1.y * p2);
+        }
+
         public static bool operator ==(Point2Float p1, Point2Float p2)
         {
             if (object.Equals(p1, p2))

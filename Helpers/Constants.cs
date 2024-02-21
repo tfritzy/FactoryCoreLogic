@@ -1,5 +1,7 @@
 // For copy paste: ₀₁₂₃₄₅₆₇₈₉
 
+using System;
+
 namespace Core
 {
     public static class Constants
@@ -9,6 +11,7 @@ namespace Core
         public const float HEX_HEIGHT = .5f;
         public const float HEX_WIDTH = HEX_APOTHEM * 2f;
         public const float HEX_LENGTH = HEX_RADIUS * 2f;
+        public const float RAD_TO_DEG = MathF.PI / 180;
 
         // Picking up items, plucking bushes, what not
         public const float InteractionRange_Sq = 1f * 1f;
