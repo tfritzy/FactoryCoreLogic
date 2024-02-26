@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 
 namespace Core
 {
@@ -494,6 +495,77 @@ namespace Core
             Version++;
         }
 
+        public enum OrientationCase
+        {
+            Invalid,
+            Straight,
+            CurvedClockwise,
+            CurvedAntiClockwise,
+        }
+        public static OrientationCase GetOrientationCase(HexSide output, HexSide input)
+        {
+            int iterClockwise = (int)input;
+            int iterAntiClockwise = (int)input;
+            int stepCount = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                iterClockwise += 1;
+                iterAntiClockwise -= 1;
+                stepCount += 1;
+
+                if (iterClockwise > 5)
+                    iterClockwise = 0;
+
+                if (iterAntiClockwise < 0)
+                    iterAntiClockwise = 5;
+
+                if (iterClockwise == (int)output || iterAntiClockwise == (int)output)
+                {
+                    switch (stepCount)
+                    {
+                        case 3: return OrientationCase.Straight;
+                        case 2:
+                            return iterClockwise == (int)output ?
+                                OrientationCase.CurvedClockwise :
+                                OrientationCase.CurvedAntiClockwise;
+                        case 1: return OrientationCase.Invalid;
+                    }
+                }
+            }
+
+            return OrientationCase.Invalid;
+        }
+
+        public static Point2Float GetPointOnCircle(
+            float progress_pct,
+            float startAngle_deg,
+            float endAngle_deg,
+            bool clockwise = true)
+        {
+            float angle;
+            if (clockwise)
+            {
+                while (endAngle_deg < startAngle_deg)
+                    endAngle_deg += 360;
+                while (startAngle_deg > endAngle_deg)
+                    startAngle_deg -= 360;
+                angle = startAngle_deg + (endAngle_deg - startAngle_deg) * progress_pct;
+            }
+            else
+            {
+
+                while (startAngle_deg < endAngle_deg)
+                    startAngle_deg += 360;
+                while (endAngle_deg > startAngle_deg)
+                    endAngle_deg -= 360;
+                angle = startAngle_deg - (startAngle_deg - endAngle_deg) * progress_pct;
+            }
+
+            float y = MathF.Cos(angle * Constants.RAD_TO_DEG) * Constants.HEX_APOTHEM * 2;
+            float x = MathF.Sin(angle * Constants.RAD_TO_DEG) * Constants.HEX_APOTHEM * 2;
+            return new Point2Float(x, y);
+        }
+
         private static readonly float PortXPos = MathF.Cos(60f * Constants.RAD_TO_DEG) / Constants.HEX_APOTHEM;
         private static readonly float PortYPos = MathF.Sin(60f * Constants.RAD_TO_DEG) / Constants.HEX_APOTHEM;
         public static readonly Point2Float[] PortPositions = new Point2Float[]
@@ -505,18 +577,27 @@ namespace Core
             new (-Constants.HEX_RADIUS, 0),
             new (-PortXPos, PortYPos),
         };
-        public static Point2Float GetItemPosOffset(float progress, HexSide rotation, bool isStraight)
+        public static Point2Float GetItemPosOffset(float progress, HexSide output, HexSide input)
         {
-            if (isStraight)
+            var orientationCase = GetOrientationCase(output, input);
+            switch (orientationCase)
             {
-                Point2Float startPos = PortPositions[(int)rotation];
-                Point2Float endPos = PortPositions[((int)rotation + 3) % 6];
-                return startPos + (endPos - startPos) * progress;
+                case OrientationCase.Straight:
+                    Point2Float endPos = PortPositions[(int)output];
+                    Point2Float startPos = PortPositions[(int)input];
+                    return startPos + (endPos - startPos) * progress;
+                case OrientationCase.CurvedAntiClockwise:
+                case OrientationCase.CurvedClockwise:
+                    HexSide centerOffset = GridHelpers.Rotate60(input);
+                    Point2Int centerPoint = GridHelpers.GetNeighbor(Point2Int.Zero, centerOffset);
+                    Point2Float center = GridHelpers.evenr_offset_to_pixel(centerPoint);
+                    float startAngle = (300 + 60 * (int)input) % 360;
+                    float endAngle = (120 + 60 * (int)input) % 360;
+                    bool clockwise = orientationCase == OrientationCase.CurvedClockwise;
+                    return GetPointOnCircle(progress, startAngle, endAngle, clockwise) + center;
             }
-            else
-            {
-                return new Point2Float(0, 0);
-            }
+
+            return new Point2Float();
         }
     }
 }
