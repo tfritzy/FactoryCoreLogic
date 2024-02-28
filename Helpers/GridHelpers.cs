@@ -236,7 +236,6 @@ namespace Core
         {
             float x = Constants.HEX_RADIUS * MathF.Sqrt(3) * (hex.x - 0.5f * (hex.y & 1));
             float y = Constants.HEX_RADIUS * 3 / 2 * hex.y;
-            y = -y;
             return new Point2Float(x, y);
         }
 

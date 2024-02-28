@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 
 namespace Core
 {
@@ -502,7 +501,7 @@ namespace Core
             CurvedClockwise,
             CurvedAntiClockwise,
         }
-        public static OrientationCase GetOrientationCase(HexSide output, HexSide input)
+        public static OrientationCase GetOrientationCase(HexSide input, HexSide output)
         {
             int iterClockwise = (int)input;
             int iterAntiClockwise = (int)input;
@@ -553,7 +552,6 @@ namespace Core
             }
             else
             {
-
                 while (startAngle_deg < endAngle_deg)
                     startAngle_deg += 360;
                 while (endAngle_deg > startAngle_deg)
@@ -561,25 +559,25 @@ namespace Core
                 angle = startAngle_deg - (startAngle_deg - endAngle_deg) * progress_pct;
             }
 
-            float y = MathF.Cos(angle * Constants.RAD_TO_DEG) * Constants.HEX_APOTHEM * 2;
-            float x = MathF.Sin(angle * Constants.RAD_TO_DEG) * Constants.HEX_APOTHEM * 2;
+            float x = MathF.Cos(angle * Constants.RAD_TO_DEG) * Constants.HEX_RADIUS * 1.5f;
+            float y = MathF.Sin(angle * Constants.RAD_TO_DEG) * Constants.HEX_RADIUS * 1.5f;
             return new Point2Float(x, y);
         }
 
-        private static readonly float PortXPos = MathF.Cos(60f * Constants.RAD_TO_DEG) / Constants.HEX_APOTHEM;
-        private static readonly float PortYPos = MathF.Sin(60f * Constants.RAD_TO_DEG) / Constants.HEX_APOTHEM;
+        private static readonly float PortXPos = MathF.Cos(60f * Constants.RAD_TO_DEG) * Constants.HEX_APOTHEM;
+        private static readonly float PortYPos = MathF.Sin(60f * Constants.RAD_TO_DEG) * Constants.HEX_APOTHEM;
         public static readonly Point2Float[] PortPositions = new Point2Float[]
         {
             new (PortXPos, PortYPos),
-            new (Constants.HEX_RADIUS, 0),
+            new (Constants.HEX_APOTHEM, 0),
             new (PortXPos, -PortYPos),
             new (-PortXPos, -PortYPos),
-            new (-Constants.HEX_RADIUS, 0),
+            new (-Constants.HEX_APOTHEM, 0),
             new (-PortXPos, PortYPos),
         };
-        public static Point2Float GetItemPosOffset(float progress, HexSide output, HexSide input)
+        public static Point2Float GetItemPosOffset(float progress, HexSide input, HexSide output)
         {
-            var orientationCase = GetOrientationCase(output, input);
+            var orientationCase = GetOrientationCase(input, output);
             switch (orientationCase)
             {
                 case OrientationCase.Straight:
@@ -588,13 +586,20 @@ namespace Core
                     return startPos + (endPos - startPos) * progress;
                 case OrientationCase.CurvedAntiClockwise:
                 case OrientationCase.CurvedClockwise:
-                    HexSide centerOffset = GridHelpers.Rotate60(input);
+                    bool clockwise = orientationCase == OrientationCase.CurvedClockwise;
+                    HexSide centerOffset = GridHelpers.Rotate60(input, clockwise: clockwise);
                     Point2Int centerPoint = GridHelpers.GetNeighbor(Point2Int.Zero, centerOffset);
                     Point2Float center = GridHelpers.evenr_offset_to_pixel(centerPoint);
-                    float startAngle = (300 + 60 * (int)input) % 360;
-                    float endAngle = (120 + 60 * (int)input) % 360;
-                    bool clockwise = orientationCase == OrientationCase.CurvedClockwise;
-                    return GetPointOnCircle(progress, startAngle, endAngle, clockwise) + center;
+                    Point2Int neighborInInputDir = GridHelpers.GetNeighbor(Point2Int.Zero, input);
+                    Point2Int neighborInOutputDir = GridHelpers.GetNeighbor(Point2Int.Zero, output);
+                    Point2Float inputVector = GridHelpers.evenr_offset_to_pixel(neighborInInputDir);
+                    Point2Float outputVector = GridHelpers.evenr_offset_to_pixel(neighborInOutputDir);
+                    Point2Float inputNormal = new(inputVector.y, -inputVector.x);
+                    Point2Float outputNormal = new(-outputVector.y, outputVector.x);
+                    float startAngle = MathF.Atan2(inputNormal.y, inputNormal.x) / Constants.RAD_TO_DEG;
+                    float endAngle = MathF.Atan2(outputNormal.y, outputNormal.x) / Constants.RAD_TO_DEG;
+                    Point2Float circlePoint = GetPointOnCircle(progress, startAngle, endAngle, clockwise);
+                    return circlePoint + center;
             }
 
             return new Point2Float();
