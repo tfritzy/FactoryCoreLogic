@@ -539,10 +539,15 @@ namespace Core
             float progress_pct,
             float startAngle_deg,
             float endAngle_deg,
-            bool clockwise = true)
+            bool anticlockwise = true)
         {
+            while (startAngle_deg < 0)
+                startAngle_deg += 360;
+            while (endAngle_deg < 0)
+                endAngle_deg += 360;
+
             float angle;
-            if (clockwise)
+            if (anticlockwise)
             {
                 while (endAngle_deg < startAngle_deg)
                     endAngle_deg += 360;
@@ -594,8 +599,8 @@ namespace Core
                     Point2Int neighborInOutputDir = GridHelpers.GetNeighbor(Point2Int.Zero, output);
                     Point2Float inputVector = GridHelpers.evenr_offset_to_pixel(neighborInInputDir);
                     Point2Float outputVector = GridHelpers.evenr_offset_to_pixel(neighborInOutputDir);
-                    Point2Float inputNormal = new(inputVector.y, -inputVector.x);
-                    Point2Float outputNormal = new(-outputVector.y, outputVector.x);
+                    Point2Float inputNormal = clockwise ? new(-inputVector.y, inputVector.x) : new(inputVector.y, -inputVector.x);
+                    Point2Float outputNormal = clockwise ? new(outputVector.y, -outputVector.x) : new(-outputVector.y, outputVector.x);
                     float startAngle = MathF.Atan2(inputNormal.y, inputNormal.x) / Constants.RAD_TO_DEG;
                     float endAngle = MathF.Atan2(outputNormal.y, outputNormal.x) / Constants.RAD_TO_DEG;
                     Point2Float circlePoint = GetPointOnCircle(progress, startAngle, endAngle, clockwise);
