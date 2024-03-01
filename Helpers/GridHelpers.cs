@@ -167,7 +167,9 @@ namespace Core
             float W = MathF.Floor((x_halfcell + v_halfcell + 2) / 3);
             float Y = MathF.Floor((u_halfcell + v_halfcell + 2) / 3);
             var cube = new CubeCoord((int)W, (int)-Y);
-            return CubeToEvenR(cube);
+            var evenR = CubeToEvenR(cube);
+            evenR.y = -evenR.y;
+            return evenR;
         }
 
         public static HexSide pixel_hex_side(Point2Float point)
@@ -176,6 +178,7 @@ namespace Core
             Point2Float pixel = evenr_offset_to_pixel(evenR);
             point.x -= pixel.x;
             point.y -= pixel.y;
+
             // Algorithm from Mark Steere
             float s_to_s = MathF.Sqrt(3);
             float u = (MathF.Sqrt(3) * point.y - point.x) / 2;
@@ -224,7 +227,7 @@ namespace Core
         public static Point3Float EvenRToPixelPlusHeight(Point3Int hex)
         {
             Point2Float evenR = evenr_offset_to_pixel((Point2Int)hex);
-            return new Point3Float(evenR.x, -evenR.y, hex.z * Constants.HEX_HEIGHT);
+            return new Point3Float(evenR.x, evenR.y, hex.z * Constants.HEX_HEIGHT);
         }
 
         public static Point3Float ToPoint3Float(this Point3Int hex)
