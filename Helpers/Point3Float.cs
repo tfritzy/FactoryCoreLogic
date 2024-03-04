@@ -127,5 +127,12 @@ namespace Core
 
             return new Point3Float(schema.X, schema.Y, schema.Z);
         }
+
+        public bool IsApproximately(Point3Float other, float tolerance = 0.05f)
+        {
+            return Math.Abs(x - other.x) < tolerance
+                && Math.Abs(y - other.y) < tolerance
+                && Math.Abs(z - other.z) < tolerance;
+        }
     }
 }

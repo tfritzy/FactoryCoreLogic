@@ -404,9 +404,16 @@ namespace Core
                 return;
             }
 
-            itemObj.Position = pos;
-            itemObj.Velocity = rotation;
-            // UnseenUpdates.AddLast(new ItemMoved(itemId, pos, rotation));
+            AddUpdateForFrame(
+                new OneofUpdate
+                {
+                    ItemVelocityChanged = new ItemVelocityChanged
+                    {
+                        Id = itemId,
+                        Position = pos.ToSchema(),
+                        Velocity = rotation.ToSchema(),
+                    },
+                });
         }
 
         public void PickupItem(ulong pickerUperId, ulong itemId)
@@ -501,7 +508,7 @@ namespace Core
 
             if (u != null)
             {
-                if (u.Velocity != Point3Float.FromSchema(update.Velocity))
+                if (!u.Velocity.IsApproximately(Point3Float.FromSchema(update.Velocity)))
                 {
                     var velocityChanged = new UnitVelocityChanged
                     {

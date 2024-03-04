@@ -130,6 +130,13 @@ namespace Core
                     item.ProgressMeters = maxPosition;
                 }
 
+                var pos = GetItemPosOffset(
+                    item.ProgressMeters / GetTotalDistance(),
+                    PrevSide ?? GridHelpers.OppositeSide(Owner.Rotation),
+                    Owner.Rotation);
+                Point3Float itemPos = Owner.Location + new Point3Float(pos.x, pos.y, .22f);
+                Owner.Context.World.SetItemObjectPos(item.Item.Id, itemPos, Point3Float.Zero);
+
                 current = current.Previous;
             }
         }
