@@ -8,6 +8,7 @@ namespace Core
         public float ProgressMeters;
         public float Min => ProgressMeters - (Item?.Width ?? 0) / 2;
         public float Max => ProgressMeters + (Item?.Width ?? 0) / 2;
+        public float ReceivedAt;
         public Item Item
         {
             get
@@ -24,11 +25,12 @@ namespace Core
         }
         private Context context;
 
-        public ItemOnBelt(Context context, ulong id, float progressMeters)
+        public ItemOnBelt(Context context, ulong id, float progressMeters, float time)
         {
             ItemId = id;
             this.context = context;
             ProgressMeters = progressMeters;
+            ReceivedAt = time;
         }
 
         public ItemOnBelt(Context context, Schema.ItemOnBelt schema)

@@ -87,6 +87,13 @@ namespace Core
             {
                 ItemOnBelt item = current.Value;
 
+                // If we move an item this conveyor just got, it'll have moved twice in this frame.
+                if (item.ReceivedAt == Owner.Context.World.Time)
+                {
+                    current = current.Previous;
+                    continue;
+                }
+
                 float maxPosition = GetMaxPositionOfItem(current, current.Next);
                 float? maxPosOnNext = Next?.Conveyor?.GetMaxPositionOfItem(current, Next.Conveyor.Items.First);
                 item.ProgressMeters += movementAmount;
@@ -237,6 +244,7 @@ namespace Core
                 throw new Exception("Cannot accept item.");
             }
 
+            float time = Owner.Context.World.Time;
             Version++;
             if (insertionIndex > 0)
             {
@@ -246,11 +254,11 @@ namespace Core
                     iter = iter?.Next;
                 }
 
-                Items.AddAfter(iter!, new ItemOnBelt(Owner.Context, item.Id, atPoint));
+                Items.AddAfter(iter!, new ItemOnBelt(Owner.Context, item.Id, atPoint, time));
             }
             else
             {
-                Items.AddFirst(new ItemOnBelt(Owner.Context, item.Id, atPoint));
+                Items.AddFirst(new ItemOnBelt(Owner.Context, item.Id, atPoint, time));
             }
 
         }

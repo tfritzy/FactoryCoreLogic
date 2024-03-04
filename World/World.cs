@@ -17,6 +17,7 @@ namespace Core
         public Queue<OneofUpdate> _updatesOfFrame = new();
         public float OutsideAirTemperature_C = 20f;
         public Dictionary<ulong, ItemObject> ItemObjects = new();
+        public float Time;
 
         public int MaxX => Terrain.MaxX;
         public int MaxY => Terrain.MaxY;
@@ -87,6 +88,7 @@ namespace Core
 
         public void Tick(float deltaTime)
         {
+            Time += deltaTime;
             ClientTick(deltaTime);
 
             for (int i = 0; i < this.Characters.Count; i++)
