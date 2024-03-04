@@ -62,7 +62,7 @@ namespace Core
                 return null;
             }
 
-            if (previewBuilding != null)
+            if (previewBuilding != null && previewBuilding.IsPreview)
             {
                 this.Context.World.RemoveBuilding(previewBuilding.Id);
             }
@@ -103,6 +103,7 @@ namespace Core
 
             ActiveItems.DecrementCountOf(itemIndex, 1);
             previewBuilding.ClearPreview();
+            previewBuilding = null;
         }
 
         public void PlaceBlockFromItem(int itemIndex, Point3Int location, HexSide subIndex)
