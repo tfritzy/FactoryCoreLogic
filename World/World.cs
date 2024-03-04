@@ -192,15 +192,7 @@ namespace Core
             }
 
             var building = this.Characters[id];
-            AddUpdateForFrame(
-                new OneofUpdate
-                {
-                    BuildingRemoved = new BuildingRemoved
-                    {
-                        BuildingId = id,
-                        GridPosition = building.GridPosition.ToSchema(),
-                    },
-                });
+            RemoveBuilding((Point2Int)building.GridPosition);
         }
 
         public Building? GetBuildingAt(int x, int y) => GetBuildingAt(new Point2Int(x, y));
