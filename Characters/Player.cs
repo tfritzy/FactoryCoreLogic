@@ -11,6 +11,7 @@ namespace Core
         public WornItems WornItems => this.GetComponent<WornItems>();
         private static readonly string name = "Traveler";
         public override string Name => name;
+        private Building? previewBuilding;
 
         public Player(Context context, Schema.Player player) : base(player.Unit, context)
         {
@@ -61,9 +62,14 @@ namespace Core
                 return null;
             }
 
+            if (previewBuilding != null)
+            {
+                this.Context.World.RemoveBuilding(previewBuilding.Id);
+            }
+
             Building newBuilding = (Building)Character.Create(building.Value, this.Context);
             newBuilding.MarkPreview();
-            this.Context.World.AddBuilding(newBuilding, location);
+            previewBuilding = this.Context.World.AddBuilding(newBuilding, location);
             return this.Context.World.GetBuildingAt(location);
         }
 
