@@ -73,8 +73,13 @@ namespace Core
             return this.Context.World.GetBuildingAt(location);
         }
 
-        public void MakePreviewBuildingRealFromItem(int itemIndex, Building building)
+        public void MakePreviewBuildingRealFromItem(int itemIndex)
         {
+            if (previewBuilding == null)
+            {
+                return;
+            }
+
             if (ActiveItems == null)
             {
                 return;
@@ -86,18 +91,18 @@ namespace Core
                 return;
             }
 
-            if (item.Builds != building.Type)
+            if (item.Builds != previewBuilding.Type)
             {
                 return;
             }
 
-            if (building.IsPreview == false)
+            if (previewBuilding.IsPreview == false)
             {
                 return;
             }
 
             ActiveItems.DecrementCountOf(itemIndex, 1);
-            building.ClearPreview();
+            previewBuilding.ClearPreview();
         }
 
         public void PlaceBlockFromItem(int itemIndex, Point3Int location, HexSide subIndex)
