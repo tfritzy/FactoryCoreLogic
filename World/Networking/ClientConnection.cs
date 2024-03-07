@@ -158,6 +158,7 @@ namespace Core
                             ConnectedWorld.HandleUpdate(fullUpdate);
                             int numPacketsRemoved = previousLength - receivedPackets.Count;
                             HighestHandledPacket += (ulong)numPacketsRemoved;
+                            previousLength = receivedPackets.Count;
                         }
                     }
                 }
