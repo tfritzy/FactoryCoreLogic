@@ -165,6 +165,24 @@ namespace Core
             return Context.World.GetBuildingAt(location)!;
         }
 
+        public void RotateBuilding(ulong buildingId, HexSide rotation)
+        {
+            if (!this.Characters.ContainsKey(buildingId))
+            {
+                return;
+            }
+
+            AddUpdateForFrame(
+                new OneofUpdate
+                {
+                    BuildingRotated = new BuildingRotated
+                    {
+                        BuildingId = buildingId,
+                        Rotation = rotation,
+                    },
+                });
+        }
+
         public void RemoveBuilding(Point2Int location)
         {
             ulong buildingId = this.Buildings[location];
@@ -390,7 +408,7 @@ namespace Core
                 });
         }
 
-        public void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float rotation)
+        public void SetItemObjectPos(ulong itemId, Point3Float pos, Point3Float velocity)
         {
             ItemObjects.TryGetValue(itemId, out ItemObject? itemObj);
             if (itemObj == null)
@@ -405,7 +423,7 @@ namespace Core
                     {
                         Id = itemId,
                         Position = pos.ToSchema(),
-                        Velocity = rotation.ToSchema(),
+                        Velocity = velocity.ToSchema(),
                     },
                 });
         }
@@ -476,24 +494,6 @@ namespace Core
             {
                 RemoveItemObject(id);
             }
-        }
-
-        public void SetItemObjectPosition(ulong itemId, Point3Float pos)
-        {
-            if (!ItemObjects.ContainsKey(itemId))
-            {
-                return;
-            }
-
-            AddUpdateForFrame(
-                new OneofUpdate
-                {
-                    ItemMoved = new ItemMoved
-                    {
-                        ItemId = itemId,
-                        UpdatedPosition = pos.ToSchema(),
-                    },
-                });
         }
 
         private void HandleVelocityChange(VelocityChange update)
@@ -590,6 +590,21 @@ namespace Core
                 this.Buildings.Remove((Point2Int)Point3Int.FromSchema(removedUpdate.GridPosition));
                 this.Characters.Remove(removedUpdate.BuildingId);
             }
+            else if (update.BuildingRotated != null)
+            {
+                var rotated = update.BuildingRotated;
+                if (Characters.TryGetValue(rotated.BuildingId, out Character? character))
+                {
+                    if (character is Building building)
+                    {
+                        building.SetRotation(rotated.Rotation);
+                    }
+                }
+            }
+            else if (update.ProjectileRemoved != null)
+            {
+                throw new System.NotImplementedException("TODO: Handle projectiles");
+            }
             else if (update.ItemObjectAdded != null)
             {
                 var itemObject = ItemObject.FromSchema(update.ItemObjectAdded.Item);
@@ -618,14 +633,6 @@ namespace Core
                 {
                     itemObj.Position = Point3Float.FromSchema(moved.Position);
                     itemObj.Velocity = Point3Float.FromSchema(moved.Velocity);
-                }
-            }
-            else if (update.ItemMoved != null)
-            {
-                var moved = update.ItemMoved;
-                if (ItemObjects.TryGetValue(moved.ItemId, out ItemObject? itemObject))
-                {
-                    itemObject.Position = Point3Float.FromSchema(moved.UpdatedPosition);
                 }
             }
             else

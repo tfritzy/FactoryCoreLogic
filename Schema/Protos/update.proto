@@ -12,11 +12,11 @@ package schema;
 
 message OneofUpdate {
     oneof update {
-        ItemMoved itemMoved = 1;
-        ProjectileAdded projectileAdded = 2;
-        ProjectileRemoved projectileRemoved = 3;
-        BuildingAdded buildingAdded = 4;
-        BuildingRemoved buildingRemoved = 5;
+        ProjectileAdded projectileAdded = 1;
+        ProjectileRemoved projectileRemoved = 2;
+        BuildingAdded buildingAdded = 3;
+        BuildingRemoved buildingRemoved = 4;
+        BuildingRotated buildingRotated = 5;
         TriUncoveredOrAdded triUncoveredOrAdded = 6;
         TriHiddenOrDestroyed triHiddenOrDestroyed = 7;
         TerrainObjectChange terrainObjectChange = 8;
@@ -72,6 +72,11 @@ message ItemObjectAdded {
 message BuildingRemoved {
     uint64 building_id = 1;
     Point3Int gridPosition = 2;
+}
+
+message BuildingRotated {
+    uint64 building_id = 1;
+    core.HexSide rotation = 2;
 }
 
 message BuildingAdded {

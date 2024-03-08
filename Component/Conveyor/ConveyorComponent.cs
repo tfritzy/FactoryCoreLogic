@@ -444,7 +444,8 @@ namespace Core
         public override void OnOwnerRotationChanged(HexSide rotation)
         {
             base.OnOwnerRotationChanged(rotation);
-
+            DisconnectNext();
+            DisconnectPrev();
             FindNeighborConveyors();
         }
 
