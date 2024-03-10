@@ -67,9 +67,12 @@ namespace Core
             this.Terrain = terrain;
         }
 
+
+        /// <summary>
         // Tick logic that should happen always, even for clients
         // that don't tick to update world state. Stuff like moving objects
         // based on their velocity.
+        /// </summary>
         public void ClientTick(float deltaTime)
         {
             foreach (ItemObject obj in ItemObjects.Values)
@@ -162,7 +165,15 @@ namespace Core
                         GridPosition = location.ToSchema(),
                     },
                 });
-            return Context.World.GetBuildingAt(location)!;
+
+            building = Context.World.GetBuildingAt(location)!;
+
+            // This should happen only on the host, so not handled inside HandleMessage();
+            // Clients should set things like conveyor prev and next entirely through
+            // Serialization.
+            building.OnAddToGrid(location);
+
+            return building;
         }
 
         public void RotateBuilding(ulong buildingId, HexSide rotation)
@@ -550,7 +561,6 @@ namespace Core
                 Point2Int location = Point2Int.FromSchema(update.BuildingAdded.GridPosition);
                 this.Characters[building.Id] = building;
                 this.Buildings.Add(location, building.Id);
-                building.OnAddToGrid(location);
             }
             else if (update.TriUncoveredOrAdded != null)
             {

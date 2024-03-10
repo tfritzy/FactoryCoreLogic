@@ -35,9 +35,9 @@ message NullableHexSide {
 }
 
 message ConveyorComponent {
-    repeated ItemOnBelt items = 2;
-    NullableHexSide nextSide = 3;
-    NullableHexSide prevSide = 4;
+    repeated ItemOnBelt items = 1;
+    NullableHexSide nextSide = 2;
+    NullableHexSide prevSide = 3;
 }
 
 message Inventory {
