@@ -526,6 +526,24 @@ namespace Core
             }
         }
 
+        private void PreviewBuilding(ulong playerId, int itemIndex, Point2Int location)
+        {
+            Character? character = GetCharacter(playerId);
+            if (character is Player player)
+            {
+                player.BuidPreviewBuildingFromItem(itemIndex, location);
+            }
+        }
+
+        private void MakePreviewBuildingReal(ulong playerId, int itemIndex)
+        {
+            Character? character = GetCharacter(playerId);
+            if (character is Player player)
+            {
+                player.MakePreviewBuildingRealFromItem(itemIndex);
+            }
+        }
+
         public void HandleRequest(Schema.OneofRequest request)
         {
             if (request.VelocityChange != null)
@@ -534,6 +552,18 @@ namespace Core
                 PickupItem(request.PickupItem.CharacterId, request.PickupItem.ItemId);
             else if (request.PluckBush != null)
                 PluckBush(request.PluckBush.CharacterId, Point2Int.FromSchema(request.PluckBush.GridPosition));
+            else if (request.PreviewBuilding != null)
+                PreviewBuilding(
+                    request.PreviewBuilding.PlayerId,
+                    request.PreviewBuilding.ItemIndex,
+                    Point2Int.FromSchema(request.PreviewBuilding.Location));
+            else if (request.MakePreviewBuildingReal != null)
+                MakePreviewBuildingReal(
+                    request.MakePreviewBuildingReal.PlayerId,
+                    request.MakePreviewBuildingReal.ItemIndex);
+            else
+                throw new System.NotImplementedException("Unhandled request: " + request);
+
         }
 
         public void AddUpdateForFrame(Schema.OneofUpdate update)
