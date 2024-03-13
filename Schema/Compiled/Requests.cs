@@ -28,35 +28,40 @@ namespace Schema
     {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg5yZXF1ZXN0cy5wcm90bxIGc2NoZW1hGgt1bml0cy5wcm90byLMAgoMT25l",
-            "b2ZSZXF1ZXN0EjEKD3ZlbG9jaXR5X2NoYW5nZRgBIAEoCzIWLnNjaGVtYS5W",
-            "ZWxvY2l0eUNoYW5nZUgAEi4KCWhlYXJ0YmVhdBgCIAEoCzIZLnNjaGVtYS5I",
-            "ZWFydGJlYXRSZXNwb25zZUgAEikKC3BpY2t1cF9pdGVtGAMgASgLMhIuc2No",
-            "ZW1hLlBpY2t1cEl0ZW1IABInCgpwbHVja19idXNoGAQgASgLMhEuc2NoZW1h",
-            "LlBsdWNrQnVzaEgAEjMKEHByZXZpZXdfYnVpbGRpbmcYBSABKAsyFy5zY2hl",
-            "bWEuUHJldmlld0J1aWxkaW5nSAASRQoabWFrZV9wcmV2aWV3X2J1aWxkaW5n",
-            "X3JlYWwYBiABKAsyHy5zY2hlbWEuTWFrZVByZXZpZXdCdWlsZGluZ1JlYWxI",
-            "AEIJCgdyZXF1ZXN0InEKDlZlbG9jaXR5Q2hhbmdlEhEKCXBsYXllcl9pZBgB",
-            "IAEoBBIlCghwb3NpdGlvbhgCIAEoCzITLnNjaGVtYS5Qb2ludDNGbG9hdBIl",
-            "Cgh2ZWxvY2l0eRgDIAEoCzITLnNjaGVtYS5Qb2ludDNGbG9hdCIuChFIZWFy",
-            "dGJlYXRSZXNwb25zZRIZChFtaXNzZWRfcGFja2V0X2lkcxgBIAMoBCIzCgpQ",
-            "aWNrdXBJdGVtEhQKDGNoYXJhY3Rlcl9pZBgBIAEoBBIPCgdpdGVtX2lkGAIg",
-            "ASgEIkoKCVBsdWNrQnVzaBIUCgxjaGFyYWN0ZXJfaWQYASABKAQSJwoMZ3Jp",
-            "ZFBvc2l0aW9uGAIgASgLMhEuc2NoZW1hLlBvaW50MkludCJdCg9QcmV2aWV3",
-            "QnVpbGRpbmcSEQoJcGxheWVyX2lkGAEgASgEEhIKCml0ZW1faW5kZXgYAiAB",
-            "KAUSIwoIbG9jYXRpb24YAyABKAsyES5zY2hlbWEuUG9pbnQySW50IkAKF01h",
-            "a2VQcmV2aWV3QnVpbGRpbmdSZWFsEhEKCXBsYXllcl9pZBgBIAEoBBISCgpp",
-            "dGVtX2luZGV4GAIgASgFYgZwcm90bzM="));
+            "Cg5yZXF1ZXN0cy5wcm90bxIGc2NoZW1hGgt1bml0cy5wcm90bxoOaGV4X3Np",
+            "ZGUucHJvdG8ijgMKDE9uZW9mUmVxdWVzdBIxCg92ZWxvY2l0eV9jaGFuZ2UY",
+            "ASABKAsyFi5zY2hlbWEuVmVsb2NpdHlDaGFuZ2VIABIuCgloZWFydGJlYXQY",
+            "AiABKAsyGS5zY2hlbWEuSGVhcnRiZWF0UmVzcG9uc2VIABIpCgtwaWNrdXBf",
+            "aXRlbRgDIAEoCzISLnNjaGVtYS5QaWNrdXBJdGVtSAASJwoKcGx1Y2tfYnVz",
+            "aBgEIAEoCzIRLnNjaGVtYS5QbHVja0J1c2hIABIzChBwcmV2aWV3X2J1aWxk",
+            "aW5nGAUgASgLMhcuc2NoZW1hLlByZXZpZXdCdWlsZGluZ0gAEkUKGm1ha2Vf",
+            "cHJldmlld19idWlsZGluZ19yZWFsGAYgASgLMh8uc2NoZW1hLk1ha2VQcmV2",
+            "aWV3QnVpbGRpbmdSZWFsSAASQAoXcm90YXRlX3ByZXZpZXdfYnVpbGRpbmcY",
+            "ByABKAsyHS5zY2hlbWEuUm90YXRlUHJldmlld0J1aWxkaW5nSABCCQoHcmVx",
+            "dWVzdCJxCg5WZWxvY2l0eUNoYW5nZRIRCglwbGF5ZXJfaWQYASABKAQSJQoI",
+            "cG9zaXRpb24YAiABKAsyEy5zY2hlbWEuUG9pbnQzRmxvYXQSJQoIdmVsb2Np",
+            "dHkYAyABKAsyEy5zY2hlbWEuUG9pbnQzRmxvYXQiLgoRSGVhcnRiZWF0UmVz",
+            "cG9uc2USGQoRbWlzc2VkX3BhY2tldF9pZHMYASADKAQiMwoKUGlja3VwSXRl",
+            "bRIUCgxjaGFyYWN0ZXJfaWQYASABKAQSDwoHaXRlbV9pZBgCIAEoBCJKCglQ",
+            "bHVja0J1c2gSFAoMY2hhcmFjdGVyX2lkGAEgASgEEicKDGdyaWRQb3NpdGlv",
+            "bhgCIAEoCzIRLnNjaGVtYS5Qb2ludDJJbnQifgoPUHJldmlld0J1aWxkaW5n",
+            "EhEKCXBsYXllcl9pZBgBIAEoBBISCgppdGVtX2luZGV4GAIgASgFEiMKCGxv",
+            "Y2F0aW9uGAMgASgLMhEuc2NoZW1hLlBvaW50MkludBIfCghyb3RhdGlvbhgE",
+            "IAEoDjINLmNvcmUuSGV4U2lkZSJAChdNYWtlUHJldmlld0J1aWxkaW5nUmVh",
+            "bBIRCglwbGF5ZXJfaWQYASABKAQSEgoKaXRlbV9pbmRleBgCIAEoBSJLChVS",
+            "b3RhdGVQcmV2aWV3QnVpbGRpbmcSEQoJcGxheWVyX2lkGAEgASgEEh8KCHJv",
+            "dGF0aW9uGAMgASgOMg0uY29yZS5IZXhTaWRlYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Schema.UnitsReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Schema.UnitsReflection.Descriptor, global::Core.HexSideReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.OneofRequest), global::Schema.OneofRequest.Parser, new[]{ "VelocityChange", "Heartbeat", "PickupItem", "PluckBush", "PreviewBuilding", "MakePreviewBuildingReal" }, new[]{ "Request" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.OneofRequest), global::Schema.OneofRequest.Parser, new[]{ "VelocityChange", "Heartbeat", "PickupItem", "PluckBush", "PreviewBuilding", "MakePreviewBuildingReal", "RotatePreviewBuilding" }, new[]{ "Request" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.VelocityChange), global::Schema.VelocityChange.Parser, new[]{ "PlayerId", "Position", "Velocity" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.HeartbeatResponse), global::Schema.HeartbeatResponse.Parser, new[]{ "MissedPacketIds" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.PickupItem), global::Schema.PickupItem.Parser, new[]{ "CharacterId", "ItemId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Schema.PluckBush), global::Schema.PluckBush.Parser, new[]{ "CharacterId", "GridPosition" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.PreviewBuilding), global::Schema.PreviewBuilding.Parser, new[]{ "PlayerId", "ItemIndex", "Location" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.MakePreviewBuildingReal), global::Schema.MakePreviewBuildingReal.Parser, new[]{ "PlayerId", "ItemIndex" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.PreviewBuilding), global::Schema.PreviewBuilding.Parser, new[]{ "PlayerId", "ItemIndex", "Location", "Rotation" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.MakePreviewBuildingReal), global::Schema.MakePreviewBuildingReal.Parser, new[]{ "PlayerId", "ItemIndex" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Schema.RotatePreviewBuilding), global::Schema.RotatePreviewBuilding.Parser, new[]{ "PlayerId", "Rotation" }, null, null, null, null)
           }));
     }
     #endregion
@@ -121,6 +126,9 @@ namespace Schema
           break;
         case RequestOneofCase.MakePreviewBuildingReal:
           MakePreviewBuildingReal = other.MakePreviewBuildingReal.Clone();
+          break;
+        case RequestOneofCase.RotatePreviewBuilding:
+          RotatePreviewBuilding = other.RotatePreviewBuilding.Clone();
           break;
       }
 
@@ -218,6 +226,20 @@ namespace Schema
       }
     }
 
+    /// <summary>Field number for the "rotate_preview_building" field.</summary>
+    public const int RotatePreviewBuildingFieldNumber = 7;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Schema.RotatePreviewBuilding RotatePreviewBuilding
+    {
+      get { return requestCase_ == RequestOneofCase.RotatePreviewBuilding ? (global::Schema.RotatePreviewBuilding)request_ : null; }
+      set
+      {
+        request_ = value;
+        requestCase_ = value == null ? RequestOneofCase.None : RequestOneofCase.RotatePreviewBuilding;
+      }
+    }
+
     private object request_;
     /// <summary>Enum of possible cases for the "request" oneof.</summary>
     public enum RequestOneofCase
@@ -229,6 +251,7 @@ namespace Schema
       PluckBush = 4,
       PreviewBuilding = 5,
       MakePreviewBuildingReal = 6,
+      RotatePreviewBuilding = 7,
     }
     private RequestOneofCase requestCase_ = RequestOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -271,6 +294,7 @@ namespace Schema
       if (!object.Equals(PluckBush, other.PluckBush)) return false;
       if (!object.Equals(PreviewBuilding, other.PreviewBuilding)) return false;
       if (!object.Equals(MakePreviewBuildingReal, other.MakePreviewBuildingReal)) return false;
+      if (!object.Equals(RotatePreviewBuilding, other.RotatePreviewBuilding)) return false;
       if (RequestCase != other.RequestCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -286,6 +310,7 @@ namespace Schema
       if (requestCase_ == RequestOneofCase.PluckBush) hash ^= PluckBush.GetHashCode();
       if (requestCase_ == RequestOneofCase.PreviewBuilding) hash ^= PreviewBuilding.GetHashCode();
       if (requestCase_ == RequestOneofCase.MakePreviewBuildingReal) hash ^= MakePreviewBuildingReal.GetHashCode();
+      if (requestCase_ == RequestOneofCase.RotatePreviewBuilding) hash ^= RotatePreviewBuilding.GetHashCode();
       hash ^= (int)requestCase_;
       if (_unknownFields != null)
       {
@@ -332,6 +357,10 @@ namespace Schema
         output.WriteRawTag(50);
         output.WriteMessage(MakePreviewBuildingReal);
       }
+      if (requestCase_ == RequestOneofCase.RotatePreviewBuilding) {
+        output.WriteRawTag(58);
+        output.WriteMessage(RotatePreviewBuilding);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -373,6 +402,11 @@ namespace Schema
         output.WriteRawTag(50);
         output.WriteMessage(MakePreviewBuildingReal);
       }
+      if (requestCase_ == RequestOneofCase.RotatePreviewBuilding)
+      {
+        output.WriteRawTag(58);
+        output.WriteMessage(RotatePreviewBuilding);
+      }
       if (_unknownFields != null)
       {
         _unknownFields.WriteTo(ref output);
@@ -408,6 +442,10 @@ namespace Schema
       if (requestCase_ == RequestOneofCase.MakePreviewBuildingReal)
       {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(MakePreviewBuildingReal);
+      }
+      if (requestCase_ == RequestOneofCase.RotatePreviewBuilding)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(RotatePreviewBuilding);
       }
       if (_unknownFields != null)
       {
@@ -467,6 +505,13 @@ namespace Schema
             MakePreviewBuildingReal = new global::Schema.MakePreviewBuildingReal();
           }
           MakePreviewBuildingReal.MergeFrom(other.MakePreviewBuildingReal);
+          break;
+        case RequestOneofCase.RotatePreviewBuilding:
+          if (RotatePreviewBuilding == null)
+          {
+            RotatePreviewBuilding = new global::Schema.RotatePreviewBuilding();
+          }
+          RotatePreviewBuilding.MergeFrom(other.RotatePreviewBuilding);
           break;
       }
 
@@ -538,6 +583,15 @@ namespace Schema
             }
             input.ReadMessage(subBuilder);
             MakePreviewBuildingReal = subBuilder;
+            break;
+          }
+          case 58: {
+            global::Schema.RotatePreviewBuilding subBuilder = new global::Schema.RotatePreviewBuilding();
+            if (requestCase_ == RequestOneofCase.RotatePreviewBuilding) {
+              subBuilder.MergeFrom(RotatePreviewBuilding);
+            }
+            input.ReadMessage(subBuilder);
+            RotatePreviewBuilding = subBuilder;
             break;
           }
         }
@@ -622,6 +676,17 @@ namespace Schema
               }
               input.ReadMessage(subBuilder);
               MakePreviewBuildingReal = subBuilder;
+              break;
+            }
+          case 58:
+            {
+              global::Schema.RotatePreviewBuilding subBuilder = new global::Schema.RotatePreviewBuilding();
+              if (requestCase_ == RequestOneofCase.RotatePreviewBuilding)
+              {
+                subBuilder.MergeFrom(RotatePreviewBuilding);
+              }
+              input.ReadMessage(subBuilder);
+              RotatePreviewBuilding = subBuilder;
               break;
             }
         }
@@ -1741,6 +1806,7 @@ namespace Schema
       playerId_ = other.playerId_;
       itemIndex_ = other.itemIndex_;
       location_ = other.location_ != null ? other.location_.Clone() : null;
+      rotation_ = other.rotation_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1793,6 +1859,20 @@ namespace Schema
       }
     }
 
+    /// <summary>Field number for the "rotation" field.</summary>
+    public const int RotationFieldNumber = 4;
+    private global::Core.HexSide rotation_ = global::Core.HexSide.NorthEast;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Core.HexSide Rotation
+    {
+      get { return rotation_; }
+      set
+      {
+        rotation_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other)
@@ -1815,6 +1895,7 @@ namespace Schema
       if (PlayerId != other.PlayerId) return false;
       if (ItemIndex != other.ItemIndex) return false;
       if (!object.Equals(Location, other.Location)) return false;
+      if (Rotation != other.Rotation) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1826,6 +1907,7 @@ namespace Schema
       if (PlayerId != 0UL) hash ^= PlayerId.GetHashCode();
       if (ItemIndex != 0) hash ^= ItemIndex.GetHashCode();
       if (location_ != null) hash ^= Location.GetHashCode();
+      if (Rotation != global::Core.HexSide.NorthEast) hash ^= Rotation.GetHashCode();
       if (_unknownFields != null)
       {
         hash ^= _unknownFields.GetHashCode();
@@ -1859,6 +1941,10 @@ namespace Schema
         output.WriteRawTag(26);
         output.WriteMessage(Location);
       }
+      if (Rotation != global::Core.HexSide.NorthEast) {
+        output.WriteRawTag(32);
+        output.WriteEnum((int) Rotation);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1885,6 +1971,11 @@ namespace Schema
         output.WriteRawTag(26);
         output.WriteMessage(Location);
       }
+      if (Rotation != global::Core.HexSide.NorthEast)
+      {
+        output.WriteRawTag(32);
+        output.WriteEnum((int)Rotation);
+      }
       if (_unknownFields != null)
       {
         _unknownFields.WriteTo(ref output);
@@ -1908,6 +1999,10 @@ namespace Schema
       if (location_ != null)
       {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Location);
+      }
+      if (Rotation != global::Core.HexSide.NorthEast)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Rotation);
       }
       if (_unknownFields != null)
       {
@@ -1940,6 +2035,10 @@ namespace Schema
         }
         Location.MergeFrom(other.Location);
       }
+      if (other.Rotation != global::Core.HexSide.NorthEast)
+      {
+        Rotation = other.Rotation;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1969,6 +2068,10 @@ namespace Schema
               Location = new global::Schema.Point2Int();
             }
             input.ReadMessage(Location);
+            break;
+          }
+          case 32: {
+            Rotation = (global::Core.HexSide) input.ReadEnum();
             break;
           }
         }
@@ -2006,6 +2109,11 @@ namespace Schema
                 Location = new global::Schema.Point2Int();
               }
               input.ReadMessage(Location);
+              break;
+            }
+          case 32:
+            {
+              Rotation = (global::Core.HexSide)input.ReadEnum();
               break;
             }
         }
@@ -2268,6 +2376,268 @@ namespace Schema
           case 16:
             {
               ItemIndex = input.ReadInt32();
+              break;
+            }
+        }
+      }
+    }
+#endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class RotatePreviewBuilding : pb::IMessage<RotatePreviewBuilding>
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+#endif
+  {
+    private static readonly pb::MessageParser<RotatePreviewBuilding> _parser = new pb::MessageParser<RotatePreviewBuilding>(() => new RotatePreviewBuilding());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<RotatePreviewBuilding> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor
+    {
+      get { return global::Schema.RequestsReflection.Descriptor.MessageTypes[7]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor
+    {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RotatePreviewBuilding()
+    {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RotatePreviewBuilding(RotatePreviewBuilding other) : this()
+    {
+      playerId_ = other.playerId_;
+      rotation_ = other.rotation_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public RotatePreviewBuilding Clone()
+    {
+      return new RotatePreviewBuilding(this);
+    }
+
+    /// <summary>Field number for the "player_id" field.</summary>
+    public const int PlayerIdFieldNumber = 1;
+    private ulong playerId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong PlayerId
+    {
+      get { return playerId_; }
+      set
+      {
+        playerId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "rotation" field.</summary>
+    public const int RotationFieldNumber = 3;
+    private global::Core.HexSide rotation_ = global::Core.HexSide.NorthEast;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Core.HexSide Rotation
+    {
+      get { return rotation_; }
+      set
+      {
+        rotation_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other)
+    {
+      return Equals(other as RotatePreviewBuilding);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(RotatePreviewBuilding other)
+    {
+      if (ReferenceEquals(other, null))
+      {
+        return false;
+      }
+      if (ReferenceEquals(other, this))
+      {
+        return true;
+      }
+      if (PlayerId != other.PlayerId) return false;
+      if (Rotation != other.Rotation) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode()
+    {
+      int hash = 1;
+      if (PlayerId != 0UL) hash ^= PlayerId.GetHashCode();
+      if (Rotation != global::Core.HexSide.NorthEast) hash ^= Rotation.GetHashCode();
+      if (_unknownFields != null)
+      {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString()
+    {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+#else
+      if (PlayerId != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(PlayerId);
+      }
+      if (Rotation != global::Core.HexSide.NorthEast) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) Rotation);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+#endif
+    }
+
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+    {
+      if (PlayerId != 0UL)
+      {
+        output.WriteRawTag(8);
+        output.WriteUInt64(PlayerId);
+      }
+      if (Rotation != global::Core.HexSide.NorthEast)
+      {
+        output.WriteRawTag(24);
+        output.WriteEnum((int)Rotation);
+      }
+      if (_unknownFields != null)
+      {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+#endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize()
+    {
+      int size = 0;
+      if (PlayerId != 0UL)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(PlayerId);
+      }
+      if (Rotation != global::Core.HexSide.NorthEast)
+      {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Rotation);
+      }
+      if (_unknownFields != null)
+      {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(RotatePreviewBuilding other)
+    {
+      if (other == null)
+      {
+        return;
+      }
+      if (other.PlayerId != 0UL)
+      {
+        PlayerId = other.PlayerId;
+      }
+      if (other.Rotation != global::Core.HexSide.NorthEast)
+      {
+        Rotation = other.Rotation;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input)
+    {
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+#else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            PlayerId = input.ReadUInt64();
+            break;
+          }
+          case 24: {
+            Rotation = (global::Core.HexSide) input.ReadEnum();
+            break;
+          }
+        }
+      }
+#endif
+    }
+
+#if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+    {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0)
+      {
+        switch (tag)
+        {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8:
+            {
+              PlayerId = input.ReadUInt64();
+              break;
+            }
+          case 24:
+            {
+              Rotation = (global::Core.HexSide)input.ReadEnum();
               break;
             }
         }

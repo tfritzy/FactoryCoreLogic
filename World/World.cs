@@ -526,12 +526,12 @@ namespace Core
             }
         }
 
-        private void PreviewBuilding(ulong playerId, int itemIndex, Point2Int location)
+        private void PreviewBuilding(ulong playerId, int itemIndex, Point2Int location, HexSide rotation)
         {
             Character? character = GetCharacter(playerId);
             if (character is Player player)
             {
-                player.BuidPreviewBuildingFromItem(itemIndex, location);
+                player.BuidPreviewBuildingFromItem(itemIndex, location, rotation);
             }
         }
 
@@ -541,6 +541,15 @@ namespace Core
             if (character is Player player)
             {
                 player.MakePreviewBuildingRealFromItem(itemIndex);
+            }
+        }
+
+        private void RotatePreviewBuilding(ulong playerId, HexSide rotation)
+        {
+            Character? character = GetCharacter(playerId);
+            if (character is Player player)
+            {
+                player.RotatePreviewBuilding(rotation);
             }
         }
 
@@ -556,11 +565,16 @@ namespace Core
                 PreviewBuilding(
                     request.PreviewBuilding.PlayerId,
                     request.PreviewBuilding.ItemIndex,
-                    Point2Int.FromSchema(request.PreviewBuilding.Location));
+                    Point2Int.FromSchema(request.PreviewBuilding.Location),
+                    request.PreviewBuilding.Rotation);
             else if (request.MakePreviewBuildingReal != null)
                 MakePreviewBuildingReal(
                     request.MakePreviewBuildingReal.PlayerId,
                     request.MakePreviewBuildingReal.ItemIndex);
+            else if (request.RotatePreviewBuilding != null)
+                RotatePreviewBuilding(
+                    request.RotatePreviewBuilding.PlayerId,
+                    (HexSide)request.RotatePreviewBuilding.Rotation);
             else
                 throw new System.NotImplementedException("Unhandled request: " + request);
 

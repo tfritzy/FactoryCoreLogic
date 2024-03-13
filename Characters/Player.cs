@@ -43,7 +43,7 @@ namespace Core
             this.SetComponent(new CommandComponent(this));
         }
 
-        public Building? BuidPreviewBuildingFromItem(int itemIndex, Point2Int location)
+        public Building? BuidPreviewBuildingFromItem(int itemIndex, Point2Int location, HexSide rotation)
         {
             Item? item = ActiveItems?.GetItemAt(itemIndex);
             if (item == null)
@@ -68,6 +68,7 @@ namespace Core
             }
 
             Building newBuilding = (Building)Character.Create(building.Value, this.Context);
+            newBuilding.SetRotation(rotation);
             newBuilding.MarkPreview();
             previewBuilding = this.Context.World.AddBuilding(newBuilding, location);
             return this.Context.World.GetBuildingAt(location);
@@ -153,6 +154,16 @@ namespace Core
                 HexSide rotatedSubIndex = subIndices[i];
                 Context.World.Terrain.SetTriangle(placeLocation, toPlace[i].Triangle, rotatedSubIndex);
             }
+        }
+
+        public void RotatePreviewBuilding(HexSide direction)
+        {
+            if (previewBuilding == null)
+            {
+                return;
+            }
+
+            World.RotateBuilding(previewBuilding.Id, direction);
         }
     }
 }
